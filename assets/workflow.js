@@ -1,8 +1,8 @@
 /* Navigation and real readbacks only. Existing physical action gates remain intact. */
 (() => {
   'use strict';
-  const get=id=>document.getElementById(id),pages=['numbering','install','link','imu'];
-  const defaultPage='imu',pageKey='duck-workflow-page-v3';
+  const get=id=>document.getElementById(id),pages=['numbering','install','imu'];
+  const defaultPage='imu',pageKey='duck-workflow-page-v4';
   const joints=[
     [10,'左髋转向'],[11,'左髋侧摆'],[12,'左髋前后摆'],[13,'左膝'],[14,'左踝'],
     [20,'右髋转向'],[21,'右髋侧摆'],[22,'右髋前后摆'],[23,'右膝'],[24,'右踝'],
@@ -15,13 +15,15 @@
   const dataset=(element,key,value)=>{if(element&&element.dataset[key]!==String(value))element.dataset[key]=String(value);};
   let selectedPaintedAt=-Infinity,selectedPaintedKey='',batteryPaintedAt=-Infinity,batteryPaintedKey='';
   let batteryReading=null;
+  const SERVO_VOLTAGE_CONFIRM_MS=300;
+  let servoVoltage={shown:null,candidate:null,candidateSince:0,lastSampleAt:0,lastFrameAt:0,lastSeq:null,source:''};
   let charging=true;
   try{charging=localStorage.getItem('duck-battery-returned-20261012')!=='yes';}catch{}
   const fresh=s=>s&&Number.isFinite(s.feedback_age_ms)&&s.feedback_age_ms>=0&&s.feedback_age_ms<150&&Number.isInteger(s.mcu_seq)&&Number.isFinite(s.received)&&s.received>0;
 
   function showPage(name){
-    const calibration=name==='servo';
-    if(calibration)name='imu';
+    const calibration=name==='servo',connection=name==='link';
+    if(calibration||connection)name='imu';
     if(!pages.includes(name))name=defaultPage;
     currentPage=name;
     syncNumberingFrame();
@@ -32,6 +34,7 @@
     }
     try{localStorage.setItem(pageKey,name);}catch{}
     if(name==='imu'){renderSelected(true);renderCalibrationProgress();}
+    if(connection&&get('debug-connection'))get('debug-connection').open=true;
     window.dispatchEvent(new CustomEvent('duck:page',{detail:{page:name}}));
     if(calibration)window.dispatchEvent(new CustomEvent('duck:calibration-panel',{detail:{open:true}}));
     window.scrollTo({top:0,behavior:'instant'});
@@ -87,7 +90,33 @@
     window.dispatchEvent(new CustomEvent('duck:joint',{detail:{id}}));
     renderSelected(true);
   }
-  window.DuckWorkflow=Object.freeze({selectedJoint:()=>selected,selectJoint:id=>selectJoint(Number(id)),page:()=>currentPage});
+  window.DuckWorkflow=Object.freeze({selectedJoint:()=>selected,selectJoint:id=>selectJoint(Number(id)),page:()=>currentPage,openPage:showPage});
+
+  function displayServoVoltage(s,p){
+    const now=Date.now(),sampleAt=now-p.age_ms,units=Math.round(p.voltage_v*10);
+    const source=String(s.app_instance_id??'')+'/'+String(s.mcu_restarts??'');
+    if(servoVoltage.shown===null||servoVoltage.source!==source){
+      servoVoltage={shown:units,candidate:null,candidateSince:0,lastSampleAt:sampleAt,lastFrameAt:now,lastSeq:s.mcu_seq,source};
+      return units/10;
+    }
+    const seqDelta=(s.mcu_seq-servoVoltage.lastSeq)>>>0;
+    if(seqDelta>0&&seqDelta<0x80000000&&sampleAt>servoVoltage.lastSampleAt){
+      if(now-servoVoltage.lastFrameAt>=1500){servoVoltage.shown=units;servoVoltage.candidate=null;}
+      else{
+        const direction=Math.sign(units-servoVoltage.shown);
+        if(direction===0)servoVoltage.candidate=null;
+        else if(direction!==servoVoltage.candidate){servoVoltage.candidate=direction;servoVoltage.candidateSince=sampleAt;}
+        else if(sampleAt-servoVoltage.candidateSince>=SERVO_VOLTAGE_CONFIRM_MS){
+          // Follow a sustained rise or fall even when each observed sample changes by 0.1 V.
+          servoVoltage.shown=units;servoVoltage.candidate=null;
+        }
+      }
+      servoVoltage.lastSampleAt=sampleAt;
+      servoVoltage.lastSeq=s.mcu_seq;
+      servoVoltage.lastFrameAt=now;
+    }
+    return servoVoltage.shown/10;
+  }
 
   function showBattery(s,force=false){
     const b=s?.battery,p=s?.servo_power;
@@ -96,7 +125,11 @@
     const packValid=packFresh&&Number.isFinite(b.voltage_v)&&b.voltage_v>0;
     const busValid=sourceFresh&&p?.supported===true&&p.source==='servo_supply'&&Number.isFinite(p.age_ms)&&p.age_ms>=0&&p.age_ms<1500&&Number.isFinite(p.voltage_v)&&p.voltage_v>0;
     const reported=packFresh&&Number.isFinite(b.percent)&&b.percent>=0&&b.percent<=100?b.percent:null;
-    const voltage=packValid?b.voltage_v:busValid?p.voltage_v:null;
+    if(!busValid||packValid)servoVoltage.candidate=null;
+    if(packValid)servoVoltage.source='';
+    const servoDisplay=busValid&&!packValid?displayServoVoltage(s,p):null;
+    const servoObserved=servoDisplay!==null&&Date.now()-servoVoltage.lastSampleAt<1500;
+    const voltage=packValid?b.voltage_v:servoObserved?servoDisplay:null;
     if(!document.hidden&&reported===null&&voltage===null&&batteryReading){
       batteryPaintedKey='cached';
       // An expired IMU frame does not erase a still-valid voltage observation.
@@ -124,7 +157,7 @@
     if(!force&&paintKey===batteryPaintedKey&&now-batteryPaintedAt<100)return;
     batteryPaintedAt=now;batteryPaintedKey=paintKey;
     const value=get('battery-percent');
-    setText(value,reported!==null?(b.source==='bms'?'':'约 ')+percentText+'%':voltage!==null?voltage.toFixed(2)+' V':'待读取');
+    setText(value,reported!==null?(b.source==='bms'?'':'约 ')+percentText+'%':voltage!==null?voltage.toFixed(busValid&&!packValid?1:2)+' V':'待读取');
     dataset(value,'socKnown',percent!==null);dataset(value,'estimated',estimated);
     dataset(value,'historical',false);
     const fill=get('battery-fill'),width=percent===null?'0%':percentText+'%';
@@ -132,14 +165,15 @@
     attribute(fill.parentElement,'aria-label',percent===null?'电量未知':estimated?'2S锂电电量粗估约 '+percentText+'%，负载压降会影响估算':'电量 '+percentText+'%');
     text('battery-voltage',estimated?'约'+percentText+'% · 2S锂电·估算':reported!==null?'2S锂电 · '+(b.source==='bms'?'BMS':'ADC估算'):packValid?'电池电压':busValid?'舵机供电':'电池电压 —');
     text('battery-current-state',percent!==null||voltage!==null?'已读到新鲜数据':charging?'电池已取下充电':b?.supported===true||p?.supported===true?'等待新鲜电压':'电池接回，读取程序待更新');
-    const sourceNote=estimated?(packValid?'电池电压':'舵机供电电压')+' '+voltage.toFixed(2)+' V；按已确认2S锂电 6.6–8.4 V 参考区间线性粗估；'+(packValid?'':'舵机电压分辨率 0.1 V，两位小数仅为显示格式；')+'负载压降会影响估算，不是BMS容量。':reported!==null?(b.source==='bms'?'容量由 BMS 遥测提供。':'容量为 ADC 电压估算，仅供参考。'):'当前没有真实电压数据。USB 在线不代表电池有电。';
+    const sourceNote=estimated?(packValid?'电池电压 '+voltage.toFixed(2):'舵机供电电压 '+voltage.toFixed(1))+' V；按已确认2S锂电 6.6–8.4 V 参考区间线性粗估；'+(packValid?'':'原始分辨率 0.1 V，页面仅做有界平滑；')+'负载压降会影响估算，不是BMS容量。':reported!==null?(b.source==='bms'?'容量由 BMS 遥测提供。':'容量为 ADC 电压估算，仅供参考。'):'当前没有真实电压数据。USB 在线不代表电池有电。';
     text('battery-source-note',sourceNote);
     const returned=get('battery-returned');if(returned&&returned.disabled!==!charging)returned.disabled=!charging;
     const item=get('simple-battery');
     if(item){dataset(item,'state',percent!==null||voltage!==null?'pass':'');if(item.title!==sourceNote)item.title=sourceNote;}
     if(value.title!==sourceNote)value.title=sourceNote;
     if(percent!==null||voltage!==null)batteryReading={value:value.textContent,caption:get('battery-voltage').textContent,
-      note:sourceNote,aria:fill.parentElement.getAttribute('aria-label'),observedAt:Date.now(),sourceAge:packFresh?b.age_ms:busValid?p.age_ms:0};
+      note:sourceNote,aria:fill.parentElement.getAttribute('aria-label'),
+      observedAt:servoObserved&&!packValid?servoVoltage.lastSampleAt:Date.now(),sourceAge:packFresh?b.age_ms:0};
     window.dispatchEvent(new CustomEvent('duck:battery-display'));
   }
 

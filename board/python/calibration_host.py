@@ -863,6 +863,12 @@ class WirelessCalibrationHost:
 
     def home_reconcile(self):
         if self.home_released():
+            # Once this STOP has both its ACK and complete HomeEngine off
+            # reads, the fresh full off mask remains valid after a later
+            # read-only request replaces the ordinary snapshot's ACK fields.
+            # HOME_OFF has no torque reads, so keep its request-bound receipt.
+            if self._home_idle_release and self._home_snapshot['off_mask'] == W.ALL_MASK:
+                self._home_idle_release = None
             self._home_session = None; self._home_unknown = False
             if isinstance(self.operation, str) and self.operation.startswith('home_'):
                 self.operation = None

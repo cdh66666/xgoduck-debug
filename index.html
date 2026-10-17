@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="XGO Duck 本地调试：连接、舵机回中、停止卸力与实时姿态。"><title>XGO Duck 调试</title><link rel="stylesheet" href="/assets/commissioning.css"><link rel="stylesheet" href="/assets/simple-debug.css?v=workflow2">
-<link rel="stylesheet" href="/assets/visual-debug.css?v=3"><link rel="stylesheet" href="/assets/wireless-calibration.css?v=2"><link rel="stylesheet" href="/assets/duck-dark.css?v=pose-calibration1"><body class="simple-debug visual-debug duck-dark" data-theme="dark" data-default-page="imu">
+<link rel="stylesheet" href="/assets/visual-debug.css?v=3"><link rel="stylesheet" href="/assets/wireless-calibration.css?v=2"><link rel="stylesheet" href="/assets/duck-dark.css?v=unified-debug3"><body class="simple-debug visual-debug duck-dark" data-theme="dark" data-default-page="imu">
 <header><div class="brand"><span class="duck" aria-hidden="true">🦆</span><div><strong>XGO Duck</strong><span>调试</span></div></div><span class="mode-tag">无线校准 · 小步需授权</span></header>
 <main class="simple-home">
   <div class="live-strip" aria-label="当前状态">
@@ -22,16 +22,6 @@
 <div class="visual-page-heading"><h1>自动编号</h1><span>已编号保留，每次新增一颗 ID 1</span></div>
 <iframe id="numbering-frame" class="tool-frame" data-src="/numbering?embed=1" title="单颗自动编号工具"></iframe>
 </div>
-<div id="workflow-link" class="workflow-page" hidden>
-
-<div class="visual-page-heading"><h1>通信</h1><span id="visual-network-state">离线</span></div>
-<div class="visual-panel">
-<iframe id="connection-duck-frame" src="/assets/connection-model.html?embed=1" title="鸭子各关节和IMU的真实通信状态"></iframe>
-<p class="signal-line" id="visual-network-note">等待主控</p>
-</div>
-<div class="communication-actions"><button id="comm-discover" disabled>正在连接</button></div><details class="debug-details"><summary>程序版本与烧录</summary><p class="program-version" id="comm-version">主控版本 —</p><div class="communication-actions"><button id="comm-usb" class="quiet">USB 首次烧录</button><button id="comm-update" class="quiet" disabled>无线烧录</button></div></details>
-<div class="communication-progress"><progress id="comm-progress" max="100" value="0" hidden></progress><p id="comm-result" role="status" aria-live="polite">Uno Q 独立供电，与电脑连接同一 Wi-Fi。</p></div>
-</div>
 <div id="workflow-imu" class="workflow-page">
   <div class="imu-overview"><div class="imu-pose">
     <div class="imu-panel-heading"><h1>实时姿态</h1><span id="imu-live-rate" hidden></span></div>
@@ -40,7 +30,7 @@
       <p id="wl-home-state" class="home-state" role="status" aria-live="polite">正在读取舵机反馈</p>
       <p class="wl-result" id="wl-result" role="status" aria-live="polite"></p>
       <div id="pose-calibration-layout" class="pose-calibration-layout" data-calibrating="false">
-        <div class="pose-view" id="imu-pose-view" data-live="false"><iframe id="imu-duck-frame" src="/assets/imu-model.html?embed=1&amp;view=axes3&amp;revision=sequence1" title="鸭子实时姿态与所选关节"></iframe></div>
+        <div class="pose-view" id="imu-pose-view" data-live="false"><iframe id="imu-duck-frame" src="/assets/imu-model.html?embed=1&amp;view=axes3&amp;revision=unified-debug3" title="鸭子实时姿态与所选关节"></iframe></div>
         <section id="sequence-panel" class="sequence-panel" hidden aria-label="逐颗校准">
           <div class="sequence-heading"><strong>逐颗校准</strong><span id="sequence-count">0 / 15</span></div>
           <div class="sequence-groups" aria-label="高亮分组"><button data-sequence-group="left" class="quiet">左腿</button><button data-sequence-group="right" class="quiet">右腿</button><button data-sequence-group="head" class="quiet">头部</button></div>
@@ -51,6 +41,13 @@
           <p id="sequence-result" role="status" aria-live="polite">读取校准状态</p>
         </section>
       </div>
+      <details id="debug-connection" class="debug-details">
+        <summary>通信与程序</summary>
+        <p class="signal-line"><span id="visual-network-state">离线</span> · <span id="visual-network-note">等待主控</span></p>
+        <p class="program-version" id="comm-version">主控版本 —</p>
+        <div class="communication-actions"><button id="comm-discover" disabled>正在连接</button><button id="comm-usb" class="quiet">USB 首次烧录</button><button id="comm-update" class="quiet" disabled>无线烧录</button></div>
+        <div class="communication-progress"><progress id="comm-progress" max="100" value="0" hidden></progress><p id="comm-result" role="status" aria-live="polite">Uno Q 独立供电，与电脑连接同一 Wi-Fi。</p></div>
+      </details>
       <div hidden>
         <span id="wl-connection"></span><b id="wl-saved-count"></b><div id="wl-servo-dots"></div>
         <div id="wl-setup-tools"><button id="wl-group-left"></button><button id="wl-group-right"></button><button id="wl-group-head"></button><button id="wl-off-all" disabled></button><button id="wl-capture-all" disabled></button></div>
@@ -67,5 +64,5 @@
 </main>
 
 <nav class="workflow-tabs" id="workflow-tabs" aria-label="调试页面">
-<button data-page="numbering"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM9 8v8m5-8h3l-3 8h3"/></svg>编号</button><button data-page="install"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6l2 2 2-2h6v15h-6l-2 2-2-2H4zM12 6v15"/></svg>安装</button><button data-page="link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8q9-8 18 0M6 12q6-5 12 0m-9 4q3-3 6 0"/><circle cx="12" cy="20" r="1"/></svg>通信</button><button data-page="imu" aria-current="page" class="active"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 1v6m0 10v6M1 12h6m10 0h6"/></svg>姿态</button><button data-page="servo"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg>校准</button>
-</nav><script>window.COMMISSION_TOKEN='__TOKEN__';</script><script src="/assets/imu-math.js?v=1"></script><script src="/assets/imu-live.js?v=dark1"></script><script src="/assets/workflow.js?v=pose-calibration1"></script><script src="/assets/simple-debug.js?v=home5"></script><script src="/assets/live-runtime.js?v=1"></script><script src="/assets/visual-debug.js?v=3"></script><script src="/assets/wireless-calibration.js?v=pose-calibration1"></script><script src="/assets/sequence-calibration.js?v=1"></script><script src="/assets/communication.js?v=compact1"></script><script src="/assets/native-pose-parent.js?v=sequence1"></script></body></html>
+<button data-page="numbering"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM9 8v8m5-8h3l-3 8h3"/></svg>编号</button><button data-page="install"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6l2 2 2-2h6v15h-6l-2 2-2-2H4zM12 6v15"/></svg>安装</button><button data-page="imu" aria-current="page" class="active"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 1v6m0 10v6M1 12h6m10 0h6"/></svg>调试</button>
+</nav><script>window.COMMISSION_TOKEN='__TOKEN__';</script><script src="/assets/imu-math.js?v=1"></script><script src="/assets/imu-live.js?v=dark1"></script><script src="/assets/workflow.js?v=unified-debug3"></script><script src="/assets/simple-debug.js?v=home5"></script><script src="/assets/live-runtime.js?v=1"></script><script src="/assets/visual-debug.js?v=unified-debug2"></script><script src="/assets/wireless-calibration.js?v=unified-debug4"></script><script src="/assets/sequence-calibration.js?v=unified-debug2"></script><script src="/assets/communication.js?v=unified-debug2"></script><script src="/assets/native-pose-parent.js?v=sequence1"></script></body></html>

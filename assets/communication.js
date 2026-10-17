@@ -60,7 +60,7 @@
     get('comm-discover').disabled=online||!sharedReady()||running||uncertain||document.hidden||scope.DUCK_STATIC_SAMPLING===true;
     get('comm-discover').textContent=online?'无线已连接':'重新连接无线';
     get('comm-discover').title=online?'已自动连接，无需再次点击。':'未连上时重新搜索主控；页面会继续自动尝试连接。';
-    if(scope.DuckWorkflow?.page()!=='link')return;
+    if(!['imu','link'].includes(scope.DuckWorkflow?.page()))return;
     get('comm-update').disabled=!sharedReady()||running||uncertain||document.hidden||scope.DUCK_STATIC_SAMPLING===true||!canUpdate(job,detail,calibration(),Date.now(),program);
     get('comm-update').textContent=version.isLatest?'无线烧录（无需）':'无线烧录';
     get('comm-update').title=reason||'安装可用的无线程序更新。';
@@ -122,7 +122,7 @@
   scope.addEventListener('duck:live-status',event=>{detail=event.detail;const value=detail?.status?.app_code_version;if(validVersion(value))lastKnownVersion=value.trim();render();});
   scope.addEventListener('duck:wireless-calibration',render);
   scope.addEventListener('duck:static-sampling',render);
-  scope.addEventListener('duck:page',event=>{if(event.detail?.page==='link')void readVersion();render();});
+  scope.addEventListener('duck:page',event=>{if(['imu','link'].includes(event.detail?.page))void readVersion();render();});
   scope.addEventListener('duck:provision-state',event=>{
     job=event.detail||{};const started=Date.parse(job.started_at);
     // An older idle poll cannot authorize retry after an unanswered mutation.

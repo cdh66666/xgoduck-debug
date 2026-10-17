@@ -23,6 +23,8 @@ ASSETS = (
     'zero-guide.html', 'zero-guide.css', 'zero-guide.js', 'official-assembly.html',
 )
 SEQUENCE_ASSETS = ('sequence-calibration.js', 'motor-current.js')
+UI_FILES = frozenset(('index.html', 'numbering.html', 'model-view.html', 'model-view.js')) | frozenset(
+    'assets/' + name for name in ASSETS + SEQUENCE_ASSETS)
 ASSEMBLY_PDF = 'https://github.com/LuwuDynamics/xgoduck_hardware/blob/90ec55634d700c88fd7aa9281c282be30f56e7e0/Assembly_Guide.pdf'
 
 
@@ -127,8 +129,10 @@ def main():
     published = json.loads(published_path.read_text(encoding='utf-8')) if published_path.is_file() else {}
     expected_sources = dict(reviewed['firmware_after'])
     expected_sources.update({relative: item['sha256'] for relative, item in reviewed['board_files'].items()})
+    approved_source_paths = {}
     approved_updates = []
     expected_pc_sources = {}
+    expected_ui_sources = {}
     firmware_sha256 = reviewed['elf']['sha256']
     sequence_revision = None
     for update_path in args.approved_update:
@@ -137,12 +141,17 @@ def main():
         update = json.loads(update_raw)
         if update.get('passed') is not True or not isinstance(update.get('changes'), dict):
             raise ValueError('Update manifest is not approved')
+        if 'base_source_manifest_sha256' in update and update['base_source_manifest_sha256'] != digest(published_path.read_bytes()):
+            raise ValueError('Published source manifest differs from approved update baseline')
         changed_sources = {}
         for relative, item in update['changes'].items():
             if relative.startswith('data/'):
                 continue
             if not isinstance(item, dict):
                 raise ValueError('Invalid approved source record: ' + relative)
+            if ('base_source_manifest_sha256' in update and relative in expected_sources
+                    and 'before_sha256' in item and item['before_sha256'] != expected_sources[relative]):
+                raise ValueError('Approved source baseline disagrees: ' + relative)
             if relative not in expected_sources:
                 if not re.fullmatch(r'python/[A-Za-z_][A-Za-z_0-9]*\.py', relative):
                     raise ValueError('Update changes an untracked source: ' + relative)
@@ -158,6 +167,7 @@ def main():
             if not candidate.is_relative_to(update_path.parent) or digest(candidate.read_bytes()) != item['sha256']:
                 raise ValueError('Approved source does not match its manifest: ' + relative)
             expected_sources[relative] = item['sha256']
+            approved_source_paths[relative] = candidate
             changed_sources[relative] = item['sha256']
         for relative, expected in update.get('unchanged', {}).items():
             if expected_sources.get(relative) != expected:
@@ -165,10 +175,25 @@ def main():
         for relative, item in update.get('pc_files', {}).items():
             if relative not in PC_FILES:
                 raise ValueError('Approved PC source is outside the release file list: ' + relative)
+            before = item.get('before_sha256')
+            previous = published.get('files', {}).get(relative, {}).get('source_sha256')
+            if 'base_source_manifest_sha256' in update and before is not None and before != previous:
+                raise ValueError('Approved PC source baseline disagrees: ' + relative)
             candidate = (update_path.parent / item['source']).resolve(strict=True)
             if not candidate.is_relative_to(update_path.parent) or digest(candidate.read_bytes()) != item['sha256']:
                 raise ValueError('Approved PC source does not match its manifest: ' + relative)
             expected_pc_sources[relative] = item['sha256']
+        for relative, item in update.get('ui_files', {}).items():
+            if relative not in UI_FILES:
+                raise ValueError('Approved UI source is outside the release file list: ' + relative)
+            before = item.get('before_sha256')
+            previous = published.get('files', {}).get(relative, {}).get('source_sha256')
+            if before != previous:
+                raise ValueError('Approved UI source baseline disagrees: ' + relative)
+            candidate = (update_path.parent / item['source']).resolve(strict=True)
+            if not candidate.is_relative_to(update_path.parent) or digest(candidate.read_bytes()) != item['sha256']:
+                raise ValueError('Approved UI source does not match its manifest: ' + relative)
+            expected_ui_sources[relative] = item['sha256']
         build = update.get('build')
         if build is not None:
             if build.get('passed') is not True or set(build.get('source_sha256', {})) != set(reviewed['firmware_after']):
@@ -183,10 +208,16 @@ def main():
             if update['sequence_contract_revision'] != 1:
                 raise ValueError('Unsupported sequence contract revision')
             sequence_revision = 1
-        approved_updates.append({'manifest_sha256': digest(update_raw), 'changed_sources': changed_sources})
+        approved_updates.append({'manifest_sha256': digest(update_raw), 'changed_sources': changed_sources,
+                                 'ui_sources': {relative: expected_ui_sources[relative]
+                                                for relative in update.get('ui_files', {})}})
     for relative, expected in expected_sources.items():
-        if digest((board / relative).read_bytes()) != expected:
+        mirror = board / relative
+        if digest(mirror.read_bytes()) != expected:
             raise ValueError('Board source differs from installed HOME5 manifest: ' + relative)
+        path = approved_source_paths.get(relative)
+        if path is not None and digest(path.read_bytes()) != expected:
+            raise ValueError('Approved source snapshot differs from installed board mirror: ' + relative)
     for relative, expected in expected_pc_sources.items():
         if digest((source / relative).read_bytes()) != expected:
             raise ValueError('PC source differs from the approved update: ' + relative)
@@ -215,6 +246,14 @@ def main():
             if folder == 'python' and path.suffix not in ('.py', '.txt'):
                 continue
             selected['board/' + relative.as_posix()] = path
+    for relative, path in approved_source_paths.items():
+        selected['board/' + relative] = path
+    for relative in UI_FILES.intersection(selected):
+        expected = expected_ui_sources.get(relative)
+        if expected is None:
+            expected = published.get('files', {}).get(relative, {}).get('source_sha256')
+        if expected is None or digest(selected[relative].read_bytes()) != expected:
+            raise ValueError('UI source differs from its approved baseline: ' + relative)
     records = {}
     for relative, path in sorted(selected.items()):
         raw = path.read_bytes()

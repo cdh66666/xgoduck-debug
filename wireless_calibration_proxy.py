@@ -222,6 +222,9 @@ class WirelessCalibrationProxy:
         self.connection_epoch = 0
         self.sessions_invalidated = False
         self.valid_sessions = set()
+        self.read_timeout_epoch = None
+        self.read_timeout_process = None
+        self.read_timeout_observed_at = None
         self.transport_events = deque(maxlen=32)
         self.transport_event_id = 0
         self.rediscovery = AutomaticRediscovery(self.root, self._discovery_allowed,
@@ -283,8 +286,44 @@ class WirelessCalibrationProxy:
             if old_process is not None and old_process.poll() is None:
                 old_process.terminate()  # Only the exact failed request's SSH child.
             self.process, self.local_port = None, None
+            self.read_timeout_epoch = self.read_timeout_process = self.read_timeout_observed_at = None
         self.rediscovery.request()
         return True
+
+    def _preserve_first_read_timeout(self, epoch, process, started, elapsed_ms):
+        """A lone GET timeout does not prove the shared SSE tunnel has failed.
+
+        Only a later GET begun after this timeout may trigger tunnel recovery;
+        overlapping readers must not count as separate failures.
+        """
+        with self.lock:
+            if epoch != self.connection_epoch or process is not self.process:
+                return False
+            if process is None or process.poll() is not None:
+                return False
+            same = self.read_timeout_epoch == epoch and self.read_timeout_process is process
+            if same:
+                if started > self.read_timeout_observed_at:
+                    return False
+                # All already-running readers share the first failed
+                # observation; none may postpone its recovery boundary.
+                return True
+            self.read_timeout_epoch, self.read_timeout_process = epoch, process
+            self.read_timeout_observed_at = self.clock()
+            # The status is unknown, so no existing motion authorization may
+            # be resumed. Emergency stop and fresh read operations remain open.
+            self.sessions_invalidated = True
+            self.valid_sessions.clear()
+            if _hardware_may_be_active(self.last_status):
+                self.uncertain = True
+            self._transport_event('read_timeout_tunnel_preserved', request_epoch=epoch,
+                                  request_process=process, elapsed_ms=elapsed_ms)
+            return True
+
+    def _clear_read_timeout(self, epoch, process):
+        with self.lock:
+            if epoch == self.connection_epoch and process is self.process:
+                self.read_timeout_epoch = self.read_timeout_process = self.read_timeout_observed_at = None
 
     def reserve(self, action):
         _checked_action(action)
@@ -464,8 +503,12 @@ class WirelessCalibrationProxy:
         except (URLError, OSError, TimeoutError) as error:
             cause = error.reason if isinstance(error, URLError) else error
             reason = 'request_timeout' if isinstance(cause, TimeoutError) else 'request_transport_error'
+            elapsed_ms = (self.clock() - started) * 1000
+            if (method == 'GET' and reason == 'request_timeout'
+                    and self._preserve_first_read_timeout(epoch, process, started, elapsed_ms)):
+                raise CalibrationProxyError('无线只读状态超时；等待新鲜反馈', reason='read_timeout') from None
             applied = self._transport_failed(expected_epoch=epoch, expected_process=process, owned=True,
-                                             reason=reason, elapsed_ms=(self.clock()-started)*1000)
+                                             reason=reason, elapsed_ms=elapsed_ms)
             if not applied:
                 raise CalibrationProxyError('连接已变更；旧请求回执已作废', reason='connection_changed') from None
             raise CalibrationProxyError('无线请求未确认；已停止本地操作，请等待卸力状态') from None
@@ -490,8 +533,10 @@ class WirelessCalibrationProxy:
         if method == 'GET':
             if result.get('schema') != 'wireless-calibration-v2':
                 invalid_response('invalid_status_schema', '无线校准程序版本不符')
+            self._clear_read_timeout(epoch, process)
             result['pc_roundtrip_ms'] = round((self.clock() - started) * 1000, 2)
             return _StatusSnapshot(result, epoch, process)
+        self._clear_read_timeout(epoch, process)
         return result
 
     def status(self):

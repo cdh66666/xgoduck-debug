@@ -151,7 +151,7 @@
     if(homeReleased(v)&&h.tolerance_ticks===57&&h.arrival_verified===true)return '已归位、已卸力（5°容差）。';
     if(h?.phase==='fault'){
       if(!homeReleased(v))return '归位停止待确认；保持托稳。';
-      return v.homeReady?'已卸力，可回正 · 容差5°':homeBlockedNote(v);
+      return v.homeReady?'已卸力；上次回正失败，先查首故障':homeBlockedNote(v);
     }
     return v.homeReady?'已卸力，可回正 · 容差5°':homeBlockedNote(v);
   }
@@ -217,6 +217,7 @@
     let generation = 0, operation = null, lastMessage = '', records = {}, pollGeneration = 0;
     const pendingHeartbeats = new Set();
     let heartbeatAckOrder = 0, lastHeartbeatAt = -Infinity, lastHeartbeatAck = null, pollBusy = false;
+    let lastSafePollAt = -Infinity;
     let requestOrder = 0, acceptedOrder = 0;
     let homeAcknowledged=false,homeSession=null,homePending=false,homeStartedAt=0,homeStopRequested=false;
     let homeContinuationAt=null;
@@ -334,27 +335,29 @@
       if(check.allOff && !armed && !operation)phase='align';
       notify();
     }
-    function backgroundIdleObserved() {
-      // The pose stream already carries current MCU safety flags. Once a full
-      // status confirmed release, do not rebuild all calibration history twice
-      // each second on another page. Any ownership, uncertainty, stale stream,
-      // new host instance or unsafe flag keeps the original polling cadence.
-      if(page==='servo'||armed||busy||operation||homeSession||homePending||homeStopRequested)return false;
+    function safeIdleObserved() {
+      // Limit only redundant full-status reads. Recheck the current stream on
+      // every timer tick; action gates and the board retain their own checks.
+      if(armed||busy||operation||homeSession||homePending||homeStopRequested)return false;
+      const check=assess(envelope,now(),receivedAt,id,group);
       const s=envelope?.status,r=runtime?.status,elapsed=now()-runtimeReceivedAt;
-      return statusOffVerified&&envelope?.connection?.online===true&&envelope.connection.update_interlocked!==true&&
+      return statusOffVerified&&check.fresh&&check.allOff&&check.policyLocked&&check.idle&&
+        envelope?.connection?.online===true&&envelope.connection.update_interlocked!==true&&
         s?.all_torque_off_verified===true&&s.torque_may_be_on===false&&s.mcu_state===1&&
         s.session_active===false&&s.armed?.active===false&&!s.operation&&
-        s.home?.active===false&&['off','fault'].includes(s.home.phase)&&
+        s.home?.active===false&&s.home.phase==='off'&&s.home.error===0&&
+        s.sequence_calibration?.active===false&&s.sequence_calibration.phase==='off'&&s.sequence_calibration.error===0&&
         !runtime?.error&&!runtime?.paused&&r?.mode==='wireless_calibration'&&
         typeof statusRuntimeInstance==='string'&&!!statusRuntimeInstance&&r.app_instance_id===statusRuntimeInstance&&
         uint32(r.mcu_seq)&&Number.isFinite(r.received)&&r.received>0&&
         Number.isFinite(runtimeReceivedAt)&&Number.isFinite(elapsed)&&elapsed>=0&&
         Number.isFinite(r.feedback_age_ms)&&r.feedback_age_ms>=0&&r.feedback_age_ms+elapsed<150&&
         r.calibration_supported===true&&r.policy_locked===true&&r.all_torque_off_verified===true&&
-        r.torque_may_be_on===false&&r.session_active===false&&r.mcu_state===1;
+        r.torque_may_be_on===false&&r.session_active===false&&r.enabled===false&&r.mcu_state===1&&
+        Array.isArray(r.servo_ids)&&new Set(r.servo_ids).size===IDS.length&&IDS.every(value=>r.servo_ids.includes(value));
     }
     async function refresh() {
-      if(pollBusy || hidden || backgroundIdleObserved())return;
+      if(pollBusy || hidden || safeIdleObserved()&&now()-lastSafePollAt<1000)return;
       pollBusy = true;
       const mark = ++pollGeneration;
       const order = ++requestOrder;
@@ -365,7 +368,10 @@
       } catch {
         if (mark !== pollGeneration || hidden) return;
         accept({connection:{online:false,error:'offline'},status:null},order);
-      } finally { pollBusy = false; }
+      } finally {
+        pollBusy = false;
+        lastSafePollAt = safeIdleObserved()?now():-Infinity;
+      }
     }
     function acceptRuntime(value) { runtime=value;runtimeReceivedAt=now();notify(); }
     function selectGroup(nextGroup) {
@@ -757,7 +763,7 @@
   document.addEventListener('visibilitychange',()=>{controller.visibility(document.hidden);if(!document.hidden)void controller.refresh();});
   scope.addEventListener('pagehide',()=>controller.visibility(true));
   get('wl-fine-tools').addEventListener('toggle',()=>{if(!get('wl-fine-tools').open){controller.clearance(false);}});
-  setInterval(()=>{controller.tick();if(!document.hidden)void controller.refresh();},500);
+  setInterval(()=>{controller.tick();if(!document.hidden)void controller.refresh();},250);
   setInterval(()=>{controller.tick();void controller.heartbeat();},100);
   controller.setPage(get('workflow-imu').hidden?'imu':'servo');
   controller.select(Number(scope.DuckWorkflow?.selectedJoint())||10);

@@ -260,6 +260,22 @@ export class ObservedPoseTween {
 // Euler roll and yaw are poorly conditioned near vertical pitch, even when the
 // 3D quaternion is stable. This quality gate affects presentation only.
 export const nearVerticalProjection = pose => Number.isFinite(pose?.pitch)&&Math.abs(pose.pitch)>85;
+// Display-only low-confidence Euler projection; never feeds fusion, heading integration, or control.
+export function unstableEulerProjection(quaternion,previousRoll=null,previousYaw=null){
+  if(!Array.isArray(quaternion)||quaternion.length!==4||!quaternion.every(Number.isFinite))return {roll:null,yaw:null};
+  const [x,y,z,w]=quaternion,gravityY=-2*(y*z+w*x),gravityZ=2*(x*x+y*y)-1;
+  const forwardX=1-2*(y*y+z*z),forwardY=2*(x*y+w*z),degrees=180/Math.PI;
+  const roll=Math.hypot(gravityY,gravityZ)>1e-6?Math.atan2(-gravityY,-gravityZ)*degrees:null;
+  const yaw=Math.hypot(forwardX,forwardY)>1e-6?Math.atan2(forwardY,forwardX)*degrees:null;
+  return {roll:Number.isFinite(roll)?unwrapAngle(roll,previousRoll):null,
+    yaw:Number.isFinite(yaw)?unwrapAngle(yaw,previousYaw):null};
+}
+export const projectedAngleReadout = (value,observable,unstable,lastStable=null,lowConfidence=null) => {
+  const projected=Number.isFinite(value)&&observable!==false?value:
+    unstable&&Number.isFinite(lowConfidence)?lowConfidence:null;
+  return Number.isFinite(projected)?{value:projected,quality:unstable?'unstable':'current'}:
+    Number.isFinite(lastStable)?{value:lastStable,quality:'historical'}:{value:null,quality:'unknown'};
+};
 
 /* Real fused observations only. Render prediction never appends a chart point. */
 export class PoseAngleHistory {
@@ -293,7 +309,7 @@ export class PoseAngleHistory {
 /* Display curve only: historical quaternion frames, never fabricated MCU samples. */
 export class DisplayPoseHistory {
   constructor(windowMs=10000){this.windowMs=windowMs;this.kind='display';this.reset();}
-  reset(){this.rows=[];this.elapsed=0;this.identity=null;this.previous=[null,null,null];this.gap=true;}
+  reset(){this.rows=[];this.elapsed=0;this.identity=null;this.previous=[null,null,null];this.stable=[null,null,null];this.gap=true;}
   markGap(){this.gap=true;}
   append(pose,frame){
     if(frame?.state!=='playing'||!Number.isFinite(frame.sourceTimeMs)||!pose)return false;
@@ -301,11 +317,18 @@ export class DisplayPoseHistory {
     const ms=frame.sourceTimeMs;
     if(this.rows.length&&ms<=this.rows.at(-1).ms)return false;
     const nearVertical=nearVerticalProjection(pose);
-    const values=[nearVertical||pose.rollObservable===false?null:pose.roll,pose.pitch,
-      nearVertical||pose.headingObservable===false?null:pose.headingDeg]
-      .map((value,i)=>Number.isFinite(value)?unwrapAngle(value,this.previous[i]):null);
-    values.forEach((value,i)=>{if(value!==null)this.previous[i]=value;});
-    this.rows.push({ms,values,nearVertical,breakBefore:this.gap,headingBreakBefore:this.gap,historical:true,interpolated:frame.interpolated});
+    const lowConfidence=nearVertical?unstableEulerProjection(pose.quaternion,this.previous[0],this.previous[2]):null;
+    const projections=[projectedAngleReadout(pose.roll,pose.rollObservable,nearVertical,this.stable[0],lowConfidence?.roll),
+      {value:pose.pitch,quality:Number.isFinite(pose.pitch)?'current':'unknown'},
+      projectedAngleReadout(pose.headingDeg,pose.headingObservable,nearVertical,this.stable[2],lowConfidence?.yaw)];
+    const values=projections.map((reading,i)=>Number.isFinite(reading.value)?
+      reading.quality==='historical'?reading.value:unwrapAngle(reading.value,this.previous[i]):null);
+    values.forEach((value,i)=>{
+      if(value!==null&&projections[i].quality!=='historical')this.previous[i]=value;
+      if(value!==null&&projections[i].quality==='current')this.stable[i]=value;
+    });
+    this.rows.push({ms,values,quality:projections.map(reading=>reading.quality),nearVertical,
+      breakBefore:this.gap,headingBreakBefore:this.gap,historical:true,interpolated:frame.interpolated});
     this.elapsed=ms;this.identity=frame.sourceEpoch;this.gap=false;
     this.rows=this.rows.filter(row=>row.ms>=ms-this.windowMs).slice(-240);
     return true;
@@ -337,7 +360,8 @@ export function drawPoseAngleChart(canvas,history,ratio=1){
     const low=middle-half,high=middle+half,y=value=>top+(high-value)/(high-low)*h;
     ctx.fillStyle=color;ctx.textAlign='left';ctx.textBaseline='top';
     ctx.fillText(['横滚','俯仰','相对航向'][axis],pad.left,top-22);
-    if(axis!==1&&rows.at(-1)?.nearVertical){ctx.fillStyle='#b1a88d';ctx.textAlign='right';ctx.fillText('近竖直 · 投影不稳定',width-pad.right,top-22);}
+    if(axis!==1&&rows.at(-1)?.nearVertical){ctx.fillStyle='#b1a88d';ctx.textAlign='right';
+      ctx.fillText(rows.at(-1)?.quality?.[axis]==='historical'?'近竖直 · 上次值':'近竖直 · 投影不稳定',width-pad.right,top-22);}
     ctx.strokeStyle='#29404d';ctx.lineWidth=1;ctx.fillStyle='#7898a8';
     for(const value of [high,middle,low]){
       const py=y(value);ctx.beginPath();ctx.moveTo(pad.left,py);ctx.lineTo(width-pad.right,py);ctx.stroke();
@@ -350,7 +374,7 @@ export function drawPoseAngleChart(canvas,history,ratio=1){
     ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=1.8;ctx.lineJoin='round';ctx.lineCap='round';
     ctx.beginPath();let connected=false;
     for(const row of rows){
-      const value=row.values[axis];if(!Number.isFinite(value)){connected=false;continue;}
+      const value=row.values[axis];if(!Number.isFinite(value)||row.quality?.[axis]==='historical'){connected=false;continue;}
       if(row.breakBefore||axis===2&&row.headingBreakBefore)connected=false;
       const px=x(row.ms),py=y(value);if(connected)ctx.lineTo(px,py);else ctx.moveTo(px,py);connected=true;
     }
@@ -359,6 +383,10 @@ export function drawPoseAngleChart(canvas,history,ratio=1){
     for(let i=0;i<rows.length;i++){
       const row=rows[i],next=rows[i+1],value=row.values[axis];
       if(!Number.isFinite(value))continue;
+      if(row.quality?.[axis]==='historical'){
+        if(i===rows.length-1){ctx.fillStyle='#b1a88d';ctx.beginPath();ctx.arc(x(row.ms),y(value),2.7,0,Math.PI*2);ctx.fill();ctx.fillStyle=color;}
+        continue;
+      }
       const isolated=(row.breakBefore||axis===2&&row.headingBreakBefore)&&(!next||next.breakBefore||axis===2&&next.headingBreakBefore);
       if(isolated||i===rows.length-1){ctx.beginPath();ctx.arc(x(row.ms),y(value),i===rows.length-1?2.7:1.3,0,Math.PI*2);ctx.fill();}
     }
@@ -403,16 +431,17 @@ export function calibrationHighlightIds(message){
 }
 
 async function boot(){
-  document.body.dataset.uiRevision='2026-10-17-pose-calibration-r1';
+  document.body.dataset.uiRevision='2026-10-17-imu-display-r3';
   const get=id=>document.getElementById(id),tracker=new ImuPoseTracker(),angleHistory=new PoseAngleHistory(),displayHistory=new DisplayPoseHistory();
   let playback=null,shownPose=null;
-  let displayStorage;try{displayStorage=window.localStorage;}catch{}
-  let displayDelayMs=readDisplayBuffer(displayStorage);
+  // The operator chose a fixed 0.2 s display delay; stored older choices are ignored.
+  const displayDelayMs=200;
   let pending=null,pendingNative=null,nativeTracker=null,kinematics=null,modelShift=null,heading=null,headingState=null;
   let model=null,loaded=false,scene,camera,renderer,controls,center,size,THREE,graphics=null;
-  let highlightedIds=[],currentTracker=null,pendingCurrent=null,currentRows=[],currentScale=2000,currentPaintKey='';
-  const currentLabels=new Map();
+  let highlightedIds=[],currentTracker=null,pendingCurrent=null,currentRows=[],currentPaintKey='';
+  const currentScale=2000;
   let renderCount=0,renderStart=null,lastMetricsAt=0,lastReadingsAt=0;
+  let lastStableProjection={roll:null,yaw:null};
   let requestRender=()=>{},stopRender=()=>{},viewportVisible=false;
   function highlightSelection(){
     if(!model)return;
@@ -422,14 +451,7 @@ async function boot(){
       mesh.material.color.setHex(mesh.userData.baseColor);
       mesh.material.emissive.setHex(0xff2015);mesh.material.emissiveIntensity=heat*1.35;
       if(mesh.userData.selectionOutline)mesh.userData.selectionOutline.visible=selected;
-      const label=currentLabels.get(mesh.userData.motorId);
-      if(label){
-        label.node.dataset.selected=String(selected);label.node.dataset.fresh=String(current?.fresh===true);label.node.dataset.held=String(current?.held===true);
-        label.node.style.color=current?.fresh?'rgb(255,'+Math.round(210-140*heat)+','+Math.round(205-150*heat)+')':'';
-        label.node.textContent='ID'+mesh.userData.motorId+' '+(current?.fresh?(current.ma/1000).toFixed(2)+' A':'—');
-        label.node.title=current?.fresh?'电流 '+current.ma+' mA · 寄存器 '+current.raw:'电流尚未读取或已超过500ms';
-        label.line.style.stroke=selected?'#54c9e8':'#638393';
-      }
+      if(mesh.userData.holdMarker)mesh.userData.holdMarker.visible=current?.held===true;
     }
     document.body.dataset.highlightedIds=highlightedIds.join(',');
     document.body.dataset.highlightedMeshes=model.children.filter(mesh=>highlightedIds.includes(mesh.userData.motorId)).map(mesh=>mesh.name).join(',');
@@ -441,47 +463,14 @@ async function boot(){
     if(key===currentPaintKey)return;currentPaintKey=key;currentRows=rows;highlightSelection();
     document.body.dataset.currentFreshIds=rows.filter(row=>row.fresh).map(row=>row.id).join(',');
   }
-  function positionCurrentLabels(){
-    const viewport=get('imu-model-viewport'),width=viewport.clientWidth,height=viewport.clientHeight,columns=[[],[]];
-    for(const mesh of model.children){
-      const label=currentLabels.get(mesh.userData.motorId);if(!label)continue;
-      const point=mesh.geometry.boundingSphere.center.clone().applyMatrix4(mesh.matrixWorld).project(camera);
-      const visible=point.z>=-1&&point.z<=1;label.node.hidden=!visible;label.line.style.display=visible?'':'none';if(!visible)continue;
-      const x=(point.x*.5+.5)*width,y=(-point.y*.5+.5)*height;
-      columns[x<width/2?0:1].push({label,x,y});
-    }
-    columns.forEach((column,side)=>{
-      column.sort((first,second)=>first.y-second.y);
-      const spacing=Math.min(24,(height-24)/Math.max(1,column.length));let previous=12-spacing;
-      column.forEach((entry,index)=>{
-        const top=Math.max(previous+spacing,Math.min(height-12-spacing*(column.length-index-1),entry.y));previous=top;
-        const left=side===0?4:Math.max(4,width-96);
-        entry.label.node.style.left=left+'px';entry.label.node.style.top=(top-9)+'px';
-        entry.label.line.setAttribute('x1',String(entry.x));entry.label.line.setAttribute('y1',String(entry.y));
-        entry.label.line.setAttribute('x2',String(side===0?left+90:left));entry.label.line.setAttribute('y2',String(top));
-      });
-    });
-  }
-  get('imu-current-scale')?.addEventListener('change',event=>{const value=Number(event.target.value);if([1000,2000,3000].includes(value)){currentScale=value;highlightSelection();}});
   let chartDirty=true,lastChartAt=-Infinity;
   const text=(id,value)=>{const element=get(id);if(element&&element.textContent!==value)element.textContent=value;};
-  const bufferSelect=get('imu-display-buffer');
   const showBufferChoice=()=>{
-    if(bufferSelect)bufferSelect.value=String(displayDelayMs);
     document.body.dataset.playbackDelayMs=String(displayDelayMs);
     const history=get('imu-angle-history');
     if(history)history.title='记录实际显示的历史姿态，目标20FPS；显示缓冲'+(displayDelayMs/1000).toFixed(1)+'秒，仅在已收到的真实端点间插值。真实源缺口超过300ms冻结并断线。';
   };
   showBufferChoice();
-  bufferSelect?.addEventListener('change',()=>{
-    const next=displayBufferValue(bufferSelect.value);
-    if(next===displayDelayMs){showBufferChoice();return;}
-    displayDelayMs=next;try{displayStorage?.setItem(DISPLAY_BUFFER_KEY,String(next));}catch{}
-    if(changeDisplayBuffer(playback,next)){
-      displayHistory.reset();chartDirty=true;document.body.dataset.chartSamples='0';
-    }
-    showBufferChoice();requestRender();
-  });
   const applyNative=result=>{
     if(!result)return;
     if(result.changed&&model&&kinematics&&graphics?.state!=='lost'){
@@ -523,6 +512,7 @@ async function boot(){
     if(result.sourceEpochChanged||result.changed&&result.pose?.gyroCalibrationChanged){
       playback?.reset(result.sourceEpochChanged?'source-epoch-changed':'gyro-reference-changed');
       displayHistory.reset();shownPose=null;chartDirty=true;document.body.dataset.chartSamples='0';
+      lastStableProjection={roll:null,yaw:null};
     }
     playback?.setPaused(result.mode==='paused'||document.hidden||graphics?.state==='lost');
     if(result.changed&&result.mode==='live'&&source&&heading){
@@ -574,6 +564,7 @@ async function boot(){
     const zeroed=heading?.zero(now);if(!zeroed)return;
     // A changed reference cannot interpolate through the previous reference.
     headingState=zeroed;playback?.reset('heading-zero');displayHistory.reset();shownPose=null;chartDirty=true;document.body.dataset.chartSamples='0';
+    lastStableProjection.yaw=null;
     angleHistory.markGap(true);
     document.body.dataset.headingReference='user-zero';
     document.body.dataset.headingContinuous='true';document.body.dataset.headingDiscontinuity='';lastReadingsAt=-Infinity;
@@ -649,9 +640,8 @@ async function boot(){
       if(Number.isInteger(mesh.userData.motorId)){
         const outline=new THREE.LineSegments(new THREE.EdgesGeometry(geometry,30),new THREE.LineBasicMaterial({color:0x54c9e8,transparent:true,opacity:.9,depthTest:false}));
         outline.visible=false;outline.renderOrder=2;mesh.add(outline);mesh.userData.selectionOutline=outline;
-        const label=document.createElement('span');label.className='current-label';label.dataset.id=String(mesh.userData.motorId);get('imu-current-labels').append(label);
-        const line=document.createElementNS('http://www.w3.org/2000/svg','line');get('imu-current-leaders').append(line);
-        currentLabels.set(mesh.userData.motorId,{node:label,line});
+        const marker=new THREE.Mesh(new THREE.SphereGeometry(.0022,10,6),new THREE.MeshBasicMaterial({color:0x72d9aa,depthTest:false}));
+        marker.position.copy(geometry.boundingSphere.center);marker.visible=false;marker.renderOrder=3;mesh.add(marker);mesh.userData.holdMarker=marker;
       }
       mesh.matrix.set(...pose.records[record.name].flat());mesh.matrix.premultiply(shift);model.add(mesh);
     }));
@@ -724,22 +714,36 @@ async function boot(){
           continuePlayback=playback.rows.length>0&&frame.state!=='underflow';
         }
         if(shownPose&&now-lastReadingsAt>=100){
-          const visual=shownPose,nearVertical=nearVerticalProjection(visual),observable=!nearVertical&&visual.headingObservable;
-          text('imu-model-pitch',visual.pitch.toFixed(1)+'°');text('imu-model-roll',!nearVertical&&visual.rollObservable?visual.roll.toFixed(1)+'°':'—');
-          text('imu-projection-note',(tracker.pose?.gyroBiasCorrected?'本会话临时零偏补偿':'未做静置零偏补偿')+(nearVertical?' · 近竖直，角度投影不稳定':''));
-          text('imu-model-yaw',observable?visual.headingDeg.toFixed(1)+'°':'—');
-          get('imu-model-yaw').title=observable?'历史显示姿态的相对航向；陀螺积分仍会漂移':'接近竖直，历史姿态的角度投影也不稳定';
-          document.body.dataset.headingMode=observable?'historical-relative':'unavailable';
-          document.body.dataset.yaw=observable?visual.headingDeg.toFixed(3):'';
+          const visual=shownPose,nearVertical=nearVerticalProjection(visual);
+          const lowConfidence=nearVertical?unstableEulerProjection(visual.quaternion,lastStableProjection.roll,lastStableProjection.yaw):null;
+          const roll=projectedAngleReadout(visual.roll,visual.rollObservable,nearVertical,lastStableProjection.roll,lowConfidence?.roll);
+          const yaw=projectedAngleReadout(visual.headingDeg,visual.headingObservable,nearVertical,lastStableProjection.yaw,lowConfidence?.yaw);
+          if(roll.quality==='current')lastStableProjection.roll=roll.value;
+          if(yaw.quality==='current')lastStableProjection.yaw=yaw.value;
+          const label=reading=>reading.value===null?'—':
+            (reading.quality==='unstable'?'≈':reading.quality==='historical'?'上次 ':'')+reading.value.toFixed(1)+'°';
+          text('imu-model-pitch',visual.pitch.toFixed(1)+'°');text('imu-model-roll',label(roll));
+          text('imu-model-yaw',label(yaw));
+          text('imu-projection-note',(tracker.pose?.gyroBiasCorrected?'本会话临时零偏补偿':'未做静置零偏补偿')+
+            (nearVertical?' · 近竖直：≈为不稳定投影，“上次”为历史值':''));
+          get('imu-model-roll').dataset.quality=roll.quality;get('imu-model-yaw').dataset.quality=yaw.quality;
+          get('imu-model-roll').title=roll.quality==='historical'?'接近竖直，显示上次可靠投影，不代表当前角度':
+            roll.quality==='unstable'?'接近竖直，当前投影对小扰动敏感':'横滚角度来自历史显示姿态';
+          get('imu-model-yaw').title=yaw.quality==='historical'?'接近竖直，显示上次可靠相对航向，不代表当前角度':
+            yaw.quality==='unstable'?'接近竖直，相对航向投影不稳定且陀螺积分会漂移':'历史显示姿态的相对航向；陀螺积分仍会漂移';
+          document.body.dataset.headingMode=yaw.quality==='current'?'historical-relative':yaw.quality==='unstable'?'unstable-relative':
+            yaw.quality==='historical'?'last-observed-relative':'unavailable';
+          document.body.dataset.yaw=yaw.quality==='current'||yaw.quality==='unstable'?yaw.value.toFixed(3):'';
           get('imu-model-yaw-zero').disabled=tracker.mode!=='live'||!headingState?.projectionObservable||nearVerticalProjection(tracker.pose);
           get('imu-model-yaw-zero').title='仅将当前新鲜观测朝向设为显示零度，并重新填充显示缓冲';
-          document.body.dataset.roll=visual.roll.toFixed(3);document.body.dataset.pitch=visual.pitch.toFixed(3);lastReadingsAt=now;
+          document.body.dataset.roll=roll.quality==='current'||roll.quality==='unstable'?roll.value.toFixed(3):'';
+          document.body.dataset.pitch=visual.pitch.toFixed(3);lastReadingsAt=now;
         }
         cameraChanged=controls.update();if(!draw&&!cameraChanged)return;
         if(chartDirty&&now-lastChartAt>=50){
           if(drawPoseAngleChart(get('imu-angle-chart'),displayHistory,devicePixelRatio)){chartDirty=false;lastChartAt=now;}
         }
-        renderer.render(scene,camera);positionCurrentLabels();nextDrawAt=now+50;
+        renderer.render(scene,camera);nextDrawAt=now+50;
         if(renderer.getContext().isContextLost()){graphics.lost();return;}
         renderCount++;
         if(renderStart===null)renderStart=now;

@@ -10,7 +10,8 @@
       "manifest_sha256": "50258698a3bd7f127b3e33ff17847a1ed1d3697d281342add6ed67a506a9a005",
       "changed_sources": {
         "python/calibration_host.py": "d571ffaa97d48399966eb40e043f9286fad0200245024804497ce96f0f115c88"
-      }
+      },
+      "ui_sources": {}
     },
     {
       "manifest_sha256": "100a77801ced67cee55fd0054da3115e4e1851fc6e8404a42faaf94c2f3ca4d4",
@@ -27,6 +28,24 @@
         "sketch/calibration_engine.h": "bfe9362803a0db6c15cd3eb157fd3c23c5a74aa4daf3fbca957fb770911e82f0",
         "sketch/calibration_protocol.h": "b478c2d1f49c8dfefb65fe3d21ce76fe36c596057821792d1037da6f3ce7c4c4",
         "sketch/sketch.ino": "ba947f5f40e8d8b059406fc73a83a0e4767c12b5183654834e657f702dcd7772"
+      },
+      "ui_sources": {}
+    },
+    {
+      "manifest_sha256": "12c373a40c3fdb9413fe23642d5e7295b7c2e502d2f91450cd23319ef0d3ee2c",
+      "changed_sources": {
+        "python/calibration_host.py": "34dabda2809f4ddc1843068bfe1f3bbe8ce667e01a4e5a629ec7146ff418a9f4"
+      },
+      "ui_sources": {
+        "assets/communication.js": "addba090d92fb2f99076ecab422ffbf3639721585fedfb8baa1d95e0b5cf0934",
+        "assets/duck-dark.css": "2951efa28b3975b741ff7034c0098837d6cc47607aaae2d869631a0f3294b454",
+        "assets/imu-model.css": "eb5c0166ce6a91c4916576e2f90f5422adff531b0944cdf8d3aba8ff5d7f009d",
+        "assets/imu-model.html": "948bb53d542311cd99f1b3f8e30ee8e24975073bd4fbabc4b9d24c40a2804aa9",
+        "assets/imu-model.js": "5070d8ae01a706f89b69c7e94701ee891b1636154a8eff2e3f8d6041db4bd942",
+        "assets/visual-debug.js": "4d91420329048840b26e50680ed4732836356ac0b5f173bf77a0954ff64a57dc",
+        "assets/wireless-calibration.js": "fdbd0689157a8f3293a5159eeae09df2998e3f3e00baff86ba8ea3a5299304ff",
+        "assets/workflow.js": "41fddf83b388fb5d3966d3b39c77d1b6328ac1a279f766d4cf16fead6de0db96",
+        "index.html": "b25f51523215b8e84e75c281f82ab904c378f44bcf5b52ac33bc1574b30911ed"
       }
     }
   ],
@@ -38,8 +57,8 @@
       "sha256": "cbd0aae2d65d6bf4fc8645441ea386b785c3c221238f112fd53a1f0b6b46f564"
     },
     "assets/communication.js": {
-      "source_sha256": "37ffa5380163f1afb4dd53165775ba2db57af4eb35078ebd9a5b036873c33f21",
-      "sha256": "37ffa5380163f1afb4dd53165775ba2db57af4eb35078ebd9a5b036873c33f21"
+      "source_sha256": "addba090d92fb2f99076ecab422ffbf3639721585fedfb8baa1d95e0b5cf0934",
+      "sha256": "addba090d92fb2f99076ecab422ffbf3639721585fedfb8baa1d95e0b5cf0934"
     },
     "assets/connection-model.css": {
       "source_sha256": "47bc3fe1882cec9ec6be23db7a93c6a725e0af1862d498967cfc9b6ea679a71b",
@@ -54,8 +73,8 @@
       "sha256": "f1b017560765c2e28ef0b4901e3c0aa67a7502dd3e53d5ea95ea92ee0f1f9e9c"
     },
     "assets/duck-dark.css": {
-      "source_sha256": "83ce4e33ce815157432c93fd1a0df855bd75bce715c3890dc70fc3d3b1c192dd",
-      "sha256": "83ce4e33ce815157432c93fd1a0df855bd75bce715c3890dc70fc3d3b1c192dd"
+      "source_sha256": "2951efa28b3975b741ff7034c0098837d6cc47607aaae2d869631a0f3294b454",
+      "sha256": "2951efa28b3975b741ff7034c0098837d6cc47607aaae2d869631a0f3294b454"
     },
     "assets/imu-live.js": {
       "source_sha256": "dc7261ac959068c83551a28f3cbde1a60ca0c600895da6ee95acf3c5328e9624",
@@ -66,16 +85,16 @@
       "sha256": "91ce15e9cdd14a3d3d9ba1e9a3422390002c7756370d1750e657070d75261349"
     },
     "assets/imu-model.css": {
-      "source_sha256": "9c779e23d930d5bf892ba25fd329dfd16416542e1695f43ec2ad2f61e9346896",
-      "sha256": "9c779e23d930d5bf892ba25fd329dfd16416542e1695f43ec2ad2f61e9346896"
+      "source_sha256": "eb5c0166ce6a91c4916576e2f90f5422adff531b0944cdf8d3aba8ff5d7f009d",
+      "sha256": "eb5c0166ce6a91c4916576e2f90f5422adff531b0944cdf8d3aba8ff5d7f009d"
     },
     "assets/imu-model.html": {
-      "source_sha256": "2cd265722a9efebbe5859596111e555e1c97b2612bb82f8321544112d82ab783",
-      "sha256": "2cd265722a9efebbe5859596111e555e1c97b2612bb82f8321544112d82ab783"
+      "source_sha256": "948bb53d542311cd99f1b3f8e30ee8e24975073bd4fbabc4b9d24c40a2804aa9",
+      "sha256": "948bb53d542311cd99f1b3f8e30ee8e24975073bd4fbabc4b9d24c40a2804aa9"
     },
     "assets/imu-model.js": {
-      "source_sha256": "d825c6427ab9a25295a4a577ee5cdc8dfd4d11b3338ac8c9555a2a328ac657ad",
-      "sha256": "07595e23769645ba0825f0e789abe202117f91613b65d21b57a94f19bda06d09",
+      "source_sha256": "5070d8ae01a706f89b69c7e94701ee891b1636154a8eff2e3f8d6041db4bd942",
+      "sha256": "98610ab1363435d88e6608082711329a67871d2aa34e2df4fb8dcb9076dd977b",
       "publish_changes": [
         "omit device-specific historical IMU bias"
       ]
@@ -135,23 +154,23 @@
       "sha256": "1a78f1eeda84e5f45eb697bca988b671a616256ae60adeb6fd431406cab8e262"
     },
     "assets/visual-debug.js": {
-      "source_sha256": "e2d410096b98a6744b963295355c6050c18c352fc97498d146c77aa95a41eca9",
-      "sha256": "e2d410096b98a6744b963295355c6050c18c352fc97498d146c77aa95a41eca9"
+      "source_sha256": "4d91420329048840b26e50680ed4732836356ac0b5f173bf77a0954ff64a57dc",
+      "sha256": "4d91420329048840b26e50680ed4732836356ac0b5f173bf77a0954ff64a57dc"
     },
     "assets/wireless-calibration.css": {
       "source_sha256": "d956e26c045862ba57b4bf11289f83d9f2a9226dbc1392c56edc52abacb6691b",
       "sha256": "d956e26c045862ba57b4bf11289f83d9f2a9226dbc1392c56edc52abacb6691b"
     },
     "assets/wireless-calibration.js": {
-      "source_sha256": "f9c3292e72446a333ffec4a5c4210cdefb6b911029dd0c4cad1257b504937ba1",
-      "sha256": "c1e629c9600b0e69c0d6189c14ebf8fd01e1486f6fa9508fdafd39b0c68b4d17",
+      "source_sha256": "fdbd0689157a8f3293a5159eeae09df2998e3f3e00baff86ba8ea3a5299304ff",
+      "sha256": "844f92ffff9adab8eea2e4cab4fd0a51481835091a46ffbb2d14bc82e2964e35",
       "publish_changes": [
         "use backend-audited configured target pairs; preserve reference identity and movement bounds"
       ]
     },
     "assets/workflow.js": {
-      "source_sha256": "d731b284748cdc44e9521d2b673281271d0f8cca050613a746a8b4015c27ba01",
-      "sha256": "d731b284748cdc44e9521d2b673281271d0f8cca050613a746a8b4015c27ba01"
+      "source_sha256": "41fddf83b388fb5d3966d3b39c77d1b6328ac1a279f766d4cf16fead6de0db96",
+      "sha256": "41fddf83b388fb5d3966d3b39c77d1b6328ac1a279f766d4cf16fead6de0db96"
     },
     "assets/zero-guide-parent.js": {
       "source_sha256": "cb2b518c420819b5e21c0a7121acb62180f6db69ea3f39ad61e8ddfd5e11bfd5",
@@ -785,8 +804,8 @@
       "sha256": "a7027295fe10bc712084522fdfababb600e2fa02e37b2c46c780378ddeda442a"
     },
     "board/python/calibration_host.py": {
-      "source_sha256": "40a14a44b8c8df7d13b639495ce02e3b065bed0d81838dffe73481d2d915dc0a",
-      "sha256": "1509a1a3027d8030ea268d87fd235786f0e5f7a8130660176ec76ee0b6cd9d3e",
+      "source_sha256": "34dabda2809f4ddc1843068bfe1f3bbe8ce667e01a4e5a629ec7146ff418a9f4",
+      "sha256": "d56fc303fc4ff5eec72a1b04ec0fd78103fe8ec86d2619d42ba6fc28988f81e9",
       "publish_changes": [
         "device serial read from local config or XGODUCK_SERIAL",
         "omit real calibrated encoder values; explicit audited config required"
@@ -987,8 +1006,8 @@
       "sha256": "ff20a5b32a06ba0ba10b6756d83b81254e841937fe5ff297f8e5cfe7ef29c08a"
     },
     "index.html": {
-      "source_sha256": "55090042dd0df47da94242f6fb556ccd8a6f99006dfadc1b053a7ba29c92bc24",
-      "sha256": "52d810a3132461ba8cfa7bac7702b1b0fed629c9fe2f6ed7bcacc877a2ae290f",
+      "source_sha256": "b25f51523215b8e84e75c281f82ab904c378f44bcf5b52ac33bc1574b30911ed",
+      "sha256": "322365866c3a7c8089a45c3096491b12e03ea13a026ce2d6cbd16dea8d59e0e9",
       "publish_changes": [
         "link upstream assembly PDF instead of bundling it"
       ]
@@ -1142,8 +1161,8 @@
       "sha256": "23993ea72810fc9ff7d0476e28accc33393c1895b9ac64b2f4f1b7d036b95abd"
     },
     "wireless_calibration_proxy.py": {
-      "source_sha256": "fc88b47e5af22919ec8eb901db05b3da6df4c33c238d8a1027cac1e6fbe6df4d",
-      "sha256": "976c7fd595cfc79d979354aabb11088a2823707679d85cd69283c1656c606e12",
+      "source_sha256": "06c19340838676e0b16adee08ab441bb9d24db85648cd3f2c548cf16a2803dfb",
+      "sha256": "7975a1f03ad01bdb99331e1303c057448c3c319e0cf1a7b321b33b5dadf1744a",
       "publish_changes": [
         "device serial read from local config or XGODUCK_SERIAL"
       ]

@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>小鸭姿态</title><link rel="stylesheet" href="imu-model.css?v=pose-calibration-r1"><script type="importmap">{"imports":{"three":"../model-assets/vendor/build/three.module.js"}}</script></head>
-<body data-mode="waiting" data-loaded="false" data-ui-revision="2026-10-16-mouth-display-r4">
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>小鸭姿态</title><link rel="stylesheet" href="imu-model.css?v=unified-debug3"><script type="importmap">{"imports":{"three":"../model-assets/vendor/build/three.module.js"}}</script></head>
+<body data-mode="waiting" data-loaded="false" data-ui-revision="2026-10-17-imu-display-r3">
 <main class="instrument" aria-label="鸭子实时姿态，青色描边标出所选校准关节">
   <div class="instrument-heading"><span class="signal"><i aria-hidden="true"></i><span id="imu-model-state" role="status">加载模型</span></span><div class="view-actions"><button id="imu-model-yaw-zero" type="button" title="仅将当前朝向设为显示零度">航向归零</button><button id="imu-model-camera" type="button" title="仅复位观察视角">视角</button></div></div>
-  <div class="receive-bar"><div id="imu-receive-state" class="receive-state">等待当前接收状态</div><label class="display-buffer" title="较短缓冲更跟手，较长缓冲更能抵消网络波动；只影响画面显示。">显示缓冲 <select id="imu-display-buffer" aria-label="显示缓冲"><option value="200" selected>0.2 秒</option><option value="300">0.3 秒</option><option value="600">0.6 秒</option></select></label></div>
-  <p class="current-legend">电流↑更红 · 青色描边=选中 · 绿点=保持 <label>显示量程 <select id="imu-current-scale" aria-label="电流显示量程"><option value="1000">0–1 A</option><option value="2000" selected>0–2 A</option><option value="3000">0–3 A</option></select></label><span title="舵机相电流，寄存器69/70；bit15为方向，幅值×6.5mA，未做外部标定。不是负载百分比或电池总电流。量程只改变颜色，不是安全阈值；数据超过500ms显示—。">ⓘ</span></p>
-  <div id="imu-model-viewport" class="viewport"><div class="reticle" aria-hidden="true"></div><div id="imu-current-labels" class="current-labels"><svg id="imu-current-leaders" aria-hidden="true"></svg></div></div>
+  <div class="receive-bar"><div id="imu-receive-state" class="receive-state">等待当前接收状态</div></div>
+  <p class="current-legend">电流越大越红 · 青色描边=选中 · 绿点=保持 <span title="舵机相电流，寄存器69/70；bit15为方向，幅值×6.5mA，未做外部标定。颜色量程0–2A，仅用于显示，不是安全阈值；超过500ms无新电流时恢复原色。">ⓘ</span></p>
+  <div id="imu-model-viewport" class="viewport"><div class="reticle" aria-hidden="true"></div></div>
   <div class="readings"><span>横滚 <strong id="imu-model-roll">—</strong></span><span>俯仰 <strong id="imu-model-pitch">—</strong></span><span title="以打开页面或最近一次归零为参考；陀螺仪积分会漂移">相对航向 <strong id="imu-model-yaw">—</strong></span><span title="ID34新鲜编码器姿态，相对已保存闭嘴零位">嘴巴 <strong id="imu-model-mouth">—</strong></span><small id="imu-projection-note" class="projection-note"></small></div>
   <section id="imu-angle-history" class="angle-history" aria-label="显示姿态曲线（历史端点插值）" title="记录实际显示的历史姿态，目标20FPS；显示缓冲0.2秒，仅在已收到的真实端点间插值。源缺口超过300ms冻结并断线，不补造运动。当前接收时效仍独立按150ms判断。">
     <div class="history-heading"><span id="imu-history-state">显示姿态曲线 · 历史端点插值</span><span id="imu-sample-quality" title="最近2秒实际收到的不同采样数量 / 主控采样时间；ms为输入已知年龄；与20FPS历史显示分开">— 采样/秒</span></div>
-    <canvas id="imu-angle-chart" aria-label="最近10秒历史显示横滚、俯仰和相对航向"></canvas>
+    <canvas id="imu-angle-chart" aria-label="最近10秒历史显示横滚、俯仰和相对航向；近竖直时标记不稳定投影或上次值"></canvas>
   </section>
   <p class="scope" hidden></p>
-</main><script type="module" src="imu-model.js?v=pose-calibration-r1"></script></body></html>
+</main><script type="module" src="imu-model.js?v=unified-debug3"></script></body></html>

@@ -6,7 +6,7 @@
   let lastLiveAt=null,selectedId=10,lastDetail={paused:true},networkKey='',paintedJoint=null,paintedBattery=null;
   const hotspots=[...document.querySelectorAll('.joint-hotspot')],meter=get('battery-percent'),batterySymbol=document.querySelector('.battery-symbol');
   const setText=(element,value)=>{if(element&&element.textContent!==value)element.textContent=value;};
-  const networkVisible=()=>!document.hidden&&window.DuckWorkflow?.page()==='link';
+  const networkVisible=()=>!document.hidden&&window.DuckWorkflow?.page()==='imu'&&get('debug-connection')?.open===true;
   const fresh=s=>s&&Number.isFinite(s.received)&&s.received>0&&Number.isInteger(s.mcu_seq)&&s.mcu_seq>=0&&s.mcu_seq<=4294967295&&Number.isFinite(s.feedback_age_ms)&&s.feedback_age_ms>=0&&s.feedback_age_ms<150;
   function color(id,state){const element=get(id);if(element&&element.dataset.state!==state)element.dataset.state=state;}
   function network(detail,force=false,observe=true){
@@ -46,6 +46,7 @@
   }
   window.addEventListener('duck:live-status',event=>network(event.detail));
   window.addEventListener('duck:page',()=>{selection();if(networkVisible())network(lastDetail,true,false);});
+  get('debug-connection')?.addEventListener('toggle',()=>{if(networkVisible())network(lastDetail,true,false);});
   window.addEventListener('duck:joint',selection);
   window.addEventListener('duck:battery-display',syncBattery);
   document.addEventListener('visibilitychange',()=>{if(document.hidden)network({paused:true});});
