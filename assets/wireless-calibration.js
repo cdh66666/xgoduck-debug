@@ -105,10 +105,9 @@
       typeof reference.app_instance_id==='string'&&/^[0-9a-f]{32}$/.test(reference.app_instance_id)&&
       Array.isArray(p.saved_targets)&&p.saved_targets.length===15&&p.saved_targets[index]===record.position&&
       Array.isArray(p.turn_offsets)&&p.turn_offsets.length===15&&[-1,1].includes(offset)&&
-      Array.isArray(verified)&&new Set(verified).size===verified.length&&verified.every(value=>[10,22].includes(value))&&verified.includes(id)&&
-      record.position===({10:3964,22:-94})[id]&&target===({10:-132,22:4002})[id]&&
+      Array.isArray(verified)&&new Set(verified).size===verified.length&&verified.every(value=>[10,22,30].includes(value))&&verified.includes(id)&&
       record.mode===4&&row?.mode===4&&p.modes?.[index]===4&&
-      target===record.position+4096*offset&&Math.abs(record.position-row.position)>1024&&Math.abs(target-row.position)<=1024;
+      target===record.position+4096*offset&&!homePositionAllowed(id,row.position,record.position)&&homePositionAllowed(id,row.position,target);
   }
   function homeBlockedNote(v){
     if(!v.fresh)return '等待新鲜位置';

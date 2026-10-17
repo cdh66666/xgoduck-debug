@@ -63,6 +63,11 @@ def portable(relative, raw, serial):
         source = imported(source, 'from device_config import HOME_TURN_TARGETS')
         source = re.sub(r'^HOME_TURN_EQUIVALENT_TARGETS = .*$', 'HOME_TURN_EQUIVALENT_TARGETS = HOME_TURN_TARGETS', source, flags=re.M)
         changes.append('omit real calibrated encoder values; explicit audited config required')
+    if relative == 'assets/wireless-calibration.js':
+        source, replaced = re.subn(r'^\s*record\.position===\(\{[^}\r\n]+\}\)\[id\]&&target===\(\{[^}\r\n]+\}\)\[id\]&&\s*\r?\n', '', source, flags=re.M)
+        if replaced != 1:
+            raise ValueError('Expected exactly one device-specific UI target pair check')
+        changes.append('use backend-audited configured target pairs; preserve reference identity and movement bounds')
     if relative == 'provisioning.py':
         source = imported(source, 'import shutil\nimport sys')
         source = re.sub(r'^PWSH = .*$', "PWSH = Path(shutil.which('pwsh') or 'pwsh')", source, flags=re.M)

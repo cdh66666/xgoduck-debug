@@ -117,8 +117,11 @@
       "sha256": "d956e26c045862ba57b4bf11289f83d9f2a9226dbc1392c56edc52abacb6691b"
     },
     "assets/wireless-calibration.js": {
-      "source_sha256": "f98b9622a3bd11e960cea00508e653410ef9b7d32f18cfb65e118f2aafb8a96d",
-      "sha256": "f98b9622a3bd11e960cea00508e653410ef9b7d32f18cfb65e118f2aafb8a96d"
+      "source_sha256": "d1c86b41fa7714d52a51a6bcd3fcc9730808d95e2a6cf885183c451311f5e8c5",
+      "sha256": "05bf781fc56f5070bf1582b119c6c7342aedcfb9a9685d4e0ce7f967d6ac5879",
+      "publish_changes": [
+        "use backend-audited configured target pairs; preserve reference identity and movement bounds"
+      ]
     },
     "assets/workflow.js": {
       "source_sha256": "2e0fafcca7726c075f65bbe1d4e70b3da9e95ef009076d6a5fcef34bf17cec1c",
@@ -942,8 +945,8 @@
       "sha256": "ff20a5b32a06ba0ba10b6756d83b81254e841937fe5ff297f8e5cfe7ef29c08a"
     },
     "index.html": {
-      "source_sha256": "b2b80604cf36675b25592eb2d1d1fcd6b30b67d4ebb8d5b00ec790705444ace6",
-      "sha256": "ba630de1711b5d096fcaaa362c6aea11288ca05eeeac44cbb41fab92be04f09d",
+      "source_sha256": "45bc404f406e0092331011f323a1684c2765cff2bd4fa254616648cff052ade1",
+      "sha256": "9de21d6062da20231ed450c6f4a687c84419195e5da8047804f0efd15935363e",
       "publish_changes": [
         "link upstream assembly PDF instead of bundling it"
       ]
