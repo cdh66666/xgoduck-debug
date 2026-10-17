@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XGO Duck · 无线只读调试</title>
+<style>
+:root{color-scheme:light;font-family:system-ui,"Microsoft YaHei",sans-serif;color:#18313c;background:#edf3f4}
+body{max-width:1100px;margin:0 auto;padding:24px}h1{margin:0 0 8px;font-size:28px}h2{font-size:18px;margin:0 0 12px}
+p{line-height:1.7;margin:8px 0}.muted{color:#536b77;font-size:14px}.card{background:white;border:1px solid #cad8dc;border-radius:12px;padding:20px;margin-top:16px}
+.banner{border-left:5px solid #c68a27;background:#fff5dd}.banner.good{border-color:#26745b;background:#edf9f4}.banner.bad{border-color:#b12b36;background:#fff0f0;color:#8a1922}
+.controls{display:flex;gap:18px;align-items:center;flex-wrap:wrap}button{font:inherit;border:0;border-radius:8px;padding:11px 18px;background:#174f61;color:white;cursor:pointer}button:disabled{opacity:.5;cursor:wait}
+input{width:18px;height:18px;vertical-align:middle}code{overflow-wrap:anywhere}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.metric{background:#f2f6f7;border-radius:8px;padding:14px}.metric strong{display:block;margin-top:6px;font-size:23px}.metric span{font-size:13px;color:#536b77}
+table{width:100%;border-collapse:collapse}td,th{padding:10px;text-align:left;border-bottom:1px solid #dde6e9}th{font-size:13px;color:#536b77}.scroll{overflow-x:auto}pre{font:13px ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;background:#f2f6f7;padding:16px;border-radius:8px;max-height:500px;overflow:auto}
+.stale{color:#a56018}.danger{color:#a21929;font-weight:700}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{padding:5px 10px;border-radius:6px;background:#eaf5ef}.chip.missing{background:#f8eee1;color:#8b541e}
+@media(max-width:600px){body{padding:14px}.card{padding:16px}h1{font-size:23px}}
+</style>
+</head>
+<body>
+<h1>XGO Duck · 无线只读调试</h1>
+<p class="muted">查看主控、IMU 和舵机反馈。当前页面没有位置、归中、校准、编号或行走控制。</p>
+<section id="banner" class="card banner" role="status" aria-live="polite">
+<strong id="summary">正在读取主控状态……</strong><p id="notice">网页可访问不代表 MCU 已运行，也不证明固件已锁住运动。</p>
+</section>
+<section class="card">
+<h2>连接与刷新</h2><p>当前访问地址：<code id="address"></code></p>
+<p class="muted">电脑或手机与 Uno Q 接入同一局域网后，用主板无线 IP 的 <code>http://主板IP:9527</code> 打开。无线调试仍需给主板供电；网页打开不证明当前链路已脱离 USB。</p>
+<div class="controls"><button id="read" type="button">立即读取</button><label><input id="auto" type="checkbox" checked> 每秒自动只读刷新</label><span id="fetched" class="muted">尚未读取</span></div>
+<p>首次 USB 烧录配置要求电池和舵机电源断开；日常只读检查保留当前已核对的接线。插拔或测通断前先断电。收到 <code>enabled=true</code> 时停止后续操作，并保留状态交给调试人员核查。</p>
+</section>
+<section class="card">
+<h2>实时反馈</h2>
+<div class="grid">
+<div class="metric"><span>MCU 反馈序号</span><strong id="seq">—</strong></div>
+<div class="metric"><span>距收到反馈</span><strong id="age">—</strong></div>
+<div class="metric"><span>近 2 秒反馈频率</span><strong id="hz">—</strong></div>
+<div class="metric"><span>IMU 响应</span><strong id="imu">未知</strong></div>
+<div class="metric"><span>MCU enabled 状态</span><strong id="enabled">未知</strong></div>
+<div class="metric"><span>MCU 只读锁标记</span><strong id="locked">未知</strong></div>
+<div class="metric"><span>舵机响应数量</span><strong id="count">— / 15</strong></div>
+</div>
+<p class="muted">年龄按主板 Linux 收到反馈的单调时钟计算；MCU 时间是启动计时，不能直接与电脑时间相减。超过 150 ms 的反馈按过期显示。锁标记来自 MCU bit5；数字反馈与源码审查不代替实物运动验收。</p>
+<p id="history" class="danger" hidden></p>
+</section>
+<section class="card"><h2>IMU 数值</h2><div class="scroll"><table><thead><tr><th>数据</th><th>X</th><th>Y</th><th>Z</th></tr></thead><tbody id="vectors"></tbody></table></div><p class="muted">加速度单位 m/s²，角速度 deg/s。归一化加速度仅供静止方向检查，没有姿态融合和安装方向标定。</p></section>
+<section class="card"><h2>15 个舵机 ID 与位置</h2><div id="ids" class="chips"></div><p id="missing" class="muted"></p><div class="scroll"><table><thead><tr><th>ID</th><th>已应答的编码器位置</th></tr></thead><tbody id="positions"></tbody></table></div><p class="muted">位置依据 raw_mask 的应答位显示，未应答显示为空。舵机未接电时，缺少舵机反馈是预期结果；ID 响应不等于零位、运动方向或机械安装正确。</p><p class="muted">程序参考零位（未校准）只供核查程序配置，不是当前实物的机械零位；不会用它代替未应答的位置。</p></section>
+<section class="card" aria-labelledby="probetitle"><h2 id="probetitle">启动时的舵机通信探测 · 固定 ID 10</h2><p id="probesummary" role="status">尚无本次启动探测报告</p><p id="probedetail" class="muted">没有报告不能认定舵机损坏，也不能证明 MCU 已部署探测程序。</p><p id="probestatus" class="muted"></p><div class="scroll"><table><thead><tr><th>查询 / 次数</th><th>TX 字节</th><th>RX 字节</th><th>有效帧</th><th>校验错误</th><th>舵机错误帧</th><th>本机回显</th><th>真实位置</th></tr></thead><tbody id="proberows"></tbody></table></div><p class="muted">这是 MCU 启动时的历史记录，每种查询 3 次，共 9 次；页面刷新只读回报告。单 ID 有响应不代表 15 颗舵机就绪，探测位置不代替上方的实时位置。需要重复时须由调试人员核对 MCU 重启，页面没有重试、重启或运动按钮。</p></section>
+<section class="card"><h2>反馈显示记录</h2><p class="muted">下方是显示用状态：raw_pos 与 angles 按 raw_mask 过滤，未应答为 null。zero_pos 显示为 program_reference_zero_pos，明确标为程序参考、未校准；API 原始记录未修改。页面不保存零位或修改舵机参数。</p><details><summary>展开 JSON 显示状态</summary><pre id="out">等待状态。</pre></details></section>
+<script>
+const $=id=>document.getElementById(id),SERVO_IDS=[10,11,12,13,14,20,21,22,23,24,30,31,32,33,34];let pending=false;
+$('address').textContent=location.origin;
+const number=(x,d=2)=>typeof x==='number'&&Number.isFinite(x)?x.toFixed(d):'—';
+function readonlyServoDisplay(d){const mask=Number.isInteger(d.raw_mask)&&d.raw_mask>=0&&d.raw_mask<=32767?d.raw_mask:0;const project=(values,encoder)=>SERVO_IDS.map((_,i)=>(mask&(1<<i))!==0&&Number.isFinite(values?.[i])&&(!encoder||(Number.isInteger(values[i])&&values[i]>=0&&values[i]<=4095))?values[i]:null);const out={...d,raw_pos:project(d.raw_pos,true),angles:project(d.angles,false),raw_position_note:'仅显示 raw_mask 已应答位；未应答为 null，不使用程序参考位置替代。'};if(Object.prototype.hasOwnProperty.call(d,'zero_pos')){out.program_reference_zero_pos=d.zero_pos;out.zero_pos_note='程序参考零位（未校准），不是当前实物机械零位。';delete out.zero_pos}return out;}
+function renderServoProbe(probe,getNode=id=>document.getElementById(id)){
+ const names={1:'PING',2:'READ',130:'SYNC_READ'},count=value=>Number.isInteger(value)&&value>=0&&value<=65535?value:'—';
+ const seen=new Set(),reports=probe?.supported===true&&probe.scope==='startup_id10'&&Array.isArray(probe.reports)?probe.reports.slice(0,9).filter(r=>{if(!r||!Number.isInteger(r.opcode)||!Object.hasOwn(names,r.opcode)||r.target_id!==10||!Number.isInteger(r.attempt)||r.attempt<1||r.attempt>3)return false;const key=r.opcode+':'+r.attempt;if(seen.has(key))return false;seen.add(key);return true}):[];
+ getNode('probesummary').textContent=reports.length?(typeof probe.summary?.title==='string'?probe.summary.title:'已收到启动探测报告'):'尚无本次启动探测报告';
+ getNode('probedetail').textContent=reports.length&&typeof probe.summary?.detail==='string'?probe.summary.detail:'没有报告不能认定舵机损坏，也不能证明 MCU 已部署探测程序。';
+ getNode('probestatus').textContent=reports.length+' / 9 条历史报告'+(reports.length?(probe.complete===true&&reports.length===9?' · 已收齐':' · 尚未收齐'):'')+'；实时舵机就绪另看 raw_mask。';
+ getNode('proberows').replaceChildren();for(const r of reports){const tr=document.createElement('tr'),position=r.position_valid===true&&r.opcode!==1&&Number.isInteger(r.raw_position)&&r.raw_position>=0&&r.raw_position<=65535?r.raw_position:'—';for(const value of [names[r.opcode]+' · '+r.attempt+'/3',count(r.tx_count),count(r.rx_count),count(r.valid_frames),count(r.crc_errors),count(r.device_error_frames),count(r.echoes),position]){const td=document.createElement('td');td.textContent=value;tr.append(td)}getNode('proberows').append(tr);const detail=document.createElement('tr'),cell=document.createElement('td');cell.colSpan=8;const age=Number.isFinite(r.received_age_ms)&&r.received_age_ms>=0?Math.floor(r.received_age_ms/1000)+' 秒前收到':'收到时间未提供';cell.textContent='RX 原始前缀：'+(typeof r.raw_prefix_hex==='string'?r.raw_prefix_hex.slice(0,95)||'无字节':'未提供')+'；'+age+'。时间是软件观察时间。';detail.append(cell);getNode('proberows').append(detail)}
+}
+function render(d){
+ const bad=d.enabled===true||d.mcu_calibrating===true||d.mcu_servo_debug===true||(d.received>0&&!d.mcu_motion_locked);
+ const fresh=d.feedback_fresh===true&&d.received>0;
+ $('banner').className='card banner'+(bad?' bad':fresh?' good':'');
+ $('summary').textContent=bad?'错误：MCU 状态不符合只读调试要求':fresh?'MCU 反馈正在更新':'等待 MCU 反馈或反馈已过期';
+ $('notice').textContent=d.last_error||'当前新鲜反馈显示 MCU 只读锁标记有效、enabled=false。机械、接线和动作仍需分别验收。';
+ $('seq').textContent=d.mcu_seq??'—';$('age').textContent=d.feedback_age_ms==null?'—':number(d.feedback_age_ms,0)+' ms';
+ $('age').className=fresh?'':'stale';$('hz').textContent=number(d.feedback_hz,1)+' Hz';
+ $('imu').textContent=d.imu_ok===true?'有响应':d.imu_ok===false?'无响应':'未知';
+ $('enabled').textContent=d.enabled===true?'true · 错误':d.enabled===false?'false':'未知';$('enabled').className=d.enabled===true?'danger':'';
+ $('locked').textContent=d.commissioning_motion_locked===true?'已报告':d.mcu_motion_locked===false?'未报告':d.mcu_motion_locked===true?'旧报告 · 待核验':'未知';
+ const found=new Set(d.servo_ids||[]);$('count').textContent=found.size+' / 15';
+ $('history').hidden=!d.mcu_enabled_seen;$('history').textContent='本次服务运行期间曾收到 enabled=true，需保留记录并核查固件，即使最新一帧已变为 false。';
+ $('vectors').replaceChildren();for(const [label,v] of [['加速度',d.acc],['角速度',d.gyro],['归一化加速度方向',d.gravity]]){
+  const tr=document.createElement('tr');for(const text of [label,...[0,1,2].map(i=>number(v?.[i],3))]){const td=document.createElement('td');td.textContent=text;tr.append(td)}$('vectors').append(tr)
+ }
+ $('ids').replaceChildren();for(const sid of d.motors||SERVO_IDS){const el=document.createElement('span');el.className='chip'+(found.has(sid)?'':' missing');el.textContent=sid+(found.has(sid)?' ✓':' · 未响应');$('ids').append(el)}
+ const display=readonlyServoDisplay(d);$('positions').replaceChildren();SERVO_IDS.forEach((sid,i)=>{const tr=document.createElement('tr');for(const text of [sid,display.raw_pos[i]===null?'未应答':display.raw_pos[i]]){const td=document.createElement('td');td.textContent=text;tr.append(td)}$('positions').append(tr)});
+ $('missing').textContent='未响应 ID：'+((d.missing_joint_ids||[]).join('、')||'无');$('out').textContent=JSON.stringify(display,null,2);
+ renderServoProbe(d.servo_probe);
+ $('fetched').textContent='页面最近读取：'+new Date().toLocaleTimeString('zh-CN');
+}
+async function read(){if(pending)return;pending=true;$('read').disabled=true;const abort=new AbortController();const timeout=setTimeout(()=>abort.abort(),4000);
+ try{const response=await fetch('/api/status',{cache:'no-store',signal:abort.signal});if(!response.ok)throw new Error('HTTP '+response.status);const d=await response.json();if(d.mode!=='read_only'||typeof d.received!=='number')throw new Error('返回数据不是只读调试程序');render(d)}
+ catch(error){$('banner').className='card banner bad';$('summary').textContent='无法读取主控只读服务';$('notice').textContent=error.name==='AbortError'?'读取超时，请检查主板供电和局域网连接。':error.message;$('fetched').textContent='读取失败；下方保留上次数据，不能视为实时状态。';$('age').className='stale'}
+ finally{clearTimeout(timeout);pending=false;$('read').disabled=false}
+}
+$('read').addEventListener('click',read);setInterval(()=>{if($('auto').checked)read()},1000);read();
+</script>
+</body>
+</html>

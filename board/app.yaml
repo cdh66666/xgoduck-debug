@@ -1,0 +1,6 @@
+name: XGO Duck Commissioning
+description: Calibration route recovery and authenticated read-only IMU transport. Startup stays torque off; no automatic homing or policy startup.
+icon: 🦆
+ports: [9527]
+bricks:
+  - arduino:web_ui

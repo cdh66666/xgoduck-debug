@@ -1,0 +1,74 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="XGO Duck 本地调试：连接、舵机回中、停止卸力与实时姿态。"><title>XGO Duck 调试</title><link rel="stylesheet" href="/assets/commissioning.css"><link rel="stylesheet" href="/assets/simple-debug.css?v=workflow2">
+<link rel="stylesheet" href="/assets/visual-debug.css?v=3"><link rel="stylesheet" href="/assets/wireless-calibration.css?v=2"><link rel="stylesheet" href="/assets/duck-dark.css?v=compact1"><body class="simple-debug visual-debug duck-dark" data-theme="dark" data-default-page="servo">
+<header><div class="brand"><span class="duck" aria-hidden="true">🦆</span><div><strong>XGO Duck</strong><span>调试</span></div></div><button id="comm-discover" class="quiet" disabled>正在连接</button></header>
+<main class="simple-home">
+  <div class="live-strip" aria-label="当前状态">
+    <div class="status-item" id="simple-link"><label>无线</label><strong>检查中</strong><small>正在读取</small></div>
+    <div class="status-item" id="simple-servos"><label>主控舵机</label><strong>— / 15</strong><small>已应答数量</small></div>
+    <div class="status-item" id="simple-imu"><label>IMU</label><strong>待确认</strong><small>校准待做</small></div>
+    <div class="status-item" id="simple-motion"><label>主控运动</label><strong>待确认</strong><small>读取锁定状态</small></div>
+    <div class="status-item" id="simple-battery" title="只显示真实电量或供电电压">
+      <label>电量</label><div class="battery-value"><span class="battery-symbol icon-small unknown" aria-label="电量未知"><span class="battery-fill" id="battery-fill"></span></span><strong id="battery-percent">待读取</strong></div><small id="battery-voltage">电压 —</small>
+    </div>
+  </div>
+  <div id="battery-metadata" hidden><span id="battery-current-state">等待数据</span><span id="battery-source-note">等待真实电压</span><button id="battery-returned">电池已接回</button></div>
+  
+<div id="workflow-install" class="workflow-page" hidden>
+
+<div class="visual-page-heading"><h1>安装</h1><a href="https://github.com/LuwuDynamics/xgoduck_hardware/blob/90ec55634d700c88fd7aa9281c282be30f56e7e0/Assembly_Guide.pdf" target="_blank" rel="noopener">原版 PDF</a></div>
+<iframe id="assembly-guide-frame" class="tool-frame" src="/assets/official-assembly.html?embed=1" title="开源 XGO Duck 官方 PDF 组装文档"></iframe>
+</div>
+<div id="workflow-numbering" class="workflow-page" hidden>
+<div class="visual-page-heading"><h1>自动编号</h1><span>已编号保留，每次新增一颗 ID 1</span></div>
+<iframe id="numbering-frame" class="tool-frame" data-src="/numbering?embed=1" title="单颗自动编号工具"></iframe>
+</div>
+<div id="workflow-link" class="workflow-page" hidden>
+
+<div class="visual-page-heading"><h1>通信</h1><span id="visual-network-state">离线</span></div>
+<div class="visual-panel">
+<iframe id="connection-duck-frame" src="/assets/connection-model.html?embed=1" title="鸭子各关节和IMU的真实通信状态"></iframe>
+<p class="signal-line" id="visual-network-note">等待主控</p>
+</div>
+<details class="debug-details"><summary>程序版本与烧录</summary><p class="program-version" id="comm-version">主控版本 —</p><div class="communication-actions"><button id="comm-usb" class="quiet">USB 首次烧录</button><button id="comm-update" class="quiet" disabled>无线烧录</button></div></details>
+<div class="communication-progress"><progress id="comm-progress" max="100" value="0" hidden></progress><p id="comm-result" role="status" aria-live="polite">Uno Q 独立供电，与电脑连接同一 Wi-Fi。</p></div>
+</div>
+<div id="workflow-imu" class="workflow-page" hidden>
+  <div class="imu-overview"><div class="imu-pose">
+    <div class="imu-panel-heading"><h1>姿态</h1><span id="imu-live-rate" hidden></span></div>
+    <div class="pose-view" id="imu-pose-view" data-live="false">
+      <iframe id="imu-duck-frame" src="/assets/imu-model.html?embed=1&amp;view=axes3" title="鸭子实时三轴姿态"></iframe>
+    </div>
+  </div></div>
+  <!-- Retained only for the shared status observer; no raw-data UI. -->
+  <div hidden><button id="simple-refresh" hidden disabled></button><span id="simple-result"></span><a id="simple-report" hidden></a></div>
+</div>
+<div id="workflow-servo" class="workflow-page">
+<div id="wireless-calibration" class="wireless-calibration">
+  <div class="visual-page-heading"><h1>舵机回正</h1><span>已存零位 <b id="wl-saved-count">—</b></span></div>
+  <p class="home-instruction">托稳当前姿势，慢速回到已存零位。</p>
+  <span id="wl-connection" hidden></span>
+  <div class="home-controls"><button id="wl-home" disabled>慢速回中</button><button id="wl-stop" class="danger">停止/卸力</button></div>
+  <p id="wl-home-state" class="home-state" role="status" aria-live="polite">正在读取舵机反馈</p>
+  <p class="wl-result" id="wl-result" role="status" aria-live="polite"></p>
+  <div class="servo-feedback"><div class="servo-feedback-heading"><span>15 颗舵机反馈</span><span>左腿 / 右腿 / 头部</span></div><div id="wl-servo-dots" class="wl-servo-dots"></div></div>
+  <details id="wl-setup-tools" class="debug-details">
+    <summary>重新校准零位</summary>
+    <div class="wl-group-tabs"><button id="wl-group-left">左腿</button><button id="wl-group-right">右腿</button><button id="wl-group-head">头</button></div>
+    <div class="visual-action-row wl-actions"><button id="wl-off-all" class="quiet" disabled>卸力摆姿</button><button id="wl-capture-all" disabled>记录零位</button></div>
+    <iframe id="zero-guide-frame" src="/assets/zero-guide.html?embed=1&amp;id=10&amp;whole=1&amp;single=1" title="可旋转的零位参考模型"></iframe>
+    <div hidden>
+      <p id="wl-confirm-label"></p><span id="wl-group-label"></span><span id="wl-group-status"></span>
+      <strong id="servo-selected-name"></strong><b id="servo-selected-position"></b><b id="servo-selected-zero"></b><p id="servo-guidance"></p>
+      <details id="wl-fine-tools"><button id="wl-arm" disabled></button><span id="wl-arm-state"></span><button id="wl-minus" disabled></button><button id="wl-plus" disabled></button><select id="wl-step-size"><option value="0.966796875">1°</option></select><button id="wl-read" disabled></button><span id="wl-direction"></span></details>
+      <details id="wl-records-details"><p id="wl-records"></p></details>
+    </div>
+  </details>
+</div>
+<div id="servo-picker-groups" hidden></div><p id="servo-progress" hidden></p>
+</div>
+<p class="pending-line" id="simple-pending">待处理：IMU 方向、ID30 位置、机械零位。</p>
+</main>
+
+<nav class="workflow-tabs" id="workflow-tabs" aria-label="调试页面">
+<button data-page="servo" aria-current="page" class="active">回正</button><button data-page="imu">实时姿态</button><button data-page="link">连接</button><details class="workflow-more" id="workflow-more"><summary>更多工具</summary><div><button data-page="numbering">舵机编号</button><button data-page="install">组装说明</button></div></details>
+</nav><script>window.COMMISSION_TOKEN='__TOKEN__';</script><script src="/assets/imu-math.js?v=1"></script><script src="/assets/imu-live.js?v=dark1"></script><script src="/assets/workflow.js?v=compact1"></script><script src="/assets/simple-debug.js?v=home5"></script><script src="/assets/live-runtime.js?v=1"></script><script src="/assets/visual-debug.js?v=3"></script><script src="/assets/zero-guide-parent.js?v=1"></script><script src="/assets/wireless-calibration.js?v=compact2"></script><script src="/assets/communication.js?v=compact1"></script><script src="/assets/native-pose-parent.js?v=physical1"></script></body></html>

@@ -1,0 +1,13 @@
+profiles:
+  default:
+    fqbn: arduino:zephyr:unoq
+    platforms:
+      - platform: arduino:zephyr (1.0.0)
+    libraries:
+      - dir: ../firmware_dependencies/libraries/Arduino_RouterBridge
+      - dir: ../firmware_dependencies/libraries/Arduino_RPClite
+      - dir: ../firmware_dependencies/libraries/MsgPack
+      - dir: ../firmware_dependencies/libraries/ArxContainer
+      - dir: ../firmware_dependencies/libraries/ArxTypeTraits
+      - dir: ../firmware_dependencies/libraries/DebugLog
+default_profile: default

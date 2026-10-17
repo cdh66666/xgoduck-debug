@@ -1,0 +1,333 @@
+/* Visual daily workflow. Loaded last; detailed tools retain their own layout. */
+body.visual-debug {
+  --visual-blue: #135f85;
+  --visual-ink: #203545;
+  --visual-muted: #627787;
+  --visual-line: #dbe4e9;
+  background: #fff;
+}
+
+body.visual-debug > header {
+  min-height: 58px;
+  padding: 9px max(18px, calc((100vw - 900px) / 2));
+}
+body.visual-debug .brand strong { font-size: 18px; }
+body.visual-debug .brand div > span { display: none; }
+body.visual-debug .duck { padding: 0 7px; font-size: 25px; }
+body.visual-debug .mode-tag,
+body.visual-debug #simple-pending { display: none; }
+
+body.visual-debug .simple-home {
+  width: min(100%, 936px);
+  max-width: none;
+  padding: 14px 18px calc(83px + env(safe-area-inset-bottom, 0px));
+}
+body.visual-debug .live-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  padding: 0 0 12px;
+}
+body.visual-debug .status-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 3px 7px;
+  padding: 0 7px;
+}
+body.visual-debug .status-item + .status-item { border-left: 1px solid var(--visual-line); }
+body.visual-debug .status-item label { margin: 0; font-size: 11px; line-height: 1.5; }
+body.visual-debug .status-item strong { font-size: 14px; font-weight: 550; line-height: 1.5; font-variant-numeric: tabular-nums; }
+body.visual-debug .status-item small { display: none; }
+
+body.visual-debug .visual-page-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 5px 15px;
+  margin: 16px 0 10px;
+}
+body.visual-debug .visual-page-heading h1,
+body.visual-debug h1.visual-page-heading {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+body.visual-debug .visual-page-heading p,
+body.visual-debug .visual-page-heading small {
+  margin: 0;
+  color: var(--visual-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+body.visual-debug .visual-panel {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+body.visual-debug .visual-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+  height: 360px;
+}
+body.visual-debug .visual-stage > svg {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  max-height: 100%;
+}
+body.visual-debug .visual-stage svg text,
+body.visual-debug .joint-map text,
+body.visual-debug .network-picture text { font-family: "Microsoft YaHei", "Segoe UI", sans-serif; }
+body.visual-debug .visual-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 14px;
+}
+body.visual-debug .visual-action-row button,
+body.visual-debug .visual-action-row .route-button {
+  min-height: 44px;
+  margin: 0;
+  padding: 9px 18px;
+  font-size: 14px;
+}
+body.visual-debug .visual-action-row .quiet {
+  border: 1px solid var(--visual-line);
+  background: #fff;
+  color: var(--visual-blue);
+}
+body.visual-debug .signal-line {
+  margin: 7px 0 13px;
+  color: var(--visual-muted);
+  font-size: 12px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+body.visual-debug .install-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 360px;
+  margin: 0;
+}
+body.visual-debug .install-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+body.visual-debug .picture-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px 42px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--visual-muted);
+  font-size: 12px;
+}
+body.visual-debug .picture-steps > * { display: flex; align-items: center; gap: 7px; margin: 0; }
+body.visual-debug .picture-steps svg,
+body.visual-debug .picture-steps .icon { display: block; width: 25px; height: 25px; color: var(--visual-blue); }
+body.visual-debug .network-picture { display: block; width: 100%; height: 300px; }
+body.visual-debug .picture-steps svg { fill: none; stroke: #135f85; stroke-width: 2; }
+body.visual-debug .picture-steps svg text { fill: #135f85; stroke: none; font: 13px "Microsoft YaHei", sans-serif; }
+body.visual-debug .picture-steps .waiting svg { stroke: #8ca1ae; }
+body.visual-debug .network-wire { fill: none; stroke: #ccd8df; stroke-width: 3; }
+body.visual-debug .network-wire[data-state="ok"] { stroke: #438671; }
+body.visual-debug .network-wire[data-state="partial"] { stroke: #bc6b22; }
+body.visual-debug .network-node rect { fill: #f0f4f7; stroke: #b6c7d1; stroke-width: 2; }
+body.visual-debug .network-node path,
+body.visual-debug .network-node circle,
+body.visual-debug .wifi-icon { fill: none; stroke: #8ca1ae; stroke-width: 2; }
+body.visual-debug .network-node text { fill: #627787; font-size: 15px; }
+body.visual-debug .network-node[data-state="ok"] rect { fill: #e5f3ec; stroke: #438671; }
+body.visual-debug .network-node[data-state="partial"] rect { fill: #fff3df; stroke: #bc6b22; }
+body.visual-debug .visual-doc { margin: 12px 0; color: #627787; font-size: 12px; }
+body.visual-debug .visual-doc > summary { padding: 7px 0; cursor: pointer; }
+body.visual-debug .visual-page-heading > span { color: #627787; font-size: 12px; }
+body.visual-debug .duck-outline { fill: #edf4f8; stroke: #b5cbd9; stroke-width: 3; }
+body.visual-debug .joint-hotspot circle { fill: #fff; stroke: #135f85; stroke-width: 2; }
+body.visual-debug .joint-hotspot text { fill: #135f85; font-size: 17px; font-weight: 600; pointer-events: none; }
+body.visual-debug .joint-hotspot[aria-pressed="true"] circle { fill: #135f85; stroke-width: 4; }
+body.visual-debug .joint-hotspot[aria-pressed="true"] text { fill: #fff; }
+body.visual-debug .joint-hotspot[data-joint="30"] circle { stroke: #bc6b22; }
+body.visual-debug .joint-map-caption { fill: #627787; font-size: 13px; }
+body.visual-debug .joint-warning { text-align: center; color: #896223; font-size: 12px; margin: 6px 0; }
+body.visual-debug #zero-guide-frame { display: block; width: 100%; height: 505px; border: 0; background: #fff; }
+body.visual-debug .joint-selection { margin: 3px 0; }
+@media(max-width:560px){body.visual-debug #zero-guide-frame{height:730px}}
+body.visual-debug #bench .hint { font-size: 12px; }
+body.visual-debug .imu-footnote { font-size: 11px !important; }
+@media(max-width:560px){body.visual-debug .joint-map{height:340px}}
+@media(max-width:360px){body.visual-debug #servo-picker-groups{display:block}}
+
+body.visual-debug .imu-overview { display: block; margin: 0; padding: 13px 0 9px; }
+body.visual-debug .imu-pose { width: min(100%, 590px); margin: 0 auto; }
+body.visual-debug .imu-panel-heading { margin-bottom: 3px; }
+body.visual-debug .imu-panel-heading h1 { font-size: 22px; font-weight: 600; }
+body.visual-debug #imu-pose-svg { max-height: none; height: 225px; }
+body.visual-debug .imu-overview > .imu-current { display: none; }
+body.visual-debug .tilt-values { gap: 15px; padding-top: 1px; font-size: 12px; color: var(--visual-muted); }
+body.visual-debug .tilt-values strong,
+body.visual-debug .tilt-values b,
+body.visual-debug .tilt-values .numeric { margin-left: 8px; color: var(--visual-ink); font-size: 29px; font-weight: 550; }
+body.visual-debug .imu-pose .imu-footnote { margin: 5px 0 0; text-align: center; font-size: 10px; }
+body.visual-debug .imu-plots { display: block; margin: 0; padding-top: 11px; }
+body.visual-debug .imu-plots > .imu-plot + .imu-plot { display: none; }
+body.visual-debug .imu-plot figcaption { margin-bottom: 2px; font-size: 12px; }
+body.visual-debug .imu-plot .axis-legend { margin-bottom: 1px; }
+body.visual-debug .imu-plot canvas { width: 100%; height: 180px; }
+body.visual-debug .chart-readout { margin: 3px 0 0; color: var(--visual-muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+body.visual-debug .imu-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 12px 0 7px;
+}
+body.visual-debug .imu-controls #simple-refresh { min-height: 44px; padding: 9px 16px; font-size: 14px; }
+body.visual-debug .imu-controls .task-result { max-width: none; margin: 0; font-size: 12px; }
+body.visual-debug #workflow-imu > .imu-footnote { margin: 5px 0 8px; font-size: 10px; }
+body.visual-debug #imu-details { margin-top: 8px; }
+body.visual-debug #imu-details .imu-current { display: block; max-width: 520px; margin: 12px auto 18px; }
+body.visual-debug #imu-details .imu-plot { margin: 12px 0; }
+body.visual-debug details > summary { cursor: pointer; }
+body.visual-debug #imu-details > summary,
+body.visual-debug .visual-details > summary,
+body.visual-debug .placement-details > summary { padding: 5px 0; color: var(--visual-muted); font-size: 11px; }
+
+body.visual-debug .joint-map { display: block; width: 100%; height: 360px; }
+body.visual-debug .joint-map [role="button"],
+body.visual-debug .joint-map [data-joint-id],
+body.visual-debug .joint-map [data-servo-id],
+body.visual-debug .joint-map .joint-node { cursor: pointer; }
+body.visual-debug .joint-map [role="button"]:focus-visible { outline: none; filter: drop-shadow(0 0 3px #e4aa05); }
+body.visual-debug .joint-select-summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px 18px;
+  margin: 9px 0 0;
+  color: var(--visual-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+body.visual-debug .joint-select-summary strong { color: var(--visual-ink); font-size: 14px; font-weight: 550; }
+body.visual-debug #servo-picker-groups,
+body.visual-debug .servo-picker-groups { display: none; }
+body.visual-debug details #servo-picker-groups,
+body.visual-debug details .servo-picker-groups { display: block; }
+body.visual-debug .servo-empty { margin: 7px 0 11px; padding: 7px 0; font-size: 11px; text-align: center; }
+
+body.visual-debug .battery-overview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 21px;
+  min-height: 320px;
+  margin: 0;
+  padding: 30px 0 12px;
+}
+body.visual-debug .battery-symbol {
+  flex: 0 0 auto;
+  width: 240px;
+  height: 100px;
+  padding: 7px;
+  border-width: 3px;
+  border-radius: 7px;
+}
+body.visual-debug .battery-symbol::after { top: 33px; right: -11px; width: 8px; height: 29px; }
+body.visual-debug .battery-symbol[data-state="unknown"] > .battery-fill,
+body.visual-debug .battery-symbol.unknown > .battery-fill { width: 0 !important; }
+body.visual-debug .battery-symbol[data-state="unknown"]::before,
+body.visual-debug .battery-symbol.unknown::before {
+  content: "?";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8ca1ae;
+  font-size: 45px;
+  font-weight: 400;
+  line-height: 1;
+}
+body.visual-debug .battery-reading { text-align: center; }
+body.visual-debug .battery-reading strong { font-size: 28px; font-weight: 550; }
+body.visual-debug .battery-reading p { margin-top: 3px; font-size: 13px; }
+body.visual-debug .battery-reading small { font-size: 11px; }
+body.visual-debug .battery-note { margin: 5px 0; text-align: center; font-size: 11px; }
+body.visual-debug .battery-config { justify-content: center; border: 0; padding-top: 0; margin: 12px 0; }
+
+body.visual-debug .workflow-tabs { gap: 6px; padding: 6px 14px calc(6px + env(safe-area-inset-bottom, 0px)); }
+body.visual-debug .workflow-tabs button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  min-height: 50px;
+  padding: 6px 4px;
+  font-size: 11px;
+  line-height: 1.3;
+}
+body.visual-debug .workflow-tabs button svg,
+body.visual-debug .workflow-tabs button .icon,
+body.visual-debug .workflow-tabs button span.svg { display: block; width: 20px; height: 20px; }
+body.visual-debug .workflow-tabs button .icon svg,
+body.visual-debug .workflow-tabs button span.svg svg { width: 100%; height: 100%; }
+body.visual-debug .workflow-tabs button.active { background: #edf4f8; }
+body.visual-debug .advanced-tools > summary { padding-top: 9px; padding-bottom: 9px; font-size: 11px; }
+
+@media (max-width: 560px) {
+  body.visual-debug > header { min-height: 54px; padding: 8px 14px; }
+  body.visual-debug .simple-home { padding: 12px 14px calc(78px + env(safe-area-inset-bottom, 0px)); }
+  body.visual-debug .live-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); padding-bottom: 10px; }
+  body.visual-debug .status-item { flex-direction: column; align-items: center; justify-content: flex-start; gap: 1px; padding: 0 3px; }
+  body.visual-debug .status-item label { font-size: 10px; }
+  body.visual-debug .status-item strong { font-size: 12px; }
+  body.visual-debug .visual-page-heading { margin-top: 13px; margin-bottom: 6px; }
+  body.visual-debug .visual-page-heading h1,
+  body.visual-debug h1.visual-page-heading { font-size: 20px; }
+  body.visual-debug .visual-stage,
+  body.visual-debug .install-photo,
+  body.visual-debug .joint-map { height: 300px; }
+  body.visual-debug .network-picture { height: 270px; }
+  body.visual-debug .picture-steps { gap: 12px 17px; font-size: 11px; }
+  body.visual-debug .picture-steps > * { gap: 4px; }
+  body.visual-debug .picture-steps svg,
+  body.visual-debug .picture-steps .icon { width: 21px; height: 21px; }
+  body.visual-debug .visual-action-row { gap: 8px; margin-top: 13px; }
+  body.visual-debug .visual-action-row button,
+  body.visual-debug .visual-action-row .route-button { padding: 9px 14px; font-size: 13px; }
+  body.visual-debug .imu-overview { padding-top: 12px; }
+  body.visual-debug .imu-panel-heading h1 { font-size: 20px; }
+  body.visual-debug #imu-pose-svg { height: 182px; }
+  body.visual-debug .tilt-values { gap: 10px; }
+  body.visual-debug .tilt-values strong,
+  body.visual-debug .tilt-values b,
+  body.visual-debug .tilt-values .numeric { margin-left: 5px; font-size: 25px; }
+  body.visual-debug .imu-plot canvas { height: 160px; }
+  body.visual-debug .imu-controls { gap: 7px 10px; }
+  body.visual-debug .imu-controls .task-result { font-size: 11px; }
+  body.visual-debug .joint-select-summary { gap: 4px 11px; font-size: 11px; }
+  body.visual-debug .joint-select-summary strong { font-size: 13px; }
+  body.visual-debug .battery-overview { min-height: 300px; gap: 19px; padding-top: 26px; }
+  body.visual-debug .workflow-tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; padding-left: 8px; padding-right: 8px; }
+}

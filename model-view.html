@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>XGO Duck · R1 关节教学模型</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#edf2f4;color:#17323e;font:14px "Microsoft YaHei",system-ui,sans-serif}button,select,input{font:inherit}button,select{border:1px solid #bcccd1;border-radius:7px;background:white;padding:7px 10px;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button.active{background:#176b79;color:#fff;border-color:#176b79}main{height:100vh;min-height:480px;display:grid;grid-template-rows:auto minmax(260px,1fr) auto}header{padding:12px 14px;background:#fff;border-bottom:1px solid #d8e2e6}h1{font-size:16px;margin:0 0 6px}.line{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.version{color:#5e757f;font-size:11px;margin:5px 0 0}.warning{margin:7px 0 0;color:#89520a;font-size:12px;line-height:1.5}#viewport{position:relative;overflow:hidden;min-height:260px}canvas{display:block;width:100%;height:100%;touch-action:none}#help{position:absolute;bottom:9px;left:12px;background:#ffffffdd;padding:5px 8px;border-radius:6px;font-size:11px;pointer-events:none}#status{position:absolute;top:10px;left:12px;background:#ffffffdf;padding:6px 9px;border-radius:6px;font-size:12px;max-width:95%}#status.error{color:#942e21}footer{background:white;border-top:1px solid #d8e2e6;padding:10px 14px;font-size:12px}.note{line-height:1.5;margin:6px 0;color:#57707b}#angle{width:140px;vertical-align:middle}#description{font-weight:600;margin-bottom:8px}#part{max-width:190px}#viewport:focus-visible{outline:3px solid #1c899a}@media(max-width:480px){header,footer{padding:9px}.line{gap:4px}button,select{padding:6px 8px;font-size:12px}main{min-height:570px}h1{font-size:14px}}
+  </style>
+  <script type="importmap">{"imports":{"three":"./model-assets/vendor/build/three.module.js"}}</script>
+</head>
+<body><main>
+  <header>
+    <h1>XGO Duck · 关节定位与小幅教学演示</h1>
+    <div class="line"><label for="joint">舵机</label><select id="joint" aria-label="选择舵机 ID"></select><button id="home">复位模型与视角</button><button id="markers" class="active">关节标记：开</button></div>
+    <div class="line" style="margin-top:6px"><label for="pose">坐标参考</label><select id="pose" aria-label="选择坐标参考姿态"><option value="q-zero">MJCF q=0（待实物对照）</option><option value="runtime-home">runtime 默认站姿（纯模型）</option></select></div>
+    <p class="version">R1 教学源 · 2026-10-10 · 官方 15 连杆网格 / 14 已知关节轴 · 不是另一个聊天正在重建的加工实体版</p>
+    <p class="warning">这里只改变屏幕模型，绝不发送舵机命令。模型姿态不代表实物零位；实物方向、线束和安全行程仍需逐颗核实。</p>
+  </header>
+  <div id="viewport" aria-label="可旋转缩放的真实 R1 模型" tabindex="0"><div id="status" role="status">正在加载本地模型…</div><div id="help">拖动旋转 · 滚轮 / 双指缩放 · 点击部件或关节点定位 ID</div></div>
+  <footer>
+    <div id="description">先选择一个舵机 ID</div>
+    <div class="line"><button id="animate" disabled>仅模型演示 ±3°</button><button id="zero" disabled>恢复教学姿态</button><label for="angle">模型偏角</label><input id="angle" type="range" min="-3" max="3" value="0" step="0.1" disabled><output id="angle-value">0.0°</output></div>
+    <p class="note" id="joint-note">橙色为所选关节对应的连杆，淡橙色为随动子链；蓝色轴线来自同版 MJCF 转轴，正方向仅属于模型坐标。</p>
+    <p class="note" id="pose-note">q=0 是已核对的 MJCF 坐标基准。尚无你实物的零位确认，不能只按投影图保存零点；须先对照装配定位和实际舵盘安装。</p>
+    <p class="version" id="chain-note"></p>
+    <div class="line"><label for="part">分件查看</label><select id="part" aria-label="选择模型连杆"></select><button id="hide">隐藏所选</button><button id="isolate">只看所选</button><button id="restore">显示全部隐藏件（0）</button></div>
+    <p class="version">ID34 嘴部在训练模型中没有独立网格和转轴：只能显示头部关联区域，不演示其开合。数字模型不等于装配、强度、零位或实物验收。</p>
+  </footer>
+</main><script type="module" src="./model-view.js"></script></body>
+</html>

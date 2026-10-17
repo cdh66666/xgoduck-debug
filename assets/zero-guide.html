@@ -1,0 +1,11 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>XGO Duck 零位姿势图</title><link rel="stylesheet" href="zero-guide.css?v=groups2"><script type="importmap">{"imports":{"three":"../model-assets/vendor/build/three.module.js"}}</script></head><body class="duck-dark">
+<header class="zero-heading"><strong id="zero-title">零位姿势</strong><button id="zero-whole" type="button" aria-pressed="false">整机零位</button><select id="zero-joint" aria-label="选择零位参考关节"></select></header>
+<div class="zero-legend"><span class="fixed">灰色：托住不动</span><span class="align">橙色：摆到图中位置</span></div>
+<main class="zero-views">
+ <figure class="zero-view"><figcaption class="view-title" id="zero-view-main-title">主视</figcaption><div class="viewport" id="zero-main-viewport"><svg class="annotation" id="zero-main-annotation"></svg></div></figure>
+</main>
+<div id="zero-mouth" class="mouth-reference" hidden><p><b>轻闭合嘴巴，别再压紧。</b></p><small>读取此时编码值作嘴34零位。</small></div>
+<p class="zero-tip" id="zero-tip" role="status">加载同版模型…</p>
+<div class="zero-controls"><button id="zero-previous">上一颗</button><button id="zero-next">下一颗</button><button id="zero-reset">复位视角</button></div>
+<footer id="zero-scope">官方模型 0° 参考；对准实物后再记录。拖动可转，滚轮可放大。</footer>
+<script type="module" src="zero-guide.js?v=groups2"></script></body></html>

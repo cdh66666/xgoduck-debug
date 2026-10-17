@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "serial": "YOUR_UNO_Q_SERIAL",
+  "key": "REPLACE_WITH_YOUR_EXISTING_64_HEX_CALIBRATION_KEY"
+}
