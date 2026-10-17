@@ -57,6 +57,15 @@
         "assets/wireless-calibration.js": "553df8a25c8e2d9281d772a191136c879f7fd25387a182f18b8a779b8a6434bd",
         "index.html": "c98bfd02291f7f2992db131b9ad65d37b1fce2734c175078837e7f2d1a8e6ae5"
       }
+    },
+    {
+      "manifest_sha256": "9e0cd28a21b462b9c9adec8a749d1f2dc75f3687ee146caaaacc95f188f9c810",
+      "changed_sources": {},
+      "ui_sources": {
+        "assets/imu-model.js": "00e10128a3885c7d733089de9454732cb1666d721f609f6225d0a28e48439bf9",
+        "assets/imu-model.html": "16c79d4bc1d2584dafd0aa09545a19ae41b8be8b75fb6bf3370f2f3ac2c8465a",
+        "index.html": "6ca284f5705ccd700b333e8fcc454b0fb16087f5e5a3639e87e40b57b3183fdd"
+      }
     }
   ],
   "device_data_included": false,
@@ -99,13 +108,17 @@
       "sha256": "eb5c0166ce6a91c4916576e2f90f5422adff531b0944cdf8d3aba8ff5d7f009d"
     },
     "assets/imu-model.html": {
-      "source_sha256": "58c744cb140fe16c406b4e973142d7d47f237ba9a8a609393c50f1fde3224438",
-      "sha256": "58c744cb140fe16c406b4e973142d7d47f237ba9a8a609393c50f1fde3224438"
+      "source_sha256": "16c79d4bc1d2584dafd0aa09545a19ae41b8be8b75fb6bf3370f2f3ac2c8465a",
+      "sha256": "c4b2efbea22d09d8afbc8e880fa7215a2f2a12c14c23c865e8e3952a00902434",
+      "publish_changes": [
+        "normalize CRLF source lines to LF for portable checkout"
+      ]
     },
     "assets/imu-model.js": {
-      "source_sha256": "9ecee2c20163ff714932a93c17bdf6971d30b8273930f55ed79fe4fd94563a48",
-      "sha256": "3f66606b52dc81fd2caae491afdbd9b87e82ab38724b8cbc37cdf8331cce9875",
+      "source_sha256": "00e10128a3885c7d733089de9454732cb1666d721f609f6225d0a28e48439bf9",
+      "sha256": "d0ffb75cf54afa74ec9feaeb2253bca0b7c0fd8db2d7ab60d7f829dcf23ef3be",
       "publish_changes": [
+        "normalize CRLF source lines to LF for portable checkout",
         "omit device-specific historical IMU bias"
       ]
     },
@@ -1016,8 +1029,8 @@
       "sha256": "ff20a5b32a06ba0ba10b6756d83b81254e841937fe5ff297f8e5cfe7ef29c08a"
     },
     "index.html": {
-      "source_sha256": "c98bfd02291f7f2992db131b9ad65d37b1fce2734c175078837e7f2d1a8e6ae5",
-      "sha256": "207f8bdc718a31a8a5cbb7b58ad30e026d83c53f22be61fe35450d39a1be1301",
+      "source_sha256": "6ca284f5705ccd700b333e8fcc454b0fb16087f5e5a3639e87e40b57b3183fdd",
+      "sha256": "4a67c10103b1002e16c56172ada490872b32ee4e47c805e784c43a16b30d07c5",
       "publish_changes": [
         "link upstream assembly PDF instead of bundling it"
       ]

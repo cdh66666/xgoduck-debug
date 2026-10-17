@@ -52,6 +52,9 @@ def portable(relative, raw, serial):
     if not relative.endswith(('.py', '.html', '.js', '.json')):
         return raw, changes
     source = raw.decode('utf-8-sig')
+    if relative in ('assets/imu-model.js', 'assets/imu-model.html') and '\r\n' in source:
+        source = source.replace('\r\n', '\n')
+        changes.append('normalize CRLF source lines to LF for portable checkout')
     if relative.endswith('.py') and (repr(serial) in source or json.dumps(serial) in source):
         source = source.replace(repr(serial), 'DEVICE_SERIAL').replace(json.dumps(serial), 'DEVICE_SERIAL')
         statement = 'from device_config import DEVICE_SERIAL'

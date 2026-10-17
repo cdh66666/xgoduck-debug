@@ -480,11 +480,13 @@ export function calibrationHighlightIds(message){
 }
 
 async function boot(){
-  document.body.dataset.uiRevision='2026-10-17-imu-display-r6';
+  document.body.dataset.uiRevision='2026-10-17-imu-live-r7';
   const get=id=>document.getElementById(id),tracker=new ImuPoseTracker(),angleHistory=new PoseAngleHistory(),displayHistory=new DisplayPoseHistory();
-  let playback=null,shownPose=null;
+  let playback=null,shownPose=null,liveFollower=new ObservedPoseTween(),livePose=null,
+    liveForceReset=true,lastLiveSourceUs=null;
   // The operator chose a fixed 0.2 s display delay; stored older choices are ignored.
-  const displayDelayMs=200;
+  // Chart shares the 40 FPS render clock; a 33 ms gate would still draw every other frame.
+  const displayDelayMs=200,displayFps=40,chartFrameMs=1000/displayFps;
   let pending=null,pendingNative=null,nativeTracker=null,kinematics=null,modelShift=null,heading=null,headingState=null;
   let model=null,loaded=false,scene,camera,renderer,controls,center,size,THREE,graphics=null;
   let highlightedIds=[],currentTracker=null,pendingCurrent=null,currentRows=[],currentPaintKey='';
@@ -519,7 +521,7 @@ async function boot(){
   const showBufferChoice=()=>{
     document.body.dataset.playbackDelayMs=String(displayDelayMs);
     const history=get('imu-angle-history');
-    if(history)history.title='记录实际显示的历史姿态，目标20FPS；显示缓冲'+(displayDelayMs/1000).toFixed(1)+'秒，仅在已收到的真实端点间插值。真实源缺口超过300ms冻结并断线。';
+    if(history)history.title='曲线按接收时轴延后'+(displayDelayMs/1000).toFixed(1)+'秒显示历史姿态，目标'+displayFps+'FPS；模型和读数跟随最新收到的姿态。传输到达时间不能证明实物姿态仍新鲜。曲线仅在已收到的真实端点间插值，真实源缺口超过300ms断线。';
   };
   showBufferChoice();
   const applyNative=result=>{
@@ -563,17 +565,28 @@ async function boot(){
     if(result.sourceEpochChanged||result.changed&&result.pose?.gyroCalibrationChanged){
       playback?.reset(result.sourceEpochChanged?'source-epoch-changed':'gyro-reference-changed');
       displayHistory.reset();shownPose=null;chartDirty=true;document.body.dataset.chartSamples='0';
+      liveFollower.freeze();liveForceReset=true;lastLiveSourceUs=null;
       lastStableProjection={roll:null,yaw:null};
     }
     playback?.setPaused(result.mode==='paused'||document.hidden||graphics?.state==='lost');
     if(result.changed&&result.mode==='live'&&source&&heading){
-      headingState=heading.observe(result.pose,source,performance.now());
+      const observedAt=performance.now();
+      headingState=heading.observe(result.pose,source,observedAt);
       if(headingState?.mode==='live'&&headingState.quaternion)displayPose={...result.pose,quaternion:headingState.quaternion};
+      // Only adjacent *accepted* MCU timestamps within 100 ms may be smoothed.
+      // Skipped sequence numbers alone do not break continuity; a source gap
+      // cannot be filled with a tweened, unobserved path.
+      const sourceStep=lastLiveSourceUs===null?null:(source.mcu_imu_us-lastLiveSourceUs)>>>0;
+      const continuous=!liveForceReset&&sourceStep!==null&&sourceStep>0&&sourceStep<=100000&&
+        result.pose?.gravityReacquired!==true;
+      liveFollower.observe(displayPose,observedAt,continuous,source.mcu_imu_us);
+      liveForceReset=false;lastLiveSourceUs=source.mcu_imu_us;
       const chartPose=ObservedPoseTween.pose(ObservedPoseTween.tilt(displayPose),displayPose.roll);
       if(angleHistory.append(chartPose,source,headingState?.segment)){
         document.body.dataset.rawSamples=String(angleHistory.rows.length);document.body.dataset.rawSourceUs=String(source.mcu_imu_us);
       }
     }else if(result.mode!=='live'){
+      liveFollower.freeze();liveForceReset=true;lastLiveSourceUs=null;
       angleHistory.markGap();if(heading)headingState=heading.hold(result.reason);
     }
     document.body.dataset.headingReference=headingState?.reference||'startup';
@@ -588,7 +601,7 @@ async function boot(){
       if(get('imu-model-yaw-zero'))get('imu-model-yaw-zero').disabled=true;
       document.body.dataset.mode=graphics.state==='lost'?'graphics-lost':'waiting';
       text('imu-model-state',graphics.state==='lost'?'图形暂停，等待恢复':'画面已恢复 · 保留姿态');
-      document.body.dataset.poseHistorical=String(!!shownPose);requestRender();return;
+      document.body.dataset.poseHistorical=String(!!livePose&&result.mode!=='live');requestRender();return;
     }
     document.body.dataset.mode=result.mode;
     document.body.dataset.fusion=result.pose?.fused?'gravity-ekf-v1':'acceleration-only';
@@ -600,7 +613,7 @@ async function boot(){
     else if(result.mode!=='paused'&&hasReceivedLive)lastReceiveGapAt=receiveNow;
     text('imu-receive-state',result.mode==='paused'?'当前接收已暂停':
       !hasReceivedLive?'等待当前接收':receiveNow-lastReceiveGapAt<receiveRecoveryMs?
-      '近5秒接收有间断 · 保留历史姿态':'当前接收正常');
+      '近5秒接收有间断 · 保留最近姿态':'当前接收正常');
     if(source&&result.changed){
       const recent=angleHistory.rows.filter(row=>row.ms>=angleHistory.elapsed-2000);
       const span=recent.length>1?recent.at(-1).ms-recent[0].ms:0;
@@ -608,9 +621,9 @@ async function boot(){
       text('imu-sample-quality',(rate===null?'—':rate.toFixed(0))+' 采样/秒 · '+result.sourceAgeMs.toFixed(0)+' ms');
       document.body.dataset.sampleRate=rate===null?'':rate.toFixed(1);
     }
-    text('imu-history-state','显示姿态曲线 · 历史端点插值');
+    text('imu-history-state','曲线 · 相对接收延后0.2秒');
     if(get('imu-receive-state'))get('imu-receive-state').title=result.reason;
-    document.body.dataset.poseHistorical=String(!!shownPose);
+    document.body.dataset.poseHistorical=String(!!livePose&&result.mode!=='live');
     if(get('imu-model-yaw-zero'))get('imu-model-yaw-zero').disabled=result.mode!=='live'||!headingState?.projectionObservable||nearVerticalProjection(result.pose);
     document.body.dataset.live=String(result.mode==='live');
     if(result.mode==='paused'){displayHistory.reset();chartDirty=true;document.body.dataset.chartSamples='0';stopRender();return;}
@@ -622,6 +635,12 @@ async function boot(){
     const zeroed=heading?.zero(now);if(!zeroed)return;
     // A changed reference cannot interpolate through the previous reference.
     headingState=zeroed;playback?.reset('heading-zero');displayHistory.reset();shownPose=null;chartDirty=true;document.body.dataset.chartSamples='0';
+    liveFollower=new ObservedPoseTween();liveForceReset=true;lastLiveSourceUs=null;
+    if(tracker.pose&&zeroed.quaternion){
+      liveFollower.observe({...tracker.pose,quaternion:zeroed.quaternion},now,false,tracker.sourceUs);
+      livePose=liveFollower.sample(now);liveForceReset=false;lastLiveSourceUs=tracker.sourceUs;
+      if(model&&livePose)model.quaternion.fromArray(livePose.quaternion);
+    }
     lastStableProjection.yaw=null;
     angleHistory.markGap(true);
     document.body.dataset.headingReference='user-zero';
@@ -655,7 +674,7 @@ async function boot(){
     nativeTracker=new modules[3].NativePoseTracker();
     currentTracker=new modules[6].MotorCurrentTracker();
     heading=new modules[4].RelativeHeading();
-    playback=new modules[5].DelayedPosePlayback({fps:20,delayMs:displayDelayMs,maxGapMs:300});
+    playback=new modules[5].DelayedPosePlayback({fps:displayFps,delayMs:displayDelayMs,maxGapMs:300});
     try{
       const reference=await Promise.resolve({ok:false});
       if(reference.ok)tracker.setGyroReference(await reference.json());
@@ -739,16 +758,33 @@ async function boot(){
       if(pending){apply(tracker.consume(pending,performance.now()),pending.status);pending=null;}
       if(pendingNative){applyNative(nativeTracker.consume(pendingNative,performance.now()));pendingNative=null;}}
     let renderRequest=null,drawRequested=false,inRender=false,nextDrawAt=0;
+    // Read-only diagnostics: one compact summary per second, with no extra draw.
+    let perfStartedAt=performance.now(),perfDraws=0,perfChart=[],perfWebgl=[],perfCallbacks=[];
+    const perfMetric=samples=>{
+      if(!samples.length)return {count:0,meanMs:null,p95Ms:null,maxMs:null};
+      const sorted=samples.slice().sort((a,b)=>a-b);
+      return {count:sorted.length,meanMs:Number((samples.reduce((a,b)=>a+b,0)/samples.length).toFixed(2)),
+        p95Ms:Number(sorted[Math.ceil(sorted.length*.95)-1].toFixed(2)),maxMs:Number(sorted.at(-1).toFixed(2))};
+    };
+    function recordRenderPerf(startedAt){
+      const now=performance.now();perfCallbacks.push(now-startedAt);
+      const windowMs=now-perfStartedAt;
+      if(windowMs<1000)return;
+      document.body.dataset.poseRenderPerf=JSON.stringify({windowMs:Number(windowMs.toFixed(1)),
+        actualFps:Number((perfDraws*1000/windowMs).toFixed(1)),
+        callback:perfMetric(perfCallbacks),chart:perfMetric(perfChart),webgl:perfMetric(perfWebgl)});
+      perfStartedAt=now;perfDraws=0;perfChart=[];perfWebgl=[];perfCallbacks=[];
+    }
     stopRender=()=>{if(renderRequest!==null)clearTimeout(renderRequest);renderRequest=null;};
     function render(){
       renderRequest=null;const now=performance.now();
-      if(now+.01<nextDrawAt){requestRender();return;}
+      if(now+.01<nextDrawAt){recordRenderPerf(now);requestRender();return;}
       let continuePlayback=false,cameraChanged=false;
       inRender=true;
       try{
         apply(tracker.tick(now));
         if(document.hidden||!graphics.canDraw()||tracker.mode==='paused'||!viewportVisible){renderCount=0;renderStart=null;return;}
-        const frame=playback.step(now),draw=drawRequested||!!frame;drawRequested=false;
+        const frame=playback.step(now),draw=drawRequested||!!frame||liveFollower.active&&tracker.mode==='live';drawRequested=false;
         if(frame){
           document.body.dataset.playbackState=frame.state;
           document.body.dataset.playbackClock=frame.scheduleClock||'waiting';
@@ -756,14 +792,8 @@ async function boot(){
           document.body.dataset.playbackDelayMs=String(frame.nominalDelayMs);
           document.body.dataset.playbackSourceMs=frame.sourceTimeMs===null?'':frame.sourceTimeMs.toFixed(1);
           document.body.dataset.playbackKnownAgeMs=frame.knownEndpointAgesMs?Math.max(...frame.knownEndpointAgesMs).toFixed(1):'';
-          const bufferSeconds=(frame.nominalDelayMs/1000).toFixed(1);
-          text('imu-model-state',frame.state==='buffering'&&!playback.hasPlayed?
-            '准备显示 · 填充'+bufferSeconds+'秒缓冲':'历史姿态 · 固定显示缓冲'+bufferSeconds+'秒');
-          get('imu-model-state').title=frame.state==='gap'?'真实源数据缺口超过300ms，未补造这段运动':frame.state==='underflow'?'历史缓冲已用完，等待新的真实端点':'按已收到端点插值显示；缓冲是刻意增加的延迟，不是原始采样或总网络延迟';
           if(frame.quaternion){
             shownPose=ObservedPoseTween.pose(frame.quaternion,shownPose?.roll??tracker.pose?.roll??0,shownPose?.headingDeg??null);
-            model.quaternion.fromArray(shownPose.quaternion);
-            document.body.dataset.poseHistorical='true';
             if(displayHistory.append(shownPose,frame)){
               chartDirty=true;document.body.dataset.chartSamples=String(displayHistory.rows.length);
               document.body.dataset.chartKind='display-history-interpolation';
@@ -774,18 +804,26 @@ async function boot(){
           }
           continuePlayback=playback.rows.length>0&&frame.state!=='underflow';
         }
-        if(shownPose&&now-lastReadingsAt>=100){
-          const visual=shownPose,nearVertical=nearVerticalProjection(visual);
+        const sampled=liveFollower.sample(now);
+        if(sampled?.quaternion){
+          livePose=sampled;model.quaternion.fromArray(sampled.quaternion);
+          document.body.dataset.poseHistorical=String(tracker.mode!=='live');
+        }
+        continuePlayback=continuePlayback||liveFollower.active&&tracker.mode==='live';
+        // Keep the main heading stable through short transport stalls. The
+        // separate latched receive bar reports interruptions, and the model
+        // stops advancing as soon as the 150 ms input gate expires.
+        text('imu-model-state',livePose?'模型与读数 · 最近接收姿态':'准备模型数据');
+        get('imu-model-state').title=tracker.mode==='live'&&tracker.lastNew!==null?
+          '模型与读数来自最新收到且通过现有150ms输入门槛的IMU帧；已知年龄约'+Math.max(0,now-tracker.lastNew).toFixed(0)+'ms，未计板到电脑的传输，不能证明实物当前姿态；模型最多使用40ms显示预测，不新增采样；曲线相对接收延后0.2秒':
+          '接收已失鲜，模型冻结在上次收到的姿态；曲线仍按接收时轴延后0.2秒';
+        if(livePose&&now-lastReadingsAt>=1000/displayFps){
+          const visual=livePose,nearVertical=nearVerticalProjection(visual);
           const lowConfidence=nearVertical?unstableEulerProjection(visual.quaternion):null;
-          const latest=displayHistory.rows.at(-1);
-          const sameFrame=frame?.state==='playing'&&latest?.ms===frame.sourceTimeMs;
-          const reading=(axis,value,observable,stable,estimate)=>sameFrame?
-            {value:latest.values[axis],quality:latest.quality[axis]}:
-            projectedAngleReadout(value,observable,nearVertical,stable,estimate);
-          const roll=reading(0,visual.roll,visual.rollObservable,
-            displayHistory.stable[0]??lastStableProjection.roll,lowConfidence?.roll);
-          const yaw=reading(2,visual.headingDeg,visual.headingObservable,
-            displayHistory.stable[2]??lastStableProjection.yaw,lowConfidence?.yaw);
+          const roll=projectedAngleReadout(visual.roll,visual.rollObservable,nearVertical,
+            lastStableProjection.roll,lowConfidence?.roll);
+          const yaw=projectedAngleReadout(visual.headingDeg,visual.headingObservable,nearVertical,
+            lastStableProjection.yaw,lowConfidence?.yaw);
           if(roll.quality==='current')lastStableProjection.roll=roll.value;
           if(yaw.quality==='current')lastStableProjection.yaw=yaw.value;
           const label=reading=>reading.value===null?(nearVertical?'≈未定义':'—'):
@@ -796,22 +834,25 @@ async function boot(){
             (nearVertical?' · 近竖直：≈为不稳定投影，“上次”为历史值':''));
           get('imu-model-roll').dataset.quality=roll.quality;get('imu-model-yaw').dataset.quality=yaw.quality;
           get('imu-model-roll').title=roll.quality==='historical'?'接近竖直，显示上次可靠投影，不代表当前角度':
-            roll.quality==='unstable'?'接近竖直，当前投影对小扰动敏感':'横滚角度来自历史显示姿态';
+            roll.quality==='unstable'?'接近竖直，当前投影对小扰动敏感':'横滚角度来自最新收到的模型姿态';
           get('imu-model-yaw').title=yaw.quality==='historical'?'接近竖直，显示上次可靠相对航向，不代表当前角度':
-            yaw.quality==='unstable'?'接近竖直，相对航向投影不稳定且陀螺积分会漂移':'历史显示姿态的相对航向；陀螺积分仍会漂移';
-          document.body.dataset.headingMode=yaw.quality==='current'?'historical-relative':yaw.quality==='unstable'?'unstable-relative':
+            yaw.quality==='unstable'?'接近竖直，相对航向投影不稳定且陀螺积分会漂移':'最新收到模型姿态的相对航向；陀螺积分仍会漂移';
+          document.body.dataset.headingMode=yaw.quality==='current'?'latest-relative':yaw.quality==='unstable'?'unstable-relative':
             yaw.quality==='historical'?'last-observed-relative':'unavailable';
           document.body.dataset.yaw=yaw.quality==='current'||yaw.quality==='unstable'?yaw.value.toFixed(3):'';
           get('imu-model-yaw-zero').disabled=tracker.mode!=='live'||!headingState?.projectionObservable||nearVerticalProjection(tracker.pose);
-          get('imu-model-yaw-zero').title='仅将当前新鲜观测朝向设为显示零度，并重新填充显示缓冲';
+          get('imu-model-yaw-zero').title='仅将当前新鲜观测朝向设为模型与曲线的显示零度；历史曲线重新填充0.2秒';
           document.body.dataset.roll=roll.quality==='current'||roll.quality==='unstable'?roll.value.toFixed(3):'';
           document.body.dataset.pitch=visual.pitch.toFixed(3);lastReadingsAt=now;
         }
         cameraChanged=controls.update();if(!draw&&!cameraChanged)return;
-        if(chartDirty&&now-lastChartAt>=50){
+        if(chartDirty&&now-lastChartAt>=chartFrameMs){
+          const chartStartedAt=performance.now();
           if(drawPoseAngleChart(get('imu-angle-chart'),displayHistory,devicePixelRatio)){chartDirty=false;lastChartAt=now;}
+          perfChart.push(performance.now()-chartStartedAt);
         }
-        renderer.render(scene,camera);nextDrawAt=now+50;
+        const webglStartedAt=performance.now();renderer.render(scene,camera);
+        perfWebgl.push(performance.now()-webglStartedAt);perfDraws++;nextDrawAt=now+1000/displayFps;
         if(renderer.getContext().isContextLost()){graphics.lost();return;}
         renderCount++;
         if(renderStart===null)renderStart=now;
@@ -821,7 +862,7 @@ async function boot(){
           if(fps<16&&renderer.getPixelRatio()>1){renderer.setPixelRatio(1);resize();}
           renderCount=1;renderStart=now;
         }
-      }finally{inRender=false;}
+      }finally{inRender=false;recordRenderPerf(now);}
       if(continuePlayback||cameraChanged||drawRequested)requestRender();
     }
     requestRender=()=>{
