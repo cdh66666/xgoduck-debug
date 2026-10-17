@@ -44,9 +44,9 @@ python -m venv .venv
 发布内容不包含训练模型、CAD 工程、工具链、历史候选包、调试日志、私钥或真实零位。源代码与发布调整记录见 `SOURCE_MANIFEST.json`。需要从原工作目录更新时：
 
 ```powershell
-python tools/sync_source.py --source <servo-debug目录> --approved-update <前一已批准增量清单.json> --approved-update <本次已批准增量清单.json>
+python tools/sync_source.py --source <servo-debug目录> --approved-update <首份已发布增量清单.json> ... --approved-update <本次增量清单.json>
 ```
 
-该命令按清单复制所需文件并做少量便携化处理，不读取或复制私钥内容，不操作硬件。
+已发布的增量清单须按 `SOURCE_MANIFEST.json` 中的顺序全部提供；本次清单须绑定当前 `SOURCE_MANIFEST.json` 的 SHA256 和所改文件的旧源 SHA256。该命令按清单复制所需文件并做少量便携化处理，不读取或复制私钥内容，不操作硬件。
 
 上游模型、组装说明与第三方库见 [THIRD_PARTY.md](THIRD_PARTY.md)。

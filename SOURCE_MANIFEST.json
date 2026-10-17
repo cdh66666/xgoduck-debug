@@ -47,6 +47,16 @@
         "assets/workflow.js": "41fddf83b388fb5d3966d3b39c77d1b6328ac1a279f766d4cf16fead6de0db96",
         "index.html": "b25f51523215b8e84e75c281f82ab904c378f44bcf5b52ac33bc1574b30911ed"
       }
+    },
+    {
+      "manifest_sha256": "ea4534d59a48199c1a3e2a9d372143b8208a663c2dbca8d60496c6c0c3982f2c",
+      "changed_sources": {},
+      "ui_sources": {
+        "assets/imu-model.js": "9ecee2c20163ff714932a93c17bdf6971d30b8273930f55ed79fe4fd94563a48",
+        "assets/imu-model.html": "58c744cb140fe16c406b4e973142d7d47f237ba9a8a609393c50f1fde3224438",
+        "assets/wireless-calibration.js": "553df8a25c8e2d9281d772a191136c879f7fd25387a182f18b8a779b8a6434bd",
+        "index.html": "c98bfd02291f7f2992db131b9ad65d37b1fce2734c175078837e7f2d1a8e6ae5"
+      }
     }
   ],
   "device_data_included": false,
@@ -89,12 +99,12 @@
       "sha256": "eb5c0166ce6a91c4916576e2f90f5422adff531b0944cdf8d3aba8ff5d7f009d"
     },
     "assets/imu-model.html": {
-      "source_sha256": "948bb53d542311cd99f1b3f8e30ee8e24975073bd4fbabc4b9d24c40a2804aa9",
-      "sha256": "948bb53d542311cd99f1b3f8e30ee8e24975073bd4fbabc4b9d24c40a2804aa9"
+      "source_sha256": "58c744cb140fe16c406b4e973142d7d47f237ba9a8a609393c50f1fde3224438",
+      "sha256": "58c744cb140fe16c406b4e973142d7d47f237ba9a8a609393c50f1fde3224438"
     },
     "assets/imu-model.js": {
-      "source_sha256": "5070d8ae01a706f89b69c7e94701ee891b1636154a8eff2e3f8d6041db4bd942",
-      "sha256": "98610ab1363435d88e6608082711329a67871d2aa34e2df4fb8dcb9076dd977b",
+      "source_sha256": "9ecee2c20163ff714932a93c17bdf6971d30b8273930f55ed79fe4fd94563a48",
+      "sha256": "3f66606b52dc81fd2caae491afdbd9b87e82ab38724b8cbc37cdf8331cce9875",
       "publish_changes": [
         "omit device-specific historical IMU bias"
       ]
@@ -162,8 +172,8 @@
       "sha256": "d956e26c045862ba57b4bf11289f83d9f2a9226dbc1392c56edc52abacb6691b"
     },
     "assets/wireless-calibration.js": {
-      "source_sha256": "fdbd0689157a8f3293a5159eeae09df2998e3f3e00baff86ba8ea3a5299304ff",
-      "sha256": "844f92ffff9adab8eea2e4cab4fd0a51481835091a46ffbb2d14bc82e2964e35",
+      "source_sha256": "553df8a25c8e2d9281d772a191136c879f7fd25387a182f18b8a779b8a6434bd",
+      "sha256": "b04d6e063a8c636ad8b3d99ff7b2959634e0de9f1f2c99bb4ca0ebeba0f96dab",
       "publish_changes": [
         "use backend-audited configured target pairs; preserve reference identity and movement bounds"
       ]
@@ -1006,8 +1016,8 @@
       "sha256": "ff20a5b32a06ba0ba10b6756d83b81254e841937fe5ff297f8e5cfe7ef29c08a"
     },
     "index.html": {
-      "source_sha256": "b25f51523215b8e84e75c281f82ab904c378f44bcf5b52ac33bc1574b30911ed",
-      "sha256": "322365866c3a7c8089a45c3096491b12e03ea13a026ce2d6cbd16dea8d59e0e9",
+      "source_sha256": "c98bfd02291f7f2992db131b9ad65d37b1fce2734c175078837e7f2d1a8e6ae5",
+      "sha256": "207f8bdc718a31a8a5cbb7b58ad30e026d83c53f22be61fe35450d39a1be1301",
       "publish_changes": [
         "link upstream assembly PDF instead of bundling it"
       ]

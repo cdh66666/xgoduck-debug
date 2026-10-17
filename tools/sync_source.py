@@ -126,7 +126,19 @@ def main():
     reviewed = json.loads(release.read_text(encoding='utf-8-sig'))
     board = source / 'reliability-release-candidate'
     published_path = target / 'SOURCE_MANIFEST.json'
-    published = json.loads(published_path.read_text(encoding='utf-8')) if published_path.is_file() else {}
+    published_raw = published_path.read_bytes() if published_path.is_file() else None
+    published = json.loads(published_raw) if published_raw is not None else {}
+    published_files = published.get('files', {})
+    published_approvals = published.get('approved_updates', [])
+    for relative, item in published_files.items():
+        if digest((target / relative).read_bytes()) != item['sha256']:
+            raise ValueError('Published file differs from its manifest: ' + relative)
+    update_inputs = [(path.resolve(strict=True), path.resolve(strict=True).read_bytes())
+                     for path in args.approved_update]
+    historical_count = len(published_approvals)
+    if ([digest(raw) for _, raw in update_inputs[:historical_count]]
+            != [item['manifest_sha256'] for item in published_approvals]):
+        raise ValueError('A published approved update is missing, reordered, or changed')
     expected_sources = dict(reviewed['firmware_after'])
     expected_sources.update({relative: item['sha256'] for relative, item in reviewed['board_files'].items()})
     approved_source_paths = {}
@@ -135,13 +147,28 @@ def main():
     expected_ui_sources = {}
     firmware_sha256 = reviewed['elf']['sha256']
     sequence_revision = None
-    for update_path in args.approved_update:
-        update_path = update_path.resolve(strict=True)
-        update_raw = update_path.read_bytes()
+    def verify_published_history():
+        if approved_updates != published_approvals:
+            raise ValueError('Replayed approved updates differ from published history')
+        for relative, expected in expected_sources.items():
+            previous = published_files.get('board/' + relative)
+            if previous is not None and previous['source_sha256'] != expected:
+                raise ValueError('Published board source differs from approved history: ' + relative)
+        for relative, expected in expected_pc_sources.items():
+            if published_files.get(relative, {}).get('source_sha256') != expected:
+                raise ValueError('Published PC source differs from approved history: ' + relative)
+        for relative, expected in expected_ui_sources.items():
+            if published_files.get(relative, {}).get('source_sha256') != expected:
+                raise ValueError('Published UI source differs from approved history: ' + relative)
+
+    for index, (update_path, update_raw) in enumerate(update_inputs):
+        if index == historical_count:
+            verify_published_history()
+        historical = index < historical_count
         update = json.loads(update_raw)
         if update.get('passed') is not True or not isinstance(update.get('changes'), dict):
             raise ValueError('Update manifest is not approved')
-        if 'base_source_manifest_sha256' in update and update['base_source_manifest_sha256'] != digest(published_path.read_bytes()):
+        if not historical and published_raw is not None and update.get('base_source_manifest_sha256') != digest(published_raw):
             raise ValueError('Published source manifest differs from approved update baseline')
         changed_sources = {}
         for relative, item in update['changes'].items():
@@ -177,7 +204,7 @@ def main():
                 raise ValueError('Approved PC source is outside the release file list: ' + relative)
             before = item.get('before_sha256')
             previous = published.get('files', {}).get(relative, {}).get('source_sha256')
-            if 'base_source_manifest_sha256' in update and before is not None and before != previous:
+            if not historical and before != previous:
                 raise ValueError('Approved PC source baseline disagrees: ' + relative)
             candidate = (update_path.parent / item['source']).resolve(strict=True)
             if not candidate.is_relative_to(update_path.parent) or digest(candidate.read_bytes()) != item['sha256']:
@@ -188,7 +215,7 @@ def main():
                 raise ValueError('Approved UI source is outside the release file list: ' + relative)
             before = item.get('before_sha256')
             previous = published.get('files', {}).get(relative, {}).get('source_sha256')
-            if before != previous:
+            if not historical and before != previous:
                 raise ValueError('Approved UI source baseline disagrees: ' + relative)
             candidate = (update_path.parent / item['source']).resolve(strict=True)
             if not candidate.is_relative_to(update_path.parent) or digest(candidate.read_bytes()) != item['sha256']:
@@ -211,6 +238,8 @@ def main():
         approved_updates.append({'manifest_sha256': digest(update_raw), 'changed_sources': changed_sources,
                                  'ui_sources': {relative: expected_ui_sources[relative]
                                                 for relative in update.get('ui_files', {})}})
+    if len(update_inputs) == historical_count:
+        verify_published_history()
     for relative, expected in expected_sources.items():
         mirror = board / relative
         if digest(mirror.read_bytes()) != expected:

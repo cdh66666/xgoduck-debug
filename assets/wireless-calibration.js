@@ -341,11 +341,16 @@
       if(armed||busy||operation||homeSession||homePending||homeStopRequested)return false;
       const check=assess(envelope,now(),receivedAt,id,group);
       const s=envelope?.status,r=runtime?.status,elapsed=now()-runtimeReceivedAt;
+      const home=s?.home;
+      const homeSettled=home?.active===false&&(
+        home.phase==='off'&&home.error===0||
+        home.phase==='fault'&&home.error===8&&home.release_verified===true&&
+        home.progress?.off_mask===(1<<IDS.length)-1&&home.progress?.enabled_mask===0);
       return statusOffVerified&&check.fresh&&check.allOff&&check.policyLocked&&check.idle&&
         envelope?.connection?.online===true&&envelope.connection.update_interlocked!==true&&
         s?.all_torque_off_verified===true&&s.torque_may_be_on===false&&s.mcu_state===1&&
         s.session_active===false&&s.armed?.active===false&&!s.operation&&
-        s.home?.active===false&&s.home.phase==='off'&&s.home.error===0&&
+        homeSettled&&
         s.sequence_calibration?.active===false&&s.sequence_calibration.phase==='off'&&s.sequence_calibration.error===0&&
         !runtime?.error&&!runtime?.paused&&r?.mode==='wireless_calibration'&&
         typeof statusRuntimeInstance==='string'&&!!statusRuntimeInstance&&r.app_instance_id===statusRuntimeInstance&&

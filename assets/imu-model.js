@@ -213,8 +213,15 @@ export class ObservedPoseTween {
     const [x,y,z,w]=q;
     const forward=[1-2*(y*y+z*z),2*(x*y+w*z)],headingObservable=Math.hypot(...forward)>=.01;
     const attitude=deriveAttitude([2*(w*y-x*z),-2*(y*z+w*x),2*(x*x+y*y)-1],previousRoll);
-    return {...attitude,roll:unwrapAngle(attitude.roll,previousRoll),quaternion:q,
-      headingDeg:headingObservable?unwrapAngle(Math.atan2(forward[1],forward[0])*180/Math.PI,previousHeading):null,headingObservable};
+    const nearVertical=nearVerticalProjection(attitude);
+    // Roll and projected heading can revolve many times while the quaternion
+    // hardly moves at the pitch pole. Keep the last reliable branch for the
+    // next observable frame; the readout marks the pole projection separately.
+    return {...attitude,roll:nearVertical?previousRoll:unwrapAngle(attitude.roll,previousRoll),
+      rollObservable:attitude.rollObservable&&!nearVertical,quaternion:q,
+      headingDeg:nearVertical?previousHeading:headingObservable?
+        unwrapAngle(Math.atan2(forward[1],forward[0])*180/Math.PI,previousHeading):null,
+      headingObservable:headingObservable&&!nearVertical};
   }
   observe(pose,now,continuous=true,sourceUs=null){
     if(!pose||!Number.isFinite(pose.roll)||!Number.isFinite(pose.pitch)||!Number.isFinite(now))return this.current;
@@ -261,19 +268,25 @@ export class ObservedPoseTween {
 // 3D quaternion is stable. This quality gate affects presentation only.
 export const nearVerticalProjection = pose => Number.isFinite(pose?.pitch)&&Math.abs(pose.pitch)>85;
 // Display-only low-confidence Euler projection; never feeds fusion, heading integration, or control.
-export function unstableEulerProjection(quaternion,previousRoll=null,previousYaw=null){
+export function unstableEulerProjection(quaternion){
   if(!Array.isArray(quaternion)||quaternion.length!==4||!quaternion.every(Number.isFinite))return {roll:null,yaw:null};
   const [x,y,z,w]=quaternion,gravityY=-2*(y*z+w*x),gravityZ=2*(x*x+y*y)-1;
   const forwardX=1-2*(y*y+z*z),forwardY=2*(x*y+w*z),degrees=180/Math.PI;
   const roll=Math.hypot(gravityY,gravityZ)>1e-6?Math.atan2(-gravityY,-gravityZ)*degrees:null;
   const yaw=Math.hypot(forwardX,forwardY)>1e-6?Math.atan2(forwardY,forwardX)*degrees:null;
-  return {roll:Number.isFinite(roll)?unwrapAngle(roll,previousRoll):null,
-    yaw:Number.isFinite(yaw)?unwrapAngle(yaw,previousYaw):null};
+  // These are one-frame, low-confidence projections. Unwrapping them invents
+  // full turns from tiny quaternion changes close to the singularity.
+  return {roll:Number.isFinite(roll)?roll:null,yaw:Number.isFinite(yaw)?yaw:null};
 }
 export const projectedAngleReadout = (value,observable,unstable,lastStable=null,lowConfidence=null) => {
+  if(unstable){
+    if(Number.isFinite(lastStable))return {value:lastStable,quality:'historical'};
+    return Number.isFinite(lowConfidence)?{value:lowConfidence,quality:'unstable'}:
+      {value:null,quality:'unknown'};
+  }
   const projected=Number.isFinite(value)&&observable!==false?value:
-    unstable&&Number.isFinite(lowConfidence)?lowConfidence:null;
-  return Number.isFinite(projected)?{value:projected,quality:unstable?'unstable':'current'}:
+    null;
+  return Number.isFinite(projected)?{value:projected,quality:'current'}:
     Number.isFinite(lastStable)?{value:lastStable,quality:'historical'}:{value:null,quality:'unknown'};
 };
 
@@ -296,6 +309,7 @@ export class PoseAngleHistory {
     const broken=this.gap||delta>100000;
     const headingBroken=broken||sequenceStep!==1||this.segment!==null&&segment!==this.segment;
     const nearVertical=nearVerticalProjection(pose);
+    if(nearVertical){this.previous[0]=null;this.previous[2]=null;}
     const angles=[nearVertical||pose.rollObservable===false?null:pose.roll,pose.pitch,nearVertical||pose.headingObservable===false?null:pose.headingDeg];
     const values=angles.map((value,i)=>Number.isFinite(value)?unwrapAngle(value,this.previous[i]):null);
     values.forEach((value,i)=>{if(value!==null)this.previous[i]=value;});
@@ -309,27 +323,34 @@ export class PoseAngleHistory {
 /* Display curve only: historical quaternion frames, never fabricated MCU samples. */
 export class DisplayPoseHistory {
   constructor(windowMs=10000){this.windowMs=windowMs;this.kind='display';this.reset();}
-  reset(){this.rows=[];this.elapsed=0;this.identity=null;this.previous=[null,null,null];this.stable=[null,null,null];this.gap=true;}
+  reset(){this.rows=[];this.elapsed=0;this.identity=null;this.previous=[null,null,null];this.stable=[null,null,null];this.gap=true;this.lastEndpointUs=null;}
   markGap(){this.gap=true;}
   append(pose,frame){
     if(frame?.state!=='playing'||!Number.isFinite(frame.sourceTimeMs)||!pose)return false;
     if(this.identity!==null&&this.identity!==frame.sourceEpoch)this.reset();
     const ms=frame.sourceTimeMs;
     if(this.rows.length&&ms<=this.rows.at(-1).ms)return false;
+    const endpoints=Array.isArray(frame.endpointSourceUs)?frame.endpointSourceUs:null;
+    const leftUs=endpoints?.[0],rightUs=endpoints?.[1];
+    const sourceStep=this.lastEndpointUs!==null&&uint32(leftUs)?(leftUs-this.lastEndpointUs)>>>0:0;
+    const observedSourceGap=sourceStep>300000&&sourceStep<0x80000000;
     const nearVertical=nearVerticalProjection(pose);
-    const lowConfidence=nearVertical?unstableEulerProjection(pose.quaternion,this.previous[0],this.previous[2]):null;
+    const lowConfidence=nearVertical?unstableEulerProjection(pose.quaternion):null;
     const projections=[projectedAngleReadout(pose.roll,pose.rollObservable,nearVertical,this.stable[0],lowConfidence?.roll),
       {value:pose.pitch,quality:Number.isFinite(pose.pitch)?'current':'unknown'},
       projectedAngleReadout(pose.headingDeg,pose.headingObservable,nearVertical,this.stable[2],lowConfidence?.yaw)];
     const values=projections.map((reading,i)=>Number.isFinite(reading.value)?
-      reading.quality==='historical'?reading.value:unwrapAngle(reading.value,this.previous[i]):null);
+      reading.quality==='current'?unwrapAngle(reading.value,this.previous[i]):reading.value:null);
     values.forEach((value,i)=>{
-      if(value!==null&&projections[i].quality!=='historical')this.previous[i]=value;
+      if(value!==null&&projections[i].quality==='current')this.previous[i]=value;
       if(value!==null&&projections[i].quality==='current')this.stable[i]=value;
     });
     this.rows.push({ms,values,quality:projections.map(reading=>reading.quality),nearVertical,
-      breakBefore:this.gap,headingBreakBefore:this.gap,historical:true,interpolated:frame.interpolated});
+      breakBefore:this.gap||observedSourceGap,headingBreakBefore:this.gap||observedSourceGap,
+      historical:true,interpolated:frame.interpolated});
     this.elapsed=ms;this.identity=frame.sourceEpoch;this.gap=false;
+    if(uint32(rightUs))this.lastEndpointUs=rightUs;
+    else if(uint32(leftUs))this.lastEndpointUs=leftUs;
     this.rows=this.rows.filter(row=>row.ms>=ms-this.windowMs).slice(-240);
     return true;
   }
@@ -350,18 +371,25 @@ export function drawPoseAngleChart(canvas,history,ratio=1){
   ctx.font='11px "Segoe UI","Microsoft YaHei",sans-serif';ctx.lineWidth=1;
   for(const [axis,color] of ['#68d5e3','#efbd83','#bda8e8'].entries()){
     const top=pad.top+axis*lane+24,bottom=pad.top+(axis+1)*lane-10,h=bottom-top;
-    const values=rows.map(row=>row.values[axis]).filter(Number.isFinite);
+    const latestNearVertical=axis!==1&&rows.at(-1)?.nearVertical;
+    const values=rows.filter(row=>!latestNearVertical||row.quality?.[axis]==='current')
+      .map(row=>row.values[axis]).filter(Number.isFinite);
     // Separate axes avoid flattening pitch under a large unwrapped roll. A
     // minimum 20-degree range avoids magnifying stationary sub-degree noise.
+    // At the pitch pole, an unreliable projection cannot rescale the axis.
     const min=values.length?Math.min(...values):0,max=values.length?Math.max(...values):0;
     const step=[5,10,20,30,60,90,180,360,720].find(value=>(max-min+4)/4<=value)||Math.ceil((max-min+4)/1440)*360;
-    const middle=Math.round((min+max)/2/step)*step;
-    const half=Math.ceil(Math.max(10,max-middle+2,middle-min+2)/step)*step;
+    const middle=latestNearVertical&&!values.length?0:Math.round((min+max)/2/step)*step;
+    const half=latestNearVertical&&!values.length?180:
+      Math.ceil(Math.max(10,max-middle+2,middle-min+2)/step)*step;
     const low=middle-half,high=middle+half,y=value=>top+(high-value)/(high-low)*h;
     ctx.fillStyle=color;ctx.textAlign='left';ctx.textBaseline='top';
     ctx.fillText(['横滚','俯仰','相对航向'][axis],pad.left,top-22);
     if(axis!==1&&rows.at(-1)?.nearVertical){ctx.fillStyle='#b1a88d';ctx.textAlign='right';
       ctx.fillText(rows.at(-1)?.quality?.[axis]==='historical'?'近竖直 · 上次值':'近竖直 · 投影不稳定',width-pad.right,top-22);}
+    if(axis===1&&rows.some((row,i)=>i>0&&row.breakBefore&&row.ms-rows[i-1].ms<=1000)){
+      ctx.fillStyle='#b1a88d';ctx.textAlign='right';ctx.fillText('虚线=缺样',width-pad.right,top-22);
+    }
     ctx.strokeStyle='#29404d';ctx.lineWidth=1;ctx.fillStyle='#7898a8';
     for(const value of [high,middle,low]){
       const py=y(value);ctx.beginPath();ctx.moveTo(pad.left,py);ctx.lineTo(width-pad.right,py);ctx.stroke();
@@ -374,17 +402,38 @@ export function drawPoseAngleChart(canvas,history,ratio=1){
     ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=1.8;ctx.lineJoin='round';ctx.lineCap='round';
     ctx.beginPath();let connected=false;
     for(const row of rows){
-      const value=row.values[axis];if(!Number.isFinite(value)||row.quality?.[axis]==='historical'){connected=false;continue;}
+      const value=row.values[axis];if(!Number.isFinite(value)||
+        row.quality?.[axis]==='historical'||row.quality?.[axis]==='unstable'){connected=false;continue;}
       if(row.breakBefore||axis===2&&row.headingBreakBefore)connected=false;
       const px=x(row.ms),py=y(value);if(connected)ctx.lineTo(px,py);else ctx.moveTo(px,py);connected=true;
     }
     ctx.stroke();
+    // A short missing source interval has two observed endpoints but no known
+    // path between them. Show a faint dashed bridge, never a solid sample line.
+    let previousObserved=null;
+    for(const row of rows){
+      const value=row.values[axis],quality=row.quality?.[axis];
+      if(!Number.isFinite(value)||quality==='historical'||quality==='unstable'){
+        previousObserved=null;continue;
+      }
+      if(row.breakBefore&&previousObserved&&row.ms-previousObserved.ms<=1000){
+        ctx.save();ctx.globalAlpha=.42;ctx.strokeStyle=color;ctx.lineWidth=1.2;
+        ctx.setLineDash([3,5]);ctx.beginPath();ctx.moveTo(x(previousObserved.ms),y(previousObserved.value));
+        ctx.lineTo(x(row.ms),y(value));ctx.stroke();ctx.restore();
+      }
+      previousObserved={ms:row.ms,value};
+    }
     // Real isolated observations must remain visible, even with no segment.
     for(let i=0;i<rows.length;i++){
       const row=rows[i],next=rows[i+1],value=row.values[axis];
       if(!Number.isFinite(value))continue;
       if(row.quality?.[axis]==='historical'){
         if(i===rows.length-1){ctx.fillStyle='#b1a88d';ctx.beginPath();ctx.arc(x(row.ms),y(value),2.7,0,Math.PI*2);ctx.fill();ctx.fillStyle=color;}
+        continue;
+      }
+      if(row.quality?.[axis]==='unstable'){
+        // Unobservable Euler projections are sparse marks, never a motion line.
+        if(i%4===0||i===rows.length-1){ctx.save();ctx.globalAlpha=.55;ctx.beginPath();ctx.arc(x(row.ms),y(value),i===rows.length-1?2.7:1.4,0,Math.PI*2);ctx.fill();ctx.restore();}
         continue;
       }
       const isolated=(row.breakBefore||axis===2&&row.headingBreakBefore)&&(!next||next.breakBefore||axis===2&&next.headingBreakBefore);
@@ -431,7 +480,7 @@ export function calibrationHighlightIds(message){
 }
 
 async function boot(){
-  document.body.dataset.uiRevision='2026-10-17-imu-display-r3';
+  document.body.dataset.uiRevision='2026-10-17-imu-display-r6';
   const get=id=>document.getElementById(id),tracker=new ImuPoseTracker(),angleHistory=new PoseAngleHistory(),displayHistory=new DisplayPoseHistory();
   let playback=null,shownPose=null;
   // The operator chose a fixed 0.2 s display delay; stored older choices are ignored.
@@ -441,6 +490,8 @@ async function boot(){
   let highlightedIds=[],currentTracker=null,pendingCurrent=null,currentRows=[],currentPaintKey='';
   const currentScale=2000;
   let renderCount=0,renderStart=null,lastMetricsAt=0,lastReadingsAt=0;
+  const receiveRecoveryMs=5000;
+  let hasReceivedLive=false,lastReceiveGapAt=-Infinity;
   let lastStableProjection={roll:null,yaw:null};
   let requestRender=()=>{},stopRender=()=>{},viewportVisible=false;
   function highlightSelection(){
@@ -542,7 +593,14 @@ async function boot(){
     document.body.dataset.mode=result.mode;
     document.body.dataset.fusion=result.pose?.fused?'gravity-ekf-v1':'acceleration-only';
     document.body.dataset.gyroBias=result.pose?.gyroBiasCorrected?'confirmed-stationary':'none';
-    text('imu-receive-state',result.mode==='live'?'当前接收正常':result.mode==='paused'?'当前接收已暂停':'当前接收间断 · 显示使用历史缓冲');
+    // Keep control freshness immediate, but latch the *display* warning so
+    // bursty arrivals do not flash the label on every 150 ms boundary.
+    const receiveNow=performance.now();
+    if(result.mode==='live')hasReceivedLive=true;
+    else if(result.mode!=='paused'&&hasReceivedLive)lastReceiveGapAt=receiveNow;
+    text('imu-receive-state',result.mode==='paused'?'当前接收已暂停':
+      !hasReceivedLive?'等待当前接收':receiveNow-lastReceiveGapAt<receiveRecoveryMs?
+      '近5秒接收有间断 · 保留历史姿态':'当前接收正常');
     if(source&&result.changed){
       const recent=angleHistory.rows.filter(row=>row.ms>=angleHistory.elapsed-2000);
       const span=recent.length>1?recent.at(-1).ms-recent[0].ms:0;
@@ -699,7 +757,8 @@ async function boot(){
           document.body.dataset.playbackSourceMs=frame.sourceTimeMs===null?'':frame.sourceTimeMs.toFixed(1);
           document.body.dataset.playbackKnownAgeMs=frame.knownEndpointAgesMs?Math.max(...frame.knownEndpointAgesMs).toFixed(1):'';
           const bufferSeconds=(frame.nominalDelayMs/1000).toFixed(1);
-          text('imu-model-state',frame.state==='playing'?'平滑显示20FPS目标 · 显示缓冲'+bufferSeconds+'秒':frame.state==='buffering'?'准备显示 · 填充'+bufferSeconds+'秒缓冲':'等待数据 · 已保留最后画面');
+          text('imu-model-state',frame.state==='buffering'&&!playback.hasPlayed?
+            '准备显示 · 填充'+bufferSeconds+'秒缓冲':'历史姿态 · 固定显示缓冲'+bufferSeconds+'秒');
           get('imu-model-state').title=frame.state==='gap'?'真实源数据缺口超过300ms，未补造这段运动':frame.state==='underflow'?'历史缓冲已用完，等待新的真实端点':'按已收到端点插值显示；缓冲是刻意增加的延迟，不是原始采样或总网络延迟';
           if(frame.quaternion){
             shownPose=ObservedPoseTween.pose(frame.quaternion,shownPose?.roll??tracker.pose?.roll??0,shownPose?.headingDeg??null);
@@ -709,18 +768,27 @@ async function boot(){
               chartDirty=true;document.body.dataset.chartSamples=String(displayHistory.rows.length);
               document.body.dataset.chartKind='display-history-interpolation';
             }
-            if(frame.state!=='playing')displayHistory.markGap();
+            // Arrival underflow holds the last shown pose. Only an observed
+            // source gap (or a changed epoch) breaks the historical curve.
+            if(frame.state==='gap')displayHistory.markGap();
           }
           continuePlayback=playback.rows.length>0&&frame.state!=='underflow';
         }
         if(shownPose&&now-lastReadingsAt>=100){
           const visual=shownPose,nearVertical=nearVerticalProjection(visual);
-          const lowConfidence=nearVertical?unstableEulerProjection(visual.quaternion,lastStableProjection.roll,lastStableProjection.yaw):null;
-          const roll=projectedAngleReadout(visual.roll,visual.rollObservable,nearVertical,lastStableProjection.roll,lowConfidence?.roll);
-          const yaw=projectedAngleReadout(visual.headingDeg,visual.headingObservable,nearVertical,lastStableProjection.yaw,lowConfidence?.yaw);
+          const lowConfidence=nearVertical?unstableEulerProjection(visual.quaternion):null;
+          const latest=displayHistory.rows.at(-1);
+          const sameFrame=frame?.state==='playing'&&latest?.ms===frame.sourceTimeMs;
+          const reading=(axis,value,observable,stable,estimate)=>sameFrame?
+            {value:latest.values[axis],quality:latest.quality[axis]}:
+            projectedAngleReadout(value,observable,nearVertical,stable,estimate);
+          const roll=reading(0,visual.roll,visual.rollObservable,
+            displayHistory.stable[0]??lastStableProjection.roll,lowConfidence?.roll);
+          const yaw=reading(2,visual.headingDeg,visual.headingObservable,
+            displayHistory.stable[2]??lastStableProjection.yaw,lowConfidence?.yaw);
           if(roll.quality==='current')lastStableProjection.roll=roll.value;
           if(yaw.quality==='current')lastStableProjection.yaw=yaw.value;
-          const label=reading=>reading.value===null?'—':
+          const label=reading=>reading.value===null?(nearVertical?'≈未定义':'—'):
             (reading.quality==='unstable'?'≈':reading.quality==='historical'?'上次 ':'')+reading.value.toFixed(1)+'°';
           text('imu-model-pitch',visual.pitch.toFixed(1)+'°');text('imu-model-roll',label(roll));
           text('imu-model-yaw',label(yaw));
