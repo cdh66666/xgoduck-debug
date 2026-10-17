@@ -22,6 +22,7 @@ ASSETS = (
     'connection-model.html', 'connection-model.css', 'connection-model.js',
     'zero-guide.html', 'zero-guide.css', 'zero-guide.js', 'official-assembly.html',
 )
+SEQUENCE_ASSETS = ('sequence-calibration.js', 'motor-current.js')
 ASSEMBLY_PDF = 'https://github.com/LuwuDynamics/xgoduck_hardware/blob/90ec55634d700c88fd7aa9281c282be30f56e7e0/Assembly_Guide.pdf'
 
 
@@ -122,9 +123,14 @@ def main():
     release = source / 'qa/repair-20261016/reviewed-recovery-manifest.json'
     reviewed = json.loads(release.read_text(encoding='utf-8-sig'))
     board = source / 'reliability-release-candidate'
+    published_path = target / 'SOURCE_MANIFEST.json'
+    published = json.loads(published_path.read_text(encoding='utf-8')) if published_path.is_file() else {}
     expected_sources = dict(reviewed['firmware_after'])
     expected_sources.update({relative: item['sha256'] for relative, item in reviewed['board_files'].items()})
     approved_updates = []
+    expected_pc_sources = {}
+    firmware_sha256 = reviewed['elf']['sha256']
+    sequence_revision = None
     for update_path in args.approved_update:
         update_path = update_path.resolve(strict=True)
         update_raw = update_path.read_bytes()
@@ -135,8 +141,19 @@ def main():
         for relative, item in update['changes'].items():
             if relative.startswith('data/'):
                 continue
-            if relative not in expected_sources or not isinstance(item, dict):
-                raise ValueError('Update changes an untracked source: ' + relative)
+            if not isinstance(item, dict):
+                raise ValueError('Invalid approved source record: ' + relative)
+            if relative not in expected_sources:
+                if not re.fullmatch(r'python/[A-Za-z_][A-Za-z_0-9]*\.py', relative):
+                    raise ValueError('Update changes an untracked source: ' + relative)
+                if 'before_sha256' not in item:
+                    raise ValueError('Added source needs an explicit baseline: ' + relative)
+                previous = published.get('files', {}).get('board/' + relative, {}).get('source_sha256')
+                if item['before_sha256'] is None:
+                    if previous not in (None, item['sha256']):
+                        raise ValueError('New source conflicts with a published source: ' + relative)
+                elif previous not in (item['before_sha256'], item['sha256']):
+                    raise ValueError('Existing source baseline is not recognized: ' + relative)
             candidate = (update_path.parent / item['source']).resolve(strict=True)
             if not candidate.is_relative_to(update_path.parent) or digest(candidate.read_bytes()) != item['sha256']:
                 raise ValueError('Approved source does not match its manifest: ' + relative)
@@ -145,15 +162,41 @@ def main():
         for relative, expected in update.get('unchanged', {}).items():
             if expected_sources.get(relative) != expected:
                 raise ValueError('Approved update baseline disagrees: ' + relative)
+        for relative, item in update.get('pc_files', {}).items():
+            if relative not in PC_FILES:
+                raise ValueError('Approved PC source is outside the release file list: ' + relative)
+            candidate = (update_path.parent / item['source']).resolve(strict=True)
+            if not candidate.is_relative_to(update_path.parent) or digest(candidate.read_bytes()) != item['sha256']:
+                raise ValueError('Approved PC source does not match its manifest: ' + relative)
+            expected_pc_sources[relative] = item['sha256']
+        build = update.get('build')
+        if build is not None:
+            if build.get('passed') is not True or set(build.get('source_sha256', {})) != set(reviewed['firmware_after']):
+                raise ValueError('Firmware build does not cover all baseline inputs')
+            if any(expected_sources.get(relative) != expected for relative, expected in build['source_sha256'].items()):
+                raise ValueError('Firmware build sources differ from approved source updates')
+            executable = Path(build['elf']['path']).resolve(strict=True)
+            if not executable.is_relative_to(update_path.parent) or digest(executable.read_bytes()) != build['elf']['sha256']:
+                raise ValueError('Approved firmware executable does not match its manifest')
+            firmware_sha256 = build['elf']['sha256']
+        if 'sequence_contract_revision' in update:
+            if update['sequence_contract_revision'] != 1:
+                raise ValueError('Unsupported sequence contract revision')
+            sequence_revision = 1
         approved_updates.append({'manifest_sha256': digest(update_raw), 'changed_sources': changed_sources})
     for relative, expected in expected_sources.items():
         if digest((board / relative).read_bytes()) != expected:
             raise ValueError('Board source differs from installed HOME5 manifest: ' + relative)
+    for relative, expected in expected_pc_sources.items():
+        if digest((source / relative).read_bytes()) != expected:
+            raise ValueError('PC source differs from the approved update: ' + relative)
     discovery = ast.parse((source / 'tools/discover_unoq.py').read_text(encoding='utf-8-sig'))
     serial = next(ast.literal_eval(node.value) for node in discovery.body if isinstance(node, ast.Assign)
                   and any(isinstance(name, ast.Name) and name.id == 'CALIBRATION_SERIAL' for name in node.targets))
     selected = {relative: source / relative for relative in PC_FILES}
     selected.update({'assets/' + name: source / 'assets' / name for name in ASSETS})
+    if sequence_revision is not None:
+        selected.update({'assets/' + name: source / 'assets' / name for name in SEQUENCE_ASSETS})
     for path in (source / 'imu_transport').glob('*.py'):
         selected[path.relative_to(source).as_posix()] = path
     for path in (source / 'model-assets').glob('*.stl'):
@@ -187,7 +230,8 @@ def main():
                     for relative, item in records.items() if relative.startswith('board/firmware_dependencies/')}
     (target / 'board/component-origin.json').write_text(json.dumps(dependencies, indent=2) + '\n', encoding='utf-8')
     manifest = {'base': 'installed HOME ABI5', 'home_contract_revision': 5,
-                'installed_firmware_sha256': reviewed['elf']['sha256'],
+                'installed_firmware_sha256': firmware_sha256,
+                'sequence_contract_revision': sequence_revision,
                 'verified_firmware_source_count': len(reviewed['firmware_after']),
                 'verified_board_source_count': len(expected_sources), 'approved_updates': approved_updates,
                 'device_data_included': False, 'physical_acceptance': 'pending', 'files': records}

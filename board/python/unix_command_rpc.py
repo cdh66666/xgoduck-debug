@@ -41,7 +41,7 @@ class UnixCommandRPC:
             raise TimeoutError('Command dispatch deadline expired')
 
     def call(self, method, payload, *, timeout=.2):
-        if method != 'duck_calibration' or type(payload) is not bytes or len(payload) not in (32,108):
+        if method != 'duck_calibration' or type(payload) is not bytes or len(payload) not in (32,36,108):
             raise ValueError('Only fixed calibration command envelopes are supported')
         if type(timeout) not in (int,float) or not math.isfinite(timeout) or not 0 < timeout <= .2:
             raise ValueError('Command budget must be within 200ms')

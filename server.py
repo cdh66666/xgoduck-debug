@@ -44,6 +44,7 @@ def record_wireless_outcome(action, started, result=None, error=None, status=Non
     state = state if isinstance(state, dict) else {}
     home = state.get('home') if isinstance(state.get('home'), dict) else {}
     progress = home.get('progress') if isinstance(home.get('progress'), dict) else {}
+    sequential = state.get('sequence_calibration') if isinstance(state.get('sequence_calibration'), dict) else {}
     match = re.search(r'错误\s*(\d+)', str(error)) if error else None
     event = {'at_unix_s': time.time(), 'duration_ms': round((time.monotonic()-started)*1000, 1),
              'op': str(action.get('op', 'unknown'))[:40], 'http_status': 400 if error else 200,
@@ -55,7 +56,10 @@ def record_wireless_outcome(action, started, result=None, error=None, status=Non
              'home_active_id': progress.get('active_id'), 'home_stage': progress.get('stage_name'),
              'home_arrived_mask': progress.get('arrived_mask'), 'home_enabled_mask': progress.get('enabled_mask'),
              'home_arrival_verified': home.get('arrival_verified'), 'home_lease_stage': home.get('lease_stage'),
-             'release_verified': home.get('release_verified'), 'all_torque_off_verified': state.get('all_torque_off_verified')}
+             'release_verified': home.get('release_verified'), 'all_torque_off_verified': state.get('all_torque_off_verified'),
+             'sequence_phase': sequential.get('phase'), 'sequence_error': sequential.get('error'),
+             'sequence_selected_id': sequential.get('selected_id'), 'sequence_held_ids': sequential.get('held_ids'),
+             'sequence_completed_ids': sequential.get('completed_ids')}
     with ACTION_DIAGNOSTICS_LOCK:
         ACTION_DIAGNOSTICS.append(event)
 
@@ -65,7 +69,7 @@ def perform_wireless_action(action):
     started = time.monotonic()
     try:
         with bus.lock:
-            emergency = action.get('op') in ('cancel', 'heartbeat', 'home_heartbeat', 'home_stop')
+            emergency = action.get('op') in ('cancel', 'heartbeat', 'home_heartbeat', 'home_stop', 'sequence_heartbeat', 'sequence_stop')
             if not emergency and (bus.ser or bus.session or bus.enabled or (bus.numbering and bus.numbering['active'])):
                 raise ValueError('先关闭备用 USB 校准会话')
             if not emergency and provisioner.status()['active']:

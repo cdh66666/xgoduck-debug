@@ -319,37 +319,33 @@ body.visual-debug.duck-dark .battery-value { display: flex; align-items: center;
 body.visual-debug.duck-dark .workflow-tabs button { display: flex; flex-direction: column; align-items: center; gap: 5px; }
 body.visual-debug.duck-dark .workflow-tabs button svg { display: block; width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
-body.visual-debug.duck-dark > header { max-width: 980px; margin: 0 auto; padding: 10px 18px; gap: 12px; }
-body.visual-debug.duck-dark > header #comm-discover { min-height: 36px; padding: 6px 12px; font-size: 12px; }
-body.visual-debug.duck-dark .home-instruction { margin: 0 0 18px; color: var(--duck-muted); font-size: 13px; }
-body.visual-debug.duck-dark .home-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-body.visual-debug.duck-dark .home-controls button { width: 100%; min-height: 56px; margin: 0; padding: 12px; font-size: 17px; }
-body.visual-debug.duck-dark .home-controls #wl-stop { margin: 0; border-color: #a86e43; color: #ffc18a; }
-body.visual-debug.duck-dark .home-state { min-height: 26px; margin: 14px 0 4px; text-align: center; font-size: 14px; color: var(--duck-text); }
-body.visual-debug.duck-dark .servo-feedback { margin: 24px 0 18px; }
-body.visual-debug.duck-dark .servo-feedback-heading { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 9px; color: var(--duck-muted); font-size: 12px; }
-body.visual-debug.duck-dark .servo-feedback .wl-servo-dots { gap: 6px; }
-body.visual-debug.duck-dark .servo-feedback .wl-servo-dots button { min-height: 40px; padding: 8px 0 3px; }
-body.visual-debug.duck-dark .servo-feedback .wl-servo-dots button[aria-pressed="true"] { border-color: var(--duck-line); color: var(--duck-text); background: var(--duck-panel); }
+body.visual-debug.duck-dark .pose-actions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+body.visual-debug.duck-dark .pose-actions button { min-width: 0; min-height: 44px; margin: 0; padding: 8px 10px; }
+body.visual-debug.duck-dark .pose-actions #wl-stop { margin: 0; }
+body.visual-debug.duck-dark .home-state { min-height: 22px; margin: 8px 0 3px; text-align: center; font-size: 12px; color: var(--duck-muted); }
+body.visual-debug.duck-dark .pose-calibration-layout { display: grid; grid-template-columns: minmax(0,1fr); align-items: start; gap: 16px; }
+body.visual-debug.duck-dark .pose-calibration-layout[data-calibrating="true"] { grid-template-columns: minmax(0,1fr) 260px; }
+body.visual-debug.duck-dark .sequence-panel { margin: 14px 0 0; padding: 0 0 0 16px; border: 0; border-left: 1px solid var(--duck-line); font-size: 12px; }
+body.visual-debug.duck-dark .sequence-panel[hidden] { display: none; }
+body.visual-debug.duck-dark .sequence-heading { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+body.visual-debug.duck-dark .sequence-heading span { color: var(--duck-muted); font-variant-numeric: tabular-nums; }
+body.visual-debug.duck-dark .sequence-groups { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 5px; }
+body.visual-debug.duck-dark .sequence-groups button { min-width: 0; min-height: 36px; padding: 6px 3px; font-size: 12px; }
+body.visual-debug.duck-dark .sequence-joints { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 5px; margin: 10px 0 14px; }
+body.visual-debug.duck-dark .sequence-joints button { min-width: 0; min-height: 45px; padding: 4px 0; border-color: var(--duck-line); background: transparent; color: var(--duck-text); font-size: 12px; }
+body.visual-debug.duck-dark .sequence-joints button small { display: block; color: var(--duck-muted); font-size: 9px; line-height: 1.4; }
+body.visual-debug.duck-dark .sequence-joints button[aria-pressed="true"],body.visual-debug.duck-dark .sequence-groups button[aria-pressed="true"] { background: #102838; border-color: var(--duck-cyan); color: var(--duck-cyan); }
+body.visual-debug.duck-dark .sequence-joints button[data-state="holding"] small { color: var(--duck-cyan); }
+body.visual-debug.duck-dark #sequence-selected { display: block; font-size: 13px; }
+body.visual-debug.duck-dark #sequence-hint,body.visual-debug.duck-dark #sequence-result { margin: 9px 0; color: var(--duck-muted); line-height: 1.65; }
+body.visual-debug.duck-dark #sequence-capture { width: 100%; min-height: 44px; font-size: 12px; padding: 8px; }
 body.visual-debug.duck-dark .debug-details { margin: 18px 0 0; border-top: 1px solid var(--duck-line); padding-top: 2px; }
 body.visual-debug.duck-dark .debug-details > summary { padding: 13px 0; color: var(--duck-muted); font-size: 13px; cursor: pointer; }
 body.visual-debug.duck-dark .debug-details[open] > summary { color: var(--duck-text); }
-body.visual-debug.duck-dark .workflow-tabs { grid-template-columns: repeat(4, minmax(0, 220px)); padding: 7px 18px calc(7px + env(safe-area-inset-bottom, 0px)); gap: 8px; overflow: visible; }
-body.visual-debug.duck-dark .workflow-tabs > button,
-body.visual-debug.duck-dark .workflow-more > summary { min-height: 44px; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 5px; }
-body.visual-debug.duck-dark .workflow-more { position: relative; min-width: 0; color: var(--duck-muted); }
-body.visual-debug.duck-dark .workflow-more > summary { list-style: none; cursor: pointer; border: 1px solid transparent; }
-body.visual-debug.duck-dark .workflow-more > summary::-webkit-details-marker { display: none; }
-body.visual-debug.duck-dark .workflow-more > summary::after { content: "⌃"; margin-left: 6px; }
-body.visual-debug.duck-dark .workflow-more[open] > summary,
-body.visual-debug.duck-dark .workflow-more[data-active="true"] > summary { background: #102838; border-color: #254b60; color: var(--duck-cyan); }
-body.visual-debug.duck-dark .workflow-more > div { position: absolute; bottom: calc(100% + 12px); right: 0; width: max(100%, 140px); padding: 6px; background: var(--duck-panel); border: 1px solid var(--duck-line); border-radius: 6px; }
-body.visual-debug.duck-dark .workflow-more button { min-height: 44px; }
-@media (max-width: 560px) {
-  body.visual-debug.duck-dark .workflow-tabs { padding-left: 8px; padding-right: 8px; gap: 4px; }
-  body.visual-debug.duck-dark .home-controls { gap: 8px; }
-  body.visual-debug.duck-dark .home-controls button { font-size: 16px; }
-  body.visual-debug.duck-dark .servo-feedback { margin-top: 18px; }
+@media (max-width: 720px) {
+  body.visual-debug.duck-dark .pose-calibration-layout[data-calibrating="true"] { grid-template-columns: minmax(0,1fr); }
+  body.visual-debug.duck-dark .sequence-panel { margin: 0; padding: 14px 0 0; border-left: 0; border-top: 1px solid var(--duck-line); }
+  body.visual-debug.duck-dark .pose-calibration-layout[data-calibrating="true"] #imu-duck-frame { height: 610px; }
 }
 body.visual-debug.duck-dark .communication-actions { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; }
 body.visual-debug.duck-dark .communication-progress { margin: 12px 0 20px; text-align: center; color: var(--duck-muted); font-size: 12px; }

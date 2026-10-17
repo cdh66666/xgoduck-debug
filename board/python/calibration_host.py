@@ -14,11 +14,14 @@ import secrets
 import threading
 import time
 import calibration_wire as W
+from sequence_host import SequenceController
+from servo_current import ServoCurrent
 
 VERSION = '2026-10-15-wireless-calibration-v7'
 SCHEMA = 'wireless-calibration-v2'
 FRESH_S, CLIENT_LEASE_S, SESSION_S, HEARTBEAT_S = .150, .400, 30.0, .100
 HOME_MOTION_S = 450.0
+HOME_TOLERANCE_TICKS = 57
 HOME_TARGET_RESOLUTION = 'audited-finite-turn-v3'
 HOME_TURN_REFERENCE_SCHEMA = 'xgoduck-home-turn-equivalence-v1'
 HOME_TURN_REFERENCE_IDS = frozenset((10, 22, 30))
@@ -279,7 +282,7 @@ class ZeroStore:
     def group_records(groups):
         records = {}
         for name, group in groups.items():
-            if group.get('format') == 'head-mouth-override-v1':
+            if group.get('format') in ('head-mouth-override-v1', 'sequential-axis-overrides-v1'):
                 records.update({sid: dict(value) for sid, value in group['records'].items()})
                 continue
             packet = W.decode_snapshot(bytes.fromhex(group['audit']['snapshot_payload_hex']))
@@ -328,6 +331,9 @@ class ZeroStore:
     @staticmethod
     def validate_group(name, record):
         """Persisted evidence is historical; it never certifies today's pose."""
+        if isinstance(record, dict) and record.get('format') == 'sequential-axis-overrides-v1':
+            from sequence_store import validate_group
+            return validate_group(ZeroStore, name, record)
         if isinstance(record, dict) and record.get('format') == 'head-mouth-override-v1':
             if name != 'head':
                 raise ValueError('mouth override is head-only')
@@ -722,6 +728,8 @@ class WirelessCalibrationHost:
         self.failed_requests = set()
         self.delivery_errors = {}
         self.protocol_fault = False
+        self.sequence_controller = SequenceController(self)
+        self.servo_current = ServoCurrent(self)
         self.sender = SerialSender(self, bridge)
 
     def receive(self, payload):
@@ -732,6 +740,8 @@ class WirelessCalibrationHost:
                 self.errors.append({'code': 'invalid_calibration_snapshot'})
                 current, self._session = self._session, None
                 self.protocol_fault = True; self.generation += 1; self.history.clear()
+                if self.sequence_controller.busy():
+                    self.sequence_controller.stop_send('invalid_calibration_snapshot')
                 if self._home_session or self._home_unknown:
                     self.home_stop_send()
                 if current:
@@ -755,6 +765,8 @@ class WirelessCalibrationHost:
                 self.history.clear(); self._session = None; self._home_session = None; self._home_snapshot = None; self._home_observed_at = None; self._home_unknown = False; self._home_arrival = None; self.operation = None; self.generation += 1
                 self._home_idle_release = None
                 self._capture_owner = None
+                self.sequence_controller.reset()
+                self.servo_current.reset()
                 self.results.clear(); self.requests.clear()
                 self.failed_requests.clear(); self.delivery_errors.clear()
                 self.errors.append({'code': 'mcu_restarted'})
@@ -878,7 +890,7 @@ class WirelessCalibrationHost:
                     and packet['result'] == W.OK and packet['error'] == 0
                     and packet['goals'] == packet['targets'] and all(t == 1 for t in packet['torques'])
                     and len(packet['positions']) == 15
-                    and all(type(p) is int and -32767 <= p <= 32767 and abs(p-g) <= 32
+                    and all(type(p) is int and -32767 <= p <= 32767 and abs(p-g) <= HOME_TOLERANCE_TICKS
                             for p,g in zip(packet['positions'],packet['targets'])))
         if active not in W.MOTOR_IDS:
             return False
@@ -906,11 +918,7 @@ class WirelessCalibrationHost:
                     and packet['boot_id'] == current['boot'] and packet['session'] == current['nonce']
                     and packet['native_sha256'] == current['sha'] and packet['targets'] == current['targets']
                     and packet['modes'] == current['modes']
-                    # First arrival observes all fifteen within3 after the MCU's
-                    # continuous300ms all-joint gate. Later HOLD is historical
-                    # arrival plus current MCU tracking (6/32 ticks), not a new
-                    # claim that every present sample remains within3.
-                    and (prior_same_run or all(abs(p-g) <= 3 for p,g in zip(packet['positions'],packet['targets']))))
+                    and (prior_same_run or all(abs(p-g) <= HOME_TOLERANCE_TICKS for p,g in zip(packet['positions'],packet['targets']))))
 
     def receive_home(self, payload):
         try:
@@ -971,7 +979,7 @@ class WirelessCalibrationHost:
             if current and current['confirmed'] and self._home_arrival is None and self.home_holding_verified(current):
                 self._home_arrival = {'boot_id': packet['boot_id'], 'native_sha256': packet['native_sha256'],
                                       'source_us': packet['sample_us'], 'sequence': packet['sequence'],
-                                      'run_request': packet['operation_ack_seq'], 'tolerance_ticks': 3,
+                                      'run_request': packet['operation_ack_seq'], 'tolerance_ticks': HOME_TOLERANCE_TICKS,
                                       'continuous_stable_ms': 300, 'historical': True} 
             if (packet['phase'] in ('preparing','prepared','enabling','moving','holding','releasing')
                     or packet['phase'] == 'fault' and not self.home_released()):
@@ -1072,6 +1080,7 @@ class WirelessCalibrationHost:
                 'release_verified': released, 'native_sha256': packet['native_sha256'] if packet else None,
                 'error': packet['error'] if packet else None, 'contract_revision': W.HOME_CONTRACT_VERSION,
                 'motion_limit_ms': int(HOME_MOTION_S*1000),
+                'tolerance_ticks': HOME_TOLERANCE_TICKS, 'arrival_tolerance_ticks': HOME_TOLERANCE_TICKS, 'arrival_tolerance_deg': 5,
                 'progress': {key: packet[key] for key in ('active_id','stage','stage_name','arrived_mask','enabled_mask','primed_mask','fresh_mask','off_mask')} if packet else None,
                 'feedback': {key: packet[key] for key in ('sequence','sample_us','active_id','stage_name','positions','goals','targets','torques','steps')} if packet else None,
                 'fault_history': [dict(item) for item in self._home_faults],
@@ -1276,6 +1285,10 @@ class WirelessCalibrationHost:
                     and self.generation == current['generation'])
 
     def home_action(self, body):
+        if self.sequence_controller.busy():
+            if body.get('op') == 'home_stop':
+                return self.sequence_controller.action({'op': 'sequence_stop'})
+            raise CalibrationError('sequence_active', '先停止逐颗校准并确认卸力，再回正。')
         op = body.get('op')
         if op not in ('home_prepare','home_run','home_heartbeat','home_stop') or body.get('id', 0) != 0:
             raise CalibrationError('invalid_operation', '无效归位操作。', 400)
@@ -1423,7 +1436,8 @@ class WirelessCalibrationHost:
                            'motion_valid': not reason and single_turn_position(row['raw_word'], row['signed_steps']),
                            'motion_blocked_reason': reason or ('原生多圈编码仅可记录；小步暂限0..4095。' if not single_turn_position(row['raw_word'], row['signed_steps']) else ''),
                            'blocked_reason': reason, 'blocked_code': code,
-                           'torque_off_verified': mf and torque is False, 'sign': SIGNS[sid]})
+                           'torque_off_verified': mf and torque is False, 'sign': SIGNS[sid],
+                           **(self.servo_current.row(sid) if current else {})})
         return result
 
     def stable_window(self, ids=W.MOTOR_IDS, request=None, op=None, *, _rows_cache=None):
@@ -1509,7 +1523,9 @@ class WirelessCalibrationHost:
             return {'schema': SCHEMA, 'version': VERSION, 'supported': True, 'policy_locked': locked, 'fresh': self.fresh(),
                     'boot_id': packet['boot_id'] if packet else None, 'sequence': packet['sequence'] if packet else None,
                     'age_ms': round((self.clock()-self.observed_at)*1000, 2) if self.observed_at is not None else None,
-                    'home': self.home_status(), 'joints': rows, 'armed': {'active': active, 'id': self._session['id'] if active else None,
+                    'home': self.home_status(), 'sequence_calibration': self.sequence_controller.status(),
+                    'servo_current': self.servo_current.metadata(),
+                    'joints': rows, 'armed': {'active': active, 'id': self._session['id'] if active else None,
                                              'expires_ms': max(0, int((self._session['deadline']-self.clock())*1000)) if active else 0},
                     'capture': {'ready': ready, 'blocked_ids': blocked, 'user_pose_required': True,
                                 'reason': '' if ready else '等待 15 颗新鲜、卸力、稳定位置；先对齐全部实物零姿态。'},
@@ -1560,6 +1576,7 @@ class WirelessCalibrationHost:
             result[key] = calibration[key]
         with self.lock:
             result['servo_power'] = self.power_status()
+            result['servo_current'] = self.servo_current.metadata()
         return result
 
     def live_status(self):
@@ -1709,6 +1726,8 @@ class WirelessCalibrationHost:
             raise CalibrationError('not_ready', '主控反馈过期或策略锁未确认。')
 
     def require_idle(self):
+        if self.sequence_controller.busy():
+            raise CalibrationError('sequence_active', '先停止逐颗校准并确认卸力。')
         if self._home_session or self._home_unknown:
             raise CalibrationError('busy', '先停止归位并等卸力读回，再记录零位或开始新的操作。')
         if self.operation or self._session or self._home_session or self._home_unknown or (self.snapshot and (self.snapshot['state'] != W.IDLE or self.snapshot['flags'] & (W.TORQUE_MAY_BE_ON | W.SESSION_ACTIVE | W.CAPTURE_BUSY))):
@@ -1729,6 +1748,14 @@ class WirelessCalibrationHost:
         if not isinstance(body, dict):
             raise CalibrationError('invalid_request', '无效请求。', 400)
         op, sid = body.get('op'), body.get('id', 0)
+        if isinstance(op, str) and op.startswith('sequence_'):
+            return self.sequence_controller.action(body)
+        if op == 'read_servo_parameters':
+            return self.sequence_controller.read_parameters(body)
+        if self.sequence_controller.busy():
+            if op in ('cancel', 'off_all', 'home_stop'):
+                return self.sequence_controller.action({'op': 'sequence_stop'})
+            raise CalibrationError('sequence_active', '逐颗校准进行中，请先停止卸力再切换操作。')
         if isinstance(op, str) and op.startswith('home_'):
             return self.home_action(body)
         if op not in ('read', 'off_all', 'capture_all', 'capture_group', 'arm', 'jog', 'cancel', 'heartbeat'):
@@ -2018,6 +2045,7 @@ class WirelessCalibrationHost:
                 self.condition.wait(min(.05, remaining))
 
     def tick(self):
+        self.sequence_controller.tick()
         self.home_tick()
         with self.lock:
             current = self._session
@@ -2040,6 +2068,8 @@ class WirelessCalibrationHost:
 
     def stop(self):
         with self.lock:
+            if self.sequence_controller.busy():
+                self.sequence_controller.stop_send('host_shutdown')
             if self._home_session or self._home_unknown:
                 self.home_stop_send()
         with self.lock:

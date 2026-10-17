@@ -395,17 +395,74 @@ export function changeDisplayBuffer(playback,value){
   playback.delayMs=delayMs;playback.reset('display-buffer-changed');playback.held=held;
   return true;
 }
+export function calibrationHighlightIds(message){
+  const allowed=[10,11,12,13,14,20,21,22,23,24,30,31,32,33,34];
+  if(message?.type!=='imu-model-highlight'||message.version!==1||!Array.isArray(message.ids)||
+    message.ids.length>15||new Set(message.ids).size!==message.ids.length||message.ids.some(id=>!allowed.includes(id)))return null;
+  return message.ids.slice();
+}
 
 async function boot(){
-  document.body.dataset.uiRevision='2026-10-16-mouth-display-r4';
+  document.body.dataset.uiRevision='2026-10-17-pose-calibration-r1';
   const get=id=>document.getElementById(id),tracker=new ImuPoseTracker(),angleHistory=new PoseAngleHistory(),displayHistory=new DisplayPoseHistory();
   let playback=null,shownPose=null;
   let displayStorage;try{displayStorage=window.localStorage;}catch{}
   let displayDelayMs=readDisplayBuffer(displayStorage);
   let pending=null,pendingNative=null,nativeTracker=null,kinematics=null,modelShift=null,heading=null,headingState=null;
   let model=null,loaded=false,scene,camera,renderer,controls,center,size,THREE,graphics=null;
+  let highlightedIds=[],currentTracker=null,pendingCurrent=null,currentRows=[],currentScale=2000,currentPaintKey='';
+  const currentLabels=new Map();
   let renderCount=0,renderStart=null,lastMetricsAt=0,lastReadingsAt=0;
   let requestRender=()=>{},stopRender=()=>{},viewportVisible=false;
+  function highlightSelection(){
+    if(!model)return;
+    for(const mesh of model.children){
+      const selected=highlightedIds.includes(mesh.userData.motorId);
+      const current=currentRows.find(row=>row.id===mesh.userData.motorId),heat=current?.fresh?Math.min(1,Math.abs(current.ma)/currentScale):0;
+      mesh.material.color.setHex(mesh.userData.baseColor);
+      mesh.material.emissive.setHex(0xff2015);mesh.material.emissiveIntensity=heat*1.35;
+      if(mesh.userData.selectionOutline)mesh.userData.selectionOutline.visible=selected;
+      const label=currentLabels.get(mesh.userData.motorId);
+      if(label){
+        label.node.dataset.selected=String(selected);label.node.dataset.fresh=String(current?.fresh===true);label.node.dataset.held=String(current?.held===true);
+        label.node.style.color=current?.fresh?'rgb(255,'+Math.round(210-140*heat)+','+Math.round(205-150*heat)+')':'';
+        label.node.textContent='ID'+mesh.userData.motorId+' '+(current?.fresh?(current.ma/1000).toFixed(2)+' A':'—');
+        label.node.title=current?.fresh?'电流 '+current.ma+' mA · 寄存器 '+current.raw:'电流尚未读取或已超过500ms';
+        label.line.style.stroke=selected?'#54c9e8':'#638393';
+      }
+    }
+    document.body.dataset.highlightedIds=highlightedIds.join(',');
+    document.body.dataset.highlightedMeshes=model.children.filter(mesh=>highlightedIds.includes(mesh.userData.motorId)).map(mesh=>mesh.name).join(',');
+    requestRender();
+  }
+  function applyCurrent(rows){
+    if(!rows)return;
+    const key=rows.map(row=>[row.id,row.ma,row.fresh,row.held].join(':')).join('|');
+    if(key===currentPaintKey)return;currentPaintKey=key;currentRows=rows;highlightSelection();
+    document.body.dataset.currentFreshIds=rows.filter(row=>row.fresh).map(row=>row.id).join(',');
+  }
+  function positionCurrentLabels(){
+    const viewport=get('imu-model-viewport'),width=viewport.clientWidth,height=viewport.clientHeight,columns=[[],[]];
+    for(const mesh of model.children){
+      const label=currentLabels.get(mesh.userData.motorId);if(!label)continue;
+      const point=mesh.geometry.boundingSphere.center.clone().applyMatrix4(mesh.matrixWorld).project(camera);
+      const visible=point.z>=-1&&point.z<=1;label.node.hidden=!visible;label.line.style.display=visible?'':'none';if(!visible)continue;
+      const x=(point.x*.5+.5)*width,y=(-point.y*.5+.5)*height;
+      columns[x<width/2?0:1].push({label,x,y});
+    }
+    columns.forEach((column,side)=>{
+      column.sort((first,second)=>first.y-second.y);
+      const spacing=Math.min(24,(height-24)/Math.max(1,column.length));let previous=12-spacing;
+      column.forEach((entry,index)=>{
+        const top=Math.max(previous+spacing,Math.min(height-12-spacing*(column.length-index-1),entry.y));previous=top;
+        const left=side===0?4:Math.max(4,width-96);
+        entry.label.node.style.left=left+'px';entry.label.node.style.top=(top-9)+'px';
+        entry.label.line.setAttribute('x1',String(entry.x));entry.label.line.setAttribute('y1',String(entry.y));
+        entry.label.line.setAttribute('x2',String(side===0?left+90:left));entry.label.line.setAttribute('y2',String(top));
+      });
+    });
+  }
+  get('imu-current-scale')?.addEventListener('change',event=>{const value=Number(event.target.value);if([1000,2000,3000].includes(value)){currentScale=value;highlightSelection();}});
   let chartDirty=true,lastChartAt=-Infinity;
   const text=(id,value)=>{const element=get(id);if(element&&element.textContent!==value)element.textContent=value;};
   const bufferSelect=get('imu-display-buffer');
@@ -523,6 +580,12 @@ async function boot(){
   };
   window.addEventListener('message',event=>{
     if(event.origin!==location.origin||event.source!==window.parent)return;
+    if(event.data?.type==='imu-model-highlight'){
+      const ids=calibrationHighlightIds(event.data);if(ids!==null){highlightedIds=ids;highlightSelection();}return;
+    }
+    if(event.data?.type==='motor-current-state'){
+      if(!currentTracker){pendingCurrent=event.data;return;}applyCurrent(currentTracker.consume(event.data,performance.now()));return;
+    }
     if(event.data?.type==='imu-model-heading-zero'&&event.data.version===1){zeroHeading();return;}
     if(event.data?.type==='native-pose-state'){
       if(document.hidden){pendingNative=null;if(nativeTracker)applyNative(nativeTracker.hold('paused','页面已暂停'));return;}
@@ -535,12 +598,13 @@ async function boot(){
     apply(tracker.consume(event.data,performance.now()),event.data.status);
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden){pending=null;pendingNative=null;apply(tracker.hold('paused','页面已暂停'));if(nativeTracker)applyNative(nativeTracker.hold('paused','页面已暂停'));}else requestRender();});
-  setInterval(()=>{const now=performance.now();apply(tracker.tick(now));if(nativeTracker)applyNative(nativeTracker.tick(now));},100);
+  setInterval(()=>{const now=performance.now();apply(tracker.tick(now));if(nativeTracker)applyNative(nativeTracker.tick(now));if(currentTracker)applyCurrent(currentTracker.read(now));},100);
   try{
     const modules=await Promise.all([import('../model-assets/vendor/build/three.module.js'),
-      import('../model-assets/vendor/examples/jsm/controls/OrbitControls.js'),import('../model-assets/vendor/examples/jsm/loaders/STLLoader.js'),import('./native-pose.js'),import('./relative-heading.js'),import('./pose-playback.js')]);
+      import('../model-assets/vendor/examples/jsm/controls/OrbitControls.js'),import('../model-assets/vendor/examples/jsm/loaders/STLLoader.js'),import('./native-pose.js'),import('./relative-heading.js'),import('./pose-playback.js'),import('./motor-current.js')]);
     THREE=modules[0];const {OrbitControls}=modules[1],{STLLoader}=modules[2];
     nativeTracker=new modules[3].NativePoseTracker();
+    currentTracker=new modules[6].MotorCurrentTracker();
     heading=new modules[4].RelativeHeading();
     playback=new modules[5].DelayedPosePlayback({fps:20,delayMs:displayDelayMs,maxGapMs:300});
     try{
@@ -580,6 +644,15 @@ async function boot(){
       const color=record.name==='mouth_jaw'?0xd4a454:record.name.includes('ankle')?0xb69467:record.name.includes('head')?0xa1bac8:record.name==='trunk_base'?0x425d6b:0x698593;
       const material=new THREE.MeshStandardMaterial({color,roughness:.40,metalness:.32});
       const mesh=new THREE.Mesh(geometry,material);mesh.name=record.name;mesh.matrixAutoUpdate=false;
+      mesh.userData.motorId=Number(Object.keys(modules[3].LINK_BY_ID).find(id=>modules[3].LINK_BY_ID[id]===record.name));mesh.userData.baseColor=color;
+      geometry.computeBoundingSphere();
+      if(Number.isInteger(mesh.userData.motorId)){
+        const outline=new THREE.LineSegments(new THREE.EdgesGeometry(geometry,30),new THREE.LineBasicMaterial({color:0x54c9e8,transparent:true,opacity:.9,depthTest:false}));
+        outline.visible=false;outline.renderOrder=2;mesh.add(outline);mesh.userData.selectionOutline=outline;
+        const label=document.createElement('span');label.className='current-label';label.dataset.id=String(mesh.userData.motorId);get('imu-current-labels').append(label);
+        const line=document.createElementNS('http://www.w3.org/2000/svg','line');get('imu-current-leaders').append(line);
+        currentLabels.set(mesh.userData.motorId,{node:label,line});
+      }
       mesh.matrix.set(...pose.records[record.name].flat());mesh.matrix.premultiply(shift);model.add(mesh);
     }));
     scene.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(model);center=box.getCenter(new THREE.Vector3());size=box.getSize(new THREE.Vector3());
@@ -599,6 +672,19 @@ async function boot(){
     if(get('imu-angle-chart'))new ResizeObserver(()=>{chartDirty=true;requestRender();}).observe(get('imu-angle-chart'));
     document.body.dataset.loaded='true';document.body.dataset.meshCount=String(model.children.length);document.body.dataset.modelVersion=data.version;document.body.dataset.referencePose='q-zero';
     loaded=true;
+    if(pendingCurrent){applyCurrent(currentTracker.consume(pendingCurrent,performance.now()));pendingCurrent=null;}
+    highlightSelection();
+    const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();let pointerStart=null;
+    renderer.domElement.addEventListener('pointerdown',event=>{pointerStart={x:event.clientX,y:event.clientY};});
+    renderer.domElement.addEventListener('pointerup',event=>{
+      const start=pointerStart;pointerStart=null;
+      if(!start||Math.hypot(event.clientX-start.x,event.clientY-start.y)>6)return;
+      const bounds=renderer.domElement.getBoundingClientRect();
+      pointer.set((event.clientX-bounds.left)/bounds.width*2-1,-(event.clientY-bounds.top)/bounds.height*2+1);
+      raycaster.setFromCamera(pointer,camera);
+      const hit=raycaster.intersectObjects(model.children,false).find(item=>Number.isInteger(item.object.userData.motorId));
+      if(hit&&window.parent!==window)window.parent.postMessage({type:'imu-model-joint-selected',version:1,id:hit.object.userData.motorId},location.origin);
+    });
     graphics.report();
     if(document.hidden){pending=null;pendingNative=null;apply(tracker.hold('paused','页面已暂停'));applyNative(nativeTracker.hold('paused','页面已暂停'));}
     else{apply(tracker.hold('waiting','等待反馈'));applyNative(nativeTracker.hold('waiting','等待关节反馈'));
@@ -653,7 +739,7 @@ async function boot(){
         if(chartDirty&&now-lastChartAt>=50){
           if(drawPoseAngleChart(get('imu-angle-chart'),displayHistory,devicePixelRatio)){chartDirty=false;lastChartAt=now;}
         }
-        renderer.render(scene,camera);nextDrawAt=now+50;
+        renderer.render(scene,camera);positionCurrentLabels();nextDrawAt=now+50;
         if(renderer.getContext().isContextLost()){graphics.lost();return;}
         renderCount++;
         if(renderStart===null)renderStart=now;

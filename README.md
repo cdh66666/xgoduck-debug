@@ -1,6 +1,6 @@
 # XGO Duck 调试
 
-轻量的 XGO Duck / Arduino Uno Q 调试台：15 轴反馈、慢速回正与停止卸力、零位记录、实时姿态，以及备用 USB 编号工具。电脑端是 Python HTTP 服务和原生 JavaScript，不需要 Node.js 构建。
+轻量的 XGO Duck / Arduino Uno Q 调试台：同一页查看实时姿态、15 轴反馈、慢速回正、逐颗校准与保持，以及舵机电流着色；备用 USB 编号和组装说明收在更多工具中。电脑端是 Python HTTP 服务和原生 JavaScript，不需要 Node.js 构建。
 
 ## 启动
 
@@ -28,19 +28,23 @@ python -m venv .venv
 
 - 根目录：电脑端 HTTP、无线连接与状态转发。
 - `assets/`、`model-assets/`：网页和当前姿态模型；模型是显示参考，不是实机位置证明。
-- `board/`：HOME ABI5 的 Uno Q 应用、MCU 源码及必要的固件库。
+- `board/`：HOME ABI5 / 逐颗校准 ABI1 的 Uno Q 应用、MCU 源码及必要的固件库。
 - `tools/`：只读发现与发布同步工具。
 
 板端需要 Arduino App Lab / Uno Q 平台 `arduino:zephyr 1.0.0`。`board/sketch/sketch.yaml` 固定库路径；修改过的 Bridge/RPClite 库一并保留。电脑端无需安装这些固件依赖。板端设备配置放在 `board/python/device.local.json`；已有部署升级应保留整个 `data/` 目录。此仓库不附带针对某台机器的自动刷写包。
 
 ## 回正验证边界
 
-HOME5 已在本项目设备安装，包含从当前位置向已保存零位逐轴慢回、到位保持与停止卸力保护。实际回正、保持和停止效果仍以对应设备的现场验收为准。公开版仅将设备身份改为配置输入；不能把另一台机器的零位或跨圈参考直接搬过来。
+2026-10-17 版本已在项目设备安装：HOME ABI5、逐颗校准 ABI1，15 轴新鲜反馈、卸力状态和电流读数均已只读核验。实际回正、逐颗保持和停止仍待现场操作验收；安装成功不代表这些运动效果已通过。
+
+当前源码包含从当前位置向已保存零位逐轴慢回，以及逐颗记录、保持和停止卸力。位置容差为约 5°（57 ticks）；这是程序接受范围，不是测得的机械精度。实际回正、保持和停止效果仍以对应设备的现场验收为准。公开版将设备身份改为配置输入；不能把另一台机器的零位或跨圈参考直接搬过来。
+
+模型的红色深浅显示舵机寄存器返回的相电流，0–2 A 为显示标尺，失鲜值不继续着色；它不是整机电源电流，也未经过实物电流标定，不参与运动控制。
 
 发布内容不包含训练模型、CAD 工程、工具链、历史候选包、调试日志、私钥或真实零位。源代码与发布调整记录见 `SOURCE_MANIFEST.json`。需要从原工作目录更新时：
 
 ```powershell
-python tools/sync_source.py --source <servo-debug目录> --approved-update <已批准增量清单.json>
+python tools/sync_source.py --source <servo-debug目录> --approved-update <前一已批准增量清单.json> --approved-update <本次已批准增量清单.json>
 ```
 
 该命令按清单复制所需文件并做少量便携化处理，不读取或复制私钥内容，不操作硬件。

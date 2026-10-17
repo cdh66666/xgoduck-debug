@@ -9,7 +9,7 @@
   const STATUS_URL = '/api/wireless-calibration';
   const ACTION_URL = '/api/wireless-calibration/action';
   const LOCAL_SESSION_URL = '/api/local-session';
-  const newRequestOps = new Set(['off_all','capture_group','capture_all','arm','home_prepare','cancel','home_stop']);
+  const newRequestOps = new Set(['off_all','capture_group','capture_all','arm','home_prepare','cancel','home_stop','sequence_begin','sequence_stop']);
   const localUnsent = value => ['local_session_expired','local_session_unavailable','local_request_cancelled'].includes(errorReason(value));
   function createRequest(options) {
     return async (op,payload,extra={}) => {
@@ -86,7 +86,7 @@
     return Math.abs(position-target)<=1024;
   }
   const homeUnreleased=h=>h?.active===true||h?.session_active===true;
-  const completeHomeHold=h=>h?.contract_revision===HOME_CONTRACT_REVISION&&h.phase==='holding'&&
+  const completeHomeHold=h=>h?.contract_revision===HOME_CONTRACT_REVISION&&h.tolerance_ticks===57&&h.phase==='holding'&&
     h.arrival_verified===true&&h.active===true&&h.progress?.active_id===0&&h.progress.stage===9&&
     h.progress.arrived_mask===0x7fff&&h.progress.enabled_mask===0x7fff&&
     h.progress.primed_mask===0x7fff&&h.progress.fresh_mask===0x7fff;
@@ -111,6 +111,7 @@
   }
   function homeBlockedNote(v){
     if(!v.fresh)return '等待新鲜位置';
+    if(v.s?.home?.tolerance_ticks!==57)return '归位程序待更新（5°容差）';
     const stale=IDS.find(id=>v.rows.get(id)?.fresh!==true);
     if(stale!==undefined)return 'ID '+stale+'位置过期，等待刷新';
     const staleMeta=IDS.find(id=>{const age=v.rows.get(id)?.metadata_age_ms;return !Number.isFinite(age)||age<0||age>750;});
@@ -132,7 +133,7 @@
   }
   function homePlanReady(check) {
     const s=check.s,h=s?.home,p=h?.plan;
-    if(!check.fresh||!check.policyLocked||!check.allOff||!check.idle||s?.torque_may_be_on!==false||s.mcu_state!==1||s?.version!==HOME_VERSION||h?.contract_revision!==HOME_CONTRACT_REVISION||h?.supported!==true||h.ready!==true||h.active!==false||
+    if(!check.fresh||!check.policyLocked||!check.allOff||!check.idle||s?.torque_may_be_on!==false||s.mcu_state!==1||s?.version!==HOME_VERSION||h?.contract_revision!==HOME_CONTRACT_REVISION||h?.tolerance_ticks!==57||h?.supported!==true||h.ready!==true||h.active!==false||
       s.complete!==true||s.native_file?.verified!==true||s.native_file.path!=='data/zero_pos.native.json'||!hash64(s.native_file.sha256)||
       !p||p.range_profile!=='native-head-recovery-v2'||p.boot_id!==s.boot_id||p.native_sha256!==s.native_file.sha256||!Number.isInteger(p.max_span_ticks)||p.max_span_ticks<0||p.max_span_ticks>2047||
       !Array.isArray(p.targets)||p.targets.length!==15||!Array.isArray(p.modes)||p.modes.length!==15)return false;
@@ -147,12 +148,12 @@
   function homeIdleNote(v) {
     const h=v.s?.home;
     if(!v.fresh)return '等待新鲜反馈';
-    if(homeReleased(v)&&h.arrival_verified===true)return '已归位、已卸力。';
+    if(homeReleased(v)&&h.tolerance_ticks===57&&h.arrival_verified===true)return '已归位、已卸力（5°容差）。';
     if(h?.phase==='fault'){
       if(!homeReleased(v))return '归位停止待确认；保持托稳。';
-      return v.homeReady?'已卸力，可归位':homeBlockedNote(v);
+      return v.homeReady?'已卸力，可回正 · 容差5°':homeBlockedNote(v);
     }
-    return v.homeReady?'已卸力，可归位':homeBlockedNote(v);
+    return v.homeReady?'已卸力，可回正 · 容差5°':homeBlockedNote(v);
   }
   function homeFaultNote(status) {
     const home=status?.home;
@@ -649,7 +650,7 @@
     return (Array.isArray(ids) && ids.length ? 'ID '+ids.join('、')+'：' : '') + (labels[errorReason(value)] || labels[reason] || reason);
   }
 
-  const exported = {IDS,GROUPS,GROUP_LABELS,SCHEMA,STATUS_URL,ACTION_URL,LOCAL_SESSION_URL,NATIVE_VERSION,PREVIOUS_HOME_VERSION,HOME_VERSION,NATIVE_DOMAIN,recordValid,groupRecordsSaved,motionSafe,observedPosition,jointReadout,homePositionAllowed,homeTargetMatches,homeBlockedNote,homePlanReady,homeReleased,homeIdleNote,homeFaultNote,assess,createController,createRequest,formatError};
+  const exported = {IDS,GROUPS,GROUP_LABELS,SCHEMA,STATUS_URL,ACTION_URL,LOCAL_SESSION_URL,NATIVE_VERSION,PREVIOUS_HOME_VERSION,HOME_VERSION,NATIVE_DOMAIN,recordValid,groupRecordsSaved,motionSafe,observedPosition,jointReadout,homePositionAllowed,homeTargetMatches,homeBlockedNote,homePlanReady,homeReleased,homeIdleNote,homeFaultNote,completeHomeHold,assess,createController,createRequest,formatError};
   if (typeof module === 'object' && module.exports) { module.exports = exported; return; }
   scope.DuckWirelessCalibration = exported;
   scope.DUCK_WIRELESS_CALIBRATION = true;
@@ -667,14 +668,14 @@
   function paintPanel(v) {
     get('wl-connection').textContent = v.interlocked?'无线更新尚未确认':v.runtimeOnline&&!v.fresh?'主控已连接·校准程序待更新':!v.connected ? '无线离线' : !v.supported ? '主控已连接·校准程序待更新' : !v.fresh ? '等待新反馈' : '无线已连接';
     get('wl-connection').dataset.state = v.fresh ? 'ok' : 'unknown';
-    if(get('wl-home')){get('wl-home').disabled=!v.canClickHome;get('wl-home').textContent='慢速回中';}
+    if(get('wl-home')){get('wl-home').disabled=!v.canClickHome||scope.duckSequenceCalibration?.needsStop()===true;get('wl-home').textContent='回正';}
     get('wl-stop').textContent='停止/卸力';
     if(get('wl-home-state')){
       const h=v.s?.home;
       get('wl-home-state').title=homeFaultNote(v.s)||(h?.phase==='fault'?'上次归位错误 '+(h.error??'未知')+(h.error===13?'：卸力校验未通过，不能仅据此确定最初失败原因。':'。'):'');
       get('wl-home-state').textContent=v.interlocked?'程序更新中':!v.connected?'等待无线连接':v.s?.version!==HOME_VERSION||!h?'归位程序待更新':
         v.homeActive?(!v.fresh||h.supported!==true?'停止待确认；保持托稳，可停止':{preparing:'正在核对起点…',prepared:'起点已核对，准备归位…',enabling:homeProgressNote(h),moving:homeProgressNote(h),
-          holding:completeHomeHold(h)?'已到中位 · 正在保持':'到位待确认；可停止',releasing:'正在卸力；可停止',off:v.allOff?'已卸力；上次归位未完成':'归位未完成；可停止'}[h.phase]||'归位状态待确认；可停止'):
+          holding:completeHomeHold(h)?'已到位 · 保持中（5°）':'到位待确认；可停止',releasing:'正在卸力；可停止',off:v.allOff?'已卸力；上次归位未完成':'归位未完成；可停止'}[h.phase]||'归位状态待确认；可停止'):
         h.supported!==true?'等待新鲜归位反馈':
         homeIdleNote(v);
     }
@@ -723,7 +724,7 @@
       lastBroadcastStatus=v.s;lastBroadcastRecords=v.records;lastBroadcastKey=eventKey;
       scope.dispatchEvent(new CustomEvent('duck:wireless-calibration',{detail:{status:v.s,records:v.records,fresh:v.fresh,selected_id:v.id,homeActive:v.homeActive,homeOwned:v.homeOwned,homePhase:v.homePhase}}));
     }
-    if(document.hidden||get('workflow-servo')?.hidden!==false)return;
+    if(document.hidden||get('workflow-imu')?.hidden!==false)return;
     const key=[v.s?.sequence,v.id,v.group,v.fresh,v.interlocked,v.connected,v.supported,v.phase,v.busy,
       v.canClickHome,v.canClickOff,v.canClickCapture,v.canClickArm,v.canRead,v.canJog,
       v.homeActive,v.homePhase,v.message,v.expires,v.groupSaved].join('|');
@@ -743,7 +744,7 @@
   get('wl-home')?.addEventListener('click',event=>{if(event?.isTrusted)void controller.userAction('home');});
   for (const [id,op,direction] of [['wl-off-all','off_all'],['wl-capture-all','capture_group'],['wl-arm','arm'],
     ['wl-minus','jog',-1],['wl-plus','jog',1],['wl-read','read'],['wl-stop','cancel']]) {
-    get(id).addEventListener('click',event=>{if(!event?.isTrusted)return;const delta=op==='jog'?direction*Number(get('wl-step-size').value):undefined;void controller.userAction(op,delta);});
+    get(id).addEventListener('click',event=>{if(!event?.isTrusted)return;if(op==='cancel'&&scope.duckSequenceCalibration?.needsStop()){void scope.duckSequenceCalibration.stop();return;}const delta=op==='jog'?direction*Number(get('wl-step-size').value):undefined;void controller.userAction(op,delta);});
   }
   scope.addEventListener('duck:joint',event=>controller.select(event.detail.id));
   scope.addEventListener('duck:live-status',event=>controller.acceptRuntime(event.detail));
@@ -752,13 +753,13 @@
     scope.DuckWorkflow?.selectJoint(controller.view().id);
     scope.dispatchEvent(new CustomEvent('duck:calibration-group',{detail:{group}}));
   });}
-  scope.addEventListener('duck:page',event=>{controller.setPage(event.detail.page);if(event.detail.page==='servo')void controller.refresh();});
+  scope.addEventListener('duck:page',event=>{const page=event.detail.page==='imu'?'servo':event.detail.page;controller.setPage(page);if(page==='servo')void controller.refresh();});
   document.addEventListener('visibilitychange',()=>{controller.visibility(document.hidden);if(!document.hidden)void controller.refresh();});
   scope.addEventListener('pagehide',()=>controller.visibility(true));
   get('wl-fine-tools').addEventListener('toggle',()=>{if(!get('wl-fine-tools').open){controller.clearance(false);}});
   setInterval(()=>{controller.tick();if(!document.hidden)void controller.refresh();},500);
   setInterval(()=>{controller.tick();void controller.heartbeat();},100);
-  controller.setPage(get('workflow-servo').hidden?'imu':'servo');
+  controller.setPage(get('workflow-imu').hidden?'imu':'servo');
   controller.select(Number(scope.DuckWorkflow?.selectedJoint())||10);
   void controller.refresh();
 })(typeof window === 'object' ? window : globalThis);

@@ -25,7 +25,8 @@ IDS = (10, 11, 12, 13, 14, 20, 21, 22, 23, 24, 30, 31, 32, 33, 34)
 VERSION = '2026-10-15-wireless-calibration-v7'
 HOME_CONTRACT_REVISION = 5
 OPS = frozenset(('read', 'off_all', 'capture_all','capture_group', 'arm', 'jog', 'cancel', 'heartbeat',
-                 'home_prepare','home_run','home_heartbeat','home_stop'))
+                 'home_prepare','home_run','home_heartbeat','home_stop', 'read_servo_parameters',
+                 'sequence_begin', 'sequence_select', 'sequence_capture_hold', 'sequence_heartbeat', 'sequence_stop'))
 MAX_REPLY = 128 * 1024
 
 
@@ -39,7 +40,9 @@ def _hardware_may_be_active(status):
     flags = status.get('mcu_flags')
     rows = status.get('joints') if isinstance(status.get('joints'), list) else []
     home=status.get('home') if isinstance(status.get('home'),dict) else {}
+    sequential=status.get('sequence_calibration') if isinstance(status.get('sequence_calibration'),dict) else {}
     return bool(_armed_active(status) or home.get('active') is True or home.get('session_active') is True
+                or sequential.get('active') is True or sequential.get('held_ids')
                 or home.get('phase') in ('preparing','prepared','enabling','moving','holding','releasing')
                 or status.get('torque_may_be_on') is True
                 or type(flags) is int and flags & 12
@@ -94,6 +97,38 @@ def _checked_action(action):
         raise CalibrationProxyError('未知无线校准操作')
     op = action['op']
     output = {'op': op}
+    if op == 'read_servo_parameters':
+        if type(action.get('id')) is not int or action['id'] not in IDS or set(action) != {'op', 'id'}:
+            raise CalibrationProxyError('寄存器读取只接受关节编号')
+        return {'op': op, 'id': action['id']}
+    if op.startswith('sequence_'):
+        allowed = {'op', 'id', 'sequence_contract_revision'}
+        target = action.get('id', 0)
+        if type(target) is not int or target not in (IDS if op in ('sequence_select', 'sequence_capture_hold') else (0,)):
+            raise CalibrationProxyError('请选择准确的逐颗校准关节')
+        output['id'] = target
+        if op != 'sequence_stop':
+            if type(action.get('sequence_contract_revision')) is not int or action['sequence_contract_revision'] != 1:
+                raise CalibrationProxyError('逐颗校准页面版本不匹配，请刷新', reason='sequence_contract_mismatch')
+            output['sequence_contract_revision'] = 1
+        if op == 'sequence_begin':
+            allowed.update(('supported', 'clear'))
+            if action.get('supported') is not True or action.get('clear') is not True:
+                raise CalibrationProxyError('先托稳机身并确认活动余量')
+            output.update(supported=True, clear=True)
+        if op == 'sequence_capture_hold':
+            allowed.update(('supported', 'pose_confirmed'))
+            if action.get('supported') is not True or action.get('pose_confirmed') is not True:
+                raise CalibrationProxyError('先确认本颗机械零位并托稳机身')
+            output.update(supported=True, pose_confirmed=True)
+        if op in ('sequence_select', 'sequence_capture_hold', 'sequence_heartbeat') or op == 'sequence_stop' and action.get('session') is not None:
+            allowed.add('session')
+            if not isinstance(action.get('session'), str) or not re.fullmatch(r'[0-9a-f]{16,128}', action['session']):
+                raise CalibrationProxyError('逐颗校准会话已失效')
+            output['session'] = action['session']
+        if set(action) - allowed:
+            raise CalibrationProxyError('逐颗校准不接受外部目标或参数')
+        return output
     if op.startswith('home_'):
         allowed={'op'}
         if op in ('home_prepare','home_run','home_heartbeat'):
@@ -405,7 +440,7 @@ class WirelessCalibrationProxy:
         if self.request_override is not None:
             return self.request_override(method, body)
         with self.lock:
-            base = self._ensure_tunnel(read_only=method == 'GET' or body.get('op') in ('cancel', 'home_stop', 'off_all', 'read'))
+            base = self._ensure_tunnel(read_only=method == 'GET' or body.get('op') in ('cancel', 'home_stop', 'sequence_stop', 'off_all', 'read', 'read_servo_parameters'))
             epoch, process = self.connection_epoch, self.process
             if method == 'POST':
                 self._check_session(body)
@@ -418,7 +453,7 @@ class WirelessCalibrationProxy:
         req = Request(base + path, data=payload, method=method, headers=headers)
         started = self.clock()
         try:
-            with build_opener(ProxyHandler({}), NoRedirect()).open(req, timeout=8 if method == 'POST' and body.get('op') in ('capture_all','capture_group') else 3) as reply:
+            with build_opener(ProxyHandler({}), NoRedirect()).open(req, timeout=8 if method == 'POST' and body.get('op') in ('capture_all','capture_group','sequence_capture_hold') else 3) as reply:
                 raw = reply.read(MAX_REPLY + 1)
         except HTTPError as error:
             if error.code == 404:
@@ -487,7 +522,7 @@ class WirelessCalibrationProxy:
                     'update_interlocked': self.update_interlocked()}, 'status': None}
 
     def _check_session(self, body):
-        if (self.sessions_invalidated and body['op'] in ('jog', 'heartbeat', 'home_run', 'home_heartbeat')
+        if (self.sessions_invalidated and body['op'] in ('jog', 'heartbeat', 'home_run', 'home_heartbeat', 'sequence_select', 'sequence_capture_hold', 'sequence_heartbeat')
                 and body.get('session') not in self.valid_sessions):
             raise CalibrationProxyError('连接已中断；请重新发起操作，旧授权不再续用', reason='connection_changed')
 
@@ -496,9 +531,9 @@ class WirelessCalibrationProxy:
         with self.lock:
             self._check_session(body)
             epoch = self.connection_epoch
-            if self.uncertain and body['op'] not in ('cancel','off_all','read','heartbeat','home_stop','home_heartbeat'):
+            if self.uncertain and body['op'] not in ('cancel','off_all','read','heartbeat','home_stop','home_heartbeat','sequence_stop','sequence_heartbeat','read_servo_parameters'):
                 raise CalibrationProxyError('先停止并确认卸力，再开始新动作',reason='release_unconfirmed')
-        if self.update_interlocked() and body['op'] not in ('cancel', 'heartbeat', 'read','home_heartbeat','home_stop'):
+        if self.update_interlocked() and body['op'] not in ('cancel', 'heartbeat', 'read','home_heartbeat','home_stop','sequence_heartbeat','sequence_stop','read_servo_parameters'):
             raise CalibrationProxyError('无线更新尚未确认，暂不开始新的校准操作')
         # No network lock spans a round trip: heartbeat and cancel must remain
         # deliverable while a jog waits for its device-side acknowledgement.
@@ -508,7 +543,7 @@ class WirelessCalibrationProxy:
                 if epoch != self.connection_epoch:
                     raise CalibrationProxyError('连接已变更；旧请求回执已作废', reason='connection_changed')
         except CalibrationProxyError:
-            if body['op'] in ('arm', 'jog','home_prepare','home_run','home_stop'):
+            if body['op'] in ('arm', 'jog','home_prepare','home_run','home_stop','sequence_begin','sequence_select','sequence_capture_hold','sequence_stop'):
                 with self.lock:
                     self.uncertain = True
             raise
@@ -516,7 +551,7 @@ class WirelessCalibrationProxy:
             detail = result.get('detail') if isinstance(result.get('detail'), dict) else result
             reason = detail.get('reason') or detail.get('code') or detail.get('error')
             definitely_unsent_prepare = body['op']=='home_prepare' and reason=='command_route_unavailable'
-            if body['op'] in ('home_prepare','home_run','home_stop') and not definitely_unsent_prepare:
+            if body['op'] in ('home_prepare','home_run','home_stop','sequence_begin','sequence_select','sequence_capture_hold','sequence_stop') and not definitely_unsent_prepare:
                 with self.lock:self.uncertain=True
                 self._remember(result.get('status'))
             message = detail.get('message') or detail.get('error') or reason or '无线操作未完成'
@@ -526,7 +561,7 @@ class WirelessCalibrationProxy:
             if epoch != self.connection_epoch:
                 self.uncertain = True
                 raise CalibrationProxyError('连接已变更；旧请求回执已作废', reason='connection_changed')
-            if body['op'] in ('arm', 'home_prepare') and isinstance(result.get('session'), str):
+            if body['op'] in ('arm', 'home_prepare', 'sequence_begin') and isinstance(result.get('session'), str):
                 self.valid_sessions = {result['session']}
             self._remember(result.get('status'))
         return result

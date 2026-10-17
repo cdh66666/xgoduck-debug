@@ -41,6 +41,11 @@ static duck_calibration::HomeEngine homeEngine;
 static duck_calibration::HomeCommand homePending = {};
 static bool homePendingReady=false;
 static duck_calibration::HomeSnapshot homeSnapshot = {};
+static duck_calibration::SequenceCommand sequencePending = {};
+static bool sequencePendingReady=false;
+static duck_calibration::SequenceSnapshot sequenceSnapshot = {};
+static duck_calibration::ParameterSnapshot parameterSnapshot = {};
+static duck_calibration::CurrentSnapshot currentSnapshot = {};
 static duck_calibration::Command calibrationQueue[4] = {}, calibrationStop = {};
 static uint8_t calibrationQueueRead=0, calibrationQueueCount=0;
 static uint32_t invalidCalibrationCommands=0;
@@ -124,15 +129,22 @@ static void receiveCommand(MsgPack::bin_t<uint8_t> bytes) {
 }
 
 static void receiveCalibration(MsgPack::bin_t<uint8_t> bytes) {
-  duck_calibration::Command command={};duck_calibration::HomeCommand home={};
+  duck_calibration::Command command={};duck_calibration::HomeCommand home={};duck_calibration::SequenceCommand sequence={};
   const bool isHome=bytes.size()==sizeof(home);
-  bool valid=isHome||bytes.size()==sizeof(command);
+  const bool isSequence=bytes.size()==sizeof(sequence);
+  bool valid=isHome||isSequence||bytes.size()==sizeof(command);
   if(valid&&isHome){memcpy(&home,bytes.data(),sizeof(home));valid=duck_calibration::HomeEngine::wireValid(home);}
+  else if(valid&&isSequence){memcpy(&sequence,bytes.data(),sizeof(sequence));valid=duck_calibration::HomeEngine::sequenceValid(sequence);}
   else if(valid){memcpy(&command,bytes.data(),sizeof(command));valid=duck_calibration::Engine::wireValid(command)||duck_calibration::HomeEngine::controlValid(command);}
   k_mutex_lock(&calibrationMu,K_FOREVER);
   if(!valid){++invalidCalibrationCommands;}
-  else if(isHome){if(!homePendingReady&&!calibrationStopPending&&!calibrationQueueCount){homePending=home;homePendingReady=true;}else ++invalidCalibrationCommands;}
-  else if(command.op==duck_calibration::CANCEL||command.op==duck_calibration::OFF_ALL){calibrationStop=command;calibrationStopPending=true;calibrationQueueCount=0;homePendingReady=false;}
+  else if(isSequence){
+    if(sequence.op==duck_calibration::SEQ_STOP){sequencePending=sequence;sequencePendingReady=true;calibrationQueueCount=0;homePendingReady=false;}
+    else if(!sequencePendingReady&&!homePendingReady&&!calibrationStopPending&&!calibrationQueueCount){sequencePending=sequence;sequencePendingReady=true;}
+    else ++invalidCalibrationCommands;
+  }
+  else if(isHome){if(!sequencePendingReady&&!homePendingReady&&!calibrationStopPending&&!calibrationQueueCount){homePending=home;homePendingReady=true;}else ++invalidCalibrationCommands;}
+  else if(command.op==duck_calibration::CANCEL||command.op==duck_calibration::OFF_ALL){calibrationStop=command;calibrationStopPending=true;calibrationQueueCount=0;homePendingReady=sequencePendingReady=false;}
   else if(calibrationQueueCount<4){calibrationQueue[(calibrationQueueRead+calibrationQueueCount)%4]=command;++calibrationQueueCount;}
   else ++invalidCalibrationCommands;
   k_mutex_unlock(&calibrationMu);
@@ -146,6 +158,10 @@ static bool takeCalibrationCommand(duck_calibration::Command& command){
 static bool takeHomeCommand(duck_calibration::HomeCommand& command){
   k_mutex_lock(&calibrationMu,K_FOREVER);const bool ready=homePendingReady;
   if(ready){command=homePending;homePendingReady=false;}k_mutex_unlock(&calibrationMu);return ready;
+}
+static bool takeSequenceCommand(duck_calibration::SequenceCommand& command){
+  k_mutex_lock(&calibrationMu,K_FOREVER);const bool ready=sequencePendingReady;
+  if(ready){command=sequencePending;sequencePendingReady=false;}k_mutex_unlock(&calibrationMu);return ready;
 }
 
 static void fillRawPacket(RawPacket &r, uint16_t freshMask) {
@@ -217,6 +233,11 @@ static void controlTask(void*, void*, void*) {
     }
     duck_calibration::HomeCommand homeCommand={};
     if(!probeOwnsThisTick&&takeHomeCommand(homeCommand)&&calibrationEngine.homeReady())homeEngine.prepare(homeCommand,startupProbePort);
+    duck_calibration::SequenceCommand sequenceCommand={};
+    if(!probeOwnsThisTick&&takeSequenceCommand(sequenceCommand)){
+      if(homeEngine.ownsBus()||calibrationEngine.homeReady())homeEngine.sequence(sequenceCommand,startupProbePort);
+      else if(sequenceCommand.op==duck_calibration::SEQ_STOP)calibrationEngine.disarm(startupProbePort);
+    }
     const bool homeOwnsThisTick=homeEngine.ownsBus();
     if (probeOwnsThisTick) {
       const duck_probe::StepResult result = startupProbe.step(startupProbePort);
@@ -269,6 +290,9 @@ static void controlTask(void*, void*, void*) {
     s.reportDrops = reportDrops; snapshot = s;
     copyCalibrationSnapshot(homeOwnsThisTick,micros(),seq);
     homeEngine.snapshot(homeSnapshot,micros(),seq);
+    homeEngine.sequenceSnapshot(sequenceSnapshot,micros(),seq);
+    calibrationEngine.parameterSnapshot(parameterSnapshot);
+    if(homeOwnsThisTick)homeEngine.currentSnapshot(currentSnapshot,micros(),seq);else calibrationEngine.currentSnapshot(currentSnapshot,micros(),seq);
     if(calibrationEngine.takeResult(calibrationResult))calibrationResultReady=true;
     k_mutex_unlock(&stateMu);
     k_sem_give(&reportReady);
@@ -284,8 +308,9 @@ static void controlTask(void*, void*, void*) {
 }
 
 static void reportTask(void*, void*, void*) {
-  MsgPack::bin_t<uint8_t> bytes, probeBytes, calibrationBytes, calibrationResultBytes, homeBytes;
+  MsgPack::bin_t<uint8_t> bytes, probeBytes, calibrationBytes, calibrationResultBytes, homeBytes, sequenceBytes, parameterBytes, currentBytes;
   unsigned reports = 0;uint8_t lastHomePhase=255;uint32_t lastHomeAck=0;
+  uint8_t lastSequencePhase=255,lastParameterResult=255;uint32_t lastSequenceAck=0,lastParameterRequest=0;
   const uint32_t replayStartUs = micros();
   uint32_t lastReplayUs = replayStartUs;
   uint8_t replayNext = 0;
@@ -294,6 +319,8 @@ static void reportTask(void*, void*, void*) {
   probeBytes.resize(duck_probe::kWireSize);
   calibrationBytes.resize(sizeof(duck_calibration::Snapshot));
   calibrationResultBytes.resize(sizeof(duck_calibration::ActionResult));homeBytes.resize(sizeof(duck_calibration::HomeSnapshot));
+  sequenceBytes.resize(sizeof(duck_calibration::SequenceSnapshot));parameterBytes.resize(sizeof(duck_calibration::ParameterSnapshot));
+  currentBytes.resize(sizeof(duck_calibration::CurrentSnapshot));
   for (;;) {
     k_sem_take(&reportReady, K_FOREVER);
     k_mutex_lock(&stateMu, K_FOREVER);
@@ -301,13 +328,23 @@ static void reportTask(void*, void*, void*) {
     const uint16_t freshMask = snapshot.servoMask; // Same locked DQS snapshot; no report-thread Engine access.
     memcpy(calibrationBytes.data(),&calibrationSnapshot,sizeof(calibrationSnapshot));
     memcpy(homeBytes.data(),&homeSnapshot,sizeof(homeSnapshot));
+    memcpy(sequenceBytes.data(),&sequenceSnapshot,sizeof(sequenceSnapshot));
+    memcpy(parameterBytes.data(),&parameterSnapshot,sizeof(parameterSnapshot));
+    memcpy(currentBytes.data(),&currentSnapshot,sizeof(currentSnapshot));
     const bool homeChanged=lastHomePhase!=homeSnapshot.phase||lastHomeAck!=homeSnapshot.operationAckSeq;
     lastHomePhase=homeSnapshot.phase;lastHomeAck=homeSnapshot.operationAckSeq;
+    const bool sequenceChanged=lastSequencePhase!=sequenceSnapshot.phase||lastSequenceAck!=sequenceSnapshot.operationAckSeq;
+    lastSequencePhase=sequenceSnapshot.phase;lastSequenceAck=sequenceSnapshot.operationAckSeq;
+    const bool parameterChanged=lastParameterRequest!=parameterSnapshot.requestSeq||lastParameterResult!=parameterSnapshot.result;
+    lastParameterRequest=parameterSnapshot.requestSeq;lastParameterResult=parameterSnapshot.result;
     const bool hasCalibrationResult=calibrationResultReady;
     if(hasCalibrationResult){memcpy(calibrationResultBytes.data(),&calibrationResult,sizeof(calibrationResult));calibrationResultReady=false;}
     k_mutex_unlock(&stateMu);
     Bridge.notify("duck_state", bytes);
     if((reports%5)==0||homeChanged)Bridge.notify("duck_home_state",homeBytes);
+    if((reports%5)==0||sequenceChanged)Bridge.notify("duck_sequence_state",sequenceBytes);
+    if(parameterChanged&&lastParameterRequest)Bridge.notify("duck_servo_parameters",parameterBytes);
+    if((reports%5)==0)Bridge.notify("duck_servo_current",currentBytes);
     if((reports%5)==0||hasCalibrationResult)Bridge.notify("duck_calibration_state",calibrationBytes);
     if(hasCalibrationResult)Bridge.notify("duck_calibration_result",calibrationResultBytes);
     if ((reports % 20) == 0) {

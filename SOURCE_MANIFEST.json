@@ -1,14 +1,32 @@
 {
   "base": "installed HOME ABI5",
   "home_contract_revision": 5,
-  "installed_firmware_sha256": "38027fc07793d9d37ffe71910906c35b87ebc546ea35f9d6e84e497d25e5de81",
+  "installed_firmware_sha256": "f1551cbe3343d09cee23f46acb342d8f5f7fc752ee30b02448c2ba2cc9a34427",
+  "sequence_contract_revision": 1,
   "verified_firmware_source_count": 166,
-  "verified_board_source_count": 168,
+  "verified_board_source_count": 175,
   "approved_updates": [
     {
       "manifest_sha256": "50258698a3bd7f127b3e33ff17847a1ed1d3697d281342add6ed67a506a9a005",
       "changed_sources": {
         "python/calibration_host.py": "d571ffaa97d48399966eb40e043f9286fad0200245024804497ce96f0f115c88"
+      }
+    },
+    {
+      "manifest_sha256": "100a77801ced67cee55fd0054da3115e4e1851fc6e8404a42faaf94c2f3ca4d4",
+      "changed_sources": {
+        "python/calibration_host.py": "40a14a44b8c8df7d13b639495ce02e3b065bed0d81838dffe73481d2d915dc0a",
+        "python/calibration_wire.py": "e50461844ce3473160d4adf46cfac90be38e6d3046691425e7347adc3b45ac20",
+        "python/checked_bridge.py": "fc465ed11834efb6e4681599515514e12c4dc96914b30f25cc213bc88a994d61",
+        "python/main.py": "c6633e0238276d43e713c8c0357f758373470198f7dac54686585162f3d5c293",
+        "python/sequence_host.py": "da05e90d11b28227f30cf8fdb728b72a29b3c485b0f3588440331a783d17d940",
+        "python/sequence_store.py": "e6416b702e0201d403c5525676710fdf25e5eee92de1f033ee20853385cf89ea",
+        "python/sequence_wire.py": "b32c5ad0bdf9bfe1e940565a4b24767f7f6ab6123a69cfbdfc5dbbcb8b451d8a",
+        "python/servo_current.py": "1de954fd98b6ac8c0b02f8fe81f00d32306d8eb8ea5fab7d5749e076b6e1af01",
+        "python/unix_command_rpc.py": "c177131fe0217e491ba923d266aa4e565d6d69cb69ba66ff8c1680675b8fe626",
+        "sketch/calibration_engine.h": "bfe9362803a0db6c15cd3eb157fd3c23c5a74aa4daf3fbca957fb770911e82f0",
+        "sketch/calibration_protocol.h": "b478c2d1f49c8dfefb65fe3d21ce76fe36c596057821792d1037da6f3ce7c4c4",
+        "sketch/sketch.ino": "ba947f5f40e8d8b059406fc73a83a0e4767c12b5183654834e657f702dcd7772"
       }
     }
   ],
@@ -36,8 +54,8 @@
       "sha256": "f1b017560765c2e28ef0b4901e3c0aa67a7502dd3e53d5ea95ea92ee0f1f9e9c"
     },
     "assets/duck-dark.css": {
-      "source_sha256": "307f928cf3e369ebd19d36e60c1faab3df994700f73018b50aed1d0b5ce96901",
-      "sha256": "307f928cf3e369ebd19d36e60c1faab3df994700f73018b50aed1d0b5ce96901"
+      "source_sha256": "83ce4e33ce815157432c93fd1a0df855bd75bce715c3890dc70fc3d3b1c192dd",
+      "sha256": "83ce4e33ce815157432c93fd1a0df855bd75bce715c3890dc70fc3d3b1c192dd"
     },
     "assets/imu-live.js": {
       "source_sha256": "dc7261ac959068c83551a28f3cbde1a60ca0c600895da6ee95acf3c5328e9624",
@@ -48,16 +66,16 @@
       "sha256": "91ce15e9cdd14a3d3d9ba1e9a3422390002c7756370d1750e657070d75261349"
     },
     "assets/imu-model.css": {
-      "source_sha256": "2eb7569b292a45fc6a6d7ad0979211932e646e326a3535c8a8b7952f96ab4c85",
-      "sha256": "2eb7569b292a45fc6a6d7ad0979211932e646e326a3535c8a8b7952f96ab4c85"
+      "source_sha256": "9c779e23d930d5bf892ba25fd329dfd16416542e1695f43ec2ad2f61e9346896",
+      "sha256": "9c779e23d930d5bf892ba25fd329dfd16416542e1695f43ec2ad2f61e9346896"
     },
     "assets/imu-model.html": {
-      "source_sha256": "5b8f4d8811a5cf3a6e928f078154049ee61bc62a2dcdf77159c89091f884ad55",
-      "sha256": "5b8f4d8811a5cf3a6e928f078154049ee61bc62a2dcdf77159c89091f884ad55"
+      "source_sha256": "2cd265722a9efebbe5859596111e555e1c97b2612bb82f8321544112d82ab783",
+      "sha256": "2cd265722a9efebbe5859596111e555e1c97b2612bb82f8321544112d82ab783"
     },
     "assets/imu-model.js": {
-      "source_sha256": "edc086ba4340e7d535fed2185c69b9381fb5ac725850244ee15191eb572bfcec",
-      "sha256": "cc30e7ba4c784fab684aff276fcf861d2e60d166aff348467cc192af1c1d2e28",
+      "source_sha256": "d825c6427ab9a25295a4a577ee5cdc8dfd4d11b3338ac8c9555a2a328ac657ad",
+      "sha256": "07595e23769645ba0825f0e789abe202117f91613b65d21b57a94f19bda06d09",
       "publish_changes": [
         "omit device-specific historical IMU bias"
       ]
@@ -66,9 +84,13 @@
       "source_sha256": "decabdbfa806daa379a892c4e32dce93b3531856fb865459c49ccdbe417d792a",
       "sha256": "decabdbfa806daa379a892c4e32dce93b3531856fb865459c49ccdbe417d792a"
     },
+    "assets/motor-current.js": {
+      "source_sha256": "60a55b0cc06426c871d6547dafbb58628329d7708dfdbec3491f7fb2dc957605",
+      "sha256": "60a55b0cc06426c871d6547dafbb58628329d7708dfdbec3491f7fb2dc957605"
+    },
     "assets/native-pose-parent.js": {
-      "source_sha256": "c0aca7cff42b71e4f2e0c32c1da27b32a1a4adc2f4b8883ff400f9339808fbc2",
-      "sha256": "c0aca7cff42b71e4f2e0c32c1da27b32a1a4adc2f4b8883ff400f9339808fbc2"
+      "source_sha256": "98fa336e9bbaec9c94e92c4f9bec864cc25c3397548c78cc6c2bb22c1739be35",
+      "sha256": "98fa336e9bbaec9c94e92c4f9bec864cc25c3397548c78cc6c2bb22c1739be35"
     },
     "assets/native-pose.js": {
       "source_sha256": "5a10e9a93a58b21b483edb8fa67a7e563b26f9696599afea9d5925c47ffe4991",
@@ -92,6 +114,10 @@
     "assets/relative-heading.js": {
       "source_sha256": "af00d745a66263586e559df292dbf7a9a2e69b06bfd70b0c2af79e24a7639a02",
       "sha256": "af00d745a66263586e559df292dbf7a9a2e69b06bfd70b0c2af79e24a7639a02"
+    },
+    "assets/sequence-calibration.js": {
+      "source_sha256": "f2fa05e7c88b3605fed695694ebd8c6c9d16b18cc5f0f23aa520efe75d9bf3cd",
+      "sha256": "f2fa05e7c88b3605fed695694ebd8c6c9d16b18cc5f0f23aa520efe75d9bf3cd"
     },
     "assets/simple-debug.css": {
       "source_sha256": "daf3608e84e9ec779cacfd49a93fbd1ad9e17b0f61d9f0cfd7f246d8d3a05588",
@@ -117,15 +143,15 @@
       "sha256": "d956e26c045862ba57b4bf11289f83d9f2a9226dbc1392c56edc52abacb6691b"
     },
     "assets/wireless-calibration.js": {
-      "source_sha256": "d1c86b41fa7714d52a51a6bcd3fcc9730808d95e2a6cf885183c451311f5e8c5",
-      "sha256": "05bf781fc56f5070bf1582b119c6c7342aedcfb9a9685d4e0ce7f967d6ac5879",
+      "source_sha256": "f9c3292e72446a333ffec4a5c4210cdefb6b911029dd0c4cad1257b504937ba1",
+      "sha256": "c1e629c9600b0e69c0d6189c14ebf8fd01e1486f6fa9508fdafd39b0c68b4d17",
       "publish_changes": [
         "use backend-audited configured target pairs; preserve reference identity and movement bounds"
       ]
     },
     "assets/workflow.js": {
-      "source_sha256": "2e0fafcca7726c075f65bbe1d4e70b3da9e95ef009076d6a5fcef34bf17cec1c",
-      "sha256": "2e0fafcca7726c075f65bbe1d4e70b3da9e95ef009076d6a5fcef34bf17cec1c"
+      "source_sha256": "d731b284748cdc44e9521d2b673281271d0f8cca050613a746a8b4015c27ba01",
+      "sha256": "d731b284748cdc44e9521d2b673281271d0f8cca050613a746a8b4015c27ba01"
     },
     "assets/zero-guide-parent.js": {
       "source_sha256": "cb2b518c420819b5e21c0a7121acb62180f6db69ea3f39ad61e8ddfd5e11bfd5",
@@ -759,20 +785,20 @@
       "sha256": "a7027295fe10bc712084522fdfababb600e2fa02e37b2c46c780378ddeda442a"
     },
     "board/python/calibration_host.py": {
-      "source_sha256": "d571ffaa97d48399966eb40e043f9286fad0200245024804497ce96f0f115c88",
-      "sha256": "fcc69c9003d7f98799246f1b6807c146e762c35416ddb2aa54c4adba49a21002",
+      "source_sha256": "40a14a44b8c8df7d13b639495ce02e3b065bed0d81838dffe73481d2d915dc0a",
+      "sha256": "1509a1a3027d8030ea268d87fd235786f0e5f7a8130660176ec76ee0b6cd9d3e",
       "publish_changes": [
         "device serial read from local config or XGODUCK_SERIAL",
         "omit real calibrated encoder values; explicit audited config required"
       ]
     },
     "board/python/calibration_wire.py": {
-      "source_sha256": "237594051cf40148d11669ccd114aee45141cbf859420140250f848cf94f8384",
-      "sha256": "237594051cf40148d11669ccd114aee45141cbf859420140250f848cf94f8384"
+      "source_sha256": "e50461844ce3473160d4adf46cfac90be38e6d3046691425e7347adc3b45ac20",
+      "sha256": "e50461844ce3473160d4adf46cfac90be38e6d3046691425e7347adc3b45ac20"
     },
     "board/python/checked_bridge.py": {
-      "source_sha256": "8c61b4d17334d7c5381b91c0067ed20a750b002e17c36a20faf69d3d9203af75",
-      "sha256": "8c61b4d17334d7c5381b91c0067ed20a750b002e17c36a20faf69d3d9203af75"
+      "source_sha256": "fc465ed11834efb6e4681599515514e12c4dc96914b30f25cc213bc88a994d61",
+      "sha256": "fc465ed11834efb6e4681599515514e12c4dc96914b30f25cc213bc88a994d61"
     },
     "board/python/imu_relay_service.py": {
       "source_sha256": "b14f050facd49b484a819c8f9d91f73bc84a7e7eb493115f06cda35b00013e1e",
@@ -803,8 +829,8 @@
       "sha256": "2bbdf9495b675c7aa16a0ff37a37cdb6c964a2352a0ba3a8a5c3d39d1bb53567"
     },
     "board/python/main.py": {
-      "source_sha256": "aa2dafd8d1acdfc55c4bebc8675bd8b7c641fd0049eb37ba3acfb9db21db30f5",
-      "sha256": "aa2dafd8d1acdfc55c4bebc8675bd8b7c641fd0049eb37ba3acfb9db21db30f5"
+      "source_sha256": "c6633e0238276d43e713c8c0357f758373470198f7dac54686585162f3d5c293",
+      "sha256": "c6633e0238276d43e713c8c0357f758373470198f7dac54686585162f3d5c293"
     },
     "board/python/pose_observation.py": {
       "source_sha256": "454d6dc0aca1f2bbfe40adcf4c9749b38273a6fa7d289a58836bcd001593064b",
@@ -813,6 +839,22 @@
     "board/python/requirements.txt": {
       "source_sha256": "77ee4738b8963d3e12eea49bbf03a64903f08bd672ca0719b19ccda8d1d231f2",
       "sha256": "77ee4738b8963d3e12eea49bbf03a64903f08bd672ca0719b19ccda8d1d231f2"
+    },
+    "board/python/sequence_host.py": {
+      "source_sha256": "da05e90d11b28227f30cf8fdb728b72a29b3c485b0f3588440331a783d17d940",
+      "sha256": "da05e90d11b28227f30cf8fdb728b72a29b3c485b0f3588440331a783d17d940"
+    },
+    "board/python/sequence_store.py": {
+      "source_sha256": "e6416b702e0201d403c5525676710fdf25e5eee92de1f033ee20853385cf89ea",
+      "sha256": "e6416b702e0201d403c5525676710fdf25e5eee92de1f033ee20853385cf89ea"
+    },
+    "board/python/sequence_wire.py": {
+      "source_sha256": "b32c5ad0bdf9bfe1e940565a4b24767f7f6ab6123a69cfbdfc5dbbcb8b451d8a",
+      "sha256": "b32c5ad0bdf9bfe1e940565a4b24767f7f6ab6123a69cfbdfc5dbbcb8b451d8a"
+    },
+    "board/python/servo_current.py": {
+      "source_sha256": "1de954fd98b6ac8c0b02f8fe81f00d32306d8eb8ea5fab7d5749e076b6e1af01",
+      "sha256": "1de954fd98b6ac8c0b02f8fe81f00d32306d8eb8ea5fab7d5749e076b6e1af01"
     },
     "board/python/servo_probe.py": {
       "source_sha256": "eb3cd48dbc2927136ae35e3e201f5534913694fa3f8bb89ae6808f925ba628cc",
@@ -830,20 +872,20 @@
       "sha256": "80199329e4c967e646b01efb0ecc0b481f04b2f6320167e1b71fe2ccc15277c9"
     },
     "board/python/unix_command_rpc.py": {
-      "source_sha256": "0a6dee09e99c3e4dab084136d321dd264afbb355a7b09597b01caf80c92d141f",
-      "sha256": "0a6dee09e99c3e4dab084136d321dd264afbb355a7b09597b01caf80c92d141f"
+      "source_sha256": "c177131fe0217e491ba923d266aa4e565d6d69cb69ba66ff8c1680675b8fe626",
+      "sha256": "c177131fe0217e491ba923d266aa4e565d6d69cb69ba66ff8c1680675b8fe626"
     },
     "board/python/wire.py": {
       "source_sha256": "e6e645ad554f3c33228127fc704907a9972f98568719461c21e64a5b5ee89e74",
       "sha256": "e6e645ad554f3c33228127fc704907a9972f98568719461c21e64a5b5ee89e74"
     },
     "board/sketch/calibration_engine.h": {
-      "source_sha256": "233547b7070f3c50cd4084b821384f5a090735244662bbb63f97aecfc06570ac",
-      "sha256": "233547b7070f3c50cd4084b821384f5a090735244662bbb63f97aecfc06570ac"
+      "source_sha256": "bfe9362803a0db6c15cd3eb157fd3c23c5a74aa4daf3fbca957fb770911e82f0",
+      "sha256": "bfe9362803a0db6c15cd3eb157fd3c23c5a74aa4daf3fbca957fb770911e82f0"
     },
     "board/sketch/calibration_protocol.h": {
-      "source_sha256": "59acbc0723517eb29194ddec9a43cf8cd093e97614c0a34218202f319abc8abc",
-      "sha256": "59acbc0723517eb29194ddec9a43cf8cd093e97614c0a34218202f319abc8abc"
+      "source_sha256": "b478c2d1f49c8dfefb65fe3d21ce76fe36c596057821792d1037da6f3ce7c4c4",
+      "sha256": "b478c2d1f49c8dfefb65fe3d21ce76fe36c596057821792d1037da6f3ce7c4c4"
     },
     "board/sketch/duck_config.h": {
       "source_sha256": "ae4a93a3184be069865613bdd96058324347649d43b8876d53168ecf88bb3016",
@@ -870,8 +912,8 @@
       "sha256": "dc85407043681de18414ad3c22a633c559416492164b221e413fbbbffd96ac2e"
     },
     "board/sketch/sketch.ino": {
-      "source_sha256": "87001d1f9a3b0316a35eec29ef989439a589a311a46da061e5dc5dedb9f36caa",
-      "sha256": "87001d1f9a3b0316a35eec29ef989439a589a311a46da061e5dc5dedb9f36caa"
+      "source_sha256": "ba947f5f40e8d8b059406fc73a83a0e4767c12b5183654834e657f702dcd7772",
+      "sha256": "ba947f5f40e8d8b059406fc73a83a0e4767c12b5183654834e657f702dcd7772"
     },
     "board/sketch/sketch.yaml": {
       "source_sha256": "c8a65ad27903468779125d20a3d5418a680cddca7d7b9c00721b5ae71d318f4f",
@@ -945,8 +987,8 @@
       "sha256": "ff20a5b32a06ba0ba10b6756d83b81254e841937fe5ff297f8e5cfe7ef29c08a"
     },
     "index.html": {
-      "source_sha256": "45bc404f406e0092331011f323a1684c2765cff2bd4fa254616648cff052ade1",
-      "sha256": "9de21d6062da20231ed450c6f4a687c84419195e5da8047804f0efd15935363e",
+      "source_sha256": "55090042dd0df47da94242f6fb556ccd8a6f99006dfadc1b053a7ba29c92bc24",
+      "sha256": "52d810a3132461ba8cfa7bac7702b1b0fed629c9fe2f6ed7bcacc877a2ae290f",
       "publish_changes": [
         "link upstream assembly PDF instead of bundling it"
       ]
@@ -1077,8 +1119,8 @@
       "sha256": "c2928e36e7ddb50dd22533436c4872cf2837e7fd30c93c68f0b081cc852eb7cf"
     },
     "server.py": {
-      "source_sha256": "afb08400ce1b336019455a2600767bc83b4aa3888fc97041e902b12a826f164d",
-      "sha256": "76792bfff96f91a2f14e29982b178f992c50199e66444c120f655626c3ed498d",
+      "source_sha256": "21a04d17dcbdb4d479d1112d4da733c66c5be094e33a74cf077986605a8edddb",
+      "sha256": "d943c47b5ca649c1393eb733111994ed028798db947587a172267977e83a4271",
       "publish_changes": [
         "use installed pyserial instead of workspace dependency path"
       ]
@@ -1100,8 +1142,8 @@
       "sha256": "23993ea72810fc9ff7d0476e28accc33393c1895b9ac64b2f4f1b7d036b95abd"
     },
     "wireless_calibration_proxy.py": {
-      "source_sha256": "032f5ff612a4f2ad4892a41bfc011e89040eff04d3e3064597a46a1dcadd6d66",
-      "sha256": "23d56fb3f05a252499d0a20c9b3a1c5ad3d274c6565be13f22dec8dc7f1c0e7b",
+      "source_sha256": "fc88b47e5af22919ec8eb901db05b3da6df4c33c238d8a1027cac1e6fbe6df4d",
+      "sha256": "976c7fd595cfc79d979354aabb11088a2823707679d85cd69283c1656c606e12",
       "publish_changes": [
         "device serial read from local config or XGODUCK_SERIAL"
       ]

@@ -47,7 +47,7 @@
  const api={IDS,zeroMetadata,decodeObservation,posePacket};
  if(typeof module==='object'&&module.exports){module.exports=api;return;}
  const get=id=>document.getElementById(id),storageKey='xgoduck.pose-direction.v1';
- let metadata=null,latest=null,page='imu',corrections={};
+ let metadata=null,latest=null,currentStatus=null,currentObservedAt=0,page='imu',corrections={};
  try{const raw=localStorage.getItem(storageKey);if(raw&&raw.length<2048){const saved=JSON.parse(raw);if(saved&&typeof saved==='object'&&!Array.isArray(saved)&&Object.entries(saved).every(([id,value])=>IDS.includes(Number(id))&&[1,-1].includes(value)))corrections=saved;}}catch{}
  function send(){
   const frame=get('imu-duck-frame');if(!frame?.contentWindow)return;
@@ -57,12 +57,27 @@
    status,observedAtMs:now,reason:paused?'页面已暂停':!metadata?'等待保存机械零位':!status?'等待新鲜关节反馈':'编码器姿态 · 安装方向待核对'},location.origin);
  }
  function consume(detail){latest=detail;send();}
+ function sendCurrent(){
+  const frame=get('imu-duck-frame');if(!frame?.contentWindow)return;
+  const paused=document.hidden||page!=='imu',sequence=currentStatus?.sequence_calibration;
+  const held=sequence?.fresh===true&&sequence.holding_verified===true&&sequence.tolerance_ticks===57&&Array.isArray(sequence.held_ids)?sequence.held_ids:[];
+  const rows=IDS.map(id=>{
+   const row=currentStatus?.joints?.find(joint=>joint.id===id);
+   return {id,current_raw:row?.current_raw??null,current_ma:row?.current_ma??null,current_age_ms:row?.current_age_ms??null,current_fresh:row?.current_fresh===true,
+    current_source:row?.current_source,current_unit:row?.current_unit,
+    holding_verified:held.includes(id)&&row?.fresh===true&&row?.torque_enabled===true};
+  });
+  frame.contentWindow.postMessage({type:'motor-current-state',version:1,mode:paused?'paused':currentStatus?'live':'stale',
+   boot_id:currentStatus?.boot_id,rows,observedAtMs:currentObservedAt},location.origin);
+ }
+ function consumeCurrent(status){if(status){if(status!==currentStatus){currentStatus=status;currentObservedAt=Date.now();}sendCurrent();}}
  scope.addEventListener('duck:imu-status',event=>{if(scope.DuckIMUDatagramEnabled===true)consume(event.detail);});
  scope.addEventListener('duck:live-status',event=>{if(scope.DuckIMUDatagramEnabled!==true)consume(event.detail);});
- scope.addEventListener('duck:wireless-calibration',event=>{const state=event.detail?.status;if(state){metadata=zeroMetadata(state);send();}});
- scope.addEventListener('duck:page',event=>{page=event.detail?.page||page;send();});
- scope.addEventListener('message',event=>{const frame=get('imu-duck-frame');if(event.origin===location.origin&&event.source===frame?.contentWindow&&event.data?.type==='imu-model-ready')send();});
- document.addEventListener('visibilitychange',()=>{if(document.hidden)latest=null;send();});
+ scope.addEventListener('duck:wireless-calibration',event=>{const state=event.detail?.status;if(state){metadata=zeroMetadata(state);send();consumeCurrent(state);}});
+ scope.addEventListener('duck:sequence-status',event=>consumeCurrent(event.detail?.status));
+ scope.addEventListener('duck:page',event=>{page=event.detail?.page||page;send();sendCurrent();});
+ scope.addEventListener('message',event=>{const frame=get('imu-duck-frame');if(event.origin===location.origin&&event.source===frame?.contentWindow&&event.data?.type==='imu-model-ready'){send();sendCurrent();}});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){latest=null;currentStatus=null;}send();sendCurrent();});
  const selector=get('pose-direction-joint'),button=get('pose-direction-flip'),note=get('pose-direction-note');
  function describeDirection(){const id=Number(selector?.value);if(note)note.textContent='ID '+id+'：'+(corrections[id]===-1?'已反向显示':'官方默认方向')+'；只改画面，不改变舵机和归位。';}
  selector?.addEventListener('change',describeDirection);

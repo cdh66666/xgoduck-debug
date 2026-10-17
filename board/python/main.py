@@ -58,6 +58,9 @@ def main():
     Bridge.provide('duck_calibration_state', startup_recovery.wrap_feedback(host.receive))
     Bridge.provide('duck_calibration_result', startup_recovery.wrap_feedback(host.receive_result))
     Bridge.provide('duck_home_state', startup_recovery.wrap_feedback(host.receive_home))
+    Bridge.provide('duck_sequence_state', startup_recovery.wrap_feedback(host.sequence_controller.receive))
+    Bridge.provide('duck_servo_parameters', startup_recovery.wrap_feedback(host.sequence_controller.receive_parameters))
+    Bridge.provide('duck_servo_current', startup_recovery.wrap_feedback(host.servo_current.receive))
 
     def action(body: dict, request: Request):
         try:

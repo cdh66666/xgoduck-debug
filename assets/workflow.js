@@ -1,8 +1,8 @@
 /* Navigation and real readbacks only. Existing physical action gates remain intact. */
 (() => {
   'use strict';
-  const get=id=>document.getElementById(id),pages=['numbering','install','link','imu','servo'];
-  const defaultPage=document.body?.dataset.defaultPage||'imu',pageKey='duck-workflow-page-v2';
+  const get=id=>document.getElementById(id),pages=['numbering','install','link','imu'];
+  const defaultPage='imu',pageKey='duck-workflow-page-v3';
   const joints=[
     [10,'左髋转向'],[11,'左髋侧摆'],[12,'左髋前后摆'],[13,'左膝'],[14,'左踝'],
     [20,'右髋转向'],[21,'右髋侧摆'],[22,'右髋前后摆'],[23,'右膝'],[24,'右踝'],
@@ -20,6 +20,8 @@
   const fresh=s=>s&&Number.isFinite(s.feedback_age_ms)&&s.feedback_age_ms>=0&&s.feedback_age_ms<150&&Number.isInteger(s.mcu_seq)&&Number.isFinite(s.received)&&s.received>0;
 
   function showPage(name){
+    const calibration=name==='servo';
+    if(calibration)name='imu';
     if(!pages.includes(name))name=defaultPage;
     currentPage=name;
     syncNumberingFrame();
@@ -28,10 +30,10 @@
       const active=button.dataset.page===name;button.classList.toggle('active',active);
       if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
     }
-    const more=get('workflow-more');if(more){more.open=false;more.dataset.active=String(['numbering','install'].includes(name));}
     try{localStorage.setItem(pageKey,name);}catch{}
-    if(name==='servo'){renderSelected(true);renderCalibrationProgress();}
+    if(name==='imu'){renderSelected(true);renderCalibrationProgress();}
     window.dispatchEvent(new CustomEvent('duck:page',{detail:{page:name}}));
+    if(calibration)window.dispatchEvent(new CustomEvent('duck:calibration-panel',{detail:{open:true}}));
     window.scrollTo({top:0,behavior:'instant'});
   }
 
@@ -44,7 +46,7 @@
   }
 
   function renderSelected(force=false){
-    if(!force&&(document.hidden||currentPage!=='servo'))return;
+    if(!force&&(document.hidden||currentPage!=='imu'))return;
     const index=joints.findIndex(j=>j[0]===selected),name=joints[index][1];
 
     const joint=wirelessCalibration?.status?.joints?.find(row=>row.id===selected);
@@ -73,7 +75,7 @@
   }
 
   function renderCalibrationProgress(){
-    if(document.hidden||currentPage!=='servo')return;
+    if(document.hidden||currentPage!=='imu')return;
     const records=wirelessCalibration?.records||{};
     const count=joints.filter(([id])=>window.DuckWirelessCalibration?.recordValid?window.DuckWirelessCalibration.recordValid(records[id]):Number.isInteger(records[id]?.position)&&records[id].position>=0&&records[id].position<=4095).length;
     text('servo-progress',count||wirelessCalibration?.status?.records?'已记录 '+count+' / 15 · 掉电/方向/模型应用待核验':'零位记录待读取');

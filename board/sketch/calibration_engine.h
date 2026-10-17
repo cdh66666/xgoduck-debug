@@ -31,14 +31,15 @@ class Engine {
   int16_t decodedSpeed(unsigned i) const { return cache_[i].speed; }
 
   static bool wireValid(const Command& c) {
-    if(memcmp(c.magic,"DWC1",4)||c.version!=1||c.op>CAPTURE_GROUP||c.reserved||(c.flags&~3u)||!c.requestSeq)return false;
+    if(memcmp(c.magic,"DWC1",4)||c.version!=1||(c.op>CAPTURE_GROUP&&c.op!=PARAM_READ)||c.reserved||(c.flags&~3u)||!c.requestSeq)return false;
     if(c.op==STEP){if(!c.deltaTicks||magnitude(c.deltaTicks)>kStepMax||c.flags)return false;}
     else if(c.deltaTicks)return false;
     if(c.op==ARM&&c.flags!=3)return false;
     if((c.op==OFF_ALL||c.op==CAPTURE_ALL||c.op==CAPTURE_GROUP)&&c.flags!=1)return false;
-    if((c.op==READ||c.op==DIAG||c.op==HEARTBEAT)&&c.flags)return false;
+    if((c.op==READ||c.op==DIAG||c.op==HEARTBEAT||c.op==PARAM_READ)&&c.flags)return false;
     if((c.op==READ||c.op==OFF_ALL||c.op==CAPTURE_ALL)&&c.targetId)return false;
-    if((c.op==ARM||c.op==STEP||c.op==DIAG)&&indexFor(c.targetId)<0)return false;
+    if((c.op==ARM||c.op==STEP||c.op==DIAG||c.op==PARAM_READ)&&indexFor(c.targetId)<0)return false;
+    if(c.op==PARAM_READ&&c.session)return false;
     if(c.op==CAPTURE_GROUP&&(!groupMask(c.targetId)||c.session))return false;
     if(c.op==CANCEL&&c.targetId&&indexFor(c.targetId)<0)return false;
     return true;
@@ -83,6 +84,11 @@ class Engine {
     startPosition_=goal_=reachedPosition_=offPosition_=kUnknownPosition;reachedUs_=offReadUs_=0;stopError_=NONE;offAll_=false;
     if(c.op==ARM){activeIndex_=indexFor(c.targetId);job_=ARM_CHECK;state_=PREFLIGHT;}
     else if(c.op==STEP){job_=STEP_CHECK;state_=PREFLIGHT;}
+    else if(c.op==PARAM_READ){
+      clearSession();activeIndex_=-1;job_=PARAM_CHECK;state_=PREFLIGHT;
+      memset(&parameters_,0,sizeof(parameters_));memcpy(parameters_.magic,"DPC1",4);parameters_.version=1;
+      parameters_.bootNonce=bootNonce_;parameters_.requestSeq=c.requestSeq;parameters_.targetId=c.targetId;
+    }
     else if(c.op==DIAG){clearSession();activeIndex_=-1;diagId_=c.targetId;job_=DIAG_CHECK;state_=PREFLIGHT;}
     else {
       const bool capture=c.op==CAPTURE_ALL||c.op==CAPTURE_GROUP;
@@ -109,8 +115,12 @@ class Engine {
       startQuery(port,TORQUE_READ,kAllMask,0);
       return;
     }
+    if(job_==NO_JOB&&(!captureGeneration_||!captureRefreshTorque_&&elapsed(port.nowUs(),captureMetadataRefreshUs_)<200000)&&(!currentStarted_||elapsed(port.nowUs(),lastCurrentUs_)>=100000)){
+      currentStarted_=true;lastCurrentUs_=port.nowUs();startQuery(port,CURRENT_READ,kAllMask,0);return;
+    }
     Query kind=POSITION_READ;uint16_t mask=kAllMask;uint32_t generation=0;
-    if(job_==ARM_CHECK){kind=phase_==0?MODE_READ:phase_==1?TORQUE_READ:phase_==2?OFFSET_READ:phase_==3?LIMIT_READ:POSITION_READ;mask=phase_<2?kAllMask:(uint16_t)(1u<<activeIndex_);generation=owner_.requestSeq;}
+    if(job_==PARAM_CHECK){kind=phase_==0?TORQUE_READ:phase_==1?PARAM21_READ:PARAM40_READ;mask=phase_==0?kAllMask:(uint16_t)(1u<<indexFor(owner_.targetId));generation=owner_.requestSeq;}
+    else if(job_==ARM_CHECK){kind=phase_==0?MODE_READ:phase_==1?TORQUE_READ:phase_==2?OFFSET_READ:phase_==3?LIMIT_READ:POSITION_READ;mask=phase_<2?kAllMask:(uint16_t)(1u<<activeIndex_);generation=owner_.requestSeq;}
     else if(job_==STEP_CHECK||job_==DIAG_CHECK){
       kind=phase_==0?MODE_READ:phase_==1?TORQUE_READ:phase_==2?OFFSET_READ:phase_==3?LIMIT_READ:POSITION_READ;
       const int idx=job_==DIAG_CHECK?indexFor(owner_.targetId):activeIndex_;mask=job_==STEP_CHECK&&phase_==1?kAllMask:(uint16_t)(1u<<idx);generation=owner_.requestSeq;
@@ -176,11 +186,17 @@ class Engine {
     }
   }
   bool takeResult(ActionResult& out) { if(!resultReady_)return false;out=lastResult_;resultReady_=false;return true; }
+  void parameterSnapshot(ParameterSnapshot& out) const {out=parameters_;}
+  void currentSnapshot(CurrentSnapshot& out,uint32_t now,uint32_t seq) const {
+    memset(&out,0,sizeof(out));memcpy(out.magic,"DIC1",4);out.version=1;out.bootNonce=bootNonce_;out.stateSeq=seq;out.sampleUs=now;
+    for(unsigned index=0;index<kCount;++index){const Cache& cell=cache_[index];out.rawWords[index]=cell.currentRaw;out.agesMs[index]=cell.currentSeen?ageMs(now,cell.currentUs):UINT16_MAX;if(cell.currentSeen&&elapsed(now,cell.currentUs)<=kSourceMaxUs)out.validMask|=1u<<index;}
+  }
 
  private:
-  enum Query:uint8_t { POSITION_READ,MODE_READ,TORQUE_READ,OFFSET_READ,LIMIT_READ };
-  enum Job:uint8_t { NO_JOB,READ_CHECK,ARM_CHECK,STEP_CHECK,CAPTURE_CHECK,DIAG_CHECK,MOVE_CHECK,OFF_CHECK,OFF_POSITION_CHECK };
+  enum Query:uint8_t { POSITION_READ,MODE_READ,TORQUE_READ,OFFSET_READ,LIMIT_READ,PARAM21_READ,PARAM40_READ,CURRENT_READ };
+  enum Job:uint8_t { NO_JOB,READ_CHECK,ARM_CHECK,STEP_CHECK,CAPTURE_CHECK,DIAG_CHECK,MOVE_CHECK,OFF_CHECK,OFF_POSITION_CHECK,PARAM_CHECK };
   struct Cache {
+    uint16_t currentRaw=0;uint32_t currentUs=0;bool currentSeen=false;
     uint16_t raw=0,offsetRaw=0,minimum=0,maximum=0;int16_t position=0,speed=0,stableMin=0,stableMax=0;
     uint8_t mode=255,torque=255,voltage=0,temperature=0;uint16_t stableCount=0;
     bool positionSeen=false,modeSeen=false,torqueSeen=false,offsetSeen=false,limitsSeen=false;
@@ -197,6 +213,8 @@ class Engine {
   Job job_=NO_JOB;Query queryKind_=POSITION_READ;
   uint16_t queryMask_=0,queryReceivedMask_=0,tickPositionMask_=0,captureMask_=0;
   uint8_t rxState_=0,rxUsed_=0,rxLength_=0,rx_[20]={};Command owner_={};ActionResult lastResult_={};
+  ParameterSnapshot parameters_={};
+  uint32_t lastCurrentUs_=0;bool currentStarted_=false;
   static uint16_t word(const uint8_t* p) { return (uint16_t)p[0]|((uint16_t)p[1]<<8); }
   static uint16_t ageMs(uint32_t now,uint32_t timestamp) {const uint32_t age=elapsed(now,timestamp)/1000;return age>=UINT16_MAX?UINT16_MAX:(uint16_t)age;}
   static uint32_t older(uint32_t a,uint32_t b,uint32_t now){return elapsed(now,a)>elapsed(now,b)?a:b;}
@@ -231,6 +249,7 @@ class Engine {
   void setPending(const Command& c){ackSeq_=c.requestSeq;ackResult_=PENDING;ackOp_=c.op;ackError_=NONE;}
   void reject(const Command& c,uint8_t error,uint32_t now){if(c.op==HEARTBEAT)return;Command saved=owner_;owner_=c;complete(ERROR,error,now);owner_=saved;}
   void complete(uint8_t result,uint8_t error,uint32_t now){
+    if(owner_.op==PARAM_READ&&parameters_.requestSeq==owner_.requestSeq){parameters_.result=result;parameters_.error=error;parameters_.sampleUs=now;}
     if(result==ERROR&&(owner_.op==CAPTURE_ALL||owner_.op==CAPTURE_GROUP)){captureGeneration_=0;captureMask_=0;}
     ackSeq_=owner_.requestSeq;ackResult_=result;ackOp_=owner_.op;ackError_=error;
     memset(&lastResult_,0,sizeof(lastResult_));initResult();lastResult_.op=owner_.op;lastResult_.targetId=owner_.targetId;lastResult_.result=result;
@@ -257,8 +276,8 @@ class Engine {
   template<class Port> void startQuery(Port& port,Query kind,uint16_t mask,uint32_t generation){
     unsigned drain=256;while(drain--&&port.available())port.read();rxState_=rxUsed_=0;
     queryKind_=kind;queryMask_=mask;queryReceivedMask_=0;queryGeneration_=generation;
-    const uint8_t address=kind==POSITION_READ?56:kind==MODE_READ?33:kind==TORQUE_READ?40:kind==OFFSET_READ?31:9;
-    const uint8_t length=kind==POSITION_READ?8:kind==OFFSET_READ?2:kind==LIMIT_READ?4:1;
+    const uint8_t address=kind==CURRENT_READ?69:kind==POSITION_READ?56:kind==MODE_READ?33:kind==TORQUE_READ||kind==PARAM40_READ?40:kind==OFFSET_READ?31:kind==PARAM21_READ?21:9;
+    const uint8_t length=kind==POSITION_READ?8:kind==OFFSET_READ||kind==CURRENT_READ?2:kind==LIMIT_READ?4:kind==PARAM21_READ?7:kind==PARAM40_READ?12:1;
     queryDeadlineUs_=port.nowUs()+kReadWindowUs;queryActive_=true;bool sent=false;
     if(mask&&(mask&(mask-1u))){uint8_t bytes[17]={address,length};uint8_t used=2;for(unsigned i=0;i<kCount;++i)if(mask&(1u<<i))bytes[used++]=kIds[i];sent=send(port,254,0x82,bytes,used);}
     else {int idx=0;while(idx<kCount&&!(mask&(1u<<idx)))++idx;const uint8_t bytes[2]={address,length};sent=idx<kCount&&send(port,kIds[idx],2,bytes,2);}
@@ -269,14 +288,15 @@ class Engine {
     if(rxState_==1){rxState_=value==255?2:0;rx_[1]=value;return;}
     if(rxState_==2){if(value==255)return;rx_[2]=value;rxState_=3;return;}
     if(rxState_==3){
-      const uint8_t expected=queryKind_==POSITION_READ?10:queryKind_==OFFSET_READ?4:queryKind_==LIMIT_READ?6:3;
+      const uint8_t expected=queryKind_==POSITION_READ?10:queryKind_==OFFSET_READ||queryKind_==CURRENT_READ?4:queryKind_==LIMIT_READ?6:queryKind_==PARAM21_READ?9:queryKind_==PARAM40_READ?14:3;
       if(value!=expected){rxState_=value==255?1:0;return;}rx_[3]=value;rxLength_=value;rxUsed_=0;rxState_=4;return;
     }
     if((unsigned)(4+rxUsed_)>=sizeof(rx_)){rxState_=0;return;}rx_[4+rxUsed_++]=value;if(rxUsed_<rxLength_)return;rxState_=0;
     uint8_t sum=0;for(unsigned i=2;i<(unsigned)(3+rxLength_);++i)sum=(uint8_t)(sum+rx_[i]);
     const int idx=indexFor(rx_[2]);if((uint8_t)~sum!=rx_[3+rxLength_]||rx_[4]||idx<0||!(queryMask_&(1u<<idx)))return;
     const uint16_t bit=(uint16_t)(1u<<idx);if(queryReceivedMask_&bit)return;queryReceivedMask_|=bit;Cache& c=cache_[idx];
-    if(queryKind_==POSITION_READ){
+    if(queryKind_==CURRENT_READ){c.currentRaw=word(rx_+5);c.currentSeen=true;c.currentUs=now;}
+    else if(queryKind_==POSITION_READ){
       c.raw=word(rx_+5);c.position=signedPosition(c.raw);c.speed=signedPosition(word(rx_+7));c.voltage=rx_[11];c.temperature=rx_[12];c.positionSeen=true;c.positionUs=now;tickPositionMask_|=bit;
       if(!c.stableCount){c.stableStartUs=now;c.stableMin=c.stableMax=c.position;c.stableCount=1;}
       else {if(c.position<c.stableMin)c.stableMin=c.position;if(c.position>c.stableMax)c.stableMax=c.position;
@@ -284,6 +304,8 @@ class Engine {
     } else if(queryKind_==MODE_READ){c.mode=rx_[5];c.modeSeen=true;c.modeUs=now;c.modeGeneration=queryGeneration_;}
     else if(queryKind_==TORQUE_READ){c.torque=rx_[5];c.torqueSeen=true;c.torqueUs=now;c.torqueGeneration=queryGeneration_;}
     else if(queryKind_==OFFSET_READ){c.offsetRaw=word(rx_+5);c.offsetSeen=true;c.offsetUs=now;}
+    else if(queryKind_==PARAM21_READ){memcpy(parameters_.parameter21,rx_+5,7);parameters_.parameter21Us=now;}
+    else if(queryKind_==PARAM40_READ){memcpy(parameters_.parameter40,rx_+5,12);parameters_.parameter40Us=now;}
     else {c.minimum=word(rx_+5);c.maximum=word(rx_+7);c.limitsSeen=true;c.limitsUs=now;}
   }
   uint8_t motionError(uint32_t now) const {
@@ -310,6 +332,7 @@ class Engine {
   }
   template<class Port> void finishQuery(Port& port,bool all){
     const uint32_t now=port.nowUs();
+    if(queryKind_==CURRENT_READ)return;
     if(job_==NO_JOB){
       if(torqueMayBeOn_&&queryKind_==TORQUE_READ&&all&&allTorqueOff(now)){
         torqueMayBeOn_=false;activeIndex_=-1;state_=IDLE;
@@ -337,6 +360,11 @@ class Engine {
       else {clearSession();activeIndex_=-1;state_=IDLE;complete(OK,NONE,now);}return;
     }
     if(!all){job_=NO_JOB;if(owner_.op==ARM)activeIndex_=-1;state_=session_?ARMED:IDLE;complete(ERROR,INCOMPLETE,now);return;}
+    if(job_==PARAM_CHECK){
+      if(!allTorqueOff(now)){job_=NO_JOB;state_=IDLE;complete(ERROR,TORQUE_OFF,now);return;}
+      if(++phase_<3)return;
+      job_=NO_JOB;state_=IDLE;complete(OK,NONE,now);return;
+    }
     if(job_==READ_CHECK||job_==CAPTURE_CHECK){
       if(phase_<2){++phase_;return;}
       if(job_==READ_CHECK){job_=NO_JOB;state_=IDLE;complete(OK,NONE,now);return;}
@@ -389,6 +417,8 @@ class HomeEngine {
     initialized_=true;boot_=boot;phase_=HOME_OFF;result_=OK;error_=NONE;
     nonce_=deadline_=ack_=lastRequest_=0;possible_=ever_=false;queryActive_=false;
     offMask_=commandedMask_=completedMask_=steps_=tickMask_=0;
+    sequential_=selected_=sequencePolling_=false;selectionSeq_=captureSeq_=captureStartUs_=captureUs_=heldUs_=0;
+    currentStarted_=false;lastCurrentUs_=0;
     active_=0;stage_=cycle_=faultId_=faultStage_=pendingFaultId_=0;
     for(unsigned i=0;i<kCount;++i){cells_[i]=Cell();targets_[i]=goals_[i]=prime_[i]=0;modes_[i]=255;trackSince_[i]=0;}
     memset(sha_,0,32);
@@ -409,11 +439,52 @@ class HomeEngine {
     return true;
   }
   static bool controlValid(const Command& c){return !memcmp(c.magic,"DWC1",4)&&c.version==1&&c.targetId==0&&!c.reserved&&!c.deltaTicks&&c.requestSeq&&c.bootNonce&&c.ttlUs&&c.ttlUs<=kHeartbeatUs&&((c.op==HOME_RUN||c.op==HEARTBEAT||c.op==CANCEL)&&c.flags==0||c.op==OFF_ALL&&c.flags==1);}
+  static bool sequenceValid(const SequenceCommand& c){
+    if(memcmp(c.magic,"DZC1",4)||c.version!=1||c.op>SEQ_STOP||c.reserved||!c.bootNonce||!c.requestSeq||!c.ttlUs||c.ttlUs>kHeartbeatUs)return false;
+    if(c.op==SEQ_BEGIN||c.op==SEQ_HOLD){if(c.flags!=3)return false;}else if(c.flags!=(c.op==SEQ_STOP?1:0))return false;
+    if(c.op!=SEQ_STOP&&!c.session)return false;
+    if(c.op==SEQ_SELECT||c.op==SEQ_HOLD){if(indexFor(c.targetId)<0)return false;}else if(c.targetId)return false;
+    if(c.op==SEQ_HOLD)return c.selectionSeq&&c.expectedPosition!=kUnknownPosition&&(c.expectedMode==0||c.expectedMode==4);
+    return !c.selectionSeq&&!c.expectedPosition&&!c.expectedMode;
+  }
+  template<class Port>void sequence(const SequenceCommand& c,Port& p){
+    checkDeadlines(p);const uint32_t now=p.nowUs();
+    if(!sequenceValid(c)||c.bootNonce!=boot_)return;
+    if(lastRequest_&&(!elapsed(c.requestSeq,lastRequest_)||elapsed(c.requestSeq,lastRequest_)>=0x80000000u))return;
+    if(c.op==SEQ_STOP){lastRequest_=ack_=c.requestSeq;release(p,NONE);return;}
+    if(elapsed(now,c.sourceUs)>kSourceMaxUs||elapsed(now,c.sourceUs)>c.ttlUs)return;
+    if(c.op==SEQ_BEGIN){
+      if(ownsBus()||possible_)return;
+      interrupt(p);lastRequest_=ack_=c.requestSeq;nonce_=c.session;lastBeat_=now;deadline_=now+2000000;
+      sequential_=true;selected_=sequencePolling_=false;phase_=HOME_PREPARING;result_=PENDING;error_=NONE;
+      stage_=cycle_=active_=faultId_=faultStage_=pendingFaultId_=0;
+      steps_=offMask_=commandedMask_=completedMask_=0;generation_=c.requestSeq;
+      selectionSeq_=captureSeq_=captureStartUs_=captureUs_=heldUs_=0;capturePosition_=kUnknownPosition;captureMode_=255;
+      for(unsigned index=0;index<kCount;++index){cells_[index]=Cell();targets_[index]=goals_[index]=prime_[index]=0;modes_[index]=255;trackSince_[index]=0;}
+      memset(sha_,0,sizeof(sha_));return;
+    }
+    if(!sequential_||!nonce_||c.session!=nonce_)return;
+    lastRequest_=c.requestSeq;
+    if(c.op==SEQ_HEARTBEAT){lastBeat_=now;return;}
+    if(c.op==SEQ_SELECT){
+      if((phase_!=HOME_PREPARED&&phase_!=HOME_HOLDING)||(completedMask_&(1u<<indexFor(c.targetId))))return;
+      interrupt(p);ack_=selectionSeq_=c.requestSeq;active_=indexFor(c.targetId);selected_=true;
+      captureSeq_=captureStartUs_=captureUs_=heldUs_=0;capturePosition_=kUnknownPosition;captureMode_=255;
+      phase_=HOME_PREPARED;result_=OK;error_=NONE;cycle_=0;return;
+    }
+    if(c.op==SEQ_HOLD){
+      if(phase_!=HOME_PREPARED||!selected_||c.targetId!=kIds[active_]||c.selectionSeq!=selectionSeq_||c.expectedMode!=modes_[active_]){ack_=c.requestSeq;release(p,SESSION);return;}
+      interrupt(p);ack_=captureSeq_=c.requestSeq;generation_=c.requestSeq;
+      expectedPosition_=c.expectedPosition;captureStartUs_=captureUs_=heldUs_=0;sequencePolling_=false;
+      startJoint(now);jointBudgetUs_=2000000;result_=PENDING;error_=NONE;
+    }
+  }
   template<class Port>void prepare(const HomeCommand& c,Port& p){
     checkDeadlines(p);const uint32_t now=p.nowUs();
     if(!wireValid(c)||c.bootNonce!=boot_||elapsed(now,c.sourceUs)>kSourceMaxUs||elapsed(now,c.sourceUs)>c.ttlUs||ownsBus()||possible_)return;
     if(lastRequest_&&(!elapsed(c.requestSeq,lastRequest_)||elapsed(c.requestSeq,lastRequest_)>=0x80000000u))return;
     interrupt(p);lastRequest_=ack_=c.requestSeq;nonce_=c.session;deadline_=now+kSessionUs;lastBeat_=now;
+    sequential_=selected_=sequencePolling_=false;
     phase_=HOME_PREPARING;result_=PENDING;error_=NONE;stage_=cycle_=active_=0;
     faultId_=faultStage_=pendingFaultId_=0;steps_=offMask_=commandedMask_=completedMask_=0;generation_=c.requestSeq;
     for(unsigned i=0;i<kCount;++i){targets_[i]=c.targets[i];modes_[i]=c.modes[i];cells_[i].goalSeen=false;trackSince_[i]=0;}
@@ -425,6 +496,7 @@ class HomeEngine {
     if(lastRequest_&&(!elapsed(c.requestSeq,lastRequest_)||elapsed(c.requestSeq,lastRequest_)>=0x80000000u))return;
     lastRequest_=c.requestSeq;
     if(c.op==CANCEL||c.op==OFF_ALL){ack_=c.requestSeq;release(p,NONE);return;}
+    if(sequential_)return;
     if(!nonce_||c.session!=nonce_||(phase_!=HOME_HOLDING&&expired(now,deadline_))||elapsed(now,c.sourceUs)>kSourceMaxUs||elapsed(now,c.sourceUs)>c.ttlUs)return;
     if(c.op==HEARTBEAT){lastBeat_=now;return;}
     if(c.op==HOME_RUN&&phase_==HOME_PREPARED){
@@ -436,11 +508,14 @@ class HomeEngine {
   template<class Port>void startTick(Port& p){
     tickMask_=0;checkDeadlines(p);if(!ownsBus()||queryActive_)return;
     if(phase_==HOME_FAULT&&possible_&&elapsed(p.nowUs(),lastOffUs_)>=100000)writeOff(p);
+    if(phase_!=HOME_RELEASING&&phase_!=HOME_FAULT&&(!currentStarted_||elapsed(p.nowUs(),lastCurrentUs_)>=100000)){
+      currentStarted_=true;lastCurrentUs_=p.nowUs();startQuery(p,Q_CURRENT);return;
+    }
     Query q=Q_POS;
     if(phase_==HOME_PREPARING)q=stage_==0?Q_MODE:stage_==1?Q_TORQUE:Q_POS;
     else if(phase_==HOME_ENABLING&&stage_<5)q=stage_==0?Q_MODE:stage_==1?Q_TORQUE:stage_==2?Q_POS:stage_==3?Q_GOAL:Q_TORQUE;
     else if(phase_==HOME_RELEASING||phase_==HOME_FAULT)q=stage_==0?Q_MODE:Q_TORQUE;
-    else if(phase_==HOME_PREPARED){q=cycle_==0?Q_MODE:cycle_==1?Q_TORQUE:Q_POS;cycle_=(cycle_+1)%3;}
+    else if(phase_==HOME_PREPARED){q=cycle_==0?Q_MODE:cycle_==1?Q_TORQUE:sequential_&&cycle_==2?Q_GOAL:Q_POS;cycle_=(cycle_+1)%(sequential_?4:3);}
     else {q=cycle_==0?Q_MODE:cycle_==1?Q_TORQUE:cycle_==2?Q_GOAL:Q_POS;cycle_=(cycle_+1)%4;}
     startQuery(p,q);
   }
@@ -451,6 +526,7 @@ class HomeEngine {
   }
   void snapshot(HomeSnapshot& out,uint32_t now,uint32_t seq)const{
     memset(&out,0,sizeof(out));memcpy(out.magic,"DHS1",4);out.version=HOME_CONTRACT_VERSION;
+    if(sequential_){out.bootNonce=boot_;out.stateSeq=seq;out.sampleUs=now;out.result=OK;return;}
     out.phase=phase_;out.result=result_;out.error=error_;out.bootNonce=boot_;out.stateSeq=seq;out.sampleUs=now;
     out.operationAckSeq=ack_;out.session=nonce_;out.expiresUs=reportedDeadline();memcpy(out.nativeSha256,sha_,32);
     out.targetMask=phase_==HOME_OFF?0:kAllMask;out.freshMask=freshPositionMask(now);out.steps=steps_;
@@ -464,6 +540,26 @@ class HomeEngine {
       if(metaFresh(c,now)&&c.torque==0)out.offMask|=bit;
     }
     if(phase_==HOME_DONE||phase_==HOME_FAULT)out.offMask=offMask_;
+  }
+  void sequenceSnapshot(SequenceSnapshot& out,uint32_t now,uint32_t seq)const{
+    memset(&out,0,sizeof(out));memcpy(out.magic,"DZS1",4);out.version=1;
+    out.bootNonce=boot_;out.stateSeq=seq;out.sampleUs=now;
+    if(!sequential_){out.result=OK;return;}
+    out.phase=phase_==HOME_ENABLING?(captureUs_?4:3):phase_;out.result=result_;out.error=error_;
+    out.operationAckSeq=ack_;out.session=nonce_;out.expiresUs=nonce_?lastBeat_+kHeartbeatUs:0;out.lastRequestSeq=lastRequest_;
+    out.selectionSeq=selectionSeq_;out.captureSeq=captureSeq_;out.heldMask=completedMask_;out.freshMask=freshPositionMask(now);
+    out.selectedId=selected_?kIds[active_]:0;out.stage=error_?faultStage_:publicStage();
+    out.capturePosition=capturePosition_;out.captureMode=captureMode_;out.captureStartUs=captureStartUs_;out.captureUs=captureUs_;out.heldUs=heldUs_;
+    for(unsigned index=0;index<kCount;++index){const Cell& cell=cells_[index];const uint16_t bit=1u<<index;
+      out.goals[index]=goals_[index];out.positions[index]=posFresh(cell,now)?cell.position:kUnknownPosition;
+      out.modes[index]=cell.modeSeen?cell.mode:255;out.torques[index]=cell.torqueSeen?cell.torque:255;
+      if(metaFresh(cell,now)){out.metadataMask|=bit;if(cell.torque==0)out.offMask|=bit;else out.enabledMask|=bit;}
+    }
+    if(phase_==HOME_DONE||phase_==HOME_FAULT)out.offMask=offMask_;
+  }
+  void currentSnapshot(CurrentSnapshot& out,uint32_t now,uint32_t seq)const{
+    memset(&out,0,sizeof(out));memcpy(out.magic,"DIC1",4);out.version=1;out.bootNonce=boot_;out.stateSeq=seq;out.sampleUs=now;
+    for(unsigned index=0;index<kCount;++index){const Cell& cell=cells_[index];out.rawWords[index]=cell.currentRaw;out.agesMs[index]=cell.currentSeen?age(now,cell.currentUs):UINT16_MAX;if(cell.currentSeen&&elapsed(now,cell.currentUs)<=kSourceMaxUs)out.validMask|=1u<<index;}
   }
   void calibrationSnapshot(Snapshot& out,uint32_t now,uint32_t seq)const{
     memset(&out,0,sizeof(out));memcpy(out.magic,"DWR1",4);out.version=SNAPSHOT_VERSION;
@@ -481,15 +577,20 @@ class HomeEngine {
     }
   }
  private:
-  enum Query:uint8_t{Q_MODE,Q_TORQUE,Q_POS,Q_GOAL};
-  struct Cell{uint16_t raw=0,goal=0;int16_t position=0,speed=0;uint8_t mode=255,torque=255,voltage=0,temperature=0;bool posSeen=false,modeSeen=false,torqueSeen=false,goalSeen=false;uint32_t posUs=0,modeUs=0,torqueUs=0,goalUs=0,goalGeneration=0;};
+  enum Query:uint8_t{Q_MODE,Q_TORQUE,Q_POS,Q_GOAL,Q_CURRENT};
+  struct Cell{uint16_t raw=0,goal=0,currentRaw=0;int16_t position=0,speed=0;uint8_t mode=255,torque=255,voltage=0,temperature=0;bool posSeen=false,modeSeen=false,torqueSeen=false,goalSeen=false,currentSeen=false;uint32_t posUs=0,modeUs=0,torqueUs=0,goalUs=0,goalGeneration=0,currentUs=0;};
   Cell cells_[kCount];int16_t targets_[kCount]={},goals_[kCount]={},prime_[kCount]={};uint8_t modes_[kCount]={},sha_[32]={};
   uint32_t boot_=0,nonce_=0,deadline_=0,lastBeat_=0,lastRequest_=0,ack_=0,generation_=0;
   uint32_t jointStartUs_=0,jointBudgetUs_=kHomeJointUs,stableSince_=0,trajectoryUs_=0,velocityMilli_=0,travelMilli_=0,trackSince_[kCount]={};
   uint32_t releaseUs_=0,lastOffUs_=0,queryDeadline_=0;
+  uint32_t selectionSeq_=0,captureSeq_=0,captureStartUs_=0,captureUs_=0,heldUs_=0;
+  int16_t expectedPosition_=0,capturePosition_=kUnknownPosition,captureMinimum_=0,captureMaximum_=0;
+  uint8_t captureMode_=255;
   uint8_t phase_=HOME_OFF,result_=OK,error_=NONE,active_=0,stage_=0,cycle_=0,faultId_=0,faultStage_=0,pendingFaultId_=0;
   uint8_t rxState_=0,used_=0,length_=0,rx_[16]={};uint16_t received_=0,tickMask_=0,offMask_=0,steps_=0,commandedMask_=0,completedMask_=0;
   bool initialized_=false,possible_=false,ever_=false,queryActive_=false;Query query_=Q_POS;
+  bool sequential_=false,selected_=false,sequencePolling_=false;
+  uint32_t lastCurrentUs_=0;bool currentStarted_=false;
   static uint16_t word(int16_t p){return p<0?(uint16_t)(0x8000u|(uint16_t)-(int32_t)p):(uint16_t)p;}
   static uint16_t age(uint32_t now,uint32_t t){uint32_t v=elapsed(now,t)/1000;return v>=UINT16_MAX?UINT16_MAX:(uint16_t)v;}
   static bool posFresh(const Cell& c,uint32_t now){return c.posSeen&&elapsed(now,c.posUs)<=kSourceMaxUs;}
@@ -497,7 +598,7 @@ class HomeEngine {
   bool goalFresh(const Cell& c,uint32_t now)const{return c.goalSeen&&c.goalGeneration==generation_&&elapsed(now,c.goalUs)<=kSourceMaxUs;}
   bool actualOff(uint32_t now)const{for(unsigned i=0;i<kCount;++i)if(!metaFresh(cells_[i],now)||cells_[i].torque!=0)return false;return true;}
   uint8_t activeId()const{return (phase_==HOME_ENABLING||phase_==HOME_MOVING)&&active_<kCount?kIds[active_]:0;}
-  uint32_t reportedDeadline()const{return nonce_?(phase_==HOME_HOLDING?lastBeat_+kHeartbeatUs:deadline_):0;}
+  uint32_t reportedDeadline()const{return nonce_?(sequential_||phase_==HOME_HOLDING?lastBeat_+kHeartbeatUs:deadline_):0;}
   uint8_t publicStage()const{
     if(phase_==HOME_PREPARING)return stage_+HS_READ_MODE;
     if(phase_==HOME_ENABLING)return stage_<5?stage_+HS_READ_MODE:HS_PRIME_SETTLE;
@@ -526,7 +627,7 @@ class HomeEngine {
       else if(c.torque!=((expectedOn>>i)&1))e=TORQUE_OFF;
       else if(c.voltage<40||c.voltage>84)e=VOLTAGE;
       else if(c.temperature>=65)e=TEMPERATURE;
-      else if(!withinHomePath(i))e=RANGE;
+      else if(!sequential_&&!withinHomePath(i))e=RANGE;
       if(e){pendingFaultId_=kIds[i];return e;}
     }return NONE;
   }
@@ -574,16 +675,17 @@ class HomeEngine {
   template<class Port>void release(Port& p,uint8_t error){
     if(error&&!error_){faultId_=pendingFaultId_?pendingFaultId_:activeId();faultStage_=publicStage();error_=error;}
     interrupt(p);nonce_=deadline_=0;phase_=HOME_RELEASING;result_=PENDING;offMask_=0;stage_=0;releaseUs_=p.nowUs();writeOff(p);
+    if(sequential_)completedMask_=0;
   }
   template<class Port>void checkDeadlines(Port& p){
     if(!nonce_)return;const uint32_t now=p.nowUs();
     if(elapsed(now,lastBeat_)>=kHeartbeatUs){release(p,SESSION);return;}
-    if(phase_!=HOME_HOLDING&&expired(now,deadline_)){release(p,phase_==HOME_PREPARING||phase_==HOME_PREPARED?SESSION:MOVE_TIMEOUT);return;}
+    if((!sequential_&&phase_!=HOME_HOLDING||sequential_&&phase_==HOME_PREPARING)&&expired(now,deadline_)){release(p,phase_==HOME_PREPARING||phase_==HOME_PREPARED?SESSION:MOVE_TIMEOUT);return;}
     if((phase_==HOME_ENABLING||phase_==HOME_MOVING)&&elapsed(now,jointStartUs_)>=jointBudgetUs_)release(p,MOVE_TIMEOUT);
   }
   template<class Port>void startQuery(Port& p,Query q){
     unsigned n=256;while(n--&&p.available())p.read();query_=q;queryActive_=true;received_=0;rxState_=used_=0;
-    uint8_t b[23]={255,255,254,19,0x82,(uint8_t)(q==Q_MODE?33:q==Q_TORQUE?40:q==Q_GOAL?42:56),(uint8_t)(q==Q_POS?8:q==Q_GOAL?2:1)};
+    uint8_t b[23]={255,255,254,19,0x82,(uint8_t)(q==Q_MODE?33:q==Q_TORQUE?40:q==Q_GOAL?42:q==Q_CURRENT?69:56),(uint8_t)(q==Q_POS?8:q==Q_GOAL||q==Q_CURRENT?2:1)};
     for(unsigned i=0;i<kCount;++i)b[7+i]=kIds[i];uint8_t sum=0;for(unsigned i=2;i<22;++i)sum=(uint8_t)(sum+b[i]);b[22]=(uint8_t)~sum;
     queryDeadline_=p.nowUs()+kReadWindowUs;if(p.write(b,23)!=23)queryDeadline_=p.nowUs();p.flush();
   }
@@ -591,12 +693,13 @@ class HomeEngine {
     if(rxState_==0){if(v==255){rx_[0]=v;rxState_=1;}return;}
     if(rxState_==1){rxState_=v==255?2:0;return;}
     if(rxState_==2){if(v==255)return;rx_[2]=v;rxState_=3;return;}
-    if(rxState_==3){uint8_t expected=query_==Q_POS?10:query_==Q_GOAL?4:3;if(v!=expected){rxState_=v==255?1:0;return;}rx_[3]=v;length_=v;used_=0;rxState_=4;return;}
+    if(rxState_==3){uint8_t expected=query_==Q_POS?10:query_==Q_GOAL||query_==Q_CURRENT?4:3;if(v!=expected){rxState_=v==255?1:0;return;}rx_[3]=v;length_=v;used_=0;rxState_=4;return;}
     if(4u+used_>=sizeof(rx_)){rxState_=0;return;}rx_[4+used_++]=v;if(used_<length_)return;rxState_=0;
     uint8_t sum=0;for(unsigned i=2;i<3u+length_;++i)sum=(uint8_t)(sum+rx_[i]);int idx=indexFor(rx_[2]);
     if(idx<0||rx_[4]||(uint8_t)~sum!=rx_[3+length_]||(received_&(1u<<idx)))return;
     received_|=1u<<idx;Cell& c=cells_[idx];
-    if(query_==Q_MODE){c.mode=rx_[5];c.modeSeen=true;c.modeUs=now;}
+    if(query_==Q_CURRENT){c.currentRaw=(uint16_t)rx_[5]|((uint16_t)rx_[6]<<8);c.currentSeen=true;c.currentUs=now;}
+    else if(query_==Q_MODE){c.mode=rx_[5];c.modeSeen=true;c.modeUs=now;}
     else if(query_==Q_TORQUE){c.torque=rx_[5];c.torqueSeen=true;c.torqueUs=now;}
     else if(query_==Q_GOAL){c.goal=(uint16_t)rx_[5]|((uint16_t)rx_[6]<<8);c.goalSeen=true;c.goalUs=now;c.goalGeneration=generation_;}
     else{c.raw=(uint16_t)rx_[5]|((uint16_t)rx_[6]<<8);c.position=signedPosition(c.raw);c.speed=signedPosition((uint16_t)rx_[7]|((uint16_t)rx_[8]<<8));c.voltage=rx_[11];c.temperature=rx_[12];c.posSeen=true;c.posUs=now;tickMask_|=1u<<idx;}
@@ -621,6 +724,7 @@ class HomeEngine {
   }
   template<class Port>void finish(Port& p,bool all){
     const uint32_t now=p.nowUs();
+    if(query_==Q_CURRENT)return;
     if(phase_==HOME_RELEASING||phase_==HOME_FAULT){
       if(query_==Q_MODE){stage_=1;return;}uint16_t off=0;
       for(unsigned i=0;i<kCount;++i)if(cells_[i].torqueSeen&&elapsed(now,cells_[i].torqueUs)<=kSourceMaxUs&&cells_[i].torque==0)off|=1u<<i;
@@ -630,7 +734,7 @@ class HomeEngine {
     }
     if(!all){for(unsigned i=0;i<kCount;++i)if(!(received_&(1u<<i))){pendingFaultId_=kIds[i];break;}release(p,INCOMPLETE);return;}
     if(phase_==HOME_PREPARING){
-      if(stage_<2){++stage_;return;}for(unsigned i=0;i<kCount;++i)prime_[i]=goals_[i]=cells_[i].position;
+      if(stage_<2){++stage_;return;}for(unsigned i=0;i<kCount;++i){prime_[i]=goals_[i]=cells_[i].position;if(sequential_)modes_[i]=cells_[i].mode;}
       const uint8_t e=guard(now,0);if(e){release(p,e);return;}offMask_=kAllMask;phase_=HOME_PREPARED;result_=OK;cycle_=0;return;
     }
     if(phase_==HOME_ENABLING&&stage_<5){
@@ -641,24 +745,37 @@ class HomeEngine {
         // A previous held joint may sag while the next joint is still off.
         // Do not establish a new target or enable it during that recovery window.
         if(!trackingReady()){stage_=0;return;}
+        if(sequential_){
+          const Cell& cell=cells_[active_];
+          if(magnitude((int32_t)cell.position-expectedPosition_)>kHomeArrivalTicks){release(p,UNSTABLE);return;}
+          if(!captureStartUs_){captureStartUs_=cell.posUs;captureMinimum_=captureMaximum_=cell.position;}
+          if(cell.position<captureMinimum_)captureMinimum_=cell.position;if(cell.position>captureMaximum_)captureMaximum_=cell.position;
+          if(magnitude((int32_t)captureMaximum_-captureMinimum_)>kHomeArrivalTicks){captureStartUs_=cell.posUs;captureMinimum_=captureMaximum_=cell.position;}
+          if(elapsed(cell.posUs,captureStartUs_)<500000){sequencePolling_=true;stage_=3;return;}
+          capturePosition_=cell.position;captureMode_=cell.mode;captureUs_=cell.posUs;targets_[active_]=cell.position;
+        }
         // Previous joints remain held; only this still-unpowered joint is rebased.
         prime_[active_]=goals_[active_]=cells_[active_].position;trackSince_[active_]=0;
-        jointBudgetUs_=homeJointBudgetUs(kIds[active_],prime_[active_],targets_[active_]);
+        if(!sequential_)jointBudgetUs_=homeJointBudgetUs(kIds[active_],prime_[active_],targets_[active_]);
         cells_[active_].torqueSeen=false;offMask_=0;
         if(!writeGoal(p)){release(p,FEEDBACK);return;}stage_=3;return;
       }
-      if(stage_==3){if(!echoed(now)){release(p,DIAG_ERROR);return;}if(!enable(p)){release(p,FEEDBACK);return;}stage_=4;return;}
+      if(stage_==3){if(!echoed(now)){release(p,DIAG_ERROR);return;}if(sequencePolling_){sequencePolling_=false;stage_=0;return;}if(!enable(p)){release(p,FEEDBACK);return;}stage_=4;return;}
       for(unsigned i=0;i<kCount;++i)if(cells_[i].torque!=((commandedMask_>>i)&1)){pendingFaultId_=kIds[i];release(p,TORQUE_OFF);return;}
       stage_=5;cycle_=0;stableSince_=0;return;
     }
     if(query_!=Q_POS)return;
     const uint8_t e=guard(now,commandedMask_);if(e){release(p,e);return;}
-    if(phase_==HOME_PREPARED)return;
+    if(phase_==HOME_PREPARED&&!sequential_)return;
     if(!echoed(now)){release(p,DIAG_ERROR);return;}
     const uint8_t track=tracking(now);if(track){release(p,track);return;}
+    if(phase_==HOME_PREPARED)return;
     if(phase_==HOME_HOLDING)return;
     if(phase_==HOME_ENABLING){
-      if(stable(now,prime_[active_])){phase_=HOME_MOVING;result_=OK;stableSince_=0;trajectoryUs_=now;velocityMilli_=travelMilli_=0;}return;
+      if(stable(now,prime_[active_])){
+        if(sequential_){completedMask_|=1u<<active_;heldUs_=cells_[active_].posUs;phase_=HOME_HOLDING;result_=OK;return;}
+        phase_=HOME_MOVING;result_=OK;stableSince_=0;trajectoryUs_=now;velocityMilli_=travelMilli_=0;
+      }return;
     }
     if(goals_[active_]==targets_[active_]){
       if(active_==kCount-1){

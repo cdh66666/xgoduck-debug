@@ -13,6 +13,34 @@ constexpr uint32_t kSessionUs=30000000, kMoveUs=800000, kReadWindowUs=6000;
 constexpr uint32_t kCaptureHoldUs=2000000;
 constexpr int16_t kUnknownPosition=(-32767-1), kStepMax=22, kOffsetMax=114;
 enum Op:uint8_t { READ=0,ARM=1,STEP=2,HEARTBEAT=3,CANCEL=4,CAPTURE_ALL=5,OFF_ALL=6,DIAG=7,CAPTURE_GROUP=8 };
+constexpr uint8_t PARAM_READ=10;
+enum SequenceOp:uint8_t { SEQ_BEGIN=0,SEQ_SELECT=1,SEQ_HOLD=2,SEQ_HEARTBEAT=3,SEQ_STOP=4 };
+struct __attribute__((packed)) SequenceCommand {
+  char magic[4];uint8_t version,op,targetId,flags;
+  uint32_t bootNonce,requestSeq,session,sourceUs,ttlUs,selectionSeq;
+  int16_t expectedPosition;uint8_t expectedMode,reserved;
+};
+struct __attribute__((packed)) SequenceSnapshot {
+  char magic[4];uint8_t version,phase,result,error;
+  uint32_t bootNonce,stateSeq,sampleUs,operationAckSeq,session,expiresUs,lastRequestSeq,selectionSeq,captureSeq;
+  uint16_t heldMask,freshMask,metadataMask,offMask,enabledMask;
+  uint8_t selectedId,stage;int16_t capturePosition;uint8_t captureMode,reserved;
+  int16_t goals[kCount],positions[kCount];uint8_t modes[kCount],torques[kCount];
+  uint32_t captureStartUs,captureUs,heldUs;
+};
+struct __attribute__((packed)) ParameterSnapshot {
+  char magic[4];uint8_t version,result,error,targetId;
+  uint32_t bootNonce,requestSeq,sampleUs,parameter21Us,parameter40Us;
+  uint8_t parameter21[7],parameter40[12],reserved;
+};
+struct __attribute__((packed)) CurrentSnapshot {
+  char magic[4];uint8_t version,reserved;uint16_t validMask;
+  uint32_t bootNonce,stateSeq,sampleUs;uint16_t rawWords[kCount],agesMs[kCount];
+};
+static_assert(sizeof(SequenceCommand)==36,"DZC1 command ABI");
+static_assert(sizeof(SequenceSnapshot)==162,"DZS1 snapshot ABI");
+static_assert(sizeof(ParameterSnapshot)==48,"DPC1 parameters ABI");
+static_assert(sizeof(CurrentSnapshot)==80,"DIC1 current ABI");
 enum Group:uint8_t { LEFT=1,RIGHT=2,HEAD=3 };
 static inline uint16_t groupMask(uint8_t group){return group==LEFT?0x001f:group==RIGHT?0x03e0:group==HEAD?0x7c00:0;}
 enum State:uint8_t { BOOT=0,IDLE=1,PREFLIGHT=2,ARMED=3,MOVING=4,VERIFY_OFF=5,CAPTURING=6,FAULT=7 };
@@ -44,7 +72,7 @@ struct __attribute__((packed)) ActionResult {
 constexpr uint8_t HOME_RUN=9;
 constexpr uint8_t HOME_CONTRACT_VERSION=5; // Adds native asymmetric ID30/31 HOME ranges; no wire-layout change.
 constexpr uint32_t kHomeMotionUs=450000000, kHomeJointUs=30000000, kHomeStableUs=300000, kHomeTrackUs=1000000;
-constexpr int16_t kHomeArrivalTicks=3, kHomeTrackTicks=6, kHomeHardErrorTicks=32;
+constexpr int16_t kHomeArrivalTicks=57, kHomeTrackTicks=57, kHomeHardErrorTicks=57;
 constexpr uint32_t kHomeVelocityMilli=40000, kHomeAccelerationMilli=40000; // ticks/s and ticks/s^2 scaled by1000.
 // Native user-zero q=-(position-target)*360/4096 deg. No modulo or zero rewrite.
 static inline bool homeHead(uint8_t id){return id==30||id==31;}

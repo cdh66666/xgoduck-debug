@@ -36,7 +36,7 @@ class CheckedBridge:
     def notify(self, method, payload):
         # Compatibility boundary for the existing FIFO sender. Despite this
         # historical method name, dispatch now uses a bounded RPC request.
-        if method != 'duck_calibration' or type(payload) is not bytes or len(payload) not in (32, 108):
+        if method != 'duck_calibration' or type(payload) is not bytes or len(payload) not in (32, 36, 108):
             raise DispatchError('invalid_command_envelope')
         try:
             self.bridge.call(method, payload, timeout=self.TIMEOUT_S)

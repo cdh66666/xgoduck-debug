@@ -68,7 +68,7 @@ def decode_snapshot(payload):
     h = HEADER.unpack_from(payload)
     if h[0] != b'DWR1' or h[1] != SNAPSHOT_VERSION:
         raise ValueError('invalid calibration snapshot ABI')
-    if h[2] not in range(8) or h[18] not in range(3) or h[19] not in range(9) or h[20] not in range(19):
+    if h[2] not in range(8) or h[18] not in range(3) or h[19] not in (*range(9), 10) or h[20] not in range(19):
         raise ValueError('invalid calibration snapshot state/result')
     if h[3] & ALL_TORQUE_OFF_VERIFIED and h[3] & TORQUE_MAY_BE_ON:
         raise ValueError('contradictory torque evidence')
@@ -111,7 +111,7 @@ def decode_action_result(payload):
     if not isinstance(payload, (bytes, bytearray)) or len(payload) != ACTION_RESULT.size:
         raise ValueError('expected 48-byte DWA1 operation result')
     p = ACTION_RESULT.unpack(payload)
-    if p[0] != b'DWA1' or p[1] != 1 or p[2] not in range(9) or p[3] not in ((1, 2, 3) if p[2] == CAPTURE_GROUP else (0, *MOTOR_IDS)) or p[4] not in range(3) or p[5] == 0 or p[17] not in range(19) or p[20] != 0:
+    if p[0] != b'DWA1' or p[1] != 1 or p[2] not in (*range(9), 10) or p[3] not in ((1, 2, 3) if p[2] == CAPTURE_GROUP else MOTOR_IDS if p[2] == 10 else (0, *MOTOR_IDS)) or p[4] not in range(3) or p[5] == 0 or p[17] not in range(19) or p[20] != 0:
         raise ValueError('invalid DWA1 result ABI')
     if p[2] == STEP and p[4] == OK:
         if p[3] not in MOTOR_IDS or any(not 0 <= v <= 4095 for v in p[9:14]) or not 1 <= abs(p[14]) <= 22 or p[15] == 0 or p[16] == 0:
