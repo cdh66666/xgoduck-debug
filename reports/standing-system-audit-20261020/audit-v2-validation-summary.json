@@ -1,0 +1,62 @@
+{
+  "schema": "xgoduck-audit-v2-public-validation-summary-v1",
+  "read_only": true,
+  "device_requests": 0,
+  "new_experiments": 0,
+  "modules": 12,
+  "edges": 13,
+  "protocols": 8,
+  "io_fields": 51,
+  "history_endpoints": 966,
+  "axes": 15,
+  "wall_clock_included": false,
+  "raw_binary_or_browser_screenshots_included": false,
+  "public_self_contained_tests": {
+    "passed": 8,
+    "scope": "static packaging, local GET-only resources, contract layout, embedded-data semantics and privacy; does not re-read private original evidence"
+  },
+  "original_source_review": {
+    "result": "PASS_OFFLINE_INDEPENDENT_REVIEW",
+    "tests_run": 8,
+    "failures": 0,
+    "errors": 0,
+    "checked_history_endpoints": 966,
+    "checked_axes": 15,
+    "checked_full_simulation_traces": 12,
+    "physical_cases_executed": 0,
+    "device_access": false
+  },
+  "final_files": [
+    {
+      "path": "assets/standing-system-audit.html",
+      "bytes": 9616,
+      "sha256": "04afa3bed3b27093763863071be67850c892f1bf970fc6d925fb58a048e9c71e"
+    },
+    {
+      "path": "assets/standing-audit-v2.js",
+      "bytes": 35512,
+      "sha256": "874f88c64df022aef4b1483d27c9f8f809dd8eafef55f10e2671de4977afab85"
+    },
+    {
+      "path": "assets/standing-audit-v2.css",
+      "bytes": 19645,
+      "sha256": "ecc88e8e0389ebbad29675efe06d3d0c7f874d7f4a7555058bc67241afd975dc"
+    },
+    {
+      "path": "assets/standing-audit-v2-data.json",
+      "bytes": 1233997,
+      "sha256": "7ac662f72efce1d8668245b53e6162137d81388314de8a036a3aebe7f3ba1bd0"
+    },
+    {
+      "path": "model-assets/vendor/d3/d3.min.js",
+      "bytes": 279706,
+      "sha256": "f2094bbf6141b359722c4fe454eb6c4b0f0e42cc10cc7af921fc158fceb86539"
+    },
+    {
+      "path": "model-assets/vendor/d3/LICENSE",
+      "bytes": 731,
+      "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4"
+    }
+  ],
+  "physical_acceptance": "NOT_PASSED"
+}

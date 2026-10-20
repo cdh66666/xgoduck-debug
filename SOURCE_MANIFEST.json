@@ -845,9 +845,10 @@
     },
     "pc/assets/standing-system-audit.html": {
       "source": "assets/standing-system-audit.html",
-      "source_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1",
-      "published_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1",
-      "changes": []
+      "source_sha256": "04afa3bed3b27093763863071be67850c892f1bf970fc6d925fb58a048e9c71e",
+      "published_sha256": "04afa3bed3b27093763863071be67850c892f1bf970fc6d925fb58a048e9c71e",
+      "changes": [],
+      "scope": "standalone read-only audit V2; default main console unchanged"
     },
     "pc/assets/visual-debug.css": {
       "source": "assets/visual-debug.css",
@@ -1944,6 +1945,41 @@
       "source_sha256": "023ed97f848b633d8bcd53d4db3b996d29d0c644088700691297c552257d480b",
       "published_sha256": "023ed97f848b633d8bcd53d4db3b996d29d0c644088700691297c552257d480b",
       "changes": []
+    },
+    "pc/assets/standing-audit-v2.js": {
+      "source": "assets/standing-audit-v2.js",
+      "source_sha256": "874f88c64df022aef4b1483d27c9f8f809dd8eafef55f10e2671de4977afab85",
+      "published_sha256": "874f88c64df022aef4b1483d27c9f8f809dd8eafef55f10e2671de4977afab85",
+      "changes": [],
+      "scope": "standalone read-only audit V2; default main console unchanged"
+    },
+    "pc/assets/standing-audit-v2.css": {
+      "source": "assets/standing-audit-v2.css",
+      "source_sha256": "ecc88e8e0389ebbad29675efe06d3d0c7f874d7f4a7555058bc67241afd975dc",
+      "published_sha256": "ecc88e8e0389ebbad29675efe06d3d0c7f874d7f4a7555058bc67241afd975dc",
+      "changes": [],
+      "scope": "standalone read-only audit V2; default main console unchanged"
+    },
+    "pc/assets/standing-audit-v2-data.json": {
+      "source": "assets/standing-audit-v2-data.json",
+      "source_sha256": "7ac662f72efce1d8668245b53e6162137d81388314de8a036a3aebe7f3ba1bd0",
+      "published_sha256": "7ac662f72efce1d8668245b53e6162137d81388314de8a036a3aebe7f3ba1bd0",
+      "changes": [],
+      "scope": "standalone read-only audit V2; default main console unchanged"
+    },
+    "pc/model-assets/vendor/d3/d3.min.js": {
+      "source": "model-assets/vendor/d3/d3.min.js",
+      "source_sha256": "f2094bbf6141b359722c4fe454eb6c4b0f0e42cc10cc7af921fc158fceb86539",
+      "published_sha256": "f2094bbf6141b359722c4fe454eb6c4b0f0e42cc10cc7af921fc158fceb86539",
+      "changes": [],
+      "scope": "standalone read-only audit V2; default main console unchanged"
+    },
+    "pc/model-assets/vendor/d3/LICENSE": {
+      "source": "model-assets/vendor/d3/LICENSE",
+      "source_sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+      "published_sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+      "changes": [],
+      "scope": "standalone read-only audit V2; default main console unchanged"
     }
   },
   "omitted": [
@@ -1957,11 +1993,12 @@
   "portable_adapter_hardware_verified": false,
   "optimization_scope": {
     "simulation_receiver_source_sha256": "7b39524e93866dc5c5cf0471cf31e6cfb377e7b4078d1c889bb08343e8101b4b",
-    "visual_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1",
+    "visual_sha256": "04afa3bed3b27093763863071be67850c892f1bf970fc6d925fb58a048e9c71e",
     "default_controller_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
     "host_candidates_installed": false,
     "behavior_acceptance": "NOT_PASSED",
-    "hardware_operations": 0
+    "hardware_operations": 0,
+    "previous_visual_v1_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1"
   },
   "generated_files": {
     ".gitattributes": {
@@ -1977,7 +2014,7 @@
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "README.md": {
-      "sha256": "aacd9945b22c37b49f60f0ab1bc4e4eea69eed92ac84821409e1703a5b9b82f5",
+      "sha256": "2a9c7793d3c1190f6bb332e34c06c55c0855ab8131a0dbcf6254472d625be84c",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "RELEASE_PROFILE.json": {
@@ -1989,11 +2026,11 @@
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "SNAPSHOT_VERIFICATION.json": {
-      "sha256": "3ae1fa39cfc93ef89c120e6e54f3ab42df1971091e203096cbbafd8e60ff1187",
+      "sha256": "ca6477213077d7c772cd5d65590da8b15ce08758b9c57468fce5397e030e428e",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "THIRD_PARTY.md": {
-      "sha256": "8b1b4bc5cda3cb4d9e8b52e1db7075d55623ceca816eb8b7ada478dac2890286",
+      "sha256": "17afc7dcbf0f1b221fff74b61743441049b8dc7db7926dc00ef91c054b17f6f7",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "pc/device_config.py": {
@@ -2014,6 +2051,10 @@
     },
     "tests/test_audit_publication.py": {
       "sha256": "b8ab213bcf88719adf71b62c67b85e5b76439bc44cde57a3dbd92d7135a7f586",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "tests/test_audit_v2_public.py": {
+      "sha256": "2e16cde5b06b6e592473e3847d6db528ce8201f20501dae6a1210713855d192d",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "tests/test_bench_calibration.py": {
@@ -2052,8 +2093,12 @@
       "sha256": "9d932ec455771cded5881c45e7a06fbdc2069ec11d955c9b65c22233d85b549c",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
+    "reports/standing-system-audit-20261020/audit-v2-validation-summary.json": {
+      "sha256": "ae77b89d1ed5045fdd8a98bed4bf29a3e2dd36342e6d612524c9a3b12ebbc803",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
     "reports/standing-system-audit-20261020/README.md": {
-      "sha256": "7e3b0b1850cd079d78a5c0f122034d0653ced5643f46ee87e009f1c1d1202dbc",
+      "sha256": "03709b445fb2e1a9414ae3e7e6ea9f9eb5eda2253bf8c9b298e597aca3150cb5",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "pc/config/device.example.json": {
@@ -2108,5 +2153,45 @@
       "sha256": "e6f5c648eb7a23ddc22db9695710a82e7376704916169690e736ad2e41b137e4",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     }
+  },
+  "audit_visualization_v2": {
+    "base_commit": "f2d08c74be20f934b28d06865be492843290ef0c",
+    "static_source_files": [
+      {
+        "path": "assets/standing-system-audit.html",
+        "bytes": 9616,
+        "sha256": "04afa3bed3b27093763863071be67850c892f1bf970fc6d925fb58a048e9c71e"
+      },
+      {
+        "path": "assets/standing-audit-v2.js",
+        "bytes": 35512,
+        "sha256": "874f88c64df022aef4b1483d27c9f8f809dd8eafef55f10e2671de4977afab85"
+      },
+      {
+        "path": "assets/standing-audit-v2.css",
+        "bytes": 19645,
+        "sha256": "ecc88e8e0389ebbad29675efe06d3d0c7f874d7f4a7555058bc67241afd975dc"
+      },
+      {
+        "path": "assets/standing-audit-v2-data.json",
+        "bytes": 1233997,
+        "sha256": "7ac662f72efce1d8668245b53e6162137d81388314de8a036a3aebe7f3ba1bd0"
+      },
+      {
+        "path": "model-assets/vendor/d3/d3.min.js",
+        "bytes": 279706,
+        "sha256": "f2094bbf6141b359722c4fe454eb6c4b0f0e42cc10cc7af921fc158fceb86539"
+      },
+      {
+        "path": "model-assets/vendor/d3/LICENSE",
+        "bytes": 731,
+        "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4"
+      }
+    ],
+    "read_only": true,
+    "device_requests": 0,
+    "default_main_ui_worker_and_runtime_changed": false,
+    "private_original_records_included": false,
+    "hardware_acceptance": "NOT_PASSED"
   }
 }

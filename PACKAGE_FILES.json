@@ -14,8 +14,8 @@
       "sha256": "0d8c63dbe936e7a17c57075be5788cd44e719c5998392516c714cdf660480bc7"
     },
     "README.md": {
-      "bytes": 6610,
-      "sha256": "aacd9945b22c37b49f60f0ab1bc4e4eea69eed92ac84821409e1703a5b9b82f5"
+      "bytes": 8295,
+      "sha256": "2a9c7793d3c1190f6bb332e34c06c55c0855ab8131a0dbcf6254472d625be84c"
     },
     "RELEASE_PROFILE.json": {
       "bytes": 509,
@@ -26,16 +26,16 @@
       "sha256": "f3ddfe099658a0bb7c4e2bb84442a32064313cc5fda9c72f8efb58508c64c1fe"
     },
     "SNAPSHOT_VERIFICATION.json": {
-      "bytes": 1828,
-      "sha256": "3ae1fa39cfc93ef89c120e6e54f3ab42df1971091e203096cbbafd8e60ff1187"
+      "bytes": 3196,
+      "sha256": "ca6477213077d7c772cd5d65590da8b15ce08758b9c57468fce5397e030e428e"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 115948,
-      "sha256": "8cf4cfa3abee7b40a9158378d2ea3e7dc94346ec2b0541adeff73b246d7ce867"
+      "bytes": 120030,
+      "sha256": "c17a5d7ab1b2ab68a8d48f91d278fe0f225ef59549c9ef5fdac39e055789f43e"
     },
     "THIRD_PARTY.md": {
-      "bytes": 1268,
-      "sha256": "8b1b4bc5cda3cb4d9e8b52e1db7075d55623ceca816eb8b7ada478dac2890286"
+      "bytes": 1444,
+      "sha256": "17afc7dcbf0f1b221fff74b61743441049b8dc7db7926dc00ef91c054b17f6f7"
     },
     "legacy/README.md": {
       "bytes": 173,
@@ -208,6 +208,10 @@
     "tests/test_audit_publication.py": {
       "bytes": 2757,
       "sha256": "b8ab213bcf88719adf71b62c67b85e5b76439bc44cde57a3dbd92d7135a7f586"
+    },
+    "tests/test_audit_v2_public.py": {
+      "bytes": 8428,
+      "sha256": "2e16cde5b06b6e592473e3847d6db528ce8201f20501dae6a1210713855d192d"
     },
     "tests/test_bench_calibration.py": {
       "bytes": 6047,
@@ -473,13 +477,17 @@
       "bytes": 579,
       "sha256": "f3dc8d93e2f0c7e8908be3eb071adf60484f009b55964cea0c44655a956ac942"
     },
+    "reports/standing-system-audit-20261020/audit-v2-validation-summary.json": {
+      "bytes": 1973,
+      "sha256": "ae77b89d1ed5045fdd8a98bed4bf29a3e2dd36342e6d612524c9a3b12ebbc803"
+    },
     "reports/standing-system-audit-20261020/module-evidence-summary.json": {
       "bytes": 4838,
       "sha256": "06b7d22c8c413c0938f797442a48bf21f792f9cce6ecb60a9e145ef5d26f36bd"
     },
     "reports/standing-system-audit-20261020/README.md": {
-      "bytes": 5407,
-      "sha256": "7e3b0b1850cd079d78a5c0f122034d0653ced5643f46ee87e009f1c1d1202dbc"
+      "bytes": 5831,
+      "sha256": "03709b445fb2e1a9414ae3e7e6ea9f9eb5eda2253bf8c9b298e597aca3150cb5"
     },
     "reports/standing-system-audit-20261020/receiver-integration-summary.json": {
       "bytes": 7146,
@@ -733,9 +741,21 @@
       "bytes": 14919,
       "sha256": "a2c0383d6862f61ac76c726958cb45bf933333b854377cbfbdbefe3f6d184ef0"
     },
+    "pc/assets/standing-audit-v2-data.json": {
+      "bytes": 1233997,
+      "sha256": "7ac662f72efce1d8668245b53e6162137d81388314de8a036a3aebe7f3ba1bd0"
+    },
+    "pc/assets/standing-audit-v2.css": {
+      "bytes": 19645,
+      "sha256": "ecc88e8e0389ebbad29675efe06d3d0c7f874d7f4a7555058bc67241afd975dc"
+    },
+    "pc/assets/standing-audit-v2.js": {
+      "bytes": 35512,
+      "sha256": "874f88c64df022aef4b1483d27c9f8f809dd8eafef55f10e2671de4977afab85"
+    },
     "pc/assets/standing-system-audit.html": {
-      "bytes": 216015,
-      "sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1"
+      "bytes": 9616,
+      "sha256": "04afa3bed3b27093763863071be67850c892f1bf970fc6d925fb58a048e9c71e"
     },
     "pc/assets/visual-debug.css": {
       "bytes": 14239,
@@ -1200,6 +1220,14 @@
     "pc/model-assets/vendor/build/three.module.js": {
       "bytes": 603380,
       "sha256": "ce6be0cb5ead0027e1f6094dd82ad43bba0886c03324a3b21fd9a33ac93fc2b4"
+    },
+    "pc/model-assets/vendor/d3/d3.min.js": {
+      "bytes": 279706,
+      "sha256": "f2094bbf6141b359722c4fe454eb6c4b0f0e42cc10cc7af921fc158fceb86539"
+    },
+    "pc/model-assets/vendor/d3/LICENSE": {
+      "bytes": 731,
+      "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4"
     },
     "pc/model-assets/vendor/examples/jsm/controls/OrbitControls.js": {
       "bytes": 38703,

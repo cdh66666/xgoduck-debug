@@ -77,3 +77,20 @@ python -B -m unittest discover -s tests -p "test_receiver_sampling.py" -v
 ```
 
 Host候选和C++解码候选的离线命令在各目录README。原始设备记录、壁钟、私有路径和身份信息不随此次报告上传；历史曲线按相对时间标明，不冒充实时或修复后实机数据。
+
+
+## 独立全链路审计页 V2
+
+继续使用 `/assets/standing-system-audit.html`，不改变主调试台或添加设备操作。V2按链路、历史、仿真对照、修复/验收四个视图组织；12个模块和13条连线均可选，检查器列接口字段/维度/单位、条件与错误、证据和源码定位。历史提供共享游标、15轴明细、误差热图、播放暂停及原始电流值；未使能时不画有效软件目标，缺测不连线。
+
+回放复用图层，只更新游标/读数；布局变化由ResizeObserver重新定位连线。显示的是已有匿名历史与诊断仿真，不是实时设备数据，也没有新增训练或实验。两组仿真分开显示51dbc历史场景对照与51dbc→7b395接收时序对照，末态稳定不代替末2秒连续静稳，实物验收仍NOT_PASSED。
+
+只从本地加载HTML/CSS/JS、D3和静态JSON；没有设备API、动作、校准、部署或训练接口。静态数据约1.23MB，打包脱敏端点、标量和相对来源指纹，不打包原bin、私有路径、真实壁钟或浏览器截图。来源路径/行号描述构建时审查的本机源码和证据，并不意味着全部原始记录已公开，也不保证便携路径/行号完全相同。
+
+原始证据独立8项检查与公开包自包含8项检查的范围分开，见 [V2验证摘要](reports/standing-system-audit-20261020/audit-v2-validation-summary.json)。公开检查无需私有记录：
+
+```powershell
+python -B -m unittest discover -s tests -p "test_audit_v2_public.py" -v
+```
+
+测试需本地Node作JS语法检查；网页本身无需Node构建。D3及许可证保留在 `pc/model-assets/vendor/d3/`。
