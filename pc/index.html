@@ -1,0 +1,107 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="XGO Duck 本地调试：连接、舵机回中、停止卸力与实时姿态。"><title>XGO Duck 调试</title><link rel="stylesheet" href="/assets/commissioning.css?v=panel-close1"><link rel="stylesheet" href="/assets/simple-debug.css?v=workflow2">
+<link rel="stylesheet" href="/assets/visual-debug.css?v=3"><link rel="stylesheet" href="/assets/wireless-calibration.css?v=2"><link rel="stylesheet" href="/assets/duck-dark.css?v=status-strip4"><body class="simple-debug visual-debug duck-dark" data-theme="dark" data-default-page="imu">
+<header><div class="brand"><span class="duck" aria-hidden="true">🦆</span><div><strong>XGO Duck</strong><span>调试</span></div></div><span class="mode-tag" hidden>官方运行链 · 新零位</span><button id="current-curve-open" hidden aria-hidden="true" class="quiet current-icon-button" type="button" aria-label="舵机电流曲线" title="查看电流曲线" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17h4l3-10 4 14 3-8h4"/></svg></button><button id="diagnostics-open" class="quiet" aria-haspopup="dialog">诊断</button></header>
+<main class="simple-home">
+  <div class="live-strip" aria-label="当前状态">
+    <div class="status-item" id="simple-link"><label>无线</label><strong>检查中</strong><small>正在读取</small></div>
+    <div class="status-item" id="simple-servos"><label>主控舵机</label><strong>— / 15</strong><small>已应答数量</small></div>
+    <div class="status-item" id="simple-imu"><label>IMU</label><strong>待确认</strong><small>校准待做</small></div>
+    <div class="status-item" id="simple-motion"><label>主控运动</label><strong>待确认</strong><small>读取锁定状态</small></div>
+    <div class="status-item" id="simple-battery" title="舵机总线实测电压，低频采集">
+      <label>舵机供电</label><div class="battery-value"><span class="battery-symbol icon-small unknown" aria-label="电量未知"><span class="battery-fill" id="battery-fill"></span></span><strong id="battery-percent">待读取</strong></div><small id="battery-voltage">电压 —</small>
+    </div>
+    <div class="status-item" id="simple-current" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="current-curve-dialog" title="点击查看电流曲线。15颗舵机反馈电流幅值之和；非电源端总电流。"><label>舵机电流合计</label><strong>待读取</strong><small hidden>等待采样</small></div>
+  </div>
+  <div id="battery-metadata" hidden><span id="battery-current-state">等待数据</span><span id="battery-source-note">等待真实电压</span><button id="battery-returned">电池已接回</button></div>
+  
+<div id="workflow-install" class="workflow-page" hidden>
+
+<div class="visual-page-heading"><h1>安装</h1><span><a href="/downloads/XGO-Duck-Assembly-Guide-ZH.pdf" target="_blank" rel="noopener">中文版 PDF</a> · <a href="/downloads/XGO-Duck-Official-Assembly-Guide.pdf" target="_blank" rel="noopener">原版</a></span></div>
+<iframe id="assembly-guide-frame" class="tool-frame" data-src="/assets/official-assembly.html" title="XGO Duck 中文版 PDF 组装文档"></iframe>
+</div>
+<div id="workflow-numbering" class="workflow-page" hidden>
+<div class="visual-page-heading"><h1>自动编号</h1><span>已编号保留，每次新增一颗 ID 1</span></div>
+<iframe id="numbering-frame" class="tool-frame" data-src="/assets/numbering-restored.html" title="官方舵机编号与设置"></iframe>
+</div>
+<div id="workflow-models" class="workflow-page" hidden><iframe id="models-frame" class="tool-frame" data-src="/assets/bench-models.html" title="模型库与一键部署"></iframe></div>
+<div id="workflow-imu" class="workflow-page">
+  <div class="imu-overview"><div class="imu-pose">
+    <div class="imu-panel-heading"><h1>实时姿态</h1><span id="imu-live-rate" hidden></span></div>
+    <div id="wireless-calibration" class="wireless-calibration">
+      <div class="pose-actions"><button id="wl-home" disabled>回正</button><button id="wl-stop" class="danger">停止/卸力</button><button id="sequence-toggle" class="quiet" aria-haspopup="dialog" aria-controls="calibration-flow-dialog" aria-expanded="false">校准</button></div>
+      <p id="wl-home-state" class="home-state" hidden role="status" aria-live="polite">正在读取舵机反馈</p>
+      <p class="wl-result" id="wl-result" role="status" aria-live="polite" popover="manual"></p>
+      <div id="pose-calibration-layout" class="pose-calibration-layout" data-calibrating="false">
+        <div class="pose-view" id="imu-pose-view" data-live="false"><iframe id="imu-duck-frame" src="/assets/imu-model.html?embed=1&amp;view=axes3&amp;revision=imu-buffer-shared1" title="鸭子实时姿态与所选关节"></iframe></div>
+        <dialog id="calibration-flow-dialog" aria-labelledby="calibration-flow-title"><section id="sequence-panel" class="sequence-panel" hidden aria-label="全身与逐颗校准">
+          <div class="sequence-heading panel-heading"><strong id="calibration-flow-title">全身校准</strong><span id="sequence-count">0 / 15</span><button id="calibration-panel-close" class="quiet panel-close" type="button" aria-label="关闭校准面板">关闭 ×</button></div>
+          <iframe id="calibration-flow-preview" title="R7托盘与鸭子校准摆放预览"></iframe>
+          <p id="calibration-mode">把鸭子放入 R7 托盘，确认全身中位。</p>
+          <p id="calibration-entry-error" role="alert" hidden></p>
+          <div class="calibration-flow-actions"><button id="calibration-all" disabled>已摆好，开始校准</button><button id="calibration-done" class="quiet" type="button" hidden>完成并关闭</button></div>
+          <div id="calibration-flow-progress" hidden><progress id="calibration-progress" max="15" value="0"></progress><p id="calibration-progress-text">等待确认摆放</p><button id="calibration-stop" class="danger" disabled>停止校准</button></div>
+          <p id="sequence-result" role="status" aria-live="polite"></p>
+          <details id="calibration-single-details" class="workbench-details"><summary>单颗校准</summary><div class="workbench-details-content"><button id="calibration-enter" class="quiet">进入单颗校准</button>
+          <div class="sequence-groups" aria-label="高亮分组"><button data-sequence-group="left" class="quiet">左腿</button><button data-sequence-group="right" class="quiet">右腿</button><button data-sequence-group="head" class="quiet">头部</button></div>
+          <div id="sequence-joints" class="sequence-joints" aria-label="选择单颗舵机"></div>
+          <strong id="sequence-selected">选择一颗舵机</strong>
+          <p id="sequence-hint">模型高亮所选关节，托稳后摆到零位。</p>
+          <div class="bench-actions"><button id="calibration-release" class="quiet" disabled>释放当前关节</button><button id="calibration-next" class="quiet">下一颗 →</button></div>
+          <button id="sequence-capture" disabled>校准当前关节并保持</button>
+          </div></details>
+          <div id="calibration-details" hidden inert aria-hidden="true"><div class="workbench-details-content"><div class="tray-links"><span>校准托盘 R7</span><a id="calibration-tray-open" href="/assets/calibration-tray.html">查看托盘</a><a href="/downloads/XGO-Duck-Calibration-Tray-R7.stl" download="小鸭子校准托盘-R7-整盘45度打印.stl">下载 STL</a></div><p id="calibration-history"></p><button id="calibration-restore" class="quiet" disabled>退出校准</button><p id="sequence-selected-detail"></p><button id="calibration-read" class="quiet" disabled>读取当前关节</button><button id="sequence-passive-id10" class="quiet" disabled>无上力记录 ID10 中位</button><p id="calibration-read-status"></p><p id="calibration-timing">耗时将在本次操作后显示</p><div id="calibration-receipts" aria-label="逐轴校准结果"></div><small>舵机编号请使用底部“编号”页面。校准保存后保持当前位置；全部卸力后可退出校准。</small></div></div>
+        </section></dialog>
+      </div>
+      <div hidden>
+        <span id="wl-connection"></span><b id="wl-saved-count"></b><div id="wl-servo-dots"></div>
+        <div id="wl-setup-tools"><button id="wl-group-left"></button><button id="wl-group-right"></button><button id="wl-group-head"></button><button id="wl-off-all" disabled></button><button id="wl-capture-all" disabled></button></div>
+        <p id="wl-confirm-label"></p><span id="wl-group-label"></span><span id="wl-group-status"></span>
+        <strong id="servo-selected-name"></strong><b id="servo-selected-position"></b><b id="servo-selected-zero"></b><p id="servo-guidance"></p>
+        <details id="wl-fine-tools"><button id="wl-arm" disabled></button><span id="wl-arm-state"></span><button id="wl-minus" disabled></button><button id="wl-plus" disabled></button><select id="wl-step-size"><option value="0.966796875">1°</option></select><button id="wl-read" disabled></button><span id="wl-direction"></span></details>
+        <details id="wl-records-details"><p id="wl-records"></p></details>
+      </div>
+    </div>
+  </div></div>
+  <div hidden><button id="simple-refresh" hidden disabled></button><span id="simple-result"></span><a id="simple-report" hidden></a><div id="servo-picker-groups"></div><p id="servo-progress"></p></div>
+</div>
+<p class="pending-line" id="simple-pending" hidden>待处理：IMU 方向、ID30 位置、机械零位。</p>
+</main><dialog id="bench-test-panel" hidden aria-labelledby="bench-control-title">
+<div class="panel-heading"><h2 id="bench-control-title">控制</h2><button id="bench-test-close" class="quiet panel-close" type="button" aria-label="关闭控制面板">关闭 ×</button></div><p class="control-ground-note">托盘内只校准，取出放地面后再站立。</p>
+<div id="bench-more-tests" hidden inert aria-hidden="true"><div id="bench-more-tests-content" class="workbench-details-content"><p>先开始只读记录，再明确启动动作。结束记录后保持姿态，停止按钮卸力。</p>
+<label for="bench-test-profile">测试项目</label><select id="bench-test-profile"><option value="policy">零速度稳定站立</option><option value="default">默认姿态保持</option><option value="getup">起身后站稳</option><option value="pick">空载 Pick 后站稳</option><option value="roulade">翻滚后站稳</option><option value="walk">行走后站稳</option><option value="disturbance">受扰后恢复</option></select>
+<label for="bench-test-duration">连续站立目标（秒）</label><input id="bench-test-duration" type="number" min="15" max="120" value="15">
+<div class="bench-actions"><button id="bench-test-start">开始记录</button><button id="bench-test-stop" class="quiet" disabled>结束记录</button></div>
+<p id="bench-test-result" role="status">尚未开始记录</p><p>缺测、输入变化、恢复动作会中断连续窗口；数字窗口不代表实物通过。</p>
+<a id="bench-report" hidden target="_blank">打开本轮完整结果</a>
+<label for="bench-physical">本轮实物结果</label><select id="bench-physical"><option value="pending">未确认</option><option value="pass">通过</option><option value="fail">未通过</option></select>
+<label for="bench-physical-note">观察说明</label><textarea id="bench-physical-note" rows="2" maxlength="2000" placeholder="例如：未推碰，全程站稳；停止前后是否倒地"></textarea><div class="bench-actions"><button id="bench-test-annotate" disabled>保存实物结论</button></div></div></div></dialog>
+
+<dialog id="calibration-tray-dialog" aria-labelledby="calibration-tray-title"><div class="tray-preview-heading"><h2 id="calibration-tray-title">校准托盘 R7</h2><button id="calibration-tray-close" class="quiet" type="button" aria-label="关闭托盘预览" autofocus>关闭 ×</button></div><iframe id="calibration-tray-frame" title="R7校准托盘交互预览"></iframe></dialog>
+<dialog id="current-curve-dialog" aria-labelledby="current-curve-title" aria-describedby="current-curve-note">
+  <div class="current-curve-heading"><div><h2 id="current-curve-title">舵机电流曲线</h2><p id="current-curve-note">反馈幅值合计，非电源端总电流</p></div><button id="current-curve-close" class="quiet" type="button" aria-label="关闭电流曲线" autofocus>×</button></div>
+  <div class="current-curve-toolbar"><label>查看 <select id="current-curve-channel" aria-label="电流曲线通道"><option value="sum">15 颗合计</option></select></label><a class="current-curve-export" href="/api/bench/current-log.csv" download="duck-servo-current.csv">导出 CSV</a></div>
+  <div class="current-curve-metrics"><span>当前 <strong id="current-curve-value">—</strong></span><span>窗口峰值 <strong id="current-curve-peak">—</strong></span><span>真实采样 <strong id="current-curve-hz">—</strong></span></div>
+  <canvas id="current-curve-canvas" width="1000" height="340" role="img" aria-label="最近60秒舵机电流曲线，缺测处断开"></canvas>
+  <p id="current-curve-state" role="status">等待电脑记录</p><small class="current-curve-footnote">最近 60 秒 · 缺测处断开 · 单颗为带符号反馈 · 合计为幅值之和</small>
+</dialog>
+<dialog id="diagnostics-dialog" aria-labelledby="diagnostics-title">
+  <div class="diag-heading"><h2 id="diagnostics-title">连接与诊断</h2><button id="diagnostics-close" class="quiet" autofocus>关闭</button></div>
+  <dl class="diag-grid"><div><dt>电脑服务</dt><dd id="diag-service">待读取</dd></div><div><dt>主控反馈</dt><dd id="diag-controller">待读取</dd></div><div><dt>舵机状态</dt><dd id="diag-torque">卸力待确认</dd></div></dl>
+  <p id="diag-identity">等待主控身份与帧号</p><p id="diag-discovery"></p><p id="diag-model">模型状态待读取</p>
+  <div class="diag-actions"><button id="diag-refresh" class="quiet">刷新诊断</button><button id="diag-export" class="quiet" disabled>导出诊断记录</button></div>
+  <p id="diag-refresh-note" role="status">尚未读取</p><p id="diag-export-note" role="status"></p>
+  <h3>最近操作</h3><ol id="diag-events"><li>待读取本次电脑服务记录</li></ol>
+  <p>记录反映请求结果；实际动作与卸力以新鲜主控反馈确认。</p>
+  <details id="debug-connection" class="debug-details">
+    <summary>通信与程序</summary>
+    <p class="signal-line"><span id="visual-network-state">离线</span> · <span id="visual-network-note">等待主控</span></p>
+    <p class="program-version" id="comm-version">主控版本 —</p>
+    <div class="communication-actions"><button id="comm-discover" disabled>正在连接</button><button id="comm-usb" class="quiet">USB 首次烧录</button><button id="comm-update" class="quiet" disabled>无线烧录</button></div>
+    <div class="communication-progress"><progress id="comm-progress" max="100" value="0" hidden></progress><p id="comm-result" role="status" aria-live="polite">Uno Q 独立供电，与电脑连接同一 Wi-Fi。</p></div>
+  </details>
+</dialog>
+<link rel="stylesheet" href="/assets/diagnostics.css?v=1">
+<nav class="workflow-tabs" id="workflow-tabs" aria-label="调试页面">
+<button data-page="numbering"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM9 8v8m5-8h3l-3 8h3"/></svg>编号</button><button data-page="install"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6l2 2 2-2h6v15h-6l-2 2-2-2H4zM12 6v15"/></svg>安装</button><button data-page="imu" aria-current="page" class="active"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 1v6m0 10v6M1 12h6m10 0h6"/></svg>调试</button>
+<button data-page="models"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></svg>模型</button>
+</nav><link rel="stylesheet" href="/assets/bench-workbench.css?v=status-strip4"><script>window.COMMISSION_TOKEN="__TOKEN__";</script><script src="/assets/bench-calibration.js?v=status-strip4"></script><script src="/assets/duck-keyboard.js?v=1"></script><script>window.XGO_RELEASE_PROFILE={"schema":"xgoduck-stand-getup-publication-profile-v1","core":["original_walk_zero_standing","original_getup"],"ordinary_head_mouth":true,"walking":false,"fast_forward":false,"navigation":false,"deep_pick":false,"automatic_pick":false,"roulade":false,"current_monitor":true,"calibration_and_numbering":true,"roll_power_loss_cause":"Unresolved battery power loss; no hardware root-cause fix claimed","portable_profile_hardware_verified":false};</script><script src="/assets/official-workbench.js?v=status-strip4"></script></body></html>

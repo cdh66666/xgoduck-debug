@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="XGO Duck 模型库：查看训练成果并部署模型。">
+  <title>模型库 · XGO Duck</title>
+  <link rel="stylesheet" href="/assets/models.css?v=2">
+</head>
+<body>
+  <header class="page-header"><a class="brand" href="/">🦆 <strong>XGO Duck</strong></a><a href="/">返回调试台</a></header>
+  <main>
+    <div class="page-heading"><h1>模型库</h1><button id="import-open" type="button">导入模型</button></div>
+    <p id="page-message" class="page-message" role="status" aria-live="polite">正在读取模型库</p>
+    <div class="workspace">
+      <aside class="library" aria-label="已保存的模型">
+        <div class="library-heading"><h2>已保存</h2><span id="model-count">0</span></div>
+        <div id="model-list" class="model-list"></div>
+        <p id="library-empty" class="library-empty" hidden>还没有模型。<br>导入 ONNX 文件，保存对应的训练成果。</p>
+      </aside>
+      <section class="model-detail" aria-label="模型详情">
+        <div class="preview-shell">
+          <div class="preview-label"><strong id="model-name">选择模型</strong><span id="preview-note">实时物理仿真</span></div>
+          <div id="model-preview" class="model-preview"><div class="preview-empty"><svg viewBox="0 0 80 64" aria-hidden="true"><path d="M8 53h64M18 45V17h24l12 12v16M42 17v13h13M28 37h8m7 0h5"/></svg><p>导入模型，直接交互仿真</p></div></div>
+        </div>
+        <div class="deployment">
+          <div class="deployment-status"><span id="runtime-dot" class="runtime-dot"></span><div><strong id="runtime-state">尚未运行模型</strong><p id="runtime-message">选择模型后可查看部署条件。</p></div></div>
+          <div class="deployment-actions"><button id="deploy" type="button" disabled>部署到小鸭子</button><button id="stop" class="danger" type="button" disabled>停止 / 卸力</button></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <dialog id="import-dialog" aria-labelledby="import-title">
+    <form id="import-form">
+      <div class="dialog-heading"><h2 id="import-title">导入模型</h2><button id="import-close" class="icon-button" type="button" aria-label="关闭">×</button></div>
+      <label>模型名称<input id="import-name" name="name" maxlength="100" placeholder="例如：平地行走 v2" required></label>
+      <label>ONNX 模型<input id="import-model" name="model" type="file" accept=".onnx" required><small>模型会保存在本机；部署时检查是否适配小鸭子。</small></label>
+      <label>训练成果动态图或视频 <span class="optional">可选</span><input id="import-preview" name="preview" type="file" accept=".gif,.webp,.mp4,.webm,image/gif,image/webp,video/mp4,video/webm"><small>GIF、WebP、MP4 或 WebM，与这个模型一起保存。</small></label>
+      <label>说明 <span class="optional">可选</span><textarea id="import-description" name="description" rows="2" maxlength="1000" placeholder="记录版本和训练结果"></textarea></label>
+      <p id="import-message" class="form-message" role="status" aria-live="polite"></p>
+      <div class="dialog-actions"><button id="import-cancel" type="button" class="quiet">取消</button><button id="import-submit" type="submit">保存模型</button></div>
+    </form>
+  </dialog>
+  <script>window.COMMISSION_TOKEN='__TOKEN__';</script>
+  <script src="/assets/models.js?v=simulation1"></script>
+</body>
+</html>

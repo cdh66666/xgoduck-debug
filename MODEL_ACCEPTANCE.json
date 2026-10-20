@@ -1,0 +1,35 @@
+{
+  "schema": "xgoduck-code-snapshot-acceptance-v3",
+  "publication_allowed": true,
+  "publication_kind": "current code snapshot; not a stable release",
+  "authorization": "User explicitly authorized updating this repository on 2026-10-20",
+  "hardware_acceptance": "NOT_PASSED",
+  "portable_adapter_hardware_verified": false,
+  "current_findings": {
+    "standing": "NOT_PASSED: user observed backward steps after getting up",
+    "interactive_push_recovery": "NOT_PASSED",
+    "walking_and_release_stop": "NOT_PASSED",
+    "battery_roll_power_loss": "unresolved; no root cause fix claimed"
+  },
+  "default_enabled": [
+    "original_walk_zero_standing",
+    "original_getup",
+    "ordinary_head_mouth",
+    "calibration_and_numbering",
+    "current_monitor"
+  ],
+  "default_disabled": [
+    "walking",
+    "fast_forward",
+    "navigation",
+    "deep_pick",
+    "automatic_pick",
+    "roulade"
+  ],
+  "excluded": {
+    "9391_fast": "failed interactive and physical forward/stop; absent from package",
+    "new_600_candidate": "not admitted or deployed"
+  },
+  "current_measurement": "servo feedback magnitude sum, not battery input current",
+  "device_data_included": false
+}

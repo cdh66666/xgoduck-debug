@@ -1,0 +1,14 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>当前嘉立创工程：接口与线束核验</title>
+<style>body{font:17px system-ui;margin:24px auto;max-width:980px;padding:0 16px;color:#163448}h1{font-size:26px}.warning{padding:14px;background:#fff2df;border-left:5px solid #c57115}.photo{position:relative;margin:20px 0}.photo img{display:block;width:100%}.photo svg{position:absolute;inset:0;width:100%;height:100%}table{border-collapse:collapse;width:100%}td,th{border:1px solid #cad8df;padding:10px;text-align:left}a{color:#076898}li{margin:10px 0}</style>
+<h1>你的嘉立创工程已核对：还不能认定线束接反</h1>
+<p>实际读取的是你打开的 <b>“xgoduck 扩展板 / ArduinoUnoQ”</b>，工程 <code>4d94499986b84d0582f0c118e04fb5b4</code>，PCB <code>52caa9452ee66dee</code>。以下来自当前 PCB 的组件焊盘 API，并由同次导出的 PAD_NET 记录交叉核对；没有修改或保存设计。</p>
+<table><tr><th>当前工程接口</th><th>1 脚</th><th>2 脚</th><th>3 脚</th></tr><tr><td>U3 / U4 / U5</td><td>GND · 地</td><td>VCC8.4V · 电源网</td><td>SIGNAL · 舵机总线</td></tr><tr><td>厂商修订版对照</td><td>SIGNAL</td><td>VCC8.4V（不变）</td><td>GND</td></tr></table>
+<p>当前工程的针序与厂商公告中的旧版一致。<b>这确认了工程针序，不能证明这三条全黑线束接反。</b>线束若已经在板端交叉了 1、3 脚，继续交换会抵消修正。工程编号也不能直接当作任意照片方向的左、中、右。</p>
+<p>串口网络：Uno Q D0 / RX 对应 H4-1 的 RX0，D1 / TX 对应 H4-2 的 TX0；SN1 为发送门、SN2 为接收门，共接 TXEN。工程网络声明不等于实物通断、焊接或波形已验收。</p>
+<p>照片右侧三个大插口，从左到右对应 U3、U4、U5。框出的是 U3。插头确实已经接上；照片无法追踪三根黑线在舵机端对应什么针脚。</p>
+<p class="warning"><b>测通断前先托住机身，断开电池和主控 USB-C 电源，确认所有灯灭。拔下右侧三条舵机插头，避免外接舵机影响测量。不能带电使用通断档。</b></p>
+<ol><li>下一次物理核验只需确认 <b>一条实际使用的线束是否已交叉</b>：板 GND 最终到舵机 GND，电源到舵机电源，SIGNAL 到舵机信号。</li><li>必须先准确辨认板端和舵机端针脚，再断电用通断档逐线验证。不能靠全黑线色、插头外形或任意观察方向猜编号；不明确时先拍清针脚标记。</li><li>只有确认实际线束未补偿旧版针序后，才按厂商方案在 <b>板端一侧</b> 交换 1、3 两个端子，2 脚不动。不能强行反插或同时交换两端。</li></ol>
+<div class="photo"><img src="/assets/servo-board-photo-20261011.jpg" alt="用户当前实物舵机扩展板"><svg viewBox="0 0 3072 4096" aria-hidden="true"><rect x="1505" y="2080" width="270" height="250" rx="20" fill="none" stroke="#ffce18" stroke-width="15"/><rect x="1435" y="1940" width="435" height="105" rx="18" fill="#fff6cd"/><text x="1652" y="2017" text-anchor="middle" fill="#342e16" font-size="62" font-weight="bold">U3：只核对两外脚</text></svg></div>
+<p>框线仅标识 U3 整个插口，不指定当前插头内部的金属测点。当前导出未包含封装焊盘几何；不得把旧资料坐标冒充本次实时焊盘坐标。</p>
+<p><a href="/assets/live-pcb-pin-audit.json">查看本次工程核验记录</a>。IMU 曾有正常反馈，舵机当时为 0/15 有效应答；当前联网状态以调试台实时读回为准。未归中，运动保持锁定。</p>
+<p><a href="https://github.com/LuwuDynamics/xgoduck_hardware/blob/master/PCBA/README.md" target="_blank" rel="noopener">厂商旧版接口更正说明</a> · <a href="/#wiring-readonly">返回调试台</a></p></html>

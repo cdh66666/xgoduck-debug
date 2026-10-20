@@ -1,0 +1,133 @@
+/* Extend the approved dark workbench without replacing its visual system. */
+body.visual-debug.duck-dark>header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+body.visual-debug.duck-dark>header .brand{display:flex;align-items:center;gap:10px}
+body.visual-debug.duck-dark>header .brand strong{display:block;line-height:1.2}
+.tray-download{display:block;width:fit-content;margin:10px 0 6px;padding:7px 10px;border:1px solid #365b60;border-radius:5px;color:#64d9eb;text-decoration:none}.tray-download:hover{background:#183e43}.tray-download-note{display:block;color:#9eb8bf;font-size:11px;line-height:1.6;margin-bottom:9px}
+body.visual-debug.duck-dark .status-item{border-radius:5px;min-width:0}
+body.visual-debug.duck-dark .status-item[data-state="ok"]{background:linear-gradient(0deg,#4fcce810,transparent)}
+body.visual-debug.duck-dark .status-item[data-state="ok"] strong{color:#64d9eb}
+body.visual-debug.duck-dark .status-item[data-state="active"] strong,body.visual-debug.duck-dark .status-item[data-state="pending"] strong{color:#f0bb79}
+body.visual-debug.duck-dark .status-item[data-state="error"]{background:linear-gradient(0deg,#e9a65b13,transparent)}
+body.visual-debug.duck-dark .status-item[data-state="error"] strong{color:#f0ad72}
+body.visual-debug.duck-dark .status-item[data-state="unknown"] strong{color:#8699a8}
+.fixture-calibration{margin:16px 0;padding:14px;border:1px solid #365b60;background:#102b2d;border-radius:9px}.fixture-calibration p{font-size:13px;line-height:1.6}.fixture-calibration progress{display:block;width:100%;margin-top:12px;accent-color:#59d4b4}#calibration-receipts{white-space:pre-line;font-size:12px;line-height:1.8;columns:3;margin-top:14px;color:#a7c4c8}#calibration-confirm-dialog{max-width:520px;background:#15232c;color:#e3edf4;border:1px solid #36505f;border-radius:14px;padding:26px}#calibration-confirm-dialog p{line-height:1.8}#calibration-confirm-dialog::backdrop{background:#0009}#sequence-panel{overflow:auto}#calibration-mode,#sequence-result{line-height:1.7;overflow-wrap:anywhere}#sequence-panel [disabled]{opacity:.45}
+.bench-controls,.bench-actions{display:inline-flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bench-keyboard-panel{margin-top:14px;padding:12px;border:1px solid #36505f;border-radius:8px;background:#0e1921}.bench-keyboard-panel p{margin:7px 0!important;font-size:12px!important}.bench-keyboard-panel output{display:block;font-size:12px;color:#a8dfd0;line-height:1.8;margin:8px 0}.bench-keyboard-panel small{display:block;font-size:11px;line-height:1.7;color:#a7bac8;margin-top:7px}.bench-keyboard-panel button{font-size:12px;padding:7px 10px}
+#bench-test-panel .bench-forward-speed{display:inline-flex;align-items:center;gap:8px;margin:4px 0;font-size:13px}#bench-test-panel .bench-forward-speed select{width:auto;min-width:104px;padding:7px 9px}#bench-forward-speed:disabled{opacity:.6}
+body.visual-debug.duck-dark #sequence-panel{display:flex;flex-direction:column;gap:10px;align-items:stretch;grid-template-rows:none;padding-bottom:20px}body.visual-debug.duck-dark #sequence-panel[hidden]{display:none}body.visual-debug.duck-dark #sequence-panel .sequence-joints{flex:none;min-height:0;display:grid;grid-template-columns:repeat(5,1fr);gap:5px}body.visual-debug.duck-dark #sequence-panel p{margin:0}body.visual-debug.duck-dark #sequence-panel .fixture-calibration{margin:3px 0;padding:12px}#calibration-mode{font-size:13px}#sequence-panel button{flex:none}#sequence-panel #sequence-capture{margin-top:0}
+body.visual-debug.duck-dark #sequence-panel button{height:auto;min-height:34px;padding:7px 9px;font-size:13px}body.visual-debug.duck-dark #sequence-panel .sequence-joints{grid-template-rows:repeat(3,auto)}
+body.visual-debug.duck-dark .pose-actions{display:grid;grid-template-columns:minmax(100px,1fr) minmax(100px,1fr) auto auto;gap:8px}
+.pose-actions .bench-controls{display:contents}
+#bench-test-panel{position:fixed;right:24px;top:var(--bench-panel-top,220px);bottom:76px;width:min(390px,calc(100vw - 48px));z-index:20;overflow:auto;background:#15232c;border:1px solid #31505e;border-radius:12px;padding:20px;box-shadow:0 16px 60px #0008}
+#bench-test-panel[hidden]{display:none}
+.panel-heading{display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:2;background:#15232c;padding:8px 0;margin-bottom:8px}
+.panel-heading h2{margin:0!important}.panel-heading .panel-close{margin-left:auto;flex:none;white-space:nowrap;min-height:34px;font-size:13px;padding:6px 10px}
+body.visual-debug.duck-dark #sequence-panel .panel-heading{top:-4px;background:var(--duck-bg,#08111b);margin-bottom:0}
+#bench-test-panel h2{font-size:20px;margin:0 0 16px}#bench-test-panel label{display:block;margin:12px 0 6px}#bench-test-panel select,#bench-test-panel input,#bench-test-panel textarea{width:100%;box-sizing:border-box;background:#0e1921;color:#e3edf4;border:1px solid #36505f;padding:9px;border-radius:6px;font:inherit}
+#bench-test-panel p{font-size:13px;line-height:1.6;color:#a7bac8}#bench-test-panel .bench-actions{margin-top:14px}
+#bench-motion-dialog{max-width:500px;background:#15232c;color:#e3edf4;border:1px solid #36505f;border-radius:14px;padding:26px}#bench-motion-dialog p{line-height:1.8}#bench-motion-dialog::backdrop{background:#0009}
+@media(max-width:800px){.bench-controls{gap:4px}body.duck-dark .pose-actions button{font-size:12px;padding:7px 9px}#bench-test-panel{right:12px;top:var(--bench-panel-top,210px)}}
+
+/* Common operations first; the existing diagnostics remain available on demand. */
+.workbench-details{border-top:1px solid #2b4351;margin-top:14px;padding-top:12px;font-size:13px}
+.workbench-details>summary{color:#9cb9c9;cursor:pointer;user-select:none;font-size:13px;padding:3px 0}
+.workbench-details>summary:hover{color:#64d9eb}
+.workbench-details-content{padding-top:12px;display:flex;flex-direction:column;gap:10px}
+.workbench-details-content small{color:#8ea9b6;line-height:1.6;font-size:11px}
+#bench-test-panel .control-ground-note{margin:0 0 14px;color:#b9c9cf;font-size:12px}
+#bench-test-panel>.bench-actions{display:grid;grid-template-columns:1fr 1fr;margin-top:0;width:100%}
+#bench-test-panel>.bench-actions button{min-height:40px;padding:8px 10px;font-size:14px}
+#bench-test-panel .bench-keyboard-panel{border:0;background:none;padding:0;margin:20px 0}
+#bench-test-panel .bench-keyboard-panel>strong{font-size:13px;color:#9cb9c9}
+#bench-test-panel .bench-keyboard-panel>p{white-space:pre-line;line-height:1.8}
+#bench-test-panel .bench-keyboard-panel>#bench-keyboard-state{font-size:11px!important;color:#8ea9b6}
+#bench-test-panel .bench-keyboard-details{font-size:11px;color:#8ea9b6;line-height:1.7}
+#bench-test-panel #bench-keyboard-readout{display:block;color:#9eb9c1;margin-bottom:10px}
+body.visual-debug.duck-dark #sequence-panel .tray-links{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:11px;color:#a9c1c8;margin-bottom:8px}
+body.visual-debug.duck-dark #sequence-panel .tray-links span{margin-right:auto}
+body.visual-debug.duck-dark #sequence-panel .tray-links a{color:#64d9eb;text-decoration:none}
+body.visual-debug.duck-dark #sequence-panel .tray-links a:hover{text-decoration:underline}
+body.visual-debug.duck-dark #sequence-panel .fixture-calibration p{font-size:12px;line-height:1.6;margin-bottom:10px}
+body.visual-debug.duck-dark #sequence-panel .fixture-calibration #calibration-progress-text{font-size:11px;margin:7px 0 0;color:#a9c1c8}
+body.visual-debug.duck-dark #sequence-panel #calibration-mode{font-size:12px;color:#91b6bb}
+body.visual-debug.duck-dark #sequence-panel #sequence-hint{font-size:12px;color:#8ea9b6}
+body.visual-debug.duck-dark #sequence-panel .workbench-details{margin-top:4px;padding-top:10px}
+body.visual-debug.duck-dark #sequence-panel .workbench-details-content{gap:9px;font-size:12px;color:#8ea9b6}
+body.visual-debug.duck-dark #sequence-panel #calibration-receipts{columns:2;margin-top:2px;font-size:11px}
+body.visual-debug.duck-dark #sequence-panel #sequence-result{font-size:12px;line-height:1.6}
+body.visual-debug.duck-dark #sequence-panel #calibration-entry-error{font-size:12px;line-height:1.6;color:#f0ad72;padding:9px 11px;border:1px solid #775136;background:#35231b;border-radius:5px;overflow-wrap:anywhere}
+body.visual-debug.duck-dark #sequence-panel #calibration-entry-error[hidden]{display:none}
+body.visual-debug.duck-dark #sequence-panel #calibration-history{font-size:11px;color:#8ea9b6;line-height:1.5}
+body.visual-debug.duck-dark #calibration-tray-dialog{width:min(960px,calc(100vw - 32px));height:min(720px,calc(100vh - 32px));max-width:none;max-height:none;box-sizing:border-box;padding:14px;margin:auto;overflow:hidden;background:#0b1822;color:#d9e8ee;border:1px solid #31505e;border-radius:10px;box-shadow:0 20px 80px #0009}
+body.visual-debug.duck-dark #calibration-tray-dialog[open]{display:flex;flex-direction:column}
+body.visual-debug.duck-dark #calibration-tray-dialog::backdrop{background:#020a11bb}
+.tray-preview-heading{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex:none}
+.tray-preview-heading h2{font-size:18px;margin:0}
+.tray-preview-heading button{margin-left:auto;min-height:34px;padding:6px 10px;font-size:12px}
+#calibration-tray-frame{display:block;flex:1;width:100%;min-height:0;border:0;border-radius:5px;background:#0b1822}
+body.visual-debug.duck-dark #calibration-flow-dialog{width:min(780px,calc(100vw - 32px));max-width:none;max-height:calc(100vh - 32px);box-sizing:border-box;padding:20px;margin:auto;overflow:auto;border:1px solid #31505e;border-radius:12px;background:#0b1822;color:#d9e8ee;box-shadow:0 20px 80px #0009}
+body.visual-debug.duck-dark #calibration-flow-dialog::backdrop{background:#020a11bb;backdrop-filter:blur(3px)}
+body.visual-debug.duck-dark #calibration-flow-dialog #sequence-panel{height:auto;max-height:none;overflow:visible;padding:0;gap:12px}
+body.visual-debug.duck-dark #calibration-flow-dialog .panel-heading{position:static;background:none;padding:0 0 4px;gap:12px}
+body.visual-debug.duck-dark #calibration-flow-dialog .sequence-heading strong{font-size:20px}
+body.visual-debug.duck-dark #calibration-flow-dialog #sequence-count{font-size:12px;color:#64d9eb;margin-left:auto}
+body.visual-debug.duck-dark #calibration-flow-preview{display:block;width:100%;height:310px;border:1px solid #213b4b;border-radius:7px;background:#09151f;box-sizing:border-box}
+body.visual-debug.duck-dark #calibration-flow-dialog #calibration-mode{font-size:15px;line-height:1.7;color:#d9e8ee}
+body.visual-debug.duck-dark #calibration-flow-dialog .calibration-flow-actions{display:flex;gap:10px}
+body.visual-debug.duck-dark #calibration-flow-dialog #calibration-all,body.visual-debug.duck-dark #calibration-flow-dialog #calibration-done{min-height:42px;padding:10px 18px;font-size:15px}
+body.visual-debug.duck-dark #calibration-flow-dialog progress{display:block;width:100%;height:10px;accent-color:#64d9eb;margin:5px 0 12px}
+body.visual-debug.duck-dark #calibration-flow-dialog #calibration-progress-text{font-size:13px;color:#a9c1c8;margin-bottom:10px}
+body.visual-debug.duck-dark #calibration-flow-dialog[data-phase="success"] #calibration-mode{color:#69dfbc}
+body.visual-debug.duck-dark #calibration-flow-dialog[data-phase="running"] #calibration-panel-close{opacity:.4}
+body.visual-debug.duck-dark #calibration-flow-dialog [hidden]{display:none!important}
+@media(max-height:760px){body.visual-debug.duck-dark #calibration-flow-preview{height:230px}}
+/* Keep the model in the main view; controls and changing readouts live in dialogs. */
+body.visual-debug.duck-dark .simple-home{grid-template-rows:minmax(0,1fr);padding-top:4px}
+body.visual-debug.duck-dark #diagnostics-dialog .live-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 0;padding:18px 0;border:0}
+body.visual-debug.duck-dark #diagnostics-dialog .status-item{min-height:56px}
+body.visual-debug.duck-dark #diagnostics-dialog .status-item label{font-size:11px}
+body.visual-debug.duck-dark #diagnostics-dialog .status-item strong{font-size:15px}
+body.visual-debug.duck-dark > header .brand{margin-right:auto}
+body.visual-debug.duck-dark .current-icon-button{display:grid;place-items:center;width:36px;min-height:36px;padding:7px;margin-left:10px;margin-right:8px}
+.current-icon-button svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+body.visual-debug.duck-dark #bench-test-panel{position:fixed;inset:0;width:min(650px,calc(100vw - 32px));height:fit-content;max-height:calc(100vh - 32px);margin:auto;box-sizing:border-box;overflow:auto;padding:22px;background:#0b1822;border-radius:12px}
+body.visual-debug.duck-dark #bench-test-panel::backdrop{background:#020a11bb;backdrop-filter:blur(3px)}
+body.visual-debug.duck-dark #bench-test-panel .panel-heading{position:static;background:none;padding:0 0 8px}
+body.visual-debug.duck-dark #bench-test-panel .control-guide{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin:4px 0 18px}
+.control-guide-group>strong{display:block;font-size:12px;color:#a9c1ce;margin-bottom:14px}
+.control-wasd{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,58px);gap:7px}
+.control-wasd .key-w{grid-column:2}.control-wasd .key-a{grid-column:1;grid-row:2}.control-wasd .key-s{grid-column:2;grid-row:2}.control-wasd .key-d{grid-column:3;grid-row:2}
+.control-head-keys{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,58px);gap:7px}
+.control-wide-keys{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}
+body.visual-debug.duck-dark #bench-test-panel .control-key{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:46px;padding:4px 8px;box-sizing:border-box;border:1px solid #345466;border-bottom-width:3px;border-radius:6px;background:#142b3b;color:#77d7e8;font:17px ui-monospace,monospace;transition:background .08s}
+body.visual-debug.duck-dark #bench-test-panel .control-key small{margin:0;font:10px sans-serif;color:#9cbac9;line-height:1.5}
+body.visual-debug.duck-dark #bench-test-panel .control-key[aria-disabled="true"]{opacity:1;background:#12202a;border-color:#2d414e;color:#b4c5ce}
+body.visual-debug.duck-dark #bench-test-panel .control-key[data-pressed="true"]{background:#23576c;border-color:#64d9eb;box-shadow:0 0 10px #64d9eb22}
+@media(max-width:520px){body.visual-debug.duck-dark #bench-test-panel{padding:18px}body.visual-debug.duck-dark #bench-test-panel .control-guide{gap:14px}.control-guide-group>strong{font-size:11px}}
+body.visual-debug.duck-dark #wl-result{position:fixed;inset:128px auto auto 24px;width:max-content;max-width:min(520px,calc(100vw - 48px));box-sizing:border-box;flex:none;margin:0;padding:10px 14px;border:1px solid #356071;border-left:3px solid #64d9eb;border-radius:7px;background:#102b3aef;color:#cceef4;box-shadow:0 8px 28px #0006;font-size:12px;line-height:1.6;text-align:left;pointer-events:none;z-index:2147483000;overflow-wrap:anywhere}
+body.visual-debug.duck-dark #wl-result::backdrop{background:transparent;pointer-events:none}
+body.visual-debug.duck-dark #wl-result:empty{display:none}
+body.visual-debug.duck-dark #bench-more-tests{display:none!important}
+@media(max-width:600px){body.visual-debug.duck-dark #wl-result{inset:110px auto auto 16px;max-width:calc(100vw - 32px);font-size:11px}}
+/* The controller shares the view with the duck; only action confirmation is modal. */
+body.visual-debug.duck-dark #bench-test-panel{inset:92px 24px 78px auto;width:340px;height:auto;max-height:none;margin:0;padding:18px;box-shadow:0 12px 36px #0005}
+body.visual-debug.duck-dark #bench-test-panel::backdrop{background:transparent;backdrop-filter:none}
+body.visual-debug.duck-dark[data-control-open="true"] .simple-home{padding-right:388px;box-sizing:border-box}
+body.visual-debug.duck-dark #bench-test-panel .control-guide{gap:14px}
+body.visual-debug.duck-dark #bench-test-panel .control-guide-group>strong{font-size:11px;line-height:1.6;min-height:34px;margin-bottom:9px;color:#c3d6df}
+body.visual-debug.duck-dark #bench-test-panel .control-key{font-size:16px;padding-left:4px;padding-right:4px}
+body.visual-debug.duck-dark #bench-test-panel .control-key[aria-disabled="true"]{opacity:1;color:#cedce4;border-color:#3a5260}
+body.visual-debug.duck-dark #bench-test-panel .control-key small{color:#bbd0dc}
+body.visual-debug.duck-dark #calibration-details{display:none!important}
+@media(max-width:900px){
+  body.visual-debug.duck-dark[data-control-open="true"] .simple-home{padding-right:16px;padding-bottom:calc(min(300px,42vh) + 20px)}
+  body.visual-debug.duck-dark #bench-test-panel{inset:auto 16px 76px 16px;width:auto;height:min(300px,42vh);max-height:none;padding:14px 18px}
+  body.visual-debug.duck-dark #bench-test-panel .control-guide{grid-template-columns:1fr 1fr;gap:24px;margin-bottom:10px}
+  body.visual-debug.duck-dark #bench-test-panel .control-guide-group>strong{min-height:0}
+}
+/* Restore the original six-card overview; the current card keeps its value only. */
+body.visual-debug.duck-dark .simple-home{grid-template-rows:62px minmax(0,1fr)}
+body.visual-debug.duck-dark .simple-home>.live-strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;align-items:center}
+body.visual-debug.duck-dark #simple-current small{display:none!important}
+@media(max-height:800px){body.visual-debug.duck-dark .simple-home{grid-template-rows:52px minmax(0,1fr)}}
+@media(max-width:650px){body.visual-debug.duck-dark .simple-home{grid-template-rows:94px minmax(0,1fr)}body.visual-debug.duck-dark .simple-home>.live-strip{grid-template-columns:repeat(3,minmax(0,1fr))}}

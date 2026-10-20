@@ -1,0 +1,159 @@
+{
+  "schema": "xgoduck-portable-release-runtime-v1",
+  "snapshot_source_count": 37,
+  "runtime_sources": {
+    "app.yaml": {
+      "path": "robot-app/app.yaml",
+      "sha256": "ca80d2677e7f58bea4d3e7e1c3866ed1ae43ac8cacb11209c1018eda92616a47"
+    },
+    "python/xgoduck_roulade.onnx": {
+      "path": "robot-app/python/xgoduck_roulade.onnx",
+      "sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97"
+    },
+    "python/display_telemetry.py": {
+      "path": "robot-app/python/display_telemetry.py",
+      "sha256": "a8c59e8dfbe655a9bf1d417690e7a73a3e8bb94494ef9c3535e74c576ab6d7b3"
+    },
+    "python/keyboard_runtime.py": {
+      "path": "robot-app/python/keyboard_runtime.py",
+      "sha256": "b6741b646a12510967ffe124a92c4c347e8939506141cc5ef4b4410f60279e69"
+    },
+    "python/xgoduck_getup.onnx": {
+      "path": "robot-app/python/xgoduck_getup.onnx",
+      "sha256": "c414f2bd84b0a79b89f0ba6997135eb45e4ecd9df9271ea989c237864027b2a3"
+    },
+    "python/main.py": {
+      "path": "robot-app/python/main.py",
+      "sha256": "702045380734619107b7282f4ce58f18ec5a4b4800c370b23812d2b6630a9a8e"
+    },
+    "python/requirements.txt": {
+      "path": "robot-app/python/requirements.txt",
+      "sha256": "5b6db4186746fa17242709037ff7f7b55c449ca621d24776a982192576f39c08"
+    },
+    "python/controller.py": {
+      "path": "robot-app/python/controller.py",
+      "sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78"
+    },
+    "python/rl_core.py": {
+      "path": "robot-app/python/rl_core.py",
+      "sha256": "d257aa5ddd8cb7c0094cb29195c19ef2d280fb72724bebb00f79d8aa4a9458ba"
+    },
+    "python/xgoduck_pick.onnx": {
+      "path": "robot-app/python/xgoduck_pick.onnx",
+      "sha256": "f34e990dda785e9a8c53890bdcd0f7f1d457592691fd3703f3776b48fb2d14b8"
+    },
+    "python/wire.py": {
+      "path": "robot-app/python/wire.py",
+      "sha256": "0083ef513f97dedac7cd075fcc0842bb80afb4ad64e5e9f6fcae46387c2d4fdb"
+    },
+    "python/policy.py": {
+      "path": "robot-app/python/policy.py",
+      "sha256": "c0721355cedd591ce608d6c4bbd3bbe12c73193b519272082087e9252b353e66"
+    },
+    "python/current_telemetry.py": {
+      "path": "robot-app/python/current_telemetry.py",
+      "sha256": "3df40ebec339739a8d979026b3fe32420cd926a04d45e4c90da33f6c2eb9d7de"
+    },
+    "python/factory_calibration.py": {
+      "path": "robot-app/python/factory_calibration.py",
+      "sha256": "4ff880610d2bf634348cdeebdda0a7e88aee0338393599cb11a3f4a5e90b5422"
+    },
+    "python/xgoduck_walk.onnx": {
+      "path": "robot-app/python/xgoduck_walk.onnx",
+      "sha256": "5727b909d5ea1a0f9ff63bf4cea9707339dea6a522374c7a120da633605b923f"
+    },
+    "python/proc.py": {
+      "path": "robot-app/python/proc.py",
+      "sha256": "01a6a501d225f73e73bdef66105bd6e516e50182be00c02af7116ec6367a35fd"
+    },
+    "python/recovery.py": {
+      "path": "robot-app/python/recovery.py",
+      "sha256": "94474f1196e8c9dde9ab01e3233fc81b8176b7e5a5311ba4f1790f8d02907367"
+    },
+    "python/release_profile.py": {
+      "path": "robot-app/python/release_profile.py",
+      "sha256": "63cadfd1950c8460886c8d6a8b678843f768363f0458fa045cbbca425e102207"
+    },
+    "sketch/sketch.yaml": {
+      "path": "robot-app/sketch/sketch.yaml",
+      "sha256": "89cec19321237ba98c48e5237d2fa8429a4526b831880e0b14c60f91a425e7e4"
+    },
+    "sketch/factory_calibration.h": {
+      "path": "robot-app/sketch/factory_calibration.h",
+      "sha256": "22a0d55b4bd1302ee5d24d5d3352ed867695df08d2ccc4548b32541b2cde163a"
+    },
+    "sketch/sketch.ino": {
+      "path": "robot-app/sketch/sketch.ino",
+      "sha256": "df9f8a6e99a2fc4dcc06a5e83457c8d95c6e39ab3951c1c6682b23679388a1e5"
+    },
+    "sketch/uart_fifo.h": {
+      "path": "robot-app/sketch/uart_fifo.h",
+      "sha256": "f3dc8d93e2f0c7e8908be3eb071adf60484f009b55964cea0c44655a956ac942"
+    },
+    "sketch/duck_config.h": {
+      "path": "robot-app/sketch/duck_config.h",
+      "sha256": "d7877465e68aa3da03ff80657d0a42a4e99feb28d44fbd1eb32c904e58f79955"
+    },
+    "sketch/current_telemetry.h": {
+      "path": "robot-app/sketch/current_telemetry.h",
+      "sha256": "6a40c41a715a369d4eda672a23b8a9f2fbba0f34559049b6fd212dbbf5b1362b"
+    },
+    "sketch/protocol.h": {
+      "path": "robot-app/sketch/protocol.h",
+      "sha256": "c9c73ea760d8a21d8f6e76d26cb6856e882151825af80c16ee59c386a6aacb1c"
+    },
+    "sketch/qmi8658.h": {
+      "path": "robot-app/sketch/qmi8658.h",
+      "sha256": "3d6b501dba41e76e6fc63cbd81d35eb5d5cd34ff80f18e0bb44ec3cc9772f4b1"
+    },
+    "sketch/scs_bus.h": {
+      "path": "robot-app/sketch/scs_bus.h",
+      "sha256": "652cd6696cafb087e84d751523f0eed356eb7dabd6cc9662b3276d800e81a1f2"
+    },
+    "sketch/display_telemetry.h": {
+      "path": "robot-app/sketch/display_telemetry.h",
+      "sha256": "8abf6c66b81d20e1cb5862b67a726a55594e7c26cb4849dc90c112bd15d3559e"
+    },
+    "assets/calibrate.html": {
+      "path": "robot-app/assets/calibrate.html",
+      "sha256": "44524884458408c326730294b7c4a194a9cf13650c211bf8020dd600c2853c3e"
+    },
+    "assets/calibrate.js": {
+      "path": "robot-app/assets/calibrate.js",
+      "sha256": "fbf1a4af67dc8a44919e9e9d3315d1eb3b3362aa219a704451e1c0e5bca46ef8"
+    },
+    "assets/app.js": {
+      "path": "robot-app/assets/app.js",
+      "sha256": "273ea703f6dc8c5ad2b53d9d89b5e877a2e3bb303a680ba043079eea0362dd60"
+    },
+    "assets/style.css": {
+      "path": "robot-app/assets/style.css",
+      "sha256": "f7b697d025d7eff1635c1acbf3fbe6a42322067b62fecdb69447e0f17588373c"
+    },
+    "assets/servo.css": {
+      "path": "robot-app/assets/servo.css",
+      "sha256": "f2c20ab76c1afd0652cb443e81a2634743a1f1c352ebc9bc82100de4e61459ed"
+    },
+    "assets/servo.html": {
+      "path": "robot-app/assets/servo.html",
+      "sha256": "d1f070f8433084f645aac63a95b3b554fe8245cd67f1c21cd845a35d3884995f"
+    },
+    "assets/index.html": {
+      "path": "robot-app/assets/index.html",
+      "sha256": "20eb355f1e9c3557919fd95a87bfc6ff712d48631a353681a32ad297aa9a193e"
+    },
+    "assets/servo.js": {
+      "path": "robot-app/assets/servo.js",
+      "sha256": "128961199c01e31057be3ddb61d82ba5a0d412a8cb25c3bc8f5c247a654cb1b2"
+    }
+  },
+  "excluded_models": [
+    {
+      "source": "robot-app/python/xgoduck_fast_forward.onnx",
+      "sha256": "9391ee2255977546a4b308302c409d64a408fe4383d88abadc554f3452552247",
+      "reason": "9391 graph failed current interactive and physical forward/stop checks; not a stable default"
+    }
+  ],
+  "hardware_validation": "portable adaptation has not been installed or physically tested",
+  "zero_data_included": false
+}

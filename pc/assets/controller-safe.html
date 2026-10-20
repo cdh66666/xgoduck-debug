@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ID10 舵机控制器</title><link rel="stylesheet" href="/assets/controller-safe.css"></head>
+<body><main>
+  <header><div class="identity"><span class="servo-tag">ID10</span><h1>舵机控制器</h1></div><div id="connection" class="connection offline">等待连接</div></header>
+  <div id="notice" role="status" aria-live="polite">页面只读加载。明确点击才启动，停止按钮可随时卸力。</div>
+  <section class="guard-strip" aria-label="工作范围"><span>起点 ±60°　位置斜坡 ≤20°/s　电流 ≤128 raw</span><small>65℃ / 4–8.4V / 反馈150ms / 断链1s / 卡住500ms 停止</small></section>
+  <section class="instrument" aria-label="手动控制">
+    <div class="dial-column"><div id="dial" class="dial" role="slider" tabindex="0" aria-label="待执行位置旋钮" aria-valuemin="-32767" aria-valuemax="32767" aria-valuenow="0"><div class="dial-mark top">0°</div><div class="dial-mark right">90</div><div class="dial-mark bottom">180</div><div class="dial-mark left">270</div><div class="dial-core"><span id="dialValue">—</span><small>原生 ticks</small></div><div id="dialNeedle" class="dial-needle"></div></div><span class="dial-caption">旋钮仅编辑设定</span></div>
+    <div class="settings"><div class="position-inputs"><label>绝对位置 · ticks<input id="position" type="number" min="-32767" max="32767" step="1" placeholder="等待起点" inputmode="numeric"></label><label>相对本次起点 · °<input id="angle" type="number" min="-60" max="60" step="any" value="45" inputmode="decimal"></label></div>
+      <input id="positionRange" type="range" min="-32767" max="32767" step="1" value="0" aria-label="待执行绝对位置">
+      <div class="raw-inputs"><label><span id="speedLabel">位置斜坡 · ticks/s</span><input id="speed" type="number" min="-228" max="228" step="1" value="114" inputmode="numeric"></label><label>电流限制 / 设定 · raw<input id="current" type="number" min="-128" max="128" step="1" value="64" inputmode="numeric"></label></div>
+      <div class="mode-row"><label for="mode">控制模式</label><select id="mode"><option value="0">0 · 位置</option><option value="1">1 · 速度</option><option value="2">2 · 电流</option><option value="4">4 · PD</option></select><button id="applyMode" class="subtle">应用模式</button><span>实读 <b id="modeActual">—</b></span></div>
+      <div id="modeSemantics" class="mode-semantics">等待实际模式回读；快捷位置动作仅用于0/4。</div>
+    </div>
+    <div class="main-actions"><button id="torqueOn" class="power">上力</button><button id="apply" class="primary">执行设定</button><button id="stop" class="stop">停止 / 卸力</button></div>
+    <div class="quick-actions"><button id="minus45">−45°</button><button id="home">回本次起点</button><button id="plus45">+45°</button></div>
+    <div class="origin-row"><span>固定起点 <b id="origin">—</b> ticks</span><button id="acquire" class="text-button">接管 / 读取起点</button><button id="release" class="text-button">释放控制</button></div>
+    <div id="taskBudget" class="task-budget">等待接管并读到固定起点；默认位置45°、斜坡114 ticks/s、电流64 raw。</div>
+  </section>
+  <div class="guard-status"><span id="guardResult">等待保护状态回读</span><span id="leaseState">未续租</span></div>
+  <section class="measurements" aria-label="实测读数"><div><span>实际位置 · ticks</span><strong id="actual">—</strong></div><div><span>目标回读 · ticks</span><strong id="target">—</strong></div><div><span>位置差分 · ticks/s</span><strong id="derivedSpeed">—</strong></div><div><span>原始速度 · signed raw</span><strong id="rawSpeed">—</strong></div><div><span>舵机电流 · signed raw</span><strong id="rawCurrent">—</strong></div><div><span>温度 / 电压</span><strong id="thermal">—</strong></div></section>
+  <div class="readback-line"><span>扭矩实读 <b id="torqueActual">—</b></span><span>目标速度回读 <b id="speedEcho">—</b></span><span>目标电流回读 <b id="currentEcho">—</b></span></div>
+  <section class="plots" aria-label="同源时间曲线"><div class="plot-head"><h2>位置</h2><div class="legend"><span class="target-key">目标回读</span><span class="actual-key">实际</span><span>ticks</span></div></div><canvas id="positionPlot" aria-label="目标与实际位置随时间"></canvas><div class="plot-head"><h2>电流</h2><span>signed raw · 未标定为 mA</span></div><canvas id="currentPlot" aria-label="舵机原始电流随时间"></canvas><div class="time-note">位置、电流按各自回包时间绘制；断线处留空。</div></section>
+  <section class="journal"><div class="journal-head"><h2>测试记录</h2><div><button id="exportCsv">导出 CSV</button><button id="exportJsonl" class="text-button">原始 JSONL</button></div></div><div id="loggerState" class="minor">日志状态待回读</div><div class="annotation"><input id="annotation" maxlength="2048" placeholder="观察：响声、卡住、抖动或其他现象" aria-label="用户观察注释"><button id="saveNote">记一条</button></div><div id="log" class="event-log" role="log" aria-live="polite"></div></section>
+  <footer>固定 ID10　4096 ticks / 圈　电流raw未标定为A或mA<br>位置模式速度是本地目标斜坡；实际响应请结合回读判断。</footer>
+</main><script src="/assets/controller-safe.js"></script></body></html>

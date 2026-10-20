@@ -1,0 +1,31 @@
+{
+  "schema": "xgoduck-code-snapshot-verification-v1",
+  "date": "2026-10-20",
+  "result": "PASS_SOFTWARE_SNAPSHOT_CHECKS_ONLY",
+  "python_unit_tests": 38,
+  "workbench_offline_dom_checks": 240,
+  "home_offline_checks": 24,
+  "calibration_flow_offline_checks": 27,
+  "history_error_offline_checks": 19,
+  "current_viewer_offline_checks": 21,
+  "offline_http_gets": {
+    "success_200": 8,
+    "empty_csv_expected_404": 1
+  },
+  "source_provenance_records": 290,
+  "installed_source_files": 37,
+  "published_source_files": 36,
+  "r7_mesh_records_verified": 21,
+  "native_dependencies_bundled": false,
+  "device_data_included": false,
+  "hardware_operations_in_snapshot_build": 0,
+  "portable_clean_environment_install_verified": false,
+  "behavior_acceptance": "NOT_PASSED",
+  "simulation_smoke": {
+    "original_models_loaded": 4,
+    "physics_steps_each": 40,
+    "policy_steps_each": 10,
+    "evidence": "short finite-state execution only; not standing or push-recovery acceptance",
+    "local_dependency_warning": "existing local NumPy2.5.4 exceeds local SciPy1.15.3 declared range; public requirements pin compatible NumPy2.2.6"
+  }
+}

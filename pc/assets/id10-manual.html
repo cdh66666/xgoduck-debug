@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ID10 单轴手动诊断</title>
+<style>
+  :root{color-scheme:dark;font:16px system-ui,sans-serif;background:#07131d;color:#e5f2fa}
+  body{max-width:850px;margin:0 auto;padding:20px}a{color:#7fcfff}h1{font-size:1.55rem;margin:14px 0}
+  .panel{background:#102434;border:1px solid #294a5a;border-radius:12px;padding:16px;margin:14px 0}
+  .risk{border-color:#b98042;background:#382a18;color:#ffe5b7}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+  .metric{padding:10px;background:#0b1b28;border-radius:8px}.metric small{display:block;color:#9cb4c3}.metric strong{font-size:1.2rem}
+  label{display:block;margin:10px 0;line-height:1.4}input[type=checkbox]{width:19px;height:19px;vertical-align:middle;margin-right:8px}input[type=text],select{background:#0b1b28;border:1px solid #416174;border-radius:6px;color:#e5f2fa;padding:8px}
+  .buttons{display:flex;flex-wrap:wrap;gap:10px}button{border:0;border-radius:8px;background:#315c76;color:white;padding:14px 18px;font:600 16px system-ui;cursor:pointer}
+  button:disabled{opacity:.4;cursor:not-allowed}button.stop{background:#c54632;font-size:1.13rem;min-width:190px}
+  pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:300px;overflow:auto;font-size:12px}
+  .foot{color:#9cb4c3;font-size:.9rem}
+</style></head><body>
+<a href="/">← 返回完整调试页</a><h1>ID10 左髋转向 · 第 1 步手动验证</h1>
+<p>你点击一次才会申请一次 <b>−3 / +3 tick</b>。这是单次首测；完成后需先审查回执，再决定后续有界操作。页面打开、刷新、重连均不自动上力；原零位保持 3964，其他舵机、整机回正和模型控制仍锁定。</p>
+<section class="panel risk"><b>电池直供风险</b><p>本工具没有独立硬件限流。板端在收到首次位置/电流反馈后才会判断并卸力；首次反馈之前，ID10 仍可能像先前三次那样错向移动几十格。小目标值和软件电流阈值不能保证起步行程或峰值电流。机身须托稳、左腿悬空、手和线束远离活动区域；异常时点击红色停止按钮，必要时立即断开动力电源。</p></section>
+<p class="foot">板端会先在卸力状态写入本次 RAM 目标并回读 42/43 与 67/68；两者不一致即不上力。即使未上力，RAM 目标也可能已改变；零位文件不变。</p>
+<section class="panel"><div class="grid">
+  <div class="metric"><small>主控 boot</small><strong id="boot">—</strong></div>
+  <div class="metric"><small>ID10 实际位置</small><strong id="position">—</strong></div>
+  <div class="metric"><small>舵机供电电压（最近记录）</small><strong id="supply">—</strong></div>
+  <div class="metric"><small>ID10 相电流原值</small><strong id="current">—</strong><small id="current-age">—</small></div>
+  <div class="metric"><small>卸力状态</small><strong id="off">未确认</strong></div>
+  <div class="metric"><small>单次动作合约</small><strong id="gate">未确认</strong></div>
+</div><p id="status" role="status">等待状态</p><button id="refresh" type="button">只读刷新</button>
+<p class="foot">相电流原值不是电池总电流，也未按本型号实测标定；这里的电压也不是电池剩余百分比。</p></section>
+<section class="panel"><b>本次动作确认</b>
+  <label><input id="battery" type="checkbox">我知道现在是动力电池直供，没有独立硬限流</label>
+  <label><input id="risk" type="checkbox">我理解首次反馈前可能错向移动，软件只能事后卸力</label>
+  <label><input id="support" type="checkbox">我已托稳机身</label>
+  <label><input id="suspended" type="checkbox">左腿已悬空</label>
+  <label><input id="hands" type="checkbox">手已离开关节活动区域</label>
+  <label><input id="clearance" type="checkbox">关节和线束有活动余量</label>
+  <div class="buttons"><button id="minus" type="button" disabled>向负方向 −3 tick</button><button id="plus" type="button" disabled>向正方向 +3 tick</button><button id="stop" class="stop" type="button">停止 / 卸力</button></div>
+  <p class="foot">一次点击只消费一次单次事务；结果未知时不重发动作。红色停止独立于动作按钮，不等待动作请求结束。</p>
+</section>
+<section class="panel"><b>本次结果与板端样本</b><pre id="result">尚未发动作</pre></section>
+<section class="panel" id="battery-log"><b>电池运行记录</b><p>板端持续记录供电数据及状态；充电状态由你标注，不从电压推断。不把舵机相电流算成整机耗电。</p>
+  <p id="battery-log-status">等待记录服务接口接入</p>
+  <label for="charging">现在的充电状态</label><select id="charging"><option value="unknown">未确认</option><option value="on">正在充电</option><option value="off">没有充电</option></select>
+  <label for="charge-note">备注（可选，如充电器灯色）</label><input id="charge-note" type="text" maxlength="160" style="width:min(100%,450px)">
+  <button id="annotate" type="button">记录本次充电状态</button>
+</section>
+<script src="/assets/id10-manual.js"></script>
+</body></html>

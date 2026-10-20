@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>小鸭姿态</title><link rel="stylesheet" href="imu-model.css?v=model-only2"><script type="importmap">{"imports":{"three":"../model-assets/vendor/build/three.module.js"}}</script></head>
+<body data-mode="waiting" data-loaded="false" data-ui-revision="2026-10-20-wireless-display-r5">
+<main class="instrument" aria-label="鸭子实时姿态，青色描边标出所选校准关节">
+  <div class="instrument-heading"><span class="signal"><i aria-hidden="true"></i><span id="imu-model-state" role="status">加载模型</span></span><div class="view-actions"><button id="imu-current-curve-open" type="button" aria-label="舵机电流曲线" title="舵机电流曲线">电流</button><button id="imu-chart-toggle" type="button" aria-controls="imu-angle-history" aria-expanded="false">曲线</button><button id="imu-model-yaw-zero" hidden type="button" title="仅将当前朝向设为显示零度">航向归零</button><button id="imu-model-camera" type="button" title="仅复位观察视角">视角</button></div></div>
+  <div class="receive-bar"><div id="imu-receive-state" class="receive-state">等待当前接收状态</div></div>
+  <p class="current-legend">电流越大越红 · 青色描边=选中 · 绿点=保持 <span title="舵机相电流，寄存器69/70；bit15为方向，幅值×6.5mA，未做外部标定。颜色量程0–2A，仅用于显示，不是安全阈值；超过500ms无新电流时恢复原色。">ⓘ</span></p>
+  <div id="imu-model-viewport" class="viewport"><div class="reticle" aria-hidden="true"></div></div>
+  <div class="readings" aria-label="模型、读数与曲线共用延后0.1秒的历史姿态；当前接收状态单独标明"><span>横滚 <strong id="imu-model-roll">—</strong></span><span>俯仰 <strong id="imu-model-pitch">—</strong></span><span title="MCU上电姿态为0°；刷新网页不归零，陀螺积分会漂移">相对航向 <strong id="imu-model-yaw">—</strong></span><span title="ID34新鲜编码器姿态，相对已保存闭嘴零位">嘴巴 <strong id="imu-model-mouth">—</strong></span><small id="imu-projection-note" class="projection-note"></small></div>
+  <section hidden id="imu-angle-history" class="angle-history" aria-label="模型、读数与曲线共用接收时轴，延后0.1秒显示历史姿态" title="曲线按接收时轴延后0.1秒显示历史姿态；模型和读数跟随最新收到的姿态。传输到达时间不能证明实物姿态仍新鲜。曲线仅在已收到的真实端点间插值；真实源缺口超过300ms时保持最后曲线；短缺样用虚线连接已观测两端，虚线不代表实测轨迹，长缺样留空。当前接收时效仍独立按150ms判断。">
+    <div class="history-heading"><span id="imu-history-state">曲线 · 相对接收延后0.1秒</span><span id="imu-sample-quality" title="最近2秒实际收到的不同采样数量 / 主控采样时间；ms为输入已知年龄，不计板到电脑的传输；模型与曲线的显示时刻不同">— 采样/秒</span></div>
+    <canvas id="imu-angle-chart" aria-label="最近10秒历史显示横滚、俯仰和相对航向；短缺样虚线不代表实测轨迹；近竖直时标记不稳定投影或上次值"></canvas>
+  </section>
+  <p class="scope" hidden></p>
+</main><script type="module" src="imu-model.js?v=model-only2"></script></body></html>

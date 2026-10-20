@@ -1,52 +1,61 @@
-# XGO Duck 调试
+# XGO Duck 当前代码快照（2026-10-20）
 
-轻量的 XGO Duck / Arduino Uno Q 调试台：同一页查看实时姿态、15 轴反馈、慢速回正、逐颗校准与保持，以及舵机电流着色；备用 USB 编号和组装说明收在更多工具中。电脑端是 Python HTTP 服务和原生 JavaScript，不需要 Node.js 构建。
+这是当前调试台和 Uno Q 程序的源码快照，**不是稳定发布，站立稳定性与受推恢复均为 NOT_PASSED**。用户实机观察到站起后向后撤步；当前交互仿真的受推恢复也未通过。尚未确定单一根因，不能把页面流畅、源码一致或离线检查当作机器人验收通过。
 
-## 启动
+默认配置仅允许原版零速站立 / 必要起身与普通头嘴控制。行走、快跑、深度 Pick、自动 Pick 和翻滚默认停用；历史翻滚曾触发电池供电中断，原因未解决。失败的 9391 前进图及新 600 轮候选不包含在发布运行清单中。禁用入口是当前范围限制，不是策略或供电问题已经修复。
 
-需要 Windows、Python 3.10+、OpenSSH；自动寻找主控地址还需 Arduino 的 `mdns-discovery`。
+## 内容与证据边界
+
+- `pc/`：当前完整调试台、无线状态流、舵机电流曲线/CSV、校准流水、编号及可选交互仿真。控制为非模态侧面板，提示为悬浮通知，顶部六张状态卡保留。
+- `robot-app/`：由当前37份绑定源导出，除失败的前进 ONNX 外保留36份默认源。包括当前校准中位 HOME、Host、MCU、原四个 ONNX 及发布范围 guard。原始 SHA 与公开 SHA 在 `SOURCE_MANIFEST.json` 对照。
+- `pc/assets/calibration-tray-r7/` 与 `pc/downloads/`：同源 R7 托盘和鸭子真实 STL 预览、manifest 与打印 STL。仅同步已有几何，不代表新增装配/打印验收。
+- `simulation-model/`：当前 R5 无 EVA XML、网格与 BAM 参数；交互环境包含显示碰撞扩展，不能视为训练环境或实机的精确复制。
+- `legacy/2026-10-17/`：原公开 master 完整归档供追溯，不能与当前程序混装。
+
+校准入口先展示 R7 摆放预览，用户确认后才执行一次 `recalibrate`：串行停止/卸力、进入、读回并逐轴保存。不会因打开页面、重连或打开预览而写校准。当前失败、取消、缺轴与历史记录均保留；旧15颗回执不会冒充本次完成。校准覆盖 EEPROM 零位，请先正确放入固定托盘。
+
+HOME 回到已保存的校准中位并保持，不进入旧默认站姿。15轴新鲜反馈已在中位时只提示，不重新发动作。固定托盘内只做校准，站立/起身应取出后在地面明确启动。
+
+电流是15颗舵机反馈电流幅值之和，**不是电源端总电流**，不能直接推算电池功率或证明断电原因。原始记录、CSV、真实零位、密钥、SSH配置、设备序列号、连接缓存和原始轨迹均未上传。
+
+## 电脑启动
+
+Windows、Python 3.10+、OpenSSH；网页无需 Node 构建。
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe server.py
+.\.venv\Scripts\python.exe -m pip install -r pc/requirements.txt
+.\.venv\Scripts\python.exe -B pc/server.py
 ```
 
-打开 <http://127.0.0.1:8791/>。未配置设备也能启动并浏览模型，连接状态会如实显示离线。启动和重连不会发出运动指令。
+入口 `http://127.0.0.1:8791/`。无自己的身份和认证配置时只显示离线，不借用开发机器的配置。
 
-## 连接自己的设备
+1. 将 `pc/config/device.example.json` 复制为 `pc/device.local.json`，填写自己的 Uno Q 序列号，也可设置 `XGODUCK_SERIAL`。
+2. 在 `pc/tools/.private/` 放自己的固定 SSH 身份、已核实 known_hosts 和与板端相同的认证密钥，模板见 `pc/config/*.example.json`。实际文件受 gitignore 排除。
+3. 将 Arduino `mdns-discovery` 放入 PATH 或设置 `XGODUCK_MDNS`。自动发现与重连只读，不恢复旧运动目标。
 
-1. 将 `config/device.example.json` 复制为根目录 `device.local.json`，填写自己的 Uno Q 序列号。
-2. 将 `config/ssh-identity.example.json` 和 `config/wireless-calibration-auth.example.json` 复制到 `tools/.private/`，去掉文件名中的 `.example`。填写同一序列号，把自己的 SSH 私钥和经过核实的 `known_hosts` 放在该私有目录；认证密钥必须与板端 `data/calibration_key` 一致。
-3. 运行 `python tools/discover_wireless_unoq.py`，或在网页的通信工具中连接。自动发现找不到工具时，可用环境变量 `XGODUCK_MDNS` 指定 `mdns-discovery.exe`。
+**保留原主控整个 `data/`、认证和校准备份。** 仓库不提供设备零位，不附自动烧录脚本；旧 legacy 更新器不能用于本版。便携化适配包括相对路径清单、用户身份配置、当前 Python 解释器和移除私有部署回执依赖，未独立安装到另一台机器人验收。
 
-现有机器的零位与认证数据保留在本机和板端，不在仓库中。不要把示例内容覆盖到已调好的机器。`XGODUCK_SERIAL` 可覆盖本地配置中的序列号。
-
-`audited_turn_targets` 默认空，禁止复用别人的跨圈坐标；只有某轴已完成实测核对并保留对应板端审计记录时，才在自己的私有配置中填写该轴的两个等价编码值。其他速度、反馈、跟踪与卸力保护保持原有契约。
-
-## 代码目录
-
-- 根目录：电脑端 HTTP、无线连接与状态转发。
-- `assets/`、`model-assets/`：网页和当前姿态模型；模型是显示参考，不是实机位置证明。
-- `board/`：HOME ABI5 / 逐颗校准 ABI1 的 Uno Q 应用、MCU 源码及必要的固件库。
-- `tools/`：只读发现与发布同步工具。
-
-板端需要 Arduino App Lab / Uno Q 平台 `arduino:zephyr 1.0.0`。`board/sketch/sketch.yaml` 固定库路径；修改过的 Bridge/RPClite 库一并保留。电脑端无需安装这些固件依赖。板端设备配置放在 `board/python/device.local.json`；已有部署升级应保留整个 `data/` 目录。此仓库不附带针对某台机器的自动刷写包。
-
-## 回正验证边界
-
-2026-10-17 版本已在项目设备安装：HOME ABI5、逐颗校准 ABI1，15 轴新鲜反馈、卸力状态和电流读数均已只读核验。实际回正、逐颗保持和停止仍待现场操作验收；安装成功不代表这些运动效果已通过。
-
-当前源码包含从当前位置向已保存零位逐轴慢回，以及逐颗记录、保持和停止卸力。位置容差为约 5°（57 ticks）；这是程序接受范围，不是测得的机械精度。实际回正、保持和停止效果仍以对应设备的现场验收为准。公开版将设备身份改为配置输入；不能把另一台机器的零位或跨圈参考直接搬过来。
-
-模型的红色深浅显示舵机寄存器返回的相电流，0–2 A 为显示标尺，失鲜值不继续着色；它不是整机电源电流，也未经过实物电流标定，不参与运动控制。
-
-发布内容不包含训练模型、CAD 工程、工具链、历史候选包、调试日志、私钥或真实零位。源代码与发布调整记录见 `SOURCE_MANIFEST.json`。需要从原工作目录更新时：
+## 可选仿真
 
 ```powershell
-python tools/sync_source.py --source <servo-debug目录> --approved-update <首份已发布增量清单.json> ... --approved-update <本次增量清单.json>
+.\.venv\Scripts\python.exe -m pip install -r pc/requirements-simulation.txt
 ```
 
-已发布的增量清单须按 `SOURCE_MANIFEST.json` 中的顺序全部提供；本次清单须绑定当前 `SOURCE_MANIFEST.json` 的 SHA256 和所改文件的旧源 SHA256。该命令按清单复制所需文件并做少量便携化处理，不读取或复制私钥内容，不操作硬件。
+在启动PC服务的同一Python环境安装这些依赖；也可设置 `XGODUCK_SIM_PYTHON` 指向自己已配置好的仿真解释器。原工作环境的原生vendor与Python ABI绑定，不随包复制。
 
-上游模型、组装说明与第三方库见 [THIRD_PARTY.md](THIRD_PARTY.md)。
+依赖锁定 MuJoCo 3.15.0、ONNX Runtime 1.26.0，使用兼容 SciPy 1.15.3 的 NumPy 2.2.6；不打包原生二进制、venv 或 CUDA。模型库打开预览才运行独立 CPU 仿真，加载包内 XML、网格和同源策略。无设备的离线启动/API 与资源绑定有检查；本快照不宣称稳定站立、受推恢复、速度跟踪或松键停稳已经通过。
+
+## 离线检查
+
+```powershell
+python -B -m unittest discover -s tests -p "test_*.py"
+node tests/test_workbench.mjs
+node tests/test_calibration_flow.mjs
+node tests/test_home_middle.mjs
+node tests/test_current_curve_ui.mjs
+```
+
+检查使用假隧道/合成数据，禁止连接硬件。`SOURCE_MANIFEST.json` 记录原始与便携化 SHA，`PACKAGE_FILES.json` 记录每个公开文件；`MODEL_ACCEPTANCE.json` 明确当前失败与未验证项。源码快照发布与实机通过是两回事。
+
+第三方来源和许可证见 [THIRD_PARTY.md](THIRD_PARTY.md)。

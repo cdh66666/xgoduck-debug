@@ -1,0 +1,6 @@
+{
+  "serial": "YOUR_UNO_Q_SERIAL",
+  "host_key_alias": "xgoduck-unoq",
+  "key_path": "id_ed25519",
+  "known_hosts_path": "known_hosts"
+}

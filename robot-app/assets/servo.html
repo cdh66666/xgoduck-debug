@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Servo setup · XGO Duck</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="servo.css">
+<main class="page-servo">
+<header>
+  <div><small>ARDUINO UNO Q</small><h1>Servo setup</h1></div>
+  <div class="header-actions">
+    <nav class="nav"><a href="/">Control</a><a href="/calibrate.html">Calibration</a><a href="/servo.html" aria-current="page">Servo setup</a></nav>
+    <button class="stop" id="exit">Exit</button>
+  </div>
+</header>
+<p class="warn">When changing an ID, connect only the servo you want to change. Duplicate IDs cannot be distinguished on the same bus.</p>
+<p id="message" role="status">Enter setup to begin.</p>
+<section class="servo-panel">
+  <div class="servo-toolbar">
+    <label>Current / target ID<input id="target-id" type="number" min="0" max="253" value="1"></label>
+    <button id="start">Enter setup</button>
+    <button id="exit2">Exit</button>
+  </div>
+  <div class="servo-scan">
+    <div class="servo-scan-actions">
+      <button id="scan">Scan all IDs</button>
+      <button id="scan-stop" hidden>Stop scan</button>
+      <span id="scan-status" role="status">Scan IDs 0–253 to find connected servos.</span>
+    </div>
+    <progress id="scan-progress" max="254" value="0" hidden aria-label="Servo scan progress"></progress>
+    <div id="scan-results" class="servo-scan-results" aria-label="Discovered servo IDs"></div>
+    <p class="hint">Click a found ID or type any ID from 0 to 253. Stop scan keeps the results found so far. IDs 254 and 255 are reserved.</p>
+  </div>
+  <div class="servo-grid">
+    <div class="servo-row">
+      <span class="servo-label">Move to</span>
+      <input id="goto-pos" type="number" min="0" max="4095" value="2047" title="Raw position">
+      <button id="goto">Write</button>
+    </div>
+    <div class="servo-row">
+      <span class="servo-label">Set KP/KD</span>
+      <input id="kp" type="number" min="0" max="255" value="5" title="KP">
+      <input id="kd" type="number" min="0" max="255" value="20" title="KD">
+      <button id="set-gains">Write</button>
+    </div>
+    <div class="servo-row">
+      <span class="servo-label">Change ID to</span>
+      <input id="new-id" type="number" min="0" max="253" value="10" title="New ID">
+      <button id="set-id">Change ID</button>
+    </div>
+    <div class="servo-row">
+      <span class="servo-label">Read</span>
+      <input id="read-id" type="number" min="0" max="253" value="1" title="Servo ID">
+      <strong id="read-out" class="servo-readout">—</strong>
+      <button id="read">Read</button>
+    </div>
+  </div>
+</section>
+</main>
+<script src="servo.js"></script>
+</html>

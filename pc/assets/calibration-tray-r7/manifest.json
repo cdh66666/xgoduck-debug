@@ -1,0 +1,168 @@
+{
+  "version": "R7-20261020",
+  "title": "校准托盘 R7",
+  "units": "mm",
+  "geometry_modified": false,
+  "source_project": "cad/calibration-tray-r7-20261020",
+  "source_design_sha256": "31cad87850b2cc7e2c3cf75e4b209fe6dbbb32f860d79a9143a38aae50f4ead5",
+  "reused_visual_review_sha256": "d0f7a2505cc6140b79bb0312e3e85bdd4a11c20d403851a5a1280080c9c86aac",
+  "source_robot_pose_version": "XGO-Q0-TRAY-R4-20261020",
+  "pose": "saved CAD zero pose; not live robot telemetry",
+  "physical_fit_verified": false,
+  "print_bbox_mm": [
+    244,
+    244,
+    92
+  ],
+  "download_url": "/downloads/XGO-Duck-Calibration-Tray-R7.stl",
+  "download_sha256": "d6876545030636147f067bccf898130261a8aff2bfce7b0a92c9ba23584dc572",
+  "records": [
+    {
+      "id": "tray",
+      "file": "tray.stl",
+      "color": "#b2c9d2",
+      "kind": "tray",
+      "sha256": "aca4d695d1a4c4420a064e4d034036a56ecb7934a230a4f822931a6372f2e232"
+    },
+    {
+      "id": "trunk_base",
+      "file": "scene/trunk_base.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "36c9ece4140ee50c0d5c2f58fca88012dc85039cfacaa07d2d104645a16b6a2d"
+    },
+    {
+      "id": "left_hip_yaw",
+      "file": "scene/left_hip_yaw.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "5fec6da8e6e83ee322cb4ae617fe3f9b17ba5fb5e78a842f5488d73984585e5f"
+    },
+    {
+      "id": "left_hip_roll",
+      "file": "scene/left_hip_roll.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "2e1b41f69ad10c52063cf739de71bedca5adaa7d57f19bba726ea95b67b743e4"
+    },
+    {
+      "id": "left_hip_pitch",
+      "file": "scene/left_hip_pitch.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "85c84385a725884dc9d0ad610ec18c9c3bf3650c264dc52f24e182ecb877a33b"
+    },
+    {
+      "id": "left_knee",
+      "file": "scene/left_knee.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "14a7a87b894ce2ff609f77aeb4542961c16b594e47565addd0c5020d90f913ec"
+    },
+    {
+      "id": "left_ankle",
+      "file": "scene/left_ankle.stl",
+      "color": "#bca981",
+      "kind": "robot",
+      "sha256": "bce8a57f58562f0b35b73c90349ed69118d9f4833e0668700948172e9b8591bb"
+    },
+    {
+      "id": "neck_pitch",
+      "file": "scene/neck_pitch.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "ef8a3cd7ea2776ebd64846331ca46c3f40d2653807b5f002b08fe45117a0b469"
+    },
+    {
+      "id": "head_pitch",
+      "file": "scene/head_pitch.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "457b7abfbb9bc2e48c4fa336bb0c73e7327710dfd3573b7bbceafae5cbaa1538"
+    },
+    {
+      "id": "head_yaw",
+      "file": "scene/head_yaw.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "9b7e01d47b4e70793f1e8d365170e9bb00f8cf0e0a3bea24285cc1b138989bc3"
+    },
+    {
+      "id": "head-fixed",
+      "file": "scene/head-fixed.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "a3c5a82e9fd6824bca202200632185c6ae3fadb3ffac780c97278791149f96c2"
+    },
+    {
+      "id": "mouth-jaw",
+      "file": "scene/mouth-jaw.stl",
+      "color": "#d8b477",
+      "kind": "robot",
+      "sha256": "a94a61c5c8d4f994b06d00f3bb66f2026e99279d7871d9a17ae54e5a2e2725de"
+    },
+    {
+      "id": "right_hip_yaw",
+      "file": "scene/right_hip_yaw.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "a0b0c1db947a7b100bd49fa4624b0b30a458ef517cc1d97717706ccf58391e05"
+    },
+    {
+      "id": "right_hip_roll",
+      "file": "scene/right_hip_roll.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "45577c470d76f3a50975f61a2fdbdcace6187f509b2051b7ff09411cd91c8155"
+    },
+    {
+      "id": "right_hip_pitch",
+      "file": "scene/right_hip_pitch.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "9730e6b7cd0fa242b5a05d03b2203cc91ca1a63baf60e5de3281bdb801945564"
+    },
+    {
+      "id": "right_knee",
+      "file": "scene/right_knee.stl",
+      "color": "#98a6ab",
+      "kind": "robot",
+      "sha256": "95e85319ed88fb2271c7d2641fc39b2e81c820b17713623fb9b185624c99b98f"
+    },
+    {
+      "id": "right_ankle",
+      "file": "scene/right_ankle.stl",
+      "color": "#bca981",
+      "kind": "robot",
+      "sha256": "ba6c9c69063a7a8182063ef6470a728046f9d9fda871e583b454921f4b197aa6"
+    },
+    {
+      "id": "uno-q",
+      "file": "scene/uno-q.stl",
+      "color": "#256359",
+      "kind": "electronics",
+      "sha256": "bc9dff34d05752c7846edc592bbbd3de2d077a14479f4c4bf968f084199ab995"
+    },
+    {
+      "id": "extension",
+      "file": "scene/extension.stl",
+      "color": "#2f9574",
+      "kind": "electronics",
+      "sha256": "f67a92a27f8e479091f8d459c91904a3b47a33ce3ea4cf37c5e92d0bd762a3b8"
+    },
+    {
+      "id": "cover",
+      "file": "scene/cover.stl",
+      "color": "#397e94",
+      "kind": "proposal",
+      "sha256": "32ce3c543016fa9da34824ea9672835827cd8f4baf1d601ab1d61d50630a15b6"
+    },
+    {
+      "id": "power-switch",
+      "file": "switch-actual.stl",
+      "color": "#d6bd51",
+      "kind": "electronics",
+      "sha256": "0a618e8ddab8e58e174c339dbe28a63a4a5fe661f96a4bad8ae663e0c45a63e9"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+body.visual-debug .wireless-calibration { margin: 0; padding: 0; border: 0; }
+body.visual-debug .wl-status-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 8px; font-size: 12px; }
+body.visual-debug #wl-connection[data-state="ok"] { color: #28634b; }
+body.visual-debug #wl-saved-count { font-variant-numeric: tabular-nums; color: #627787; }
+body.visual-debug .wl-servo-dots { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 4px; margin: 0 0 8px; }
+body.visual-debug .wl-servo-dots button { position: relative; min-width: 0; min-height: 37px; padding: 8px 0 3px; background: #fff; color: #627787; border: 1px solid #dbe4e9; border-radius: 4px; font-size: 11px; font-weight: 400; font-variant-numeric: tabular-nums; }
+body.visual-debug .wl-servo-dots button::before { content: ""; position: absolute; top: 5px; left: calc(50% - 2px); width: 4px; height: 4px; border-radius: 50%; background: #a9bcc7; }
+body.visual-debug .wl-servo-dots button[data-state="ok"]::before { background: #28634b; }
+body.visual-debug .wl-servo-dots button[data-state="pending"]::before { background: #b47b17; }
+body.visual-debug .wl-servo-dots button[data-state="error"]::before { background: #a7332c; }
+body.visual-debug .wl-servo-dots button[aria-pressed="true"] { border-color: #135f85; background: #eef5f9; color: #135f85; }
+body.visual-debug .wl-confirm { display: flex; align-items: center; justify-content: center; gap: 5px; margin: 11px 0 4px; font-size: 13px; }
+body.visual-debug .wl-confirm input { flex: 0 0 auto; }
+body.visual-debug .wl-actions { margin: 8px 0; }
+body.visual-debug .wl-result { margin: 6px 0 10px; text-align: center; font-size: 12px; color: #425d6d; line-height: 1.6; }
+body.visual-debug .wl-result:empty { display: none; }
+body.visual-debug #zero-guide-frame { height: clamp(320px, 53vh, 480px); }
+body.visual-debug .wl-fine-tools { margin: 8px 0; border-top: 1px solid #dbe4e9; padding-top: 6px; font-size: 12px; }
+body.visual-debug .wl-fine-tools > summary { padding: 7px 0; font-size: 12px; color: #627787; cursor: pointer; }
+body.visual-debug .wl-fine-tools label { margin: 8px 0; font-size: 12px; }
+body.visual-debug .wl-fine-row { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin: 7px 0; }
+body.visual-debug .wl-fine-row button { min-height: 44px; padding: 8px 12px; font-size: 13px; }
+body.visual-debug .wl-fine-row select { min-height: 44px; padding: 8px; font-size: 12px; }
+body.visual-debug .wl-status-row #wl-stop { min-height: 37px; margin-left: 0; padding: 6px 10px; font-size: 12px; }
+body.visual-debug #wl-stop { margin-left: auto; }
+body.visual-debug #wl-arm-state,body.visual-debug #wl-direction { color: #627787; font-size: 12px; font-variant-numeric: tabular-nums; }
+body.visual-debug #wl-records-details > summary { font-size: 12px; color: #627787; cursor: pointer; }
+body.visual-debug #wl-records { margin: 7px 0; font-size: 12px; color: #425d6d; line-height: 1.8; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+body.visual-debug #servo-progress { display: none; }
+body.visual-debug #servo-workbench > summary { font-size: 11px; color: #627787; }
+body.visual-debug #servo-open-tools { display: none; }
+@media(max-width:560px) {
+  body.visual-debug .wl-servo-dots { grid-template-columns: repeat(5,minmax(0,1fr)); gap: 4px; }
+  body.visual-debug .wl-servo-dots button { min-height: 44px; padding-top: 9px; font-size: 12px; }
+  body.visual-debug .wl-status-row { margin-bottom: 7px; }
+  body.visual-debug .wl-confirm { font-size: 12px; }
+  body.visual-debug .wl-fine-row { gap: 6px; }
+  body.visual-debug .wl-fine-row button { padding-left: 10px; padding-right: 10px; }
+}
+
+/* Five physical joints per capture; group switching never drives a joint. */
+body.visual-debug .wl-servo-dots button[hidden] { display: none; }
+body.visual-debug .wl-group-tabs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; margin: 4px 0 10px; }
+body.visual-debug .wl-group-tabs button { min-height: 44px; min-width: 0; padding: 8px 6px; font-size: 13px; }
+body.visual-debug .wl-group-tabs button[aria-pressed="true"] { border-color: #135f85; background: #eef5f9; color: #135f85; }
+body.visual-debug.duck-dark .wl-group-tabs button { border-color: #345069; background: #10202d; color: #9cb1c3; }
+body.visual-debug.duck-dark .wl-group-tabs button[aria-pressed="true"] { border-color: #54c9e8; background: #54c9e8; color: #061722; }
+body.visual-debug .wl-group-tabs button[data-recorded="true"]::after { content: " · 已记"; font-size: 11px; font-weight: 400; opacity: .8; }
+body.visual-debug.duck-dark .wl-servo-dots button[data-state="online"]::before { background: #54c9e8; }
+body.visual-debug #wl-group-status { font-size: 12px; color: #899fb3; }
