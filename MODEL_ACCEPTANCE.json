@@ -31,5 +31,17 @@
     "new_600_candidate": "not admitted or deployed"
   },
   "current_measurement": "servo feedback magnitude sum, not battery input current",
-  "device_data_included": false
+  "device_data_included": false,
+  "second_update": {
+    "local_simulation_receiver_fix_integrated": true,
+    "nominal_no_force_sim_stand_20s": true,
+    "pushed_recovery_passed_before": 0,
+    "pushed_recovery_passed_after": 0,
+    "negative_direction_terminal_tilt_worsened": true,
+    "default_robot_controller_changed": false,
+    "host_candidates_installed": false,
+    "decoder_candidate_installed": false,
+    "hardware_operations": 0,
+    "physical_acceptance": "NOT_PASSED"
+  }
 }

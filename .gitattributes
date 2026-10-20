@@ -3,3 +3,4 @@
 *.obj binary
 *.onnx binary
 *.pdf binary
+*.diff -whitespace

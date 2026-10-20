@@ -1,0 +1,141 @@
+{
+  "schema": "xgoduck-anonymous-module-evidence-v1",
+  "hardware_operations_in_this_audit": 0,
+  "raw_data_included": false,
+  "wall_clock_included": false,
+  "physical_acceptance": "NOT_PASSED",
+  "observation_and_action_math": {
+    "result": "PASS_LOCAL_MATH_NOT_PHYSICAL_FRAME_ACCEPTANCE",
+    "static_body_frame_cases": 100,
+    "max_static_coordinate_roundtrip_error": 8.881784197001252e-16,
+    "models": [
+      {
+        "model": "getup",
+        "model_sha": "c414f2bd84b0a79b89f0ba6997135eb45e4ecd9df9271ea989c237864027b2a3",
+        "checks": 100,
+        "max_observation_difference": 2.384185791015625e-07,
+        "max_action_iir_difference": 3.2782554626464844e-07,
+        "actor_output_alpha": 0.45
+      },
+      {
+        "model": "walk",
+        "model_sha": "5727b909d5ea1a0f9ff63bf4cea9707339dea6a522374c7a120da633605b923f",
+        "checks": 100,
+        "max_observation_difference": 2.384185791015625e-07,
+        "max_action_iir_difference": 2.477318048477173e-07,
+        "actor_output_alpha": 0.45
+      }
+    ],
+    "max_metadata_home_difference_deg": 3.0037729499342696,
+    "exact_training_scene_verified": false
+  },
+  "position_and_target_audit": {
+    "main_samples": 3375,
+    "raw_target_saturation_cells": 37,
+    "wrap_changes_error_cells": 0,
+    "max_direct_error_deg": 161.41413497924805,
+    "max_wrapped_error_deg": 161.41413497924805,
+    "target_max_abs_deg": 202.49351501464844
+  },
+  "pre_deterioration_500ms": [
+    {
+      "anonymous_segment": 1,
+      "window_relative_to_first_tilt_over_15deg_s": [
+        -0.5,
+        0.0
+      ],
+      "samples": 50,
+      "max_joint_error_deg": {
+        "min": 12.460859298706055,
+        "median": 32.11162614822388,
+        "p95": 48.39431130886077,
+        "max": 55.815345883369446
+      },
+      "command_age_us": {
+        "min": 0.0,
+        "median": 9999.0,
+        "p95": 20001.0,
+        "max": 30020.0
+      },
+      "command_target_jump_deg": {
+        "min": 0.0,
+        "median": 0.0,
+        "p95": 27.017046356201163,
+        "max": 46.91162872314453
+      },
+      "command_finite_difference_max_joint_deg_per_s": {
+        "min": 201.02750785786586,
+        "median": 624.3313384532402,
+        "p95": 1703.9947157575123,
+        "max": 1815.3954144946256
+      },
+      "reported_joint_velocity_abs_deg_per_s": {
+        "min": 0.0,
+        "median": 57.12890625,
+        "p95": 288.0615234374998,
+        "max": 421.875
+      },
+      "mcu_gap_missing": 0,
+      "saturated_target_cells": 0
+    },
+    {
+      "anonymous_segment": 2,
+      "window_relative_to_first_tilt_over_15deg_s": [
+        -0.5,
+        0.0
+      ],
+      "samples": 50,
+      "max_joint_error_deg": {
+        "min": 8.862124562263489,
+        "median": 27.640864849090576,
+        "p95": 47.84358438253402,
+        "max": 51.00512981414795
+      },
+      "command_age_us": {
+        "min": 0.0,
+        "median": 4995.5,
+        "p95": 19999.55,
+        "max": 20001.0
+      },
+      "command_target_jump_deg": {
+        "min": 0.0,
+        "median": 4.366851806640625,
+        "p95": 27.56455421447751,
+        "max": 32.29899787902832
+      },
+      "command_finite_difference_max_joint_deg_per_s": {
+        "min": 168.29853647999136,
+        "median": 849.1968395506784,
+        "p95": 1493.690712641652,
+        "max": 2324.066150672614
+      },
+      "reported_joint_velocity_abs_deg_per_s": {
+        "min": 0.0,
+        "median": 57.12890625,
+        "p95": 296.8505859374998,
+        "max": 483.3984375
+      },
+      "mcu_gap_missing": 0,
+      "saturated_target_cells": 0
+    }
+  ],
+  "execution_contract_tests": [
+    "14 independent ID one-hot action-to-degree and state-to-radian round trips",
+    "DQC1 80-byte golden fields and 15 physical-order targets",
+    "DQS1 240-byte golden flags, physical joint order and accepted software target fields",
+    "Native decoder regression contains exact current production hostWord helper",
+    "Observed pre-deterioration windows are not affected by target saturation or position wrap"
+  ],
+  "negative_position_decode": {
+    "native_golden_samples": 7,
+    "positive_single_turn_values_checked": 4096,
+    "installed": false,
+    "observed_failure_domain_triggered": false
+  },
+  "limits": [
+    "DQS1 target is accepted software target, not servo GOAL register readback or captured UART TX.",
+    "Large dynamic tracking error precedes reconstructed tilt deterioration; a unique root cause is not established.",
+    "6.5mA/current-raw-unit is an uncalibrated series reference, not confirmed model-specific total supply current.",
+    "Mechanical zero, inertia and loaded actuator/PD behavior need independent measurement; no tuning applied."
+  ]
+}

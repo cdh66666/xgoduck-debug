@@ -2,7 +2,7 @@
   "schema": "xgoduck-code-snapshot-verification-v1",
   "date": "2026-10-20",
   "result": "PASS_SOFTWARE_SNAPSHOT_CHECKS_ONLY",
-  "python_unit_tests": 38,
+  "python_unit_tests": 50,
   "workbench_offline_dom_checks": 240,
   "home_offline_checks": 24,
   "calibration_flow_offline_checks": 27,
@@ -12,7 +12,7 @@
     "success_200": 8,
     "empty_csv_expected_404": 1
   },
-  "source_provenance_records": 290,
+  "source_provenance_records": 305,
   "installed_source_files": 37,
   "published_source_files": 36,
   "r7_mesh_records_verified": 21,
@@ -27,5 +27,19 @@
     "policy_steps_each": 10,
     "evidence": "short finite-state execution only; not standing or push-recovery acceptance",
     "local_dependency_warning": "existing local NumPy2.5.4 exceeds local SciPy1.15.3 declared range; public requirements pin compatible NumPy2.2.6"
+  },
+  "second_update": {
+    "base_commit": "4432aab43f5efa6cb979a17cf8145918d3c6fd65",
+    "worker_source_sha256": "7b39524e93866dc5c5cf0471cf31e6cfb377e7b4078d1c889bb08343e8101b4b",
+    "visual_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1",
+    "host_candidate_offline_groups": 36,
+    "native_position_goldens": 7,
+    "native_positive_single_turn_values": 4096,
+    "default_host_mcu_and_main_ui_changed": false,
+    "host_candidates_installed": false,
+    "decoder_candidate_installed": false,
+    "behavior_acceptance": "NOT_PASSED",
+    "nominal_sim_stand_20s": true,
+    "pushed_recovery_passed_after": 0
   }
 }

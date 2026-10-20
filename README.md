@@ -59,3 +59,21 @@ node tests/test_current_curve_ui.mjs
 检查使用假隧道/合成数据，禁止连接硬件。`SOURCE_MANIFEST.json` 记录原始与便携化 SHA，`PACKAGE_FILES.json` 记录每个公开文件；`MODEL_ACCEPTANCE.json` 明确当前失败与未验证项。源码快照发布与实机通过是两回事。
 
 第三方来源和许可证见 [THIRD_PARTY.md](THIRD_PARTY.md)。
+
+
+## 第二次更新：系统审查与本地仿真时序修复
+
+第一份当前快照是 `4432aab`，保留完整历史，不重置或覆盖。此次仅把确定的100Hz接收/50Hz推理时序修复集成本地仿真，并加入独立只读整体逻辑图 `/assets/standing-system-audit.html`，主调试界面不新增入口。
+
+系统证据、匿名6项场景对照及3场景前后对照见 [审查报告](reports/standing-system-audit-20261020/README.md)。20秒无外力仿真保持静稳；±2N扰动恢复前后仍0/2通过，负方向末态变差，**不是稳定性改善或实物通过**。
+
+[Host反馈候选](candidates/host-feedback-20261020/README.md)包含zero-only、clock-only与combined三份未安装Controller；[位置解码候选](candidates/servo-position-decoder-20261020/README.md)只验证负方向位置编码的隔离函数。本次正位置记录未触发该负域，不声称完整多圈ABI或实物根因修复。默认机器人Controller仍181d，默认MCU、HOME、PD、权重和物理参数未由第二次更新改动。factory-route另一候选仍独立未安装、未做ARM编译，不包含在本包。
+
+可选仿真依赖安装后，运行额外5项dispatch与4项receiver测试：
+
+```powershell
+python -B -m unittest discover -s tests -p "test_recovery_dispatch.py" -v
+python -B -m unittest discover -s tests -p "test_receiver_sampling.py" -v
+```
+
+Host候选和C++解码候选的离线命令在各目录README。原始设备记录、壁钟、私有路径和身份信息不随此次报告上传；历史曲线按相对时间标明，不冒充实时或修复后实机数据。

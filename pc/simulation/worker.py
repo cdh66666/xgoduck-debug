@@ -48,6 +48,7 @@ class Simulation:
         self.paused = True
         self.policy_enabled = False
         self.seq = 0
+        self.feedback_filter_samples = 0
 
     def load(self, model_id, expected_sha):
         bound = resolve_model(HERE.parent, model_id)
@@ -151,6 +152,8 @@ class Simulation:
         self.standing_height = float(self.data.qpos[2])
         self.previous_action = np.zeros(14, dtype=np.float32)
         self.filtered_gyro = self.filtered_velocity = None
+        self._feedback_filter_time = None
+        self.feedback_filter_samples = 0
         default_command=self.binding['models'][self.task].get('default_command', [.2,0,0] if self.task=='fast' else [0,0,0])
         self.twist = np.array(default_command,dtype=np.float32)
         self.delay_queue = deque([self.home.copy() for _ in range(4)],maxlen=4)
@@ -187,17 +190,31 @@ class Simulation:
             for policy in self.policies.values():policy.reset_action_filter()
             self.infer()
 
+    def _receive_policy_feedback(self):
+        # Match the 100 Hz receive IIR; a 50 Hz end sample with alpha squared
+        # misses the intervening sample during a push or a fast rotation.
+        now=float(self.data.time)
+        before=self._feedback_filter_time
+        if before is not None and now<=before:return
+        velocity=np.zeros(6)
+        mujoco.mj_objectVelocity(self.model,self.data,mujoco.mjtObj.mjOBJ_BODY,self.root_id,velocity,1)
+        raw=self.data.qvel[self.vadr]
+        if before is None or now-before>.1:
+            self.filtered_gyro=velocity[:3].copy();self.filtered_velocity=raw.copy()
+        else:
+            ga=.5**((now-before)/.01);va=.4**((now-before)/.01)
+            self.filtered_gyro=ga*self.filtered_gyro+(1-ga)*velocity[:3]
+            self.filtered_velocity=va*self.filtered_velocity+(1-va)*raw
+        self._feedback_filter_time=now
+        self.feedback_filter_samples += 1
+
     def infer(self):
         rotation = self.data.xmat[self.root_id].reshape(3, 3)
         velocity = np.zeros(6)
         mujoco.mj_objectVelocity(self.model, self.data, mujoco.mjtObj.mjOBJ_BODY, self.root_id, velocity, 1)
         gravity=rotation.T @ np.array([0.,0.,-1.])
         raw_velocity=self.data.qvel[self.vadr]
-        if self.filtered_gyro is None:
-            self.filtered_gyro=velocity[:3].copy();self.filtered_velocity=raw_velocity.copy()
-        else:
-            self.filtered_gyro=.5**2*self.filtered_gyro+(1-.5**2)*velocity[:3]
-            self.filtered_velocity=.4**2*self.filtered_velocity+(1-.4**2)*raw_velocity
+        if self.filtered_gyro is None:self._receive_policy_feedback()
         elapsed=float(self.data.time)-self.policy_started
         rolling=self.task=='roulade' and self.special_active and elapsed<1.9
         if self.task=='roulade' and self.special_active and not rolling:
@@ -239,6 +256,7 @@ class Simulation:
 
     def step(self, count=1):
         for _ in range(count):
+            if self.physics_steps%2==0:self._receive_policy_feedback()
             if self.policy_enabled and self.physics_steps % 4 == 0 and self.data.time>self.last_infer_time+1e-8:
                 self.infer()
             if self.policy_enabled:
@@ -358,6 +376,7 @@ class Simulation:
                                body=mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_BODY, self.force_body)),
                     grabbed=self.grab_position is not None, dropSeed=self.drop_seed,
                     policySteps=self.policy_steps, physicsSteps=self.physics_steps,
+                    feedbackFilterSteps=self.feedback_filter_samples, receiverDt=.01,
                     massKg=float(self.model.body_mass.sum()), contacts=int(self.data.ncon),
                     clippedActions=0,targetsBeyondJointLimits=getattr(self,'outside_ranges',0),
                     scope='交互仿真含头腿落地碰撞扩展，训练环境有差异；固定参数单环境CPU，D20未经BAM辨识；无硬件控制')

@@ -1,6 +1,6 @@
 {
   "schema": "xgoduck-publication-source-manifest-v2",
-  "upstream_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",
+  "upstream_base_commit": "4432aab43f5efa6cb979a17cf8145918d3c6fd65",
   "snapshot_sources": {
     "app.yaml": "ca80d2677e7f58bea4d3e7e1c3866ed1ae43ac8cacb11209c1018eda92616a47",
     "python/xgoduck_fast_forward.onnx": "9391ee2255977546a4b308302c409d64a408fe4383d88abadc554f3452552247",
@@ -843,6 +843,12 @@
       "published_sha256": "a2c0383d6862f61ac76c726958cb45bf933333b854377cbfbdbefe3f6d184ef0",
       "changes": []
     },
+    "pc/assets/standing-system-audit.html": {
+      "source": "assets/standing-system-audit.html",
+      "source_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1",
+      "published_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1",
+      "changes": []
+    },
     "pc/assets/visual-debug.css": {
       "source": "assets/visual-debug.css",
       "source_sha256": "1a78f1eeda84e5f45eb697bca988b671a616256ae60adeb6fd431406cab8e262",
@@ -1091,11 +1097,127 @@
     },
     "pc/simulation/worker.py": {
       "source": "simulation/worker.py",
+      "source_sha256": "7b39524e93866dc5c5cf0471cf31e6cfb377e7b4078d1c889bb08343e8101b4b",
+      "published_sha256": "0154355366f7b77c8e75c444a88f313b73ab01a2a546753f34ce05785aa8ddba",
+      "changes": [
+        "relative portable imports and fixture paths only; no numeric changes"
+      ]
+    },
+    "tests/fixtures/worker-pre-dispatch.py": {
+      "source": "qa/simulation-getup-20261020/worker.before.py",
+      "source_sha256": "f7d7eff8f67e4214f403ff4174ba28cf7a2745186ac6f30a6939760d2451da0a",
+      "published_sha256": "87480d10e9a13065574335d173fee37df8528730d59ff7fca6d68a333e20ed60",
+      "changes": [
+        "relative portable imports and fixture paths only; no numeric changes"
+      ]
+    },
+    "tests/fixtures/worker-pre-receiver.py": {
+      "source": "qa/standing-system-audit-20261020/simulation/integration-r1/worker.before.py",
       "source_sha256": "51dbc57de3cca0b0ba5d31bde629dae3d8c24983243e6bb3b71ca609d85f457d",
       "published_sha256": "410a39296cfdaa64316f1f0a51e747ac3b069dd52c6be48b1a06972fae3ebb8b",
       "changes": [
-        "package pure Python BAM under local simulation folder; math unchanged"
+        "relative portable imports and fixture paths only; no numeric changes"
       ]
+    },
+    "tests/test_recovery_dispatch.py": {
+      "source": "simulation/test_recovery_dispatch.py",
+      "source_sha256": "ba55fd6a5fb0b6059505145382f5a3d1710d0007bd2454a3e136bd9c18958a48",
+      "published_sha256": "e69c83bc4492f6cf3d0c6c6869fd578c424f8991ea6c677629435b23705676d2",
+      "changes": [
+        "relative portable imports and fixture paths only; no numeric changes"
+      ]
+    },
+    "tests/test_receiver_sampling.py": {
+      "source": "qa/standing-system-audit-20261020/simulation/test_receiver_candidate.py",
+      "source_sha256": "b4a782f2e16c52d7a5b1ed181caeee0ef470a459202ffcd4666a81b00654fb6d",
+      "published_sha256": "12bf827837772458260c702bc1f4340e5773ff79d1e76b56d9db3032d25c448c",
+      "changes": [
+        "relative portable imports and fixture paths only; no numeric changes"
+      ]
+    },
+    "candidates/host-feedback-20261020/candidate/python/controller.py": {
+      "source": "qa/standing-system-audit-20261020/host/candidate/python/controller.py",
+      "source_sha256": "0298f6bff2eafe07c3316fd90f1c7db55bec87006aa3a40c22eef48d40daed90",
+      "published_sha256": "0298f6bff2eafe07c3316fd90f1c7db55bec87006aa3a40c22eef48d40daed90",
+      "changes": [],
+      "candidate_only": true,
+      "installed": false
+    },
+    "candidates/host-feedback-20261020/clock-candidate/python/controller.py": {
+      "source": "qa/standing-system-audit-20261020/host/clock-candidate/python/controller.py",
+      "source_sha256": "9a1da375fb29c569036f340c316ddeac57ec88753b86ac84bb65397a563aa962",
+      "published_sha256": "9a1da375fb29c569036f340c316ddeac57ec88753b86ac84bb65397a563aa962",
+      "changes": [],
+      "candidate_only": true,
+      "installed": false
+    },
+    "candidates/host-feedback-20261020/combined-candidate/python/controller.py": {
+      "source": "qa/standing-system-audit-20261020/host/combined-candidate/python/controller.py",
+      "source_sha256": "f557e7506e8a59a9dc790c9550db2eab04c7f7af7ba6aac900808f27163b913a",
+      "published_sha256": "f557e7506e8a59a9dc790c9550db2eab04c7f7af7ba6aac900808f27163b913a",
+      "changes": [],
+      "candidate_only": true,
+      "installed": false
+    },
+    "candidates/host-feedback-20261020/test_zero_sync.py": {
+      "source": "qa/standing-system-audit-20261020/host/test_zero_sync.py",
+      "source_sha256": "468292c73719777cb73126c06bc87d5ab1ecf708fe317d297873da53531b3640",
+      "published_sha256": "e3a2ed7b2c23ab87ff29274e721bbd2995434ad8c90bb9291defd37f0c66f2e1",
+      "changes": [
+        "portable PC resolver and temporary synthetic fixture output only; calculations and assertions unchanged"
+      ],
+      "candidate_only": true,
+      "installed": false
+    },
+    "candidates/host-feedback-20261020/test_clock_sync.py": {
+      "source": "qa/standing-system-audit-20261020/host/test_clock_sync.py",
+      "source_sha256": "1a9c07e75ef46cee345c7046f9e53dd18ebdebd713350eb832a39010e3408409",
+      "published_sha256": "2391a0c762346dfa45a6bf0133445a97c0c0755378cfb60a8db0061af59b7288",
+      "changes": [
+        "portable PC resolver and temporary synthetic fixture output only; calculations and assertions unchanged"
+      ],
+      "candidate_only": true,
+      "installed": false
+    },
+    "reports/standing-system-audit-20261020/scope-summary.json": {
+      "source": "qa/standing-system-audit-20261020/simulation/scope-verified-results.json",
+      "source_sha256": "55b60c5ccb33123d103fa36b5534b4e4705b7962e57d826cb1b99cdfdf426c46",
+      "published_sha256": "cbd9aa465aa310c2b091ae82f7ab7e831e9d3aafc8bca3b2b2175acfffececc7",
+      "changes": [
+        "anonymous scalar whitelist/relative windows only; raw traces, wall clocks and device paths omitted"
+      ]
+    },
+    "reports/standing-system-audit-20261020/receiver-integration-summary.json": {
+      "source": "qa/standing-system-audit-20261020/simulation/integration-r1/three-case-comparison.json",
+      "source_sha256": "6f40b4a57f9c9f8f01d46c274dcf4582e8e72d5b78455700082dffcebbb73c5c",
+      "published_sha256": "e350ec207bcf1fcb07b393c8c8f1767622e870858d3beeade3303fab73c87b7b",
+      "changes": [
+        "anonymous scalar whitelist/relative windows only; raw traces, wall clocks and device paths omitted"
+      ]
+    },
+    "reports/standing-system-audit-20261020/module-evidence-summary.json": {
+      "source": "qa/standing-system-audit-20261020/execution/execution-audit.json",
+      "source_sha256": "170475a210b6cb5c2ee00d923eae7d0c17f59ff7cce88680fca1b8f60c531874",
+      "published_sha256": "06b7d22c8c413c0938f797442a48bf21f792f9cce6ecb60a9e145ef5d26f36bd",
+      "changes": [
+        "anonymous scalar whitelist/relative windows only; raw traces, wall clocks and device paths omitted"
+      ]
+    },
+    "candidates/servo-position-decoder-20261020/position_decode_candidate.h": {
+      "source": "qa/standing-system-audit-20261020/execution/position_decode_candidate.h",
+      "source_sha256": "9d8fed4936efa3c95c715ec15a919cd156b4f82cf4629e63752a5a06f8438f37",
+      "published_sha256": "9d8fed4936efa3c95c715ec15a919cd156b4f82cf4629e63752a5a06f8438f37",
+      "changes": [],
+      "candidate_only": true,
+      "installed": false
+    },
+    "candidates/servo-position-decoder-20261020/test_position_decode.cpp": {
+      "source": "qa/standing-system-audit-20261020/execution/test_position_decode.cpp",
+      "source_sha256": "96cf4246f31ab10c5803cd6000a977dccac98d2a7bdf9ea880770cdf0779f206",
+      "published_sha256": "96cf4246f31ab10c5803cd6000a977dccac98d2a7bdf9ea880770cdf0779f206",
+      "changes": [],
+      "candidate_only": true,
+      "installed": false
     },
     "simulation-model/1910_m6.json": {
       "source": "references/xgoduck_rl/src/mjlab_microduck/robot/xgoduck/params/1910_m6.json",
@@ -1833,9 +1955,17 @@
   ],
   "actual_device_data_included": false,
   "portable_adapter_hardware_verified": false,
+  "optimization_scope": {
+    "simulation_receiver_source_sha256": "7b39524e93866dc5c5cf0471cf31e6cfb377e7b4078d1c889bb08343e8101b4b",
+    "visual_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1",
+    "default_controller_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
+    "host_candidates_installed": false,
+    "behavior_acceptance": "NOT_PASSED",
+    "hardware_operations": 0
+  },
   "generated_files": {
     ".gitattributes": {
-      "sha256": "4027e89a86c47175dd9c688a9d46351887169547b148d8db0bbee0bd5bf11989",
+      "sha256": "382a0222d5a617bcf92776f9d5313c625e9d0d884d9941aa780851b91d8653e0",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     ".gitignore": {
@@ -1843,11 +1973,11 @@
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "MODEL_ACCEPTANCE.json": {
-      "sha256": "3dc9ff851618dee9396180545ff8018acaadc8a9647233893da5071f9cd8c440",
+      "sha256": "0d8c63dbe936e7a17c57075be5788cd44e719c5998392516c714cdf660480bc7",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "README.md": {
-      "sha256": "42cd900bf07baf02bbcedf2ddcd8d78ab6c0c593df7a0fd22eabf0ab75d2bd35",
+      "sha256": "aacd9945b22c37b49f60f0ab1bc4e4eea69eed92ac84821409e1703a5b9b82f5",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "RELEASE_PROFILE.json": {
@@ -1859,7 +1989,7 @@
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "SNAPSHOT_VERIFICATION.json": {
-      "sha256": "cf7784d32b84fb7c83cdaf84e50d8daef3ad4b97511b16216ffb4f9d1de5a8b6",
+      "sha256": "3ae1fa39cfc93ef89c120e6e54f3ab42df1971091e203096cbbafd8e60ff1187",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "THIRD_PARTY.md": {
@@ -1880,6 +2010,10 @@
     },
     "pc/requirements.txt": {
       "sha256": "95fdad543f34e4a191cd17219e1a73b4ab4b0b5ad9806a25c3b49e7b48ab8ca0",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "tests/test_audit_publication.py": {
+      "sha256": "b8ab213bcf88719adf71b62c67b85e5b76439bc44cde57a3dbd92d7135a7f586",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
     "tests/test_bench_calibration.py": {
@@ -1918,6 +2052,10 @@
       "sha256": "9d932ec455771cded5881c45e7a06fbdc2069ec11d955c9b65c22233d85b549c",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     },
+    "reports/standing-system-audit-20261020/README.md": {
+      "sha256": "7e3b0b1850cd079d78a5c0f122034d0653ced5643f46ee87e009f1c1d1202dbc",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
     "pc/config/device.example.json": {
       "sha256": "d3b384e2853e1dfad5b818ac300c2b6f500d09067bbbbb70de50f0f201c87b74",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
@@ -1928,6 +2066,46 @@
     },
     "pc/config/wireless-calibration-auth.example.json": {
       "sha256": "f14ac01ef13aaa31a9a86fa8932936cd1769f7d7c43e4d0550c5727a23dff942",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "candidates/host-feedback-20261020/MANIFEST.json": {
+      "sha256": "8703f2a440426fbcd36b28d9d2ac9386daf453bc4120df8e0c2e26d20d3065bb",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "candidates/host-feedback-20261020/OFFLINE_EVIDENCE.json": {
+      "sha256": "571a70bf34417e7ee7d7f0051cd0245bd18e9049655708b6d7077391792a1ed3",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "candidates/host-feedback-20261020/README.md": {
+      "sha256": "253d7fed958396de3f7f57429ea0d9399ead4957c14e15fd71d1a36f917ef109",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "candidates/host-feedback-20261020/requirements-test.txt": {
+      "sha256": "a23aaf94250a9f53031a592980142245a848e2372b6c6c3093e8260b129265b8",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "candidates/servo-position-decoder-20261020/CMakeLists.txt": {
+      "sha256": "e9b0648a253a844438ac16d6c703c18fb1606682c0b0772dc5af80bc83bdf44b",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "candidates/servo-position-decoder-20261020/MANIFEST.json": {
+      "sha256": "30c6206e74c33b9c49fc9ab3877d79b52d3be04bad810e1d61d45886cb9e40f7",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "candidates/servo-position-decoder-20261020/README.md": {
+      "sha256": "e84f8ae69621c532bf592d63b477f31ce780412d40d8771ede5aea10e5303ea2",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "candidates/host-feedback-20261020/patches/clock-only.diff": {
+      "sha256": "70ecb2afa7dc949c40d48436b775d1b33b10ae38ebcf449aca35609d95482a6b",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "candidates/host-feedback-20261020/patches/combined.diff": {
+      "sha256": "3512b4406ad4934ade99ba3ad99f4df25bf0be67231c5b3ab019a99d571489d4",
+      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+    },
+    "candidates/host-feedback-20261020/patches/zero-only.diff": {
+      "sha256": "e6f5c648eb7a23ddc22db9695710a82e7376704916169690e736ad2e41b137e4",
       "role": "publication adapter, example, documentation or offline test; no hardware validation"
     }
   }

@@ -1,0 +1,50 @@
+{
+  "schema": "xgoduck-uninstalled-host-candidates-v1",
+  "default_controller_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
+  "installed": false,
+  "models_pd_targets_and_firmware_unchanged": true,
+  "files": [
+    {
+      "label": "zero-only",
+      "path": "candidate/python/controller.py",
+      "source_sha256": "0298f6bff2eafe07c3316fd90f1c7db55bec87006aa3a40c22eef48d40daed90",
+      "immediate_parent_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
+      "default_parent_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
+      "installed": false,
+      "default_runtime_replaced": false
+    },
+    {
+      "label": "clock-only",
+      "path": "clock-candidate/python/controller.py",
+      "source_sha256": "9a1da375fb29c569036f340c316ddeac57ec88753b86ac84bb65397a563aa962",
+      "immediate_parent_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
+      "default_parent_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
+      "installed": false,
+      "default_runtime_replaced": false
+    },
+    {
+      "label": "combined",
+      "path": "combined-candidate/python/controller.py",
+      "source_sha256": "f557e7506e8a59a9dc790c9550db2eab04c7f7af7ba6aac900808f27163b913a",
+      "immediate_parent_sha256": "0298f6bff2eafe07c3316fd90f1c7db55bec87006aa3a40c22eef48d40daed90",
+      "default_parent_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
+      "installed": false,
+      "default_runtime_replaced": false
+    },
+    {
+      "label": "offline-test",
+      "path": "test_zero_sync.py",
+      "original_source_sha256": "468292c73719777cb73126c06bc87d5ab1ecf708fe317d297873da53531b3640",
+      "published_sha256": "e3a2ed7b2c23ab87ff29274e721bbd2995434ad8c90bb9291defd37f0c66f2e1",
+      "adaptation": "relative portable PC resolver and temporary synthetic-output directory only; numeric tests and assertions unchanged"
+    },
+    {
+      "label": "offline-test",
+      "path": "test_clock_sync.py",
+      "original_source_sha256": "1a9c07e75ef46cee345c7046f9e53dd18ebdebd713350eb832a39010e3408409",
+      "published_sha256": "2391a0c762346dfa45a6bf0133445a97c0c0755378cfb60a8db0061af59b7288",
+      "adaptation": "relative portable PC resolver and temporary synthetic-output directory only; numeric tests and assertions unchanged"
+    }
+  ],
+  "hardware_validation": "not performed; offline fixtures are not robot acceptance"
+}

@@ -2,20 +2,20 @@
   "schema": "xgoduck-publication-inventory-v1",
   "files": {
     ".gitattributes": {
-      "bytes": 125,
-      "sha256": "4027e89a86c47175dd9c688a9d46351887169547b148d8db0bbee0bd5bf11989"
+      "bytes": 144,
+      "sha256": "382a0222d5a617bcf92776f9d5313c625e9d0d884d9941aa780851b91d8653e0"
     },
     ".gitignore": {
       "bytes": 199,
       "sha256": "ef88e5af975cc8c8008ceabeb69b8fef5e8037188053f52a6843baa0b0ead359"
     },
     "MODEL_ACCEPTANCE.json": {
-      "bytes": 1211,
-      "sha256": "3dc9ff851618dee9396180545ff8018acaadc8a9647233893da5071f9cd8c440"
+      "bytes": 1680,
+      "sha256": "0d8c63dbe936e7a17c57075be5788cd44e719c5998392516c714cdf660480bc7"
     },
     "README.md": {
-      "bytes": 4978,
-      "sha256": "42cd900bf07baf02bbcedf2ddcd8d78ab6c0c593df7a0fd22eabf0ab75d2bd35"
+      "bytes": 6610,
+      "sha256": "aacd9945b22c37b49f60f0ab1bc4e4eea69eed92ac84821409e1703a5b9b82f5"
     },
     "RELEASE_PROFILE.json": {
       "bytes": 509,
@@ -26,12 +26,12 @@
       "sha256": "f3ddfe099658a0bb7c4e2bb84442a32064313cc5fda9c72f8efb58508c64c1fe"
     },
     "SNAPSHOT_VERIFICATION.json": {
-      "bytes": 1170,
-      "sha256": "cf7784d32b84fb7c83cdaf84e50d8daef3ad4b97511b16216ffb4f9d1de5a8b6"
+      "bytes": 1828,
+      "sha256": "3ae1fa39cfc93ef89c120e6e54f3ab42df1971091e203096cbbafd8e60ff1187"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 105579,
-      "sha256": "e3a9c19fb32a067a5b2e3f6a41d85974787a8d47cb5fc394985f63b91e3994d8"
+      "bytes": 115948,
+      "sha256": "8cf4cfa3abee7b40a9158378d2ea3e7dc94346ec2b0541adeff73b246d7ce867"
     },
     "THIRD_PARTY.md": {
       "bytes": 1268,
@@ -205,6 +205,10 @@
       "bytes": 13468,
       "sha256": "4160b1cb64baac710049cf91a9faf37975c9311dc63dac2413d4a9ac82883231"
     },
+    "tests/test_audit_publication.py": {
+      "bytes": 2757,
+      "sha256": "b8ab213bcf88719adf71b62c67b85e5b76439bc44cde57a3dbd92d7135a7f586"
+    },
     "tests/test_bench_calibration.py": {
       "bytes": 6047,
       "sha256": "db43c2193d7844cd78a30dc2808ae3da80ca807226ce845ff8c1d5a07894ed29"
@@ -233,6 +237,14 @@
       "bytes": 12818,
       "sha256": "fd39bfe39887e0f2380731eb292ce530d4934a3681443bf813b290b4f20ca12b"
     },
+    "tests/test_receiver_sampling.py": {
+      "bytes": 4529,
+      "sha256": "12bf827837772458260c702bc1f4340e5773ff79d1e76b56d9db3032d25c448c"
+    },
+    "tests/test_recovery_dispatch.py": {
+      "bytes": 4416,
+      "sha256": "e69c83bc4492f6cf3d0c6c6869fd578c424f8991ea6c677629435b23705676d2"
+    },
     "tests/test_release.py": {
       "bytes": 8159,
       "sha256": "2ec3d43516cc3cb8ad9d2eccd37928b97d4072105609689fb54e0b690209a85a"
@@ -240,6 +252,14 @@
     "tests/test_workbench.mjs": {
       "bytes": 46374,
       "sha256": "9d932ec455771cded5881c45e7a06fbdc2069ec11d955c9b65c22233d85b549c"
+    },
+    "tests/fixtures/worker-pre-dispatch.py": {
+      "bytes": 20827,
+      "sha256": "87480d10e9a13065574335d173fee37df8528730d59ff7fca6d68a333e20ed60"
+    },
+    "tests/fixtures/worker-pre-receiver.py": {
+      "bytes": 21224,
+      "sha256": "410a39296cfdaa64316f1f0a51e747ac3b069dd52c6be48b1a06972fae3ebb8b"
     },
     "simulation-model/assets/cover.stl": {
       "bytes": 649384,
@@ -452,6 +472,22 @@
     "robot-app/sketch/uart_fifo.h": {
       "bytes": 579,
       "sha256": "f3dc8d93e2f0c7e8908be3eb071adf60484f009b55964cea0c44655a956ac942"
+    },
+    "reports/standing-system-audit-20261020/module-evidence-summary.json": {
+      "bytes": 4838,
+      "sha256": "06b7d22c8c413c0938f797442a48bf21f792f9cce6ecb60a9e145ef5d26f36bd"
+    },
+    "reports/standing-system-audit-20261020/README.md": {
+      "bytes": 5407,
+      "sha256": "7e3b0b1850cd079d78a5c0f122034d0653ced5643f46ee87e009f1c1d1202dbc"
+    },
+    "reports/standing-system-audit-20261020/receiver-integration-summary.json": {
+      "bytes": 7146,
+      "sha256": "e350ec207bcf1fcb07b393c8c8f1767622e870858d3beeade3303fab73c87b7b"
+    },
+    "reports/standing-system-audit-20261020/scope-summary.json": {
+      "bytes": 5564,
+      "sha256": "cbd9aa465aa310c2b091ae82f7ab7e831e9d3aafc8bca3b2b2175acfffececc7"
     },
     "pc/assets/assembly-pdf.js": {
       "bytes": 2861,
@@ -697,6 +733,10 @@
       "bytes": 14919,
       "sha256": "a2c0383d6862f61ac76c726958cb45bf933333b854377cbfbdbefe3f6d184ef0"
     },
+    "pc/assets/standing-system-audit.html": {
+      "bytes": 216015,
+      "sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1"
+    },
     "pc/assets/visual-debug.css": {
       "bytes": 14239,
       "sha256": "1a78f1eeda84e5f45eb697bca988b671a616256ae60adeb6fd431406cab8e262"
@@ -834,8 +874,8 @@
       "sha256": "7df63591596f4cf627c80e78ac5e37dff889c67f63c9f2a726e61899d3c358c3"
     },
     "pc/simulation/worker.py": {
-      "bytes": 21224,
-      "sha256": "410a39296cfdaa64316f1f0a51e747ac3b069dd52c6be48b1a06972fae3ebb8b"
+      "bytes": 22633,
+      "sha256": "0154355366f7b77c8e75c444a88f313b73ab01a2a546753f34ce05785aa8ddba"
     },
     "pc/tools/deploy_readonly_wifi.py": {
       "bytes": 41293,
@@ -2400,6 +2440,74 @@
     "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/src/udp_bridge.h": {
       "bytes": 9089,
       "sha256": "d0cf4354b361ac0bba30aaaca93d7f994611e7738a5d8f88002b94ab631f553b"
+    },
+    "candidates/host-feedback-20261020/MANIFEST.json": {
+      "bytes": 2508,
+      "sha256": "8703f2a440426fbcd36b28d9d2ac9386daf453bc4120df8e0c2e26d20d3065bb"
+    },
+    "candidates/host-feedback-20261020/OFFLINE_EVIDENCE.json": {
+      "bytes": 1686,
+      "sha256": "571a70bf34417e7ee7d7f0051cd0245bd18e9049655708b6d7077391792a1ed3"
+    },
+    "candidates/host-feedback-20261020/README.md": {
+      "bytes": 3065,
+      "sha256": "253d7fed958396de3f7f57429ea0d9399ead4957c14e15fd71d1a36f917ef109"
+    },
+    "candidates/host-feedback-20261020/requirements-test.txt": {
+      "bytes": 13,
+      "sha256": "a23aaf94250a9f53031a592980142245a848e2372b6c6c3093e8260b129265b8"
+    },
+    "candidates/host-feedback-20261020/test_clock_sync.py": {
+      "bytes": 5081,
+      "sha256": "2391a0c762346dfa45a6bf0133445a97c0c0755378cfb60a8db0061af59b7288"
+    },
+    "candidates/host-feedback-20261020/test_zero_sync.py": {
+      "bytes": 11582,
+      "sha256": "e3a2ed7b2c23ab87ff29274e721bbd2995434ad8c90bb9291defd37f0c66f2e1"
+    },
+    "candidates/servo-position-decoder-20261020/CMakeLists.txt": {
+      "bytes": 475,
+      "sha256": "e9b0648a253a844438ac16d6c703c18fb1606682c0b0772dc5af80bc83bdf44b"
+    },
+    "candidates/servo-position-decoder-20261020/MANIFEST.json": {
+      "bytes": 935,
+      "sha256": "30c6206e74c33b9c49fc9ab3877d79b52d3be04bad810e1d61d45886cb9e40f7"
+    },
+    "candidates/servo-position-decoder-20261020/position_decode_candidate.h": {
+      "bytes": 383,
+      "sha256": "9d8fed4936efa3c95c715ec15a919cd156b4f82cf4629e63752a5a06f8438f37"
+    },
+    "candidates/servo-position-decoder-20261020/README.md": {
+      "bytes": 1393,
+      "sha256": "e84f8ae69621c532bf592d63b477f31ce780412d40d8771ede5aea10e5303ea2"
+    },
+    "candidates/servo-position-decoder-20261020/test_position_decode.cpp": {
+      "bytes": 976,
+      "sha256": "96cf4246f31ab10c5803cd6000a977dccac98d2a7bdf9ea880770cdf0779f206"
+    },
+    "candidates/host-feedback-20261020/patches/clock-only.diff": {
+      "bytes": 3516,
+      "sha256": "70ecb2afa7dc949c40d48436b775d1b33b10ae38ebcf449aca35609d95482a6b"
+    },
+    "candidates/host-feedback-20261020/patches/combined.diff": {
+      "bytes": 3517,
+      "sha256": "3512b4406ad4934ade99ba3ad99f4df25bf0be67231c5b3ab019a99d571489d4"
+    },
+    "candidates/host-feedback-20261020/patches/zero-only.diff": {
+      "bytes": 6777,
+      "sha256": "e6f5c648eb7a23ddc22db9695710a82e7376704916169690e736ad2e41b137e4"
+    },
+    "candidates/host-feedback-20261020/combined-candidate/python/controller.py": {
+      "bytes": 37359,
+      "sha256": "f557e7506e8a59a9dc790c9550db2eab04c7f7af7ba6aac900808f27163b913a"
+    },
+    "candidates/host-feedback-20261020/clock-candidate/python/controller.py": {
+      "bytes": 35465,
+      "sha256": "9a1da375fb29c569036f340c316ddeac57ec88753b86ac84bb65397a563aa962"
+    },
+    "candidates/host-feedback-20261020/candidate/python/controller.py": {
+      "bytes": 36342,
+      "sha256": "0298f6bff2eafe07c3316fd90f1c7db55bec87006aa3a40c22eef48d40daed90"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

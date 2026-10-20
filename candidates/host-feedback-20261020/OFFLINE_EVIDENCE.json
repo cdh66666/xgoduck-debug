@@ -1,0 +1,59 @@
+{
+  "schema": "xgoduck-host-candidate-offline-evidence-v1",
+  "result": "PASS",
+  "installed": false,
+  "hardware_operations": 0,
+  "portable_tests": [
+    {
+      "test": "test_zero_sync.py",
+      "variant": "default",
+      "exit_code": 0,
+      "assertions_passed": true,
+      "reported_test_groups": 12,
+      "hardware_operations": 0
+    },
+    {
+      "test": "test_zero_sync.py",
+      "variant": "combined-candidate",
+      "exit_code": 0,
+      "assertions_passed": true,
+      "reported_test_groups": 12,
+      "hardware_operations": 0
+    },
+    {
+      "test": "test_clock_sync.py",
+      "variant": "default",
+      "exit_code": 0,
+      "assertions_passed": true,
+      "reported_test_groups": 12,
+      "hardware_operations": 0
+    }
+  ],
+  "real_filter_sha256": "01a6a501d225f73e73bdef66105bd6e516e50182be00c02af7116ec6367a35fd",
+  "old_synthetic_host_jitter_attitude_error_deg": {
+    "median": 1.7113349930817994,
+    "p95": 5.476333952233488,
+    "max": 9.790847092966958
+  },
+  "candidates": [
+    {
+      "label": "clock-candidate",
+      "passed": true,
+      "test_groups": 6,
+      "uniform_baseline_max_abs_error": 4.92828000631107e-13,
+      "jitter_max_abs_error": 0.0
+    },
+    {
+      "label": "combined-candidate",
+      "passed": true,
+      "test_groups": 6,
+      "uniform_baseline_max_abs_error": 4.92828000631107e-13,
+      "jitter_max_abs_error": 0.0
+    }
+  ],
+  "limits": [
+    "Synthetic/mock-controller and real-filter offline regression only.",
+    "No robot closed-loop or deployment acceptance.",
+    "Host freshness/heartbeat remain based on actual Host monotonic arrival."
+  ]
+}
