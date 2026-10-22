@@ -1,5 +1,6 @@
 """Bounded local virtual sessions. No robot bridge, lease or hardware imports."""
 from __future__ import annotations
+import sys
 
 import atexit
 from collections import deque
@@ -9,7 +10,6 @@ import os
 from pathlib import Path
 import secrets
 import subprocess
-import sys
 import threading
 import time
 

@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "source_verification": {
+    "passed": true,
+    "locked_input_files": 225,
+    "package_files": 229,
+    "bytes": 901560,
+    "actual_parser_fixture_bindings": 2,
+    "actual_sdk_fixture_bindings": 1,
+    "hardware_access": false,
+    "network_access": false
+  },
+  "native": {
+    "custom_parser": {
+      "passed": true,
+      "result": {
+        "passed": true,
+        "checks": 3672998,
+        "ordinary_stream_equalities": 1845313,
+        "legal_ids": 254,
+        "lengths": [
+          2,
+          3,
+          4,
+          8,
+          9,
+          11
+        ],
+        "triple_ff_original_mask": 32766,
+        "triple_ff_candidate_mask": 32767,
+        "original_id10_missing": true,
+        "following_14_original_valid": true,
+        "candidate_all_15_valid": true,
+        "physical_cause_proven": false,
+        "deployed": false
+      }
+    },
+    "route_startup": {
+      "passed": true,
+      "result": {
+        "passed_assertions": 526,
+        "hardware_access": false,
+        "actual_startup_header": true
+      }
+    },
+    "route_refresh": {
+      "passed": true,
+      "result": {
+        "passed": 13,
+        "hardware_access": false,
+        "actual_candidate_header": true
+      }
+    },
+    "sdk_original": {
+      "passed": true,
+      "result": {
+        "checks": 716079,
+        "legal_cases": 715264,
+        "extra_header_budget": 10,
+        "triple_read": -1,
+        "triple_sdk_error": 3,
+        "off_mask": 32766,
+        "factory_error": 8,
+        "flush_calls": 0
+      }
+    },
+    "sdk_candidate": {
+      "passed": true,
+      "result": {
+        "checks": 716079,
+        "legal_cases": 715264,
+        "extra_header_budget": 10,
+        "triple_read": 0,
+        "triple_sdk_error": 0,
+        "off_mask": 32767,
+        "factory_error": 0,
+        "flush_calls": 0
+      }
+    }
+  },
+  "scope": "desktop fake UART/clock/route only",
+  "arm_recompiled": false,
+  "hardware_access": false,
+  "network_access": false
+}

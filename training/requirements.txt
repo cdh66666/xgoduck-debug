@@ -1,0 +1,11 @@
+# Install into a separate venv. Physics and reference math run on CPU.
+numpy>=2.2.6,<3
+mujoco==3.15.0
+torch>=2.6,<3
+rsl-rl-lib==5.0.1
+tensordict==0.10.0
+cloudpickle==3.1.2
+pyvers==0.1.0
+colorama==0.4.6
+onnx>=1.17,<2
+onnxruntime>=1.20,<2

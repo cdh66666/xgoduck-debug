@@ -1,0 +1,199 @@
+{
+  "kind": "xgoduck-scratch-mlp-bodyframe-v2",
+  "initialization": "random",
+  "parent_checkpoint_required": false,
+  "hardware_commands_sent": false,
+  "deployment_allowed": false,
+  "behavior_qualified": false,
+  "cpu_only": true,
+  "seed": 20261022,
+  "curriculum": "stand",
+  "versions": {
+    "torch": "2.12.0+cu126",
+    "numpy": "2.5.4"
+  },
+  "requested_updates": 1,
+  "worker_metadata": [
+    {
+      "mujoco": "3.15.0",
+      "envs": 2
+    }
+  ],
+  "actor_parameters_changed": true,
+  "completed_updates": 1,
+  "export": {
+    "max_abs_error": 1.3113021850585938e-06,
+    "inputs": [
+      1,
+      61
+    ],
+    "outputs": [
+      1,
+      14
+    ],
+    "samples": 64,
+    "behavior_qualified": false
+  },
+  "wall_s": 2.7760330000019167,
+  "result": "SMOKE_PASS_NOT_BEHAVIOR_QUALIFIED",
+  "tests": {
+    "contract_tests": 4,
+    "passed": true
+  },
+  "new_computer_tested": false,
+  "trained_policy_behavior_qualified": false,
+  "evaluation_pipeline_smoke": {
+    "checkpoint": "one-update random scratch fixture, not included",
+    "result": "NOT_PASSED",
+    "cases": [
+      {
+        "command": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "passed": true,
+        "ticks": 750,
+        "failure": null,
+        "max_tilt_deg": 8.421798505275099
+      },
+      {
+        "command": [
+          0.2,
+          0.0,
+          0.0
+        ],
+        "passed": false,
+        "ticks": 150,
+        "failure": [
+          "motion_stall"
+        ],
+        "max_tilt_deg": 21.83735829415698
+      },
+      {
+        "command": [
+          0.3,
+          0.0,
+          0.0
+        ],
+        "passed": false,
+        "ticks": 17,
+        "failure": [
+          "tilt25deg"
+        ],
+        "max_tilt_deg": 25.142903837692106
+      },
+      {
+        "command": [
+          -0.3,
+          0.0,
+          0.0
+        ],
+        "passed": false,
+        "ticks": 26,
+        "failure": [
+          "tilt25deg"
+        ],
+        "max_tilt_deg": 25.392264169438878
+      },
+      {
+        "command": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "passed": false,
+        "ticks": 10,
+        "failure": [
+          "tilt25deg"
+        ],
+        "max_tilt_deg": 26.84816408616743
+      },
+      {
+        "command": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "passed": false,
+        "ticks": 7,
+        "failure": [
+          "height25mm"
+        ],
+        "max_tilt_deg": 18.186142803857734
+      }
+    ],
+    "behavior_qualification": false
+  },
+  "relocated_checkout_test": {
+    "passed": true,
+    "asset_bindings": 42,
+    "contract_tests": 3,
+    "requires_original_project_files": false,
+    "dependency_environment_reused": true
+  },
+  "linux_runtime_tested": false,
+  "actor_input_dim": 61,
+  "actor_output_dim": 14,
+  "critic_input_dim": 64,
+  "weights_included": true,
+  "packaged47500_continuation": {
+    "kind": "xgoduck-backskip-47500-bodyframe-v2",
+    "hardware_commands_sent": false,
+    "cpu_only": true,
+    "parent_checkpoint_required": false,
+    "trainable_scope": "back_skip868 parameters + Critic64 only",
+    "behavior_qualified": false,
+    "initial_checkpoint_sha256": "ff6d88962d0c2703e17e343bfa9e9c17decba3435d896d6e315aab5ec7fe22db",
+    "initial_iteration": 47500,
+    "actor_load_exact": true,
+    "critic_load_exact": true,
+    "optimizer_entries": 10,
+    "optimizer_steps_before": [
+      60000.0
+    ],
+    "packaged_onnx_parity": {
+      "samples": 64,
+      "inputs": [
+        1,
+        61
+      ],
+      "outputs": [
+        1,
+        14
+      ],
+      "max_abs_error": 5.960464477539062e-07
+    },
+    "all_non_backskip_actor_tensors_unchanged": true,
+    "backskip_changed": true,
+    "export": {
+      "max_abs_error": 5.960464477539062e-07,
+      "inputs": [
+        1,
+        61
+      ],
+      "outputs": [
+        1,
+        14
+      ],
+      "samples": 64,
+      "behavior_qualified": false
+    },
+    "completed_updates": 1,
+    "final_iteration": 47501,
+    "wall_s": 2.3230949999997392,
+    "result": "CONTINUATION_SMOKE_PASS_NOT_BEHAVIOR_QUALIFIED",
+    "optimizer_steps_after": [
+      60020.0
+    ]
+  },
+  "packaged47500_source_tensor_states_exact": {
+    "actor_state_dict": true,
+    "critic_state_dict": true,
+    "optimizer_state_dict": true,
+    "iter": true
+  },
+  "bundled_weight_manifest": "checkpoints/MANIFEST.json",
+  "new_smoke_output_weights_committed": false,
+  "source47500_weights_bundled": true
+}

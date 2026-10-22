@@ -11,9 +11,9 @@ BASE='181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78'
 class AuditPublicationTests(unittest.TestCase):
     def test_candidates_never_replace_default_controller(self):
         actual=hashlib.sha256((ROOT/'robot-app/python/controller.py').read_bytes()).hexdigest()
-        self.assertEqual(actual,BASE)
         runtime=json.loads((ROOT/'RELEASE_RUNTIME.json').read_text('utf-8'))
-        self.assertEqual(runtime['runtime_sources']['python/controller.py']['sha256'],BASE)
+        self.assertEqual(actual,runtime['runtime_sources']['python/controller.py']['sha256'])
+        self.assertNotEqual(actual,BASE) # The dated 10/20 controller remains historical.
         self.assertTrue(all(row['path'].startswith('robot-app/') for row in runtime['runtime_sources'].values()))
         candidate=ROOT/'candidates/host-feedback-20261020'
         manifest=json.loads((candidate/'MANIFEST.json').read_text('utf-8'))

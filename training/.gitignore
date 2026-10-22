@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv*/
+outputs/
+logs/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+*.npz
+*.npy
+!checkpoints/model_047500.pt
+!checkpoints/model_047500.onnx

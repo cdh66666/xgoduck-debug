@@ -75,7 +75,9 @@ def resolve_model(root, model_id):
         entry = 'python/'+filename
         if entry not in manifest['new_source_manifest']:
             continue
-        path = runtime_source(root, entry, manifest).resolve(strict=True)
+        path = runtime_source(root, entry, manifest).resolve()
+        if not path.is_file():
+            raise ValueError('本地仿真权重未下载；先运行 python pc/tools/fetch_robot_models.py --fetch（只读取鸭子，不改变设备）')
         digest = manifest['new_source_manifest'][entry]
         if sha256(path) != digest:
             raise ValueError('本地模型 SHA 与当前运行清单不符：'+filename)

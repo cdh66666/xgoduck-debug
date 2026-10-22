@@ -281,7 +281,7 @@ check(posts(supply).length===0&&supply.calls.every(call=>call.url==='/api/bench/
 // Reproduce the old ownership decision with a request-time OFF snapshot. This
 // mutation restores only the old two poll decisions; it is not a historical file.
 const legacy=harness('official-workbench.js',{trained:true,sourceTransform:source=>source
- .replace("const snapshot=await api('/api/bench/status');if(generation!==actionGeneration)return;","const snapshot=await api('/api/bench/status');")
+ .replace("const snapshot=await api('/api/bench/status'+cursor);if(generation!==actionGeneration)return;","const snapshot=await api('/api/bench/status'+cursor);")
  .replace("!sessionPending&&(s?.mode==='off'||s?.mode==='shadow')","(s?.mode==='off'||s?.mode==='shadow')")});
 await settle();legacy.deferStatus();await legacy.poll();await start(legacy);await legacy.releaseStatus();
 let beforeHeartbeat=posts(legacy).length;await legacy.intervals.find(item=>item.delay===50).fn();
@@ -428,7 +428,7 @@ check(posts(startupGap).length===beforeGapPosts+1,'437ms state transport gap doe
 same(packet(startupGap).twist,[0,0,0],'transport gap keeps zero velocity');
 startupGap.state.connected=true;await startupGap.poll();
 check(/反馈已恢复/.test(startupGap.$('wl-result').textContent),'fresh feedback recovers with explicit release of pressed keys');
-startupGap.state.connected=false;await startupGap.poll();startupGap.advance(501);await startupGap.poll();
+startupGap.state.connected=false;await startupGap.poll();startupGap.advance(801);await startupGap.poll();
 check(startupGap.calls.some(row=>row.url==='/api/mode'&&row.body?.mode==='off'),'persistent feedback gap explicitly disarms once');
 const neverConfirmed=harness('official-workbench.js',{trained:true});await settle();neverConfirmed.$('bench-policy').onclick();await neverConfirmed.$('bench-confirm').onclick();
 neverConfirmed.state.connected=false;neverConfirmed.advance(3600);await neverConfirmed.poll();

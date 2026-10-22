@@ -1,86 +1,41 @@
 {
-  "schema": "xgoduck-code-snapshot-verification-v1",
-  "date": "2026-10-20",
-  "result": "PASS_SOFTWARE_SNAPSHOT_CHECKS_ONLY",
-  "python_unit_tests": 58,
-  "workbench_offline_dom_checks": 240,
-  "home_offline_checks": 24,
-  "calibration_flow_offline_checks": 27,
-  "history_error_offline_checks": 19,
-  "current_viewer_offline_checks": 21,
-  "offline_http_gets": {
-    "success_200": 8,
-    "empty_csv_expected_404": 1
-  },
-  "source_provenance_records": 310,
-  "installed_source_files": 37,
-  "published_source_files": 36,
-  "r7_mesh_records_verified": 21,
-  "native_dependencies_bundled": false,
-  "device_data_included": false,
-  "hardware_operations_in_snapshot_build": 0,
-  "portable_clean_environment_install_verified": false,
-  "behavior_acceptance": "NOT_PASSED",
-  "simulation_smoke": {
-    "original_models_loaded": 4,
-    "physics_steps_each": 40,
-    "policy_steps_each": 10,
-    "evidence": "short finite-state execution only; not standing or push-recovery acceptance",
-    "local_dependency_warning": "existing local NumPy2.5.4 exceeds local SciPy1.15.3 declared range; public requirements pin compatible NumPy2.2.6"
-  },
-  "second_update": {
-    "base_commit": "4432aab43f5efa6cb979a17cf8145918d3c6fd65",
-    "worker_source_sha256": "7b39524e93866dc5c5cf0471cf31e6cfb377e7b4078d1c889bb08343e8101b4b",
-    "visual_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1",
-    "host_candidate_offline_groups": 36,
-    "native_position_goldens": 7,
-    "native_positive_single_turn_values": 4096,
-    "default_host_mcu_and_main_ui_changed": false,
-    "host_candidates_installed": false,
-    "decoder_candidate_installed": false,
-    "behavior_acceptance": "NOT_PASSED",
-    "nominal_sim_stand_20s": true,
-    "pushed_recovery_passed_after": 0
-  },
-  "audit_v2": {
-    "public_self_contained_tests": 8,
-    "original_source_independent_tests": 8,
-    "modules": 12,
-    "history_endpoints": 966,
-    "axes": 15,
-    "device_requests": 0,
-    "default_main_ui_worker_runtime_changed": false,
-    "files": [
-      {
-        "path": "assets/standing-system-audit.html",
-        "bytes": 9616,
-        "sha256": "04afa3bed3b27093763863071be67850c892f1bf970fc6d925fb58a048e9c71e"
-      },
-      {
-        "path": "assets/standing-audit-v2.js",
-        "bytes": 35512,
-        "sha256": "874f88c64df022aef4b1483d27c9f8f809dd8eafef55f10e2671de4977afab85"
-      },
-      {
-        "path": "assets/standing-audit-v2.css",
-        "bytes": 19645,
-        "sha256": "ecc88e8e0389ebbad29675efe06d3d0c7f874d7f4a7555058bc67241afd975dc"
-      },
-      {
-        "path": "assets/standing-audit-v2-data.json",
-        "bytes": 1233997,
-        "sha256": "7ac662f72efce1d8668245b53e6162137d81388314de8a036a3aebe7f3ba1bd0"
-      },
-      {
-        "path": "model-assets/vendor/d3/d3.min.js",
-        "bytes": 279706,
-        "sha256": "f2094bbf6141b359722c4fe454eb6c4b0f0e42cc10cc7af921fc158fceb86539"
-      },
-      {
-        "path": "model-assets/vendor/d3/LICENSE",
-        "bytes": 731,
-        "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4"
-      }
-    ]
-  }
+  "schema": "xgoduck-code-migration-verification-v2",
+  "date": "2026-10-22",
+  "result": "PASS_SOFTWARE_MIGRATION_CHECKS_ONLY",
+  "python_unit_tests": 91,
+  "python_unit_tests_passed": true,
+  "node_dom_checks": 331,
+  "node_control_and_pose_tests": 8,
+  "training_contract_tests": 4,
+  "training_asset_bindings": 42,
+  "training_weights_whitelist_verified": true,
+  "firmware_frozen_inputs": 230,
+  "firmware_native_regressions_passed": true,
+  "isolated_clean_export_tested": true,
+  "existing_dependency_environment_used": true,
+  "fresh_pip_install_tested": false,
+  "new_computer_tested": false,
+  "installed_source_snapshot_count": 39,
+  "published_runtime_count": 38,
+  "runtime_models_bundled": 4,
+  "training_weight_files": 2,
+  "total_weight_bytes": 7525191,
+  "parent_checkpoint_required": false,
+  "checkpoint_loader_parity_max_error": 5.960464477539062e-07,
+  "checkpoint_actor_critic_adam_exact": true,
+  "training_continue_smoke_updates": 1,
+  "training_continue_from_to": [
+    47500,
+    47501
+  ],
+  "no_long_training_started": true,
+  "migration_device_actions": 0,
+  "device_credentials_included": false,
+  "mechanical_zero_data_included": false,
+  "raw_robot_traces_included": false,
+  "native_dependency_binaries_included": false,
+  "wireless_acceptance": "NOT_PASSED",
+  "standing_acceptance": "NOT_PASSED",
+  "physical_test_last_attempt": "UNCONFIRMED, not admitted as a completed motion trial",
+  "tested_git_tree": "2d7201d4668cb84407af73636323ffff3943f1f7"
 }

@@ -1,0 +1,100 @@
+{
+  "schema": "xgoduck-installed-firmware-source-support-v1",
+  "scope": "source handoff; no binary, uploader, identity or device data",
+  "upstream_runtime_commit": "9dc36787bc61b102c2da0f97c9c758e639e90ab8",
+  "ftservo_upstream_commit": "64922cda46e56b21b8c1d9e830d936a1941645ae",
+  "libraries": {
+    "Arduino_RouterBridge": {
+      "name": "Arduino_RouterBridge",
+      "version": "0.4.3",
+      "url": "https://github.com/arduino-libraries/Arduino_RouterBridge"
+    },
+    "Arduino_RPClite": {
+      "name": "Arduino_RPClite",
+      "version": "0.3.1",
+      "url": "https://github.com/arduino-libraries/Arduino_RPCLite"
+    },
+    "ArxContainer": {
+      "name": "ArxContainer",
+      "version": "0.7.0",
+      "url": "https://github.com/hideakitai/ArxContainer"
+    },
+    "ArxTypeTraits": {
+      "name": "ArxTypeTraits",
+      "version": "0.3.2",
+      "url": "https://github.com/hideakitai/ArxTypeTraits"
+    },
+    "DebugLog": {
+      "name": "DebugLog",
+      "version": "0.8.4",
+      "url": "https://github.com/hideakitai/DebugLog"
+    },
+    "FTServo": {
+      "name": "FTServo",
+      "version": "2.0.0",
+      "url": "https://github.com/ftservo/FTServo_Arduino"
+    },
+    "MsgPack": {
+      "name": "MsgPack",
+      "version": "0.4.2",
+      "url": "https://github.com/hideakitai/MsgPack"
+    }
+  },
+  "platform": "arduino:zephyr (1.0.0)",
+  "fqbn": "arduino:zephyr:unoq",
+  "historically_installed_firmware": {
+    "sketch.ino.elf": {
+      "sha256": "0df0fe95af681625ca440435f10cfc9cfed6191ba669895ef2a03af19736bb8f",
+      "bytes": 121724
+    },
+    "sketch.ino.elf-zsk.bin": {
+      "sha256": "a1f0e4ab9eeb680c06968c77d784a6ad1d470332901a7274f80bbf9d72c9b1b9",
+      "bytes": 121724
+    }
+  },
+  "historical_build_passed": true,
+  "historical_compile_exit_code": 0,
+  "historical_dangerous_relocations": [],
+  "historical_install_verified": true,
+  "raw_evidence_sha256": {
+    "rx_active_pointer": "0b32ce6e52a778131cab892ccf5fece8fca66a06f429b2ac4c56a307cd988706",
+    "rx_arm_audit": "b4172f39efe79c1ea5a64cf3abfbf05f44fce12435b0e1762f0e9967ffcfbc3d",
+    "rx_install_receipt": "782e4e1a596b446b8b281b670d7de2b22cbfea3bc72609d1a37edbd90ad9a994",
+    "boot_arm_audit": "fb4d431d169f3a948a00e8230f58bcdca1f8cef022f1c88cbb1320e9e8e04b45"
+  },
+  "sdk_read_change": {
+    "src/SCS.cpp": {
+      "before": "6e0853f27c2b157ae6ac8849f8d6511190852ffab58b9e34b3d67b71db3d4e54",
+      "after": "2170605547ae6613621419caa1ad4419d9b6eb70587bde24db2cac3f6477b8ad"
+    }
+  },
+  "excluded_upstream_binary": [
+    {
+      "path": "firmware_dependencies/libraries/MsgPack/examples/tests/cpp/main",
+      "sha256": "b09f46cf4ae791ee9748b5589a5bf32168dcea7fac6811dce1cb4feae2d10ff3",
+      "reason": "upstream example executable; not library compile source; intentionally omitted"
+    }
+  ],
+  "original_dependency_inventory_count": 201,
+  "included_dependency_count": 200,
+  "compiled_sketch_sha256": {
+    "current_telemetry.h": "6a40c41a715a369d4eda672a23b8a9f2fbba0f34559049b6fd212dbbf5b1362b",
+    "display_telemetry.h": "8abf6c66b81d20e1cb5862b67a726a55594e7c26cb4849dc90c112bd15d3559e",
+    "duck_config.h": "d7877465e68aa3da03ff80657d0a42a4e99feb28d44fbd1eb32c904e58f79955",
+    "factory_calibration.h": "22a0d55b4bd1302ee5d24d5d3352ed867695df08d2ccc4548b32541b2cde163a",
+    "protocol.h": "c9c73ea760d8a21d8f6e76d26cb6856e882151825af80c16ee59c386a6aacb1c",
+    "qmi8658.h": "3d6b501dba41e76e6fc63cbd81d35eb5d5cd34ff80f18e0bb44ec3cc9772f4b1",
+    "route_refresh.h": "07ed36223db35f15c900021f7f305f418a73277ee74269754428548bdc92bb43",
+    "scs_bus.h": "9a0596c102a11f41d661ff2c48779120e4b90b9b7bb93d34ace8c70b1aabcec5",
+    "sketch.ino": "09eb23897face7cb89212fefc36c64ed155b0a0d723d7b38a618b52f7ada2599",
+    "sketch.yaml": "58f2d25c791cae6d19e052859f20bed08ea4ad38cb609b5116a68e4ce1c5433d",
+    "uart_fifo.h": "f3dc8d93e2f0c7e8908be3eb071adf60484f009b55964cea0c44655a956ac942"
+  },
+  "declared_app_sketch_yaml_sha256": "89cec19321237ba98c48e5237d2fa8429a4526b831880e0b14c60f91a425e7e4",
+  "build_profile_note": "Compiled sketch.yaml points to frozen relative dependency dirs; application source manifest had a different dependency declaration hash. C++/headers unchanged by this build profile adaptation.",
+  "limitations": [
+    "Same source hashes do not guarantee a byte-identical fresh toolchain build.",
+    "Native fake-platform tests do not establish ARM timing, RF continuity or physical standing.",
+    "RouterBridge/RPClite are modified frozen source snapshots, not pristine upstream versions; exact clean-upstream patch ancestry is not asserted."
+  ]
+}

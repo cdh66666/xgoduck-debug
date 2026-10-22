@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.exe
+*.obj
+*.elf
+*.bin
+.build-unoq/

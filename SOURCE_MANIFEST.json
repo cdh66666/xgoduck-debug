@@ -4,32 +4,34 @@
   "snapshot_sources": {
     "app.yaml": "ca80d2677e7f58bea4d3e7e1c3866ed1ae43ac8cacb11209c1018eda92616a47",
     "python/xgoduck_fast_forward.onnx": "9391ee2255977546a4b308302c409d64a408fe4383d88abadc554f3452552247",
+    "python/gyro_bias_control.py": "565b450d37d5b25eff8bd00bc1402129b309abe2fa28047eef04f1e3914e26d3",
     "python/xgoduck_roulade.onnx": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97",
     "python/display_telemetry.py": "a8c59e8dfbe655a9bf1d417690e7a73a3e8bb94494ef9c3535e74c576ab6d7b3",
-    "python/keyboard_runtime.py": "b6741b646a12510967ffe124a92c4c347e8939506141cc5ef4b4410f60279e69",
+    "python/keyboard_runtime.py": "4834ee543f3a4c52a5c783ec16085445fcfc4e991bf4abfd393d4d75078319dc",
     "python/xgoduck_getup.onnx": "c414f2bd84b0a79b89f0ba6997135eb45e4ecd9df9271ea989c237864027b2a3",
     "python/main.py": "702045380734619107b7282f4ce58f18ec5a4b4800c370b23812d2b6630a9a8e",
     "python/requirements.txt": "5b6db4186746fa17242709037ff7f7b55c449ca621d24776a982192576f39c08",
-    "python/controller.py": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
+    "python/controller.py": "5c798b211b3ef05deeef6802316c8307d5f7c0655e54c346652be10b7fd2afe5",
     "python/rl_core.py": "d257aa5ddd8cb7c0094cb29195c19ef2d280fb72724bebb00f79d8aa4a9458ba",
     "python/xgoduck_pick.onnx": "f34e990dda785e9a8c53890bdcd0f7f1d457592691fd3703f3776b48fb2d14b8",
     "python/wire.py": "0083ef513f97dedac7cd075fcc0842bb80afb4ad64e5e9f6fcae46387c2d4fdb",
-    "python/policy.py": "c0721355cedd591ce608d6c4bbd3bbe12c73193b519272082087e9252b353e66",
+    "python/policy.py": "2029e370328ae7e55f43e70a98a86030c63508439cc607e6d202b1c1f207c017",
     "python/current_telemetry.py": "3df40ebec339739a8d979026b3fe32420cd926a04d45e4c90da33f6c2eb9d7de",
     "python/factory_calibration.py": "4ff880610d2bf634348cdeebdda0a7e88aee0338393599cb11a3f4a5e90b5422",
-    "python/xgoduck_walk.onnx": "5727b909d5ea1a0f9ff63bf4cea9707339dea6a522374c7a120da633605b923f",
+    "python/xgoduck_walk.onnx": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
     "python/proc.py": "01a6a501d225f73e73bdef66105bd6e516e50182be00c02af7116ec6367a35fd",
-    "python/recovery.py": "94474f1196e8c9dde9ab01e3233fc81b8176b7e5a5311ba4f1790f8d02907367",
-    "python/release_profile.py": "63cadfd1950c8460886c8d6a8b678843f768363f0458fa045cbbca425e102207",
+    "python/recovery.py": "125e7a2cb2d20186dc88b95652a35b55a4d6859a7ce187e728d25c54cceff664",
+    "python/release_profile.py": "6c3d3786697e3b6472796c8a4ac0151584f7481e47a484f7925a7a6e858467df",
     "sketch/sketch.yaml": "89cec19321237ba98c48e5237d2fa8429a4526b831880e0b14c60f91a425e7e4",
     "sketch/factory_calibration.h": "22a0d55b4bd1302ee5d24d5d3352ed867695df08d2ccc4548b32541b2cde163a",
-    "sketch/sketch.ino": "df9f8a6e99a2fc4dcc06a5e83457c8d95c6e39ab3951c1c6682b23679388a1e5",
+    "sketch/sketch.ino": "09eb23897face7cb89212fefc36c64ed155b0a0d723d7b38a618b52f7ada2599",
+    "sketch/route_refresh.h": "07ed36223db35f15c900021f7f305f418a73277ee74269754428548bdc92bb43",
     "sketch/uart_fifo.h": "f3dc8d93e2f0c7e8908be3eb071adf60484f009b55964cea0c44655a956ac942",
     "sketch/duck_config.h": "d7877465e68aa3da03ff80657d0a42a4e99feb28d44fbd1eb32c904e58f79955",
     "sketch/current_telemetry.h": "6a40c41a715a369d4eda672a23b8a9f2fbba0f34559049b6fd212dbbf5b1362b",
     "sketch/protocol.h": "c9c73ea760d8a21d8f6e76d26cb6856e882151825af80c16ee59c386a6aacb1c",
     "sketch/qmi8658.h": "3d6b501dba41e76e6fc63cbd81d35eb5d5cd34ff80f18e0bb44ec3cc9772f4b1",
-    "sketch/scs_bus.h": "652cd6696cafb087e84d751523f0eed356eb7dabd6cc9662b3276d800e81a1f2",
+    "sketch/scs_bus.h": "9a0596c102a11f41d661ff2c48779120e4b90b9b7bb93d34ace8c70b1aabcec5",
     "sketch/display_telemetry.h": "8abf6c66b81d20e1cb5862b67a726a55594e7c26cb4849dc90c112bd15d3559e",
     "assets/calibrate.html": "44524884458408c326730294b7c4a194a9cf13650c211bf8020dd600c2853c3e",
     "assets/calibrate.js": "fbf1a4af67dc8a44919e9e9d3315d1eb3b3362aa219a704451e1c0e5bca46ef8",
@@ -49,12 +51,6 @@
       "published_sha256": "ca80d2677e7f58bea4d3e7e1c3866ed1ae43ac8cacb11209c1018eda92616a47",
       "changes": []
     },
-    "robot-app/python/xgoduck_roulade.onnx": {
-      "source": "verified-runtime/python/xgoduck_roulade.onnx",
-      "source_sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97",
-      "published_sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97",
-      "changes": []
-    },
     "robot-app/python/display_telemetry.py": {
       "source": "verified-runtime/python/display_telemetry.py",
       "source_sha256": "a8c59e8dfbe655a9bf1d417690e7a73a3e8bb94494ef9c3535e74c576ab6d7b3",
@@ -63,14 +59,8 @@
     },
     "robot-app/python/keyboard_runtime.py": {
       "source": "verified-runtime/python/keyboard_runtime.py",
-      "source_sha256": "b6741b646a12510967ffe124a92c4c347e8939506141cc5ef4b4410f60279e69",
-      "published_sha256": "b6741b646a12510967ffe124a92c4c347e8939506141cc5ef4b4410f60279e69",
-      "changes": []
-    },
-    "robot-app/python/xgoduck_getup.onnx": {
-      "source": "verified-runtime/python/xgoduck_getup.onnx",
-      "source_sha256": "c414f2bd84b0a79b89f0ba6997135eb45e4ecd9df9271ea989c237864027b2a3",
-      "published_sha256": "c414f2bd84b0a79b89f0ba6997135eb45e4ecd9df9271ea989c237864027b2a3",
+      "source_sha256": "4834ee543f3a4c52a5c783ec16085445fcfc4e991bf4abfd393d4d75078319dc",
+      "published_sha256": "4834ee543f3a4c52a5c783ec16085445fcfc4e991bf4abfd393d4d75078319dc",
       "changes": []
     },
     "robot-app/python/main.py": {
@@ -87,20 +77,14 @@
     },
     "robot-app/python/controller.py": {
       "source": "verified-runtime/python/controller.py",
-      "source_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
-      "published_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
+      "source_sha256": "5c798b211b3ef05deeef6802316c8307d5f7c0655e54c346652be10b7fd2afe5",
+      "published_sha256": "5c798b211b3ef05deeef6802316c8307d5f7c0655e54c346652be10b7fd2afe5",
       "changes": []
     },
     "robot-app/python/rl_core.py": {
       "source": "verified-runtime/python/rl_core.py",
       "source_sha256": "d257aa5ddd8cb7c0094cb29195c19ef2d280fb72724bebb00f79d8aa4a9458ba",
       "published_sha256": "d257aa5ddd8cb7c0094cb29195c19ef2d280fb72724bebb00f79d8aa4a9458ba",
-      "changes": []
-    },
-    "robot-app/python/xgoduck_pick.onnx": {
-      "source": "verified-runtime/python/xgoduck_pick.onnx",
-      "source_sha256": "f34e990dda785e9a8c53890bdcd0f7f1d457592691fd3703f3776b48fb2d14b8",
-      "published_sha256": "f34e990dda785e9a8c53890bdcd0f7f1d457592691fd3703f3776b48fb2d14b8",
       "changes": []
     },
     "robot-app/python/wire.py": {
@@ -111,8 +95,8 @@
     },
     "robot-app/python/policy.py": {
       "source": "verified-runtime/python/policy.py",
-      "source_sha256": "c0721355cedd591ce608d6c4bbd3bbe12c73193b519272082087e9252b353e66",
-      "published_sha256": "c0721355cedd591ce608d6c4bbd3bbe12c73193b519272082087e9252b353e66",
+      "source_sha256": "2029e370328ae7e55f43e70a98a86030c63508439cc607e6d202b1c1f207c017",
+      "published_sha256": "2029e370328ae7e55f43e70a98a86030c63508439cc607e6d202b1c1f207c017",
       "changes": []
     },
     "robot-app/python/current_telemetry.py": {
@@ -127,12 +111,6 @@
       "published_sha256": "4ff880610d2bf634348cdeebdda0a7e88aee0338393599cb11a3f4a5e90b5422",
       "changes": []
     },
-    "robot-app/python/xgoduck_walk.onnx": {
-      "source": "verified-runtime/python/xgoduck_walk.onnx",
-      "source_sha256": "5727b909d5ea1a0f9ff63bf4cea9707339dea6a522374c7a120da633605b923f",
-      "published_sha256": "5727b909d5ea1a0f9ff63bf4cea9707339dea6a522374c7a120da633605b923f",
-      "changes": []
-    },
     "robot-app/python/proc.py": {
       "source": "verified-runtime/python/proc.py",
       "source_sha256": "01a6a501d225f73e73bdef66105bd6e516e50182be00c02af7116ec6367a35fd",
@@ -141,14 +119,14 @@
     },
     "robot-app/python/recovery.py": {
       "source": "verified-runtime/python/recovery.py",
-      "source_sha256": "94474f1196e8c9dde9ab01e3233fc81b8176b7e5a5311ba4f1790f8d02907367",
-      "published_sha256": "94474f1196e8c9dde9ab01e3233fc81b8176b7e5a5311ba4f1790f8d02907367",
+      "source_sha256": "125e7a2cb2d20186dc88b95652a35b55a4d6859a7ce187e728d25c54cceff664",
+      "published_sha256": "125e7a2cb2d20186dc88b95652a35b55a4d6859a7ce187e728d25c54cceff664",
       "changes": []
     },
     "robot-app/python/release_profile.py": {
       "source": "verified-runtime/python/release_profile.py",
-      "source_sha256": "63cadfd1950c8460886c8d6a8b678843f768363f0458fa045cbbca425e102207",
-      "published_sha256": "63cadfd1950c8460886c8d6a8b678843f768363f0458fa045cbbca425e102207",
+      "source_sha256": "6c3d3786697e3b6472796c8a4ac0151584f7481e47a484f7925a7a6e858467df",
+      "published_sha256": "6c3d3786697e3b6472796c8a4ac0151584f7481e47a484f7925a7a6e858467df",
       "changes": []
     },
     "robot-app/sketch/sketch.yaml": {
@@ -165,8 +143,8 @@
     },
     "robot-app/sketch/sketch.ino": {
       "source": "verified-runtime/sketch/sketch.ino",
-      "source_sha256": "df9f8a6e99a2fc4dcc06a5e83457c8d95c6e39ab3951c1c6682b23679388a1e5",
-      "published_sha256": "df9f8a6e99a2fc4dcc06a5e83457c8d95c6e39ab3951c1c6682b23679388a1e5",
+      "source_sha256": "09eb23897face7cb89212fefc36c64ed155b0a0d723d7b38a618b52f7ada2599",
+      "published_sha256": "09eb23897face7cb89212fefc36c64ed155b0a0d723d7b38a618b52f7ada2599",
       "changes": []
     },
     "robot-app/sketch/uart_fifo.h": {
@@ -201,8 +179,8 @@
     },
     "robot-app/sketch/scs_bus.h": {
       "source": "verified-runtime/sketch/scs_bus.h",
-      "source_sha256": "652cd6696cafb087e84d751523f0eed356eb7dabd6cc9662b3276d800e81a1f2",
-      "published_sha256": "652cd6696cafb087e84d751523f0eed356eb7dabd6cc9662b3276d800e81a1f2",
+      "source_sha256": "9a0596c102a11f41d661ff2c48779120e4b90b9b7bb93d34ace8c70b1aabcec5",
+      "published_sha256": "9a0596c102a11f41d661ff2c48779120e4b90b9b7bb93d34ace8c70b1aabcec5",
       "changes": []
     },
     "robot-app/sketch/display_telemetry.h": {
@@ -278,8 +256,7 @@
       "source_sha256": "0dbb3387ed8ecc10a709b085b64fcccaff3f47900bbe71ec5877962e54c19c70",
       "published_sha256": "ed57a92b0b492821b0cec725513873bf2e6be2ff5a27c70891118699d0a1f675",
       "changes": [
-        "replace real controller serial with user configuration",
-        "bind configured serial inside legacy remote source namespace; integrated firmware path unchanged"
+        "configured serial instead of machine identity"
       ]
     },
     "pc/bench_calibration_transport.py": {
@@ -293,8 +270,7 @@
       "source_sha256": "a8471345f59c5914a7b6ea99b6d2375cc554330fff15eb874ead4fa23f62d973",
       "published_sha256": "40bb866bbf85a038e29afa998b3a110b93ad51fb75a30c6ea31b218552c6c974",
       "changes": [
-        "replace real controller serial with user configuration",
-        "bind configured serial inside legacy remote source namespace; integrated firmware path unchanged"
+        "configured serial instead of machine identity"
       ]
     },
     "pc/bench_server.py": {
@@ -323,10 +299,10 @@
     },
     "pc/factory_workbench.py": {
       "source": "pc/factory_workbench.py",
-      "source_sha256": "369f26a5a29cd7726480576ce8c99d459f4f9380ea4bd8ccc73e4e34f928b6b7",
-      "published_sha256": "e04f040bd1950fae9739dd74f84e4440c67414f28d9e508e641378e7a7734167",
+      "source_sha256": "47f8007e6e8dbbc6c6bb22848b6b1f7d1b9d8260294999a70570b0b3aafbef1a",
+      "published_sha256": "ecc196447e070a5245127016413e87f809a83ee9db6c243a6f8099412db1940d",
       "changes": [
-        "remove machine deployment receipt requirement; source verification remains, hardware verification remains false"
+        "relative publication manifest instead of private deployment receipt"
       ]
     },
     "pc/home_calibration_manifest.py": {
@@ -340,7 +316,7 @@
       "source_sha256": "17920c0ab54492c174c8204024bbe795bf13ca5813bb99864af11668569ccbbf",
       "published_sha256": "2346678e0a4862a28d972c23009d395a0a4c9da13088d5e53f8e78aed5143aaf",
       "changes": [
-        "use active Python interpreter for optional model audit"
+        "current Python interpreter"
       ]
     },
     "pc/model_http.py": {
@@ -348,7 +324,7 @@
       "source_sha256": "c4ff3ab9a142a04ab19f11fdcb24044293220a56167f201939fa7744b3fcc565",
       "published_sha256": "7a6cb803db8c2879e8d7482c293f4fd579a8ac5366b95f62988898ccdc8e06ad",
       "changes": [
-        "local simulation mesh/vendor URLs; historical training replay not bundled"
+        "2026-10-22 portable relative paths / current interpreter / model labels / migration startup adaptation; no physical acceptance claim"
       ]
     },
     "pc/model_library.py": {
@@ -359,19 +335,19 @@
     },
     "pc/model_transport.py": {
       "source": "pc/model_transport.py",
-      "source_sha256": "aa60a6f0a25a494515aeb9c0c87d30c0a423885fbf0d3128ea5aba50716b5163",
-      "published_sha256": "bc78958082163f491409e089e4ed6cabf5129661d4f605c4311dd2129fa15867",
+      "source_sha256": "a39f2ec20eb24b6f7e53cdc332d7883ef71b660338f2bc9d5606fd98a6dd8323",
+      "published_sha256": "9ce5e207445f6390a9388c0b8353bbf38de8a3b5a21d2215d75602379ca6bd05",
       "changes": [
-        "configured pinned serial in short SSH bootstrap; preserve check-before-exec and no retry"
+        "user-owned pinned controller identity"
       ]
     },
     "pc/official_control_proxy.py": {
       "source": "pc/official_control_proxy.py",
-      "source_sha256": "ad49e4c2b768afd4b8985194e038b07044d5b26c67e03093d5c41ff2c7bf10c4",
-      "published_sha256": "c5c01168e4b66f9f7561f577e02ab78d1f6e5843cf24d021d9afe43580aa37cb",
+      "source_sha256": "5f2374af53852aea1e609f4ea6d065070f7c14f0638149c0fbe74590365d5d83",
+      "published_sha256": "0ada255935f6bec1046e89acd1d436ef296c34a96bf7cce00b7ee26fe7d720b1",
       "changes": [
-        "replace real controller serial with user configuration",
-        "publication-only zero-speed HTTP admission; action entries retained"
+        "configured serial instead of machine identity",
+        "2026-10-22 portable relative paths / current interpreter / model labels / migration startup adaptation; no physical acceptance claim"
       ]
     },
     "pc/official_status_reader.py": {
@@ -382,8 +358,8 @@
     },
     "pc/official_status_stream.py": {
       "source": "pc/official_status_stream.py",
-      "source_sha256": "50c734c8b67998b87c7c176488badecc63f7113a4397fd41794e4c59e321f005",
-      "published_sha256": "50c734c8b67998b87c7c176488badecc63f7113a4397fd41794e4c59e321f005",
+      "source_sha256": "207713f4e3f9cdf2af9f74eb64c974843fb3603517829781f1d56271aaa3d438",
+      "published_sha256": "207713f4e3f9cdf2af9f74eb64c974843fb3603517829781f1d56271aaa3d438",
       "changes": []
     },
     "pc/performance_release_manifest.py": {
@@ -394,8 +370,8 @@
     },
     "pc/release_profile.py": {
       "source": "pc/release_profile.py",
-      "source_sha256": "63cadfd1950c8460886c8d6a8b678843f768363f0458fa045cbbca425e102207",
-      "published_sha256": "436d9c2111a5bf55f71da0a0d5f1e80af2f7091baae8bbbc25a7c00ca719737d",
+      "source_sha256": "6c3d3786697e3b6472796c8a4ac0151584f7481e47a484f7925a7a6e858467df",
+      "published_sha256": "6c3d3786697e3b6472796c8a4ac0151584f7481e47a484f7925a7a6e858467df",
       "changes": []
     },
     "pc/server.py": {
@@ -406,18 +382,19 @@
     },
     "pc/servo_current_recorder.py": {
       "source": "pc/servo_current_recorder.py",
-      "source_sha256": "f95d8155970c4bfaad70413b3cb4ba0decd7ca7e70ed1ab011a006940be332db",
-      "published_sha256": "11e6d22ec5292911c3e7ecf34debca677a1821ad7deb2a534707b08ffe118369",
+      "source_sha256": "50e787d1572a3dee90ef1a14ebce19f98b1bfa81ce4a02828743cfe526ea1c86",
+      "published_sha256": "ea3af3ebe586b6d1d552ade256487c952f87e570662480b0b6a09574e6c8171c",
       "changes": [
-        "bind passive recorder bootstrap to user serial; unconfigured startup remains disconnected"
+        "configured bootstrap and unconfigured/offline startup"
       ]
     },
     "pc/simulation_catalog.py": {
       "source": "pc/simulation_catalog.py",
       "source_sha256": "ecdb84c1cec38891aa67e119850ff12fd362257d31014f8146f0c9176513044e",
-      "published_sha256": "8c2abc7b6fcbaaed69fe0ba1667791d5ae2ecd536eea3fae6ae8503dc8bdd23f",
+      "published_sha256": "03316b0e498a573549e74b2499acc1d4e071b411bdda391d846e603dddd779c6",
       "changes": [
-        "resolve simulation XML/BAM/Recovery inside portable release"
+        "package-relative simulation inputs",
+        "2026-10-22 portable relative paths / current interpreter / model labels / migration startup adaptation; no physical acceptance claim"
       ]
     },
     "pc/simulation_http.py": {
@@ -429,9 +406,9 @@
     "pc/simulation_service.py": {
       "source": "pc/simulation_service.py",
       "source_sha256": "5cd7380c4b9921376a7cce0da1bc7afc76498fed88404fea478a9b2a52299c0e",
-      "published_sha256": "73ed2e85f2080b4f5a853baf6bee97377ee5adf118bd97aba899f613a7e09ff0",
+      "published_sha256": "8f29454ac74e0b2bb32a89896142ef78e83bf127685cc6eb7aa991c7860d7f3f",
       "changes": [
-        "use active Python interpreter for optional simulation"
+        "current Python interpreter"
       ]
     },
     "pc/stand_profile_manifest.py": {
@@ -455,10 +432,11 @@
     "pc/tools/discover_unoq.py": {
       "source": "pc/tools/discover_unoq.py",
       "source_sha256": "b30690576ea4c849b3bdf76a3dc6251b0d22298ee6ba9f4e2ce7a191c22fe4c8",
-      "published_sha256": "2d231ede7f1323daadbf8a3dad213ae83e4b5e60ca0a5e0023d961325069f77b",
+      "published_sha256": "5d0effe9e281385cbab9b6b03b55f9f68544bc6de36cd50696ffe351dbf46925",
       "changes": [
         "replace real controller serial with user configuration",
-        "resolve mDNS/SSH from user environment or PATH"
+        "resolve mDNS/SSH from user environment or PATH",
+        "2026-10-22 portable relative paths / current interpreter / model labels / migration startup adaptation; no physical acceptance claim"
       ]
     },
     "pc/tools/deploy_readonly_wifi.py": {
@@ -476,37 +454,37 @@
       "changes": []
     },
     "pc/assets/assembly-pdf.js": {
-      "source": "assets/assembly-pdf.js",
+      "source": "pc/assets/assembly-pdf.js",
       "source_sha256": "dbcaf8c6e3f88835fb7384eb46d048823e32466d8636fe87a9300cf5459f716c",
       "published_sha256": "dbcaf8c6e3f88835fb7384eb46d048823e32466d8636fe87a9300cf5459f716c",
       "changes": []
     },
     "pc/assets/bench-calibration.js": {
-      "source": "assets/bench-calibration.js",
+      "source": "pc/assets/bench-calibration.js",
       "source_sha256": "bcd470a6569264d771e57a98f558ffd20380e932cd93908ef8b3f0dddaafb88b",
       "published_sha256": "bcd470a6569264d771e57a98f558ffd20380e932cd93908ef8b3f0dddaafb88b",
       "changes": []
     },
     "pc/assets/bench-models.html": {
-      "source": "assets/bench-models.html",
+      "source": "pc/assets/bench-models.html",
       "source_sha256": "6a41affb9ca02959cb16a52cb2d15beb61d78d21336f63c3e410b1d35fe4f8e1",
       "published_sha256": "6a41affb9ca02959cb16a52cb2d15beb61d78d21336f63c3e410b1d35fe4f8e1",
       "changes": []
     },
     "pc/assets/bench-workbench.css": {
-      "source": "assets/bench-workbench.css",
+      "source": "pc/assets/bench-workbench.css",
       "source_sha256": "ac4f67da2c918fe6102c6bb9f6b5d188f4f8ac50914d190aad6f89a929486dd5",
       "published_sha256": "ac4f67da2c918fe6102c6bb9f6b5d188f4f8ac50914d190aad6f89a929486dd5",
       "changes": []
     },
     "pc/assets/calibration-tray.html": {
-      "source": "assets/calibration-tray.html",
+      "source": "pc/assets/calibration-tray.html",
       "source_sha256": "7cf7decff326cea1cb85033a1e09538be7a14db14161b7452617f28cb73e1c3f",
       "published_sha256": "7cf7decff326cea1cb85033a1e09538be7a14db14161b7452617f28cb73e1c3f",
       "changes": []
     },
     "pc/assets/calibration-tray.js": {
-      "source": "assets/calibration-tray.js",
+      "source": "pc/assets/calibration-tray.js",
       "source_sha256": "f4bf7097fa811625bfc168469a04bec4581ba1d3ff10b641baacb27a2b072a60",
       "published_sha256": "f4bf7097fa811625bfc168469a04bec4581ba1d3ff10b641baacb27a2b072a60",
       "changes": []
@@ -596,13 +574,13 @@
       "changes": []
     },
     "pc/assets/duck-dark.css": {
-      "source": "assets/duck-dark.css",
+      "source": "pc/assets/duck-dark.css",
       "source_sha256": "b35146faf34a43464f2742718613ce2665aec9ae6be5b7d974bcb86d5dbc26ed",
       "published_sha256": "b35146faf34a43464f2742718613ce2665aec9ae6be5b7d974bcb86d5dbc26ed",
       "changes": []
     },
     "pc/assets/duck-keyboard.js": {
-      "source": "assets/duck-keyboard.js",
+      "source": "pc/assets/duck-keyboard.js",
       "source_sha256": "b81823c295e704750b3f20c1ca9b6ceb565c75eb6b138e295404f02d6932ed10",
       "published_sha256": "b81823c295e704750b3f20c1ca9b6ceb565c75eb6b138e295404f02d6932ed10",
       "changes": []
@@ -650,25 +628,25 @@
       "changes": []
     },
     "pc/assets/imu-math.js": {
-      "source": "assets/imu-math.js",
+      "source": "pc/assets/imu-math.js",
       "source_sha256": "91ce15e9cdd14a3d3d9ba1e9a3422390002c7756370d1750e657070d75261349",
       "published_sha256": "91ce15e9cdd14a3d3d9ba1e9a3422390002c7756370d1750e657070d75261349",
       "changes": []
     },
     "pc/assets/imu-model.css": {
-      "source": "assets/imu-model.css",
+      "source": "pc/assets/imu-model.css",
       "source_sha256": "1145ab48600a8afb446d43b0e2b2f96f93131a095fd0221740287282df3ea836",
       "published_sha256": "1145ab48600a8afb446d43b0e2b2f96f93131a095fd0221740287282df3ea836",
       "changes": []
     },
     "pc/assets/imu-model.html": {
-      "source": "assets/imu-model.html",
+      "source": "pc/assets/imu-model.html",
       "source_sha256": "6856c7c29e53e07e37bdc32ce3d33aaadeb1c0b2940b8c434bbb4c60f6cc66a5",
       "published_sha256": "6856c7c29e53e07e37bdc32ce3d33aaadeb1c0b2940b8c434bbb4c60f6cc66a5",
       "changes": []
     },
     "pc/assets/imu-model.js": {
-      "source": "assets/imu-model.js",
+      "source": "pc/assets/imu-model.js",
       "source_sha256": "af2cc195ed5261458b8c3219c70fa27e4e238dae39807a7f913f16b2fa345ab7",
       "published_sha256": "af2cc195ed5261458b8c3219c70fa27e4e238dae39807a7f913f16b2fa345ab7",
       "changes": []
@@ -716,7 +694,7 @@
       "changes": []
     },
     "pc/assets/motor-current.js": {
-      "source": "assets/motor-current.js",
+      "source": "pc/assets/motor-current.js",
       "source_sha256": "aff3dc1a7467de76782feb3b93e269c12a75ccffb7f531f590be2f145a87f6a9",
       "published_sha256": "aff3dc1a7467de76782feb3b93e269c12a75ccffb7f531f590be2f145a87f6a9",
       "changes": []
@@ -734,15 +712,15 @@
       "changes": []
     },
     "pc/assets/numbering-restored.html": {
-      "source": "assets/numbering-restored.html",
-      "source_sha256": "05b8337d0f523573a1fbdcbfcc7cc78ade7377efddbc884e759a52782fa7157d",
-      "published_sha256": "05b8337d0f523573a1fbdcbfcc7cc78ade7377efddbc884e759a52782fa7157d",
+      "source": "pc/assets/numbering-restored.html",
+      "source_sha256": "a30493e86cc1e510add9b5452697ef3eb2655bcab6f0aabe348512862da216b2",
+      "published_sha256": "a30493e86cc1e510add9b5452697ef3eb2655bcab6f0aabe348512862da216b2",
       "changes": []
     },
     "pc/assets/numbering-restored.js": {
-      "source": "assets/numbering-restored.js",
-      "source_sha256": "ba0b9b0eb3fe0073db42360814f78c7062284f4830d6d10801c919cd376cf25e",
-      "published_sha256": "ba0b9b0eb3fe0073db42360814f78c7062284f4830d6d10801c919cd376cf25e",
+      "source": "pc/assets/numbering-restored.js",
+      "source_sha256": "701a72adf7c30f8d9036099fbdf0e970288a3254e6ab3c8e55ab485581b38c00",
+      "published_sha256": "701a72adf7c30f8d9036099fbdf0e970288a3254e6ab3c8e55ab485581b38c00",
       "changes": []
     },
     "pc/assets/numbering.js": {
@@ -752,16 +730,18 @@
       "changes": []
     },
     "pc/assets/official-assembly.html": {
-      "source": "assets/official-assembly.html",
+      "source": "pc/assets/official-assembly.html",
       "source_sha256": "852858920533225d12a74f33a154dfa5f4632fb47258528efc09ae53a50c668f",
       "published_sha256": "852858920533225d12a74f33a154dfa5f4632fb47258528efc09ae53a50c668f",
       "changes": []
     },
     "pc/assets/official-models.js": {
-      "source": "assets/official-models.js",
+      "source": "pc/assets/official-models.js",
       "source_sha256": "fadcc9b554fa9e8620012a967f2365d6f2d7ebddeada026e63c7a8b1b63ee493",
-      "published_sha256": "fadcc9b554fa9e8620012a967f2365d6f2d7ebddeada026e63c7a8b1b63ee493",
-      "changes": []
+      "published_sha256": "95c857b3fb1a1a48e1d8cbf19c0202bfe65f4a73b8d987df1e8b7fdf37e50472",
+      "changes": [
+        "2026-10-22 portable relative paths / current interpreter / model labels / migration startup adaptation; no physical acceptance claim"
+      ]
     },
     "pc/assets/official-pose-playback.js": {
       "source": "assets/official-pose-playback.js",
@@ -794,9 +774,9 @@
       "changes": []
     },
     "pc/assets/official-workbench.js": {
-      "source": "assets/official-workbench.js",
-      "source_sha256": "c6a80e01bd2948439afce9059fce9b80d9372d532195d21b916d6688b7c9365c",
-      "published_sha256": "c6a80e01bd2948439afce9059fce9b80d9372d532195d21b916d6688b7c9365c",
+      "source": "pc/assets/official-workbench.js",
+      "source_sha256": "3c5b64ff84367df530fcf7734b118798fc1e64321e43f34c80c13ed302e60456",
+      "published_sha256": "3c5b64ff84367df530fcf7734b118798fc1e64321e43f34c80c13ed302e60456",
       "changes": []
     },
     "pc/assets/pose-playback.js": {
@@ -806,7 +786,7 @@
       "changes": []
     },
     "pc/assets/relative-heading.js": {
-      "source": "assets/relative-heading.js",
+      "source": "pc/assets/relative-heading.js",
       "source_sha256": "af00d745a66263586e559df292dbf7a9a2e69b06bfd70b0c2af79e24a7639a02",
       "published_sha256": "af00d745a66263586e559df292dbf7a9a2e69b06bfd70b0c2af79e24a7639a02",
       "changes": []
@@ -1049,12 +1029,10 @@
       "changes": []
     },
     "pc/index.html": {
-      "source": "index.html",
-      "source_sha256": "4bc03424c79008906c3ec5c53f5a195d4dfa3505708e52321ffe591047acf220",
-      "published_sha256": "b15649d29cb253f64a293b63bf1465566332f965281e193200a462b5db4ae32a",
-      "changes": [
-        "explicit publication profile before workbench script"
-      ]
+      "source": "pc/index.html",
+      "source_sha256": "83f01d2104a29e6065207da21c04a050289dd729475519dedcb83d24d36ff5aa",
+      "published_sha256": "83f01d2104a29e6065207da21c04a050289dd729475519dedcb83d24d36ff5aa",
+      "changes": []
     },
     "pc/models.html": {
       "source": "models.html",
@@ -1097,11 +1075,12 @@
       ]
     },
     "pc/simulation/worker.py": {
-      "source": "simulation/worker.py",
-      "source_sha256": "7b39524e93866dc5c5cf0471cf31e6cfb377e7b4078d1c889bb08343e8101b4b",
-      "published_sha256": "0154355366f7b77c8e75c444a88f313b73ab01a2a546753f34ce05785aa8ddba",
+      "source": "pc/simulation/worker.py",
+      "source_sha256": "82e507146f05d32e8e65b7c0e030ad9b62f065fb20da46b8e4fe9cb9a04f39f2",
+      "published_sha256": "4fe554242ac6d582b90ce8a9df15d2df30523b70176d178ee954e8f8941b4709",
       "changes": [
-        "relative portable imports and fixture paths only; no numeric changes"
+        "package-local BAM; preserve current body-frame implementation",
+        "2026-10-22 portable relative paths / current interpreter / model labels / migration startup adaptation; no physical acceptance claim"
       ]
     },
     "tests/fixtures/worker-pre-dispatch.py": {
@@ -1123,9 +1102,10 @@
     "tests/test_recovery_dispatch.py": {
       "source": "simulation/test_recovery_dispatch.py",
       "source_sha256": "ba55fd6a5fb0b6059505145382f5a3d1710d0007bd2454a3e136bd9c18958a48",
-      "published_sha256": "e69c83bc4492f6cf3d0c6c6869fd578c424f8991ea6c677629435b23705676d2",
+      "published_sha256": "ed44bdc2070953173063a78d702deba6d17897c447a02d98a77e296031f4c722",
       "changes": [
-        "relative portable imports and fixture paths only; no numeric changes"
+        "relative portable imports and fixture paths only; no numeric changes",
+        "portable migration update; package-relative inputs and actual current contract"
       ]
     },
     "tests/test_receiver_sampling.py": {
@@ -1980,6 +1960,62 @@
       "published_sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
       "changes": [],
       "scope": "standalone read-only audit V2; default main console unchanged"
+    },
+    "robot-app/python/gyro_bias_control.py": {
+      "source": "verified-runtime/python/gyro_bias_control.py",
+      "source_sha256": "565b450d37d5b25eff8bd00bc1402129b309abe2fa28047eef04f1e3914e26d3",
+      "published_sha256": "565b450d37d5b25eff8bd00bc1402129b309abe2fa28047eef04f1e3914e26d3",
+      "changes": []
+    },
+    "robot-app/sketch/route_refresh.h": {
+      "source": "verified-runtime/sketch/route_refresh.h",
+      "source_sha256": "07ed36223db35f15c900021f7f305f418a73277ee74269754428548bdc92bb43",
+      "published_sha256": "07ed36223db35f15c900021f7f305f418a73277ee74269754428548bdc92bb43",
+      "changes": []
+    },
+    "pc/assets/numbering-simple.css": {
+      "source": "pc/assets/numbering-simple.css",
+      "source_sha256": "3803ff52eec513d8b8a8a1378439909aaf2031776a860bdf894f0963d991d95e",
+      "published_sha256": "3803ff52eec513d8b8a8a1378439909aaf2031776a860bdf894f0963d991d95e",
+      "changes": []
+    },
+    "robot-app/python/xgoduck_roulade.onnx": {
+      "source": "verified-runtime/python/xgoduck_roulade.onnx",
+      "source_sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97",
+      "published_sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97",
+      "changes": []
+    },
+    "robot-app/python/xgoduck_getup.onnx": {
+      "source": "verified-runtime/python/xgoduck_getup.onnx",
+      "source_sha256": "c414f2bd84b0a79b89f0ba6997135eb45e4ecd9df9271ea989c237864027b2a3",
+      "published_sha256": "c414f2bd84b0a79b89f0ba6997135eb45e4ecd9df9271ea989c237864027b2a3",
+      "changes": []
+    },
+    "robot-app/python/xgoduck_pick.onnx": {
+      "source": "verified-runtime/python/xgoduck_pick.onnx",
+      "source_sha256": "f34e990dda785e9a8c53890bdcd0f7f1d457592691fd3703f3776b48fb2d14b8",
+      "published_sha256": "f34e990dda785e9a8c53890bdcd0f7f1d457592691fd3703f3776b48fb2d14b8",
+      "changes": []
+    },
+    "robot-app/python/xgoduck_walk.onnx": {
+      "source": "verified-runtime/python/xgoduck_walk.onnx",
+      "source_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+      "published_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+      "changes": []
+    },
+    "training/checkpoints/model_047500.onnx": {
+      "source": "47500-delivery/model_047500.onnx",
+      "source_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+      "published_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+      "changes": []
+    },
+    "training/checkpoints/model_047500.pt": {
+      "source": "47500-delivery/model_047500.pt",
+      "source_sha256": "c9544dc3c975e875e271a4e0b95c1a5a49ffade243dea20e0dfbd75c674594bc",
+      "published_sha256": "ff6d88962d0c2703e17e343bfa9e9c17decba3435d896d6e315aab5ec7fe22db",
+      "changes": [
+        "drop non-training infos metadata; Actor/Critic/Adam/iteration preserved"
+      ]
     }
   },
   "omitted": [
@@ -1991,167 +2027,1394 @@
   ],
   "actual_device_data_included": false,
   "portable_adapter_hardware_verified": false,
-  "optimization_scope": {
-    "simulation_receiver_source_sha256": "7b39524e93866dc5c5cf0471cf31e6cfb377e7b4078d1c889bb08343e8101b4b",
-    "visual_sha256": "04afa3bed3b27093763863071be67850c892f1bf970fc6d925fb58a048e9c71e",
-    "default_controller_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
-    "host_candidates_installed": false,
-    "behavior_acceptance": "NOT_PASSED",
-    "hardware_operations": 0,
-    "previous_visual_v1_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1"
-  },
   "generated_files": {
     ".gitattributes": {
       "sha256": "382a0222d5a617bcf92776f9d5313c625e9d0d884d9941aa780851b91d8653e0",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     ".gitignore": {
-      "sha256": "ef88e5af975cc8c8008ceabeb69b8fef5e8037188053f52a6843baa0b0ead359",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "sha256": "edeaca5fda3f6b703c5a3bbbee33b7512a407ff0ac5bd87d1caeef444091e51c",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "MODEL_ACCEPTANCE.json": {
-      "sha256": "0d8c63dbe936e7a17c57075be5788cd44e719c5998392516c714cdf660480bc7",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "sha256": "6a1b221ef3ac5f7cdbc968512894f05444c72464c2d744e44ade376e8d68f2d4",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "README.md": {
-      "sha256": "2a9c7793d3c1190f6bb332e34c06c55c0855ab8131a0dbcf6254472d625be84c",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "sha256": "e93b29043d1b49f7bccc3cf7c15a12576a5d0343d4adb5efafd0a4dc56aea963",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "RELEASE_PROFILE.json": {
-      "sha256": "f153042cc10d7fe559ad5e9faef33cfa40e4df082db1657a8e2cdd55d90e7bec",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "sha256": "2fc534417e7d3a6f621eaabe9bcc91f31821f01dcd1e0f8d6142a037d8344972",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "RELEASE_RUNTIME.json": {
-      "sha256": "f3ddfe099658a0bb7c4e2bb84442a32064313cc5fda9c72f8efb58508c64c1fe",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "sha256": "f39e3116fb385403315faf224174a6a03b03a516424b37ae141c21da88d4d1ad",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "SNAPSHOT_VERIFICATION.json": {
-      "sha256": "ca6477213077d7c772cd5d65590da8b15ce08758b9c57468fce5397e030e428e",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "sha256": "87ebdb003652a6c1ad5b5e1ddb59d88a0fd187ba43757f80f92ae593b5a2f0da",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "THIRD_PARTY.md": {
-      "sha256": "17afc7dcbf0f1b221fff74b61743441049b8dc7db7926dc00ef91c054b17f6f7",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "pc/device_config.py": {
-      "sha256": "9b2e31a379d0dece8a3ea04f0bfbe77b7b044645254033fba49d2fc341e92278",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "pc/release_runtime.py": {
-      "sha256": "e355621a492439659d0bb5ba3f383cca097cf2d637c412651adfe6bf525778c3",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "pc/requirements-simulation.txt": {
-      "sha256": "9fad41f4c9683a7c608ec80bc5e04f2879b816f2eec2e8c9390cc61f9137bd95",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "pc/requirements.txt": {
-      "sha256": "95fdad543f34e4a191cd17219e1a73b4ab4b0b5ad9806a25c3b49e7b48ab8ca0",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "tests/test_audit_publication.py": {
-      "sha256": "b8ab213bcf88719adf71b62c67b85e5b76439bc44cde57a3dbd92d7135a7f586",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "tests/test_audit_v2_public.py": {
-      "sha256": "2e16cde5b06b6e592473e3847d6db528ce8201f20501dae6a1210713855d192d",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "tests/test_bench_calibration.py": {
-      "sha256": "db43c2193d7844cd78a30dc2808ae3da80ca807226ce845ff8c1d5a07894ed29",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "tests/test_calibration_flow.mjs": {
-      "sha256": "b9bc9eae8c2b9fbfef3c6876cebec5554e6bda4ac74e6eff02a66b8d36a529d0",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "tests/test_calibration_labels.mjs": {
-      "sha256": "81a92fa74683799411d22a26d4873278e93a072b25424da05c4c985e87aaccc4",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "tests/test_current_curve_ui.mjs": {
-      "sha256": "67088610ec89147bca939f3c58a7f950818c0e09dae67b17c52740473eda41be",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "tests/test_current_recorder.py": {
-      "sha256": "466ff56d843441016bec3b3474edba1b0a6767a3d37603b056908f6a1b22bd37",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "tests/test_factory_calibration.py": {
-      "sha256": "26fd90cd8cbd47f023ed62e8c5fbe6a81c21d623e8ecb20149ac13116fd20a25",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "tests/test_home_middle.mjs": {
-      "sha256": "fd39bfe39887e0f2380731eb292ce530d4934a3681443bf813b290b4f20ca12b",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "tests/test_release.py": {
-      "sha256": "2ec3d43516cc3cb8ad9d2eccd37928b97d4072105609689fb54e0b690209a85a",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "tests/test_workbench.mjs": {
-      "sha256": "9d932ec455771cded5881c45e7a06fbdc2069ec11d955c9b65c22233d85b549c",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "reports/standing-system-audit-20261020/audit-v2-validation-summary.json": {
-      "sha256": "ae77b89d1ed5045fdd8a98bed4bf29a3e2dd36342e6d612524c9a3b12ebbc803",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "reports/standing-system-audit-20261020/README.md": {
-      "sha256": "03709b445fb2e1a9414ae3e7e6ea9f9eb5eda2253bf8c9b298e597aca3150cb5",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "pc/config/device.example.json": {
-      "sha256": "d3b384e2853e1dfad5b818ac300c2b6f500d09067bbbbb70de50f0f201c87b74",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "pc/config/ssh-identity.example.json": {
-      "sha256": "62f2f0ba1e3f1b6a497c08f4be6a0c4ae04fe7173506d49030a67a1d23e6d000",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "pc/config/wireless-calibration-auth.example.json": {
-      "sha256": "f14ac01ef13aaa31a9a86fa8932936cd1769f7d7c43e4d0550c5727a23dff942",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "sha256": "31cb02796e44b05f6136d336ecfbff5b281a37c7f2653a3a62ce6db03cadd564",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "candidates/host-feedback-20261020/MANIFEST.json": {
       "sha256": "8703f2a440426fbcd36b28d9d2ac9386daf453bc4120df8e0c2e26d20d3065bb",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "candidates/host-feedback-20261020/OFFLINE_EVIDENCE.json": {
       "sha256": "571a70bf34417e7ee7d7f0051cd0245bd18e9049655708b6d7077391792a1ed3",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "candidates/host-feedback-20261020/README.md": {
       "sha256": "253d7fed958396de3f7f57429ea0d9399ead4957c14e15fd71d1a36f917ef109",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "candidates/host-feedback-20261020/requirements-test.txt": {
-      "sha256": "a23aaf94250a9f53031a592980142245a848e2372b6c6c3093e8260b129265b8",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "candidates/servo-position-decoder-20261020/CMakeLists.txt": {
-      "sha256": "e9b0648a253a844438ac16d6c703c18fb1606682c0b0772dc5af80bc83bdf44b",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "candidates/servo-position-decoder-20261020/MANIFEST.json": {
-      "sha256": "30c6206e74c33b9c49fc9ab3877d79b52d3be04bad810e1d61d45886cb9e40f7",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
-    },
-    "candidates/servo-position-decoder-20261020/README.md": {
-      "sha256": "e84f8ae69621c532bf592d63b477f31ce780412d40d8771ede5aea10e5303ea2",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "candidates/host-feedback-20261020/patches/clock-only.diff": {
       "sha256": "70ecb2afa7dc949c40d48436b775d1b33b10ae38ebcf449aca35609d95482a6b",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "candidates/host-feedback-20261020/patches/combined.diff": {
       "sha256": "3512b4406ad4934ade99ba3ad99f4df25bf0be67231c5b3ab019a99d571489d4",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "candidates/host-feedback-20261020/patches/zero-only.diff": {
       "sha256": "e6f5c648eb7a23ddc22db9695710a82e7376704916169690e736ad2e41b137e4",
-      "role": "publication adapter, example, documentation or offline test; no hardware validation"
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "candidates/host-feedback-20261020/requirements-test.txt": {
+      "sha256": "a23aaf94250a9f53031a592980142245a848e2372b6c6c3093e8260b129265b8",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "candidates/servo-position-decoder-20261020/CMakeLists.txt": {
+      "sha256": "e9b0648a253a844438ac16d6c703c18fb1606682c0b0772dc5af80bc83bdf44b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "candidates/servo-position-decoder-20261020/MANIFEST.json": {
+      "sha256": "30c6206e74c33b9c49fc9ab3877d79b52d3be04bad810e1d61d45886cb9e40f7",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "candidates/servo-position-decoder-20261020/README.md": {
+      "sha256": "e84f8ae69621c532bf592d63b477f31ce780412d40d8771ede5aea10e5303ea2",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "docs/CHANGES_20261022.md": {
+      "sha256": "f1c55e3ded7c7376d1843be0a83c1cc2416f1b7c9b11ab4f4d5abc7c497bd931",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "docs/MOVE_TO_ANOTHER_PC.md": {
+      "sha256": "68a1865b945d88ee2cf3654d4d921261f78a6eaefc10ec894e24eb928fbe1e5d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/.gitignore": {
+      "sha256": "27ce5655d3e370af74eea9ac4d3ce5cca6cc590683bb637fd7fd32898b92d424",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/BUILD_BINDING.json": {
+      "sha256": "45daed2de538f5a72e18c1c4082404081043cd1592a0d2facd90bbe65a57ebb1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/README.md": {
+      "sha256": "bf97d5fe44724632179595c5f7880e64c97bbc8b91aea2e0d014f8e79d216837",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/SOURCE_LOCK.json": {
+      "sha256": "c8cd291e454e4ce4c03b735bf329719e08e8cea7ea5f8a7173f02aaf5a1a37fa",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/baseline/FTServo/src/SCS.cpp": {
+      "sha256": "6e0853f27c2b157ae6ac8849f8d6511190852ffab58b9e34b3d67b71db3d4e54",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/baseline/sketch/scs_bus.h": {
+      "sha256": "652cd6696cafb087e84d751523f0eed356eb7dabd6cc9662b3276d800e81a1f2",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/.github/workflows/arduino-lint.yml": {
+      "sha256": "abd9ff5ea999940f700762e010bbd36b98ffa0f804ead4ac9a6bedebeac1f519",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/.github/workflows/compile-examples.yml": {
+      "sha256": "2cb6f8c10fecc358c770bc8d14f85114218ed717137a7c7c59b20747a46b7d84",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/.github/workflows/sync-labels.yml": {
+      "sha256": "5ad1b398a05aaeba1e9d5c2378f1dbea95ffbf80fdab24b9532ecf67d0012e07",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/.gitignore": {
+      "sha256": "acd60ce0d996a3da3739cacfb354b210c001812ddacdbac5dcc37fb141f175e2",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/LICENSE": {
+      "sha256": "4b89d4518bd135ab4ee154a7bce722246b57a98c3d7efc1a09409898160c2bd1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/README.md": {
+      "sha256": "52abc7650c6e99526b2b86e28c3a9e43fc57ed810b2c01f17406c2221483b8f7",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/examples/rpc_lite_client/rpc_lite_client.ino": {
+      "sha256": "c2213a754432d72c5f03d0fca785981400c3b095b41a6b86e63d53c2de16cf86",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/examples/rpc_lite_server/rpc_lite_server.ino": {
+      "sha256": "912ff085026ea0fad149936662edebd38b01d55baf10ceefd86d8d04fc8708fd",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/examples/serial_client_example.py": {
+      "sha256": "6432c855a03e239bd6317c09347ccbc1128e2bba7e6a2561995bd384caafacaa",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/examples/serial_server_example.py": {
+      "sha256": "ddcb29c2723db778556cc54a14972a93f88f193e2c18a8c84002ac2865ec62a2",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/integration_test/README.md": {
+      "sha256": "4aca96b430e63bdf1e8d719c7fd6832ae2be4fd292f0f945cb0f9deb27c4fc5f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/integration_test/RPCClient_test.go": {
+      "sha256": "4e94c316969dffb654bb241af8c8a117d90ba50b61c7a901b9b9426958fea65d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/integration_test/RPCServer_test.go": {
+      "sha256": "aab380b7e5c6a95d60b711519a611e9e53f71c30573e23302d9c5a2368cd2aa4",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/integration_test/TestRPCClient/TestRPCClient.ino": {
+      "sha256": "a773db0e1418c27d15d5a30f606bf2b0b8e928b66de5e49e8360464e887c14a9",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/integration_test/TestRPCClient/serial_ports.h": {
+      "sha256": "6a48d1229a0556fffe451633a7e3cc376cde2f01252ab0c555d6bcec60008119",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/integration_test/TestRPCServer/TestRPCServer.ino": {
+      "sha256": "f713620d43b5a284346fd66cbaa24923b6a97317b219c53b06d6f7b6a3355923",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/integration_test/TestRPCServer/serial_ports.h": {
+      "sha256": "6a48d1229a0556fffe451633a7e3cc376cde2f01252ab0c555d6bcec60008119",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/integration_test/go.mod": {
+      "sha256": "e54ef089e0c0e0f345da4bd9a6b86b0fdcc7b1a568f381302e675d80e0529e2f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/integration_test/go.sum": {
+      "sha256": "dfb6372bb24d48012f2fd0a9970d41c111f1d2d1c4ade4697715feed9a41d4b1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/integration_test/serial_ports.h": {
+      "sha256": "4cb89b6dc1714e617692410d0759c9c5d3cb53e1a325a9d012974bb875a1675b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/integration_test/testsuite.go": {
+      "sha256": "cce32d8ec34bd2290cb15be10c3ab3f8e40da9acd58878b887d7500a294e26b9",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/serial_client.py": {
+      "sha256": "42c0d882a0301383c647eacaebea13da144908f59e580647642f1ca63bf0dae8",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/serial_server.py": {
+      "sha256": "dcec22e8481fe6d4599a5d488acf9e46dcaa38898c97d44d8f792fac94c99d75",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/unit_tests/decoder_tests/DummyTransport.h": {
+      "sha256": "15a5e8ebfd29981c4db7db46283046ab9db8db4b0140452313c9f75eb2c05276",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/unit_tests/decoder_tests/decoder_tester.h": {
+      "sha256": "b8ab6caf19eb3dbf87afa74045f55451307523020e74a98f2f8b73f8fa70b026",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/unit_tests/decoder_tests/decoder_tests.ino": {
+      "sha256": "a468483161f62e030ae1d91d6ba3fa3868dbc8526599aed4e1e0668282fde220",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/unit_tests/dispatcher_example/dispatcher_example.ino": {
+      "sha256": "124450c8dc02960025ca555ca977c40686916682594d0745d5303e5195207036",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/extras/unit_tests/wrapper_example/wrapper_example.ino": {
+      "sha256": "5e27a7ecec8431d6a5afbe9517f0e7409348ebda893dc9812fb15e9f629ec4f1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/library.properties": {
+      "sha256": "d74d2c5cb35ad2bbf46f6a6519d5f1a2dc487645c2bde101fa0a837779c23900",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/Arduino_RPClite.h": {
+      "sha256": "35dd81b176aad21ebdc8b07715ebc466ba2c7f9ac91be7172aa1dac616faad1e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/SerialTransport.h": {
+      "sha256": "80a72de9f4c6766177b097173340cc9a8d37fc9f45aa2ce1d34f3d36310290ce",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/client.h": {
+      "sha256": "9f6ddeef2e60c54a856129984c3c176143d23dc6dc1bac4e6d4e4c7b8b77c285",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/decoder.h": {
+      "sha256": "42e189ca9d0ba0a44907d2bbc14e2e9e374333900c53163a844f90056c333eff",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/decoder_manager.h": {
+      "sha256": "d999fc99564f0c32e9ce3f50152c3b328f5d6bbbd61599a93a1d7a2751846e9d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/dispatcher.h": {
+      "sha256": "89b2da59a2c9b98370ef6452eec9beee9333d13c6bd3cd28ffcb0c7d954938a4",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/duck_msgpack_frame.h": {
+      "sha256": "084e37deccdca7b9c11c217ec60606fba7014895b5cada971b71d39b325b658e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/error.h": {
+      "sha256": "c2a928c136d7a190d5caecd58a301cd3372a8c35f70c6b35b69f6334901c74ff",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/request.h": {
+      "sha256": "e26197897d6fb145b2479ae685a95644b5d4e839e06b4c98a0dce07cde72ce7f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/rpclite_utils.h": {
+      "sha256": "ddd8d2b4dfaf1ab10b71f0a72c5ee32430fcdd6efdb09035f1332d4b0f072337",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/server.h": {
+      "sha256": "8f252cc9362e53ec63321857833c92398266e1b94d5a4b44db145b2c274d354e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/transport.h": {
+      "sha256": "12d81c7cc75f988393af35ed753c0b061826ae68f5ca7a5e20e38334c16702e2",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RPClite/src/wrapper.h": {
+      "sha256": "2096c831e7ce78c3cb27fcda438109bd6116b5fff8d672bbe6f68702aad33934",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/.github/workflows/arduino-lint.yml": {
+      "sha256": "a3dc0dc3411e37cefac9c9c093bb7bef7c99f34c2a27dc24a99c2063d109e41f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/.github/workflows/compile-examples.yml": {
+      "sha256": "fc424c29913d21ca134b43c2e62bff7f437199801da252cbbc4ca2b4463402e5",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/.github/workflows/report-size-deltas.yml": {
+      "sha256": "38f07df768da1cb3041dc86fdf114ff5156fe3fc38eba050d85a613643c5a127",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/.gitignore": {
+      "sha256": "acd60ce0d996a3da3739cacfb354b210c001812ddacdbac5dcc37fb141f175e2",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/LICENSE": {
+      "sha256": "4b89d4518bd135ab4ee154a7bce722246b57a98c3d7efc1a09409898160c2bd1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/README.md": {
+      "sha256": "cd4a925774962d380ac39309ff3583c9bfcd778be4052bc843b842f4aaf3515e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/examples/client/client.ino": {
+      "sha256": "4fd11d03b47ecd1e57e8c3b34596be68b60f4a52da4f57872e3d704708da7f75",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/examples/hci/hci.ino": {
+      "sha256": "ea4d677029a9ffeca4b4d9ea90cf6d915b513491adbc3d9b1417fd87171494d7",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/examples/monitor/monitor.ino": {
+      "sha256": "103b1ebd15e23a41aa5c1b0fe9fb00b761315cf31813eefb96b395513af89aaf",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/examples/server/python/main.py": {
+      "sha256": "8e7728ab84bc05646f8413045c830c2534a24e99ec2b5784edd1d3eec41ec188",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/examples/server/server.ino": {
+      "sha256": "0f72c5c01702565cd66d0d14cf7d7fecc5c7328238c0262db10a134ee26794e7",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/examples/udp_ntp_client/udp_ntp_client.ino": {
+      "sha256": "204e1cf1418630a697110276a84e2329a74b995e1aac8b8576862e4ca5692737",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/extras/test/callbacks_test/callbacks_test.ino": {
+      "sha256": "1ca0ea41adcad9b0429f2ce142c144dd6121ae670b26d2c0c2306138a64653f1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/extras/test/callbacks_test/python/main.py": {
+      "sha256": "4e057a9c11ffb78ecbb4afb081f4ffc340716d5a9060ba7d5030e7a3a9116a60",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/extras/test/clientSSL/clientSSL.ino": {
+      "sha256": "7b958c90eec8c689a80b6d24a1366656a86b6bdca4e67f9c6d5edcde9c4af2b2",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/extras/test/test_rpc_thread/python/main.py": {
+      "sha256": "33c6bd351069a6f6871cc6c325dfb0d766b6fa0be2575ec10f0a67a9fb2ff557",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/extras/test/test_rpc_thread/test_rpc_thread.ino": {
+      "sha256": "4d3ddb07b4072b66e9e3dcb70bc6bab08d247bd87cac6fb47b73ac02a599506f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/extras/test/test_serial_alias_monitor/test_serial_alias_monitor.ino": {
+      "sha256": "d9c5cbf93d5dab94442ec17defe1f0c722b7282acafda528e6fa3dada67423ba",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/extras/test/udp_echo/python/main.py": {
+      "sha256": "aa347ed427e65f6568f191e6da597e94b065619ffc7460cd6d4038f913b9105c",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/extras/test/udp_echo/udp_echo.ino": {
+      "sha256": "d31bb6f01b4472b0b201b3773d55185d87ad84653697af72c19c42773fd15403",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/extras/test/udp_test/python/main.py": {
+      "sha256": "eb0fdf6837ac7b31b0e89ed8636057bb77034344903c9da8997e7e8fa9dc1679",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/extras/test/udp_test/udp_test.ino": {
+      "sha256": "645d1f29eed06a584d2c7cc7fb4bb553c2ec58ebb7c670fc25923c9f26d46e98",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/library.properties": {
+      "sha256": "a7d74f8dee9513cd7e4e29486de32bad071ddb6a1bcbd1ecc541f3ebeacd2aba",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/src/Arduino_RouterBridge.h": {
+      "sha256": "c283abd94478dedf5e55db274e376dde694fd0827e9d05e9a8404be798b11b7e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/src/bridge.h": {
+      "sha256": "1a94c270e1ff31753d632b413f49b18e5c2b219f00d811a9bbaa69514d55b47f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/src/hci.h": {
+      "sha256": "3151c72764945649405ad189f3954402f9d2e074d5542df13878a634d872e050",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/src/monitor.h": {
+      "sha256": "d3c8940c58db82eae0064208cdee6bb8e0c4ea68ee56cf75c38ff98038d5cf9e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/src/routerbridge_provides_serial.h": {
+      "sha256": "1c9c402d2a5dc62c6c1de2c91b2a6c88cc4afea690dbdee209c8ae2cb765c5ec",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/src/singletons.cpp": {
+      "sha256": "6184e7a02393b01457dc4233d0e96e543f2b8cf051e9a03adeb6da343dc3b045",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/src/tcp_client.h": {
+      "sha256": "3cb833e26b9e4d43042f23704e419e3a68d317ecadede4602cd6c5c79bdf78c9",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/src/tcp_server.h": {
+      "sha256": "6afe0c5de4237be616ef5215c5384c7b953c7b1af72027a5cdb1ca1959849b9d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/Arduino_RouterBridge/src/udp_bridge.h": {
+      "sha256": "d0cf4354b361ac0bba30aaaca93d7f994611e7738a5d8f88002b94ab631f553b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/.github/workflows/build.yml": {
+      "sha256": "bdf8dfb854966f6ee3e1934f6ad1fc9e1687aff08a11aeb0d48b9d5df5a5e70f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/ArxContainer.h": {
+      "sha256": "c34c600608e73039f3125a22c5b46e21fd032835d51edbac0f568010a2f4e445",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/ArxContainer/has_include.h": {
+      "sha256": "0666187b3cc5fe4cdc375260b359c01e1b47b0fda4d197a94c59950b8b96fc8e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/ArxContainer/has_libstdcplusplus.h": {
+      "sha256": "c996272c5402831c182e08b3aace51b4de7201b65b0840ac3dda5462e4bca1dc",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/ArxContainer/initializer_list.h": {
+      "sha256": "3818d4f8758f0209bdbb46f4b74228563f669c68afb8c94b03dc5864c6501e3f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/ArxContainer/replace_minmax_macros.h": {
+      "sha256": "b995896fa5ddbd2a7eb2bf7a7f68d7cf08c19a9e64338eb2937aeb7c68d7557f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/LICENSE": {
+      "sha256": "de2a732a9f9b1915f8956d01f9c2c3b8201f9bb32ba20161b56b51e72bee3e69",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/README.md": {
+      "sha256": "c38cc04edb65caaa52f1c66d5b41e6511879109eea60bcf9f650261421a1dfca",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/examples/array/array.ino": {
+      "sha256": "6bcbcb4f31bed61c0b8fdbbc8786d22e439b6e64c2397866508d1d9389a8a7f0",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/examples/base_ringbuffer/base_ringbuffer.ino": {
+      "sha256": "2cc9ef6e49d795face35bd01317bd66d945438106da735b572f5b8c0b4b49c82",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/examples/deque/deque.ino": {
+      "sha256": "a08b730007707210a5d26538fbbf935354959291fd342eebd4441814246244e1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/examples/initializer_list/initializer_list.ino": {
+      "sha256": "71f3cc211d45a86a67714296173bc4733187857555e6c136c56841a65fa6bf48",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/examples/map/map.ino": {
+      "sha256": "91a23dd008f4212f4f4c3f88e86a4010b3574ac9ef355afc7e17f77d30f702c7",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/examples/vector/vector.ino": {
+      "sha256": "40b4f6a03b16083a92c115c152b4c4a8f4db6d97964ef1abed32aaa9d104412a",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/library.json": {
+      "sha256": "99a0b996615cb47585f02c087157653de4006ca5e929a1ab08bd0fdd2e4cc118",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxContainer/library.properties": {
+      "sha256": "d3c5ea49d33fa35af3dcea00b01ef997f0697ccc225a618e850de461cee4277c",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/.github/workflows/build.yml": {
+      "sha256": "236e9dcf49508822245b04338229c9e3650972454d95832e44ff4f3f7b0fe1a1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits.h": {
+      "sha256": "e1803a1f648e597ee18e340945d09abcc1907d8530292b525003f495e6b435eb",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/functional.h": {
+      "sha256": "7f7d667f973d4aa3c5a68e4ce0c2ce4a3bcc368db61ec7e5bdeaf73c1de2de5b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/has_include.h": {
+      "sha256": "0666187b3cc5fe4cdc375260b359c01e1b47b0fda4d197a94c59950b8b96fc8e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/has_libstdcplusplus.h": {
+      "sha256": "c996272c5402831c182e08b3aace51b4de7201b65b0840ac3dda5462e4bca1dc",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/initializer_list.h": {
+      "sha256": "92444029d4d9470a61b64219064508734f77d228fb95590fc50e6180c390d6a9",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/replace_minmax_macros.h": {
+      "sha256": "b995896fa5ddbd2a7eb2bf7a7f68d7cf08c19a9e64338eb2937aeb7c68d7557f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/tuple.h": {
+      "sha256": "08c7c56651b115ba809c325db939e2723937221f4667b3c3d224726003f944a7",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/type_traits.h": {
+      "sha256": "7222e640257e6d48e286ee2aec0bf8e6d6a809afc2f9177785db4b2b2c953e59",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/LICENSE": {
+      "sha256": "924ea9fc49895eeb075b1a2a0769afadefc263d4b845b9e48dae8701efe1748d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/README.md": {
+      "sha256": "8cfc6be5a63f832cd8b299c0953d25f5f843990c2db959c90ba4e526f23c2984",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/examples/functional/functional.ino": {
+      "sha256": "d292bb4aa09f6a0588b4c3ec117385c3e90b036c670355df224000280c18c201",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/examples/sfinae/sfinae.ino": {
+      "sha256": "b01b34a40b83513cfdebc27dd006c0958956e535c55e48ccae894b2f023e49c9",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/examples/tuple/tuple.ino": {
+      "sha256": "09ddd6f632c6105cc1066b3526ae00f32638246eb5a2ba84ca5db0aac464d9c3",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/library.json": {
+      "sha256": "6c0c75aae0638e31c73d593f8c000ea4c653f8d0b4309ce9e88db0799b260593",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/library.properties": {
+      "sha256": "b6d1f0c66814bd0fb665ede779bc274b647093984acbd9de33a36dde62c0c53e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/ArxTypeTraits/tests/arduino_stl/arduino_stl.ino": {
+      "sha256": "66b8a1ecf1376e289ffdab6f5d14e4997dc9a2f2fc46b06c7b824b29da63b847",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/.github/workflows/build.yml": {
+      "sha256": "218aa443eda167d61cc85f21f3030ea7cbd932efbe975bca459faacb8c31b6dc",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/DebugLog.h": {
+      "sha256": "2806ecb63f42f754baeee00a3d80c33ca34549d947195f8008bafec570a89a7d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/DebugLog/FileLogger.h": {
+      "sha256": "8457395629c5b0d67a774ceac00ae340c1c6bf593892a5f53fdfe8e08b571ba8",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/DebugLog/Manager.h": {
+      "sha256": "e52319bdb33f009c50de5c2daf915880c5e3048b147972f603467d0eff1a7ce4",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/DebugLog/Types.h": {
+      "sha256": "ccaf91427dce83d5154adc0558ebcee9325b5d86457d0483d0f6805341bfb434",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/DebugLogDisable.h": {
+      "sha256": "58be92f9ad52cb81b35d22720a52387a3b763823d018e76c23eb0b13f5ce4869",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/DebugLogEnable.h": {
+      "sha256": "2ce16cba9789c1760f36dbbf6932e49890b0521984801c09454af14cee3e4749",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/DebugLogRestoreState.h": {
+      "sha256": "9b61e2af4aed9b403ae13284415a054e29d943b905d0b3f83f018cd9c4b3ce09",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/LICENSE": {
+      "sha256": "de2a732a9f9b1915f8956d01f9c2c3b8201f9bb32ba20161b56b51e72bee3e69",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/README.md": {
+      "sha256": "c9e002daa4944a08ba2fc9c81855490bd68367ab9c9598fad42065a44492d6c2",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/examples/basic/basic.ino": {
+      "sha256": "a90fc93bf7b78fdc079fdb19d8528173f7b1e701c5670c397a6bd8994fb0b5f9",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/examples/control_scope/MyClass.h": {
+      "sha256": "3d8f1e129e695670620ac0f7f79c82f79a3521905332e01d99037579ada007f4",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/examples/control_scope/control_scope.ino": {
+      "sha256": "e369e77a06aa47867b7d6f226f500b743f60cf2f96fc732b5793b63f5a951dbd",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/examples/cpp/main.cpp": {
+      "sha256": "f0636bd37336fe653b1cd7543b9fd37cb584a92f80131b96f2a90b5c2d0ed915",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/examples/log_level/log_level.ino": {
+      "sha256": "8e5c86e43234832dc4a6931ba4925233568f3bf8fe0452ac100c79effe0dc8a4",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/examples/log_to_file/log_to_file.ino": {
+      "sha256": "d6c9e6e5210d7012545871ee6fcf2e10ed4626e5cafa0d7ad2e453488a2d53fb",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/examples/log_to_file_manual_save/log_to_file_manual_save.ino": {
+      "sha256": "8a7a850e295c3eca73515d66cc400f285211defb060b70a2795401006fff927d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/examples/options/options.ino": {
+      "sha256": "7d3a4221dbd2cb12c934f7b20d83b474f1487de1c2b632cf318617cc1d7a60d0",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/library.json": {
+      "sha256": "6058263771659a3789323ae03e4432a1db39e56e933265ad9d2b94ec25624a4e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/DebugLog/library.properties": {
+      "sha256": "c3dcffa16d0ec55a50ab3cd6754222e49479b75fa4d15c0820c11ae65ab62ca0",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/LICENSE": {
+      "sha256": "e3234f3a388111ddbce44a8a1e256722decb0920f07be55bd789bdabfa4113ac",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/README.md": {
+      "sha256": "e0876c632ccd7a931c5ba1f19d8812137fe6798f757977386d4d04d407482bf0",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/Broadcast/Broadcast.ino": {
+      "sha256": "32bdc9ea25718344eea1fac1150740cda1da3e1ab07b9749fa97df77ea664171",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/CalibrationOfs/CalibrationOfs.ino": {
+      "sha256": "5d130fb06c60e52b49830bf4fe79f5cbecefbc1489dbbfada0dc0f412e9be97c",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/FeedBack/FeedBack.ino": {
+      "sha256": "0e09c1a1f28bf42703e8ef46100d8ebbb1e3e0e6dff86967d43d03d386135c3f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/Ping/Ping.ino": {
+      "sha256": "045e47eab425433cca34a1f3365097df5ae6e858131ae34e04e5f1046542e9d7",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/ProgramEprom/ProgramEprom.ino": {
+      "sha256": "59b560fca683e477f49fee3524663f7e3a9f802cfcafab7e93081ad73da2e2ed",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/RegWritePos/RegWritePos.ino": {
+      "sha256": "8f1949307c1c35149bdd033c5af5608935dec71c94620e81e056209fe9fe718c",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/SyncRead/SyncRead.ino": {
+      "sha256": "85ca0d4442704fee852dc39ec13a83ff7c790f80b201badac6ca16fe3193357d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/SyncWritePos/SyncWritePos.ino": {
+      "sha256": "cd6511dcfbec081bf7beeeb5b4182d5be33df045eedf51602f394d9a3a6e8c4f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/SyncWriteSpe/SyncWriteSpe.ino": {
+      "sha256": "4d604712994632b000425b7705a6c150a550d3b109d239408b2c142ba337e7fd",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/WriteEle/WriteEle.ino": {
+      "sha256": "1472e3abd367628de45ce3f2553c3039010c612b6ea9fc250a69b6b99aa4f91d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/WritePos/WritePos.ino": {
+      "sha256": "9797d3912c70e0f67fd3a8b0b7da83b729ed075af2c243141835e401f6f7a4ef",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/HLSCL/WriteSpe/WriteSpe.ino": {
+      "sha256": "fced2c46bf9e8038d69b88a08115dfdc42540be7f971f819afdaece1fe8285c0",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SCSCL/Broadcast/Broadcast.ino": {
+      "sha256": "339c2072dbe1b397d747099e457c6afec4a1c668855c9e5167b14c36e818e943",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SCSCL/FeedBack/FeedBack.ino": {
+      "sha256": "924711e4071c0e4944d0a70892bad8897dd05047353c87cff3ffb7ab2beb254d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SCSCL/Ping/Ping.ino": {
+      "sha256": "a8bf3a4f45a1fa87dfe4ef764fad5aa3d180b3dc0745617caf80a89de5d652f0",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SCSCL/ProgramEprom/ProgramEprom.ino": {
+      "sha256": "2d766140c19ccbd7874a8f7202d3374500814aa313eb11ef99610d3316c13c08",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SCSCL/RegWritePos/RegWritePos.ino": {
+      "sha256": "b50ccce97944d0241ebd86f83aebb2afa708c2942e919bbcb95c5aefd549ddfd",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SCSCL/SyncWritePos/SyncWritePos.ino": {
+      "sha256": "fa6cdeeb5316ad1bed391ea3b99d0c8679b4c191c05f945a92a95e023f1a1a6f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SCSCL/WritePWM/WritePWM.ino": {
+      "sha256": "b179d7697e791d3a2c585dfa6bd19bad9099e8c1879f520761f1ec77466c1a73",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SCSCL/WritePos/WritePos.ino": {
+      "sha256": "e6369b7f489c1f4c21d28a854902afe9dc00de8c614dcaac06e52c3661ae3be9",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SMS_STS/Broadcast/Broadcast.ino": {
+      "sha256": "5f3e33e9d40879b9b30c570eb516ed4139a62416e7984435ddf3f3b200b90da8",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SMS_STS/CalibrationOfs/CalibrationOfs.ino": {
+      "sha256": "4de53b380810107ae64301a4a1b5eb29f3aaa87dce97dfd90dd4d62346ab42e6",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SMS_STS/FeedBack/FeedBack.ino": {
+      "sha256": "5bf25b42ce969997d60bb5ddfde5be3fb11e4b3fbb93a3800fdd9d7710ed1df2",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SMS_STS/Ping/Ping.ino": {
+      "sha256": "b64dfb7dc8c786f79c6ee0d4f606c9447dd2e17f10e2ada33dea07c010c86cb7",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SMS_STS/ProgramEprom/ProgramEprom.ino": {
+      "sha256": "5db64716ddd1ee4c24d2b4cce9041dfccd835b7f4ba8e9892d694108c3fab2ab",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SMS_STS/RegWritePos/RegWritePos.ino": {
+      "sha256": "939fce6ac5fd90a3c1ef5060e5f7d0cb62bcee1acb335233eac1e681e786eb6d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SMS_STS/SyncRead/SyncRead.ino": {
+      "sha256": "7b57583d41a09dc4188cbe1fc28f543d32ab19c61962e6d365dff87664d56ced",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SMS_STS/SyncWritePos/SyncWritePos.ino": {
+      "sha256": "ae48e7e4590283ef0717aeb20e7110912063618a5b37b0a6f1223e25b5ea214c",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SMS_STS/SyncWriteSpe/SyncWriteSpe.ino": {
+      "sha256": "b57bf6a940275f3c35014a17df312376d52485d5aa6e02cf48b215f98554b94a",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SMS_STS/WritePos/WritePos.ino": {
+      "sha256": "acf1295f0c35deb436e85300666e4fa5890817a39ef05c9854918da464044557",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/examples/SMS_STS/WriteSpe/WriteSpe.ino": {
+      "sha256": "9db07670c0746825db3e0c75dc36111eca5f9d2c2420f7024a2fbc1a2d66433a",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/library.properties": {
+      "sha256": "c607a8d7c6d685081b913415e26ef30a0db0d95aa6a48d63f1503a7eaa1b99cc",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/HLSCL.cpp": {
+      "sha256": "4fe8e00d37b5e33953eaad42ae7039ea68149eb2ee89d0940004563f68c50b2a",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/HLSCL.h": {
+      "sha256": "2f7063f01e35a2e9bc61f8c8a1d02f2efd09bb28a37f7413b466fc4297b84deb",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/INST.h": {
+      "sha256": "8f8831343fefaec672cf68d182cc3796d810a1d4e1ff8e168c89f63ee9a47dbb",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/SCS.cpp": {
+      "sha256": "2170605547ae6613621419caa1ad4419d9b6eb70587bde24db2cac3f6477b8ad",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/SCS.h": {
+      "sha256": "a0885ddac48442932bf8edfbe5a5c29f160978f2fca2b2616c044bbcdf9bd953",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/SCSCL.cpp": {
+      "sha256": "8728019fd3f9fde97fb91476fac054fb6e7d3cf28e1ca80bff614519c0461220",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/SCSCL.h": {
+      "sha256": "1578e73e4ba7626663fb3c6dfa6367e3c56736c47ae20708a7af0de78aba282d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/SCSerial.cpp": {
+      "sha256": "264fafa2297745ccbe4857ee55d340ffb3ecf0a57786fc0db256d7d73568501c",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/SCSerial.h": {
+      "sha256": "4c0b9d1656625ff42f9404a7fb2efca23ce1b9986e76e660dbae928992b08d86",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/SCServo.h": {
+      "sha256": "f704b43d4511e1edb6c2b153dd93611541091a632f23afc1f0d054f54ffa1849",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/SMS_STS.cpp": {
+      "sha256": "b02109f758d0200d7815001177a149817be8c087b7fb0a8ddb33b8b2cffe5f0d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/FTServo/src/SMS_STS.h": {
+      "sha256": "3f9ce998ed1fdb081c6d56e2cd303e68d270ef084f0733771e7a3b5d70a3442f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/.github/workflows/build.yml": {
+      "sha256": "7e0161632ad994341b746edd53d297c211c1398c26fd8c96917dbc2b749a8623",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/.gitignore": {
+      "sha256": "62fe00c718c375d05fc19ac5596a32884c2549d07191a942343c8cf120f0bba5",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/LICENSE": {
+      "sha256": "924ea9fc49895eeb075b1a2a0769afadefc263d4b845b9e48dae8701efe1748d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/MsgPack.h": {
+      "sha256": "acf03f1001f8d744a1a1e4c381a6f0fbca2a4a03e8689f3f81baefd394ad1685",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/MsgPack/Packer.h": {
+      "sha256": "178fe16159ead5e5a5a92df9202ee20674cfcbe7db92878f8af13c9cf78124c4",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/MsgPack/Types.h": {
+      "sha256": "4699db90d4d2905375d20fb6c5b9b53cbfcc3253092dbc8b1a2cd1fc3e1d598e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/MsgPack/Unpacker.h": {
+      "sha256": "4de797546ea6a9d1cb40ad23a3bc31185970bc792456cfc7534b9959483421a8",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/MsgPack/Utility.h": {
+      "sha256": "dd6b85f02d56bd8d388ca061da990cd5e14fc9987bc4f3b5b7287d1a6f61ae40",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/MsgPack/util/TeensyDirtySTLErrorSolution/LICENSE": {
+      "sha256": "924ea9fc49895eeb075b1a2a0769afadefc263d4b845b9e48dae8701efe1748d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/MsgPack/util/TeensyDirtySTLErrorSolution/README.md": {
+      "sha256": "b4b7341216ad4797835c3f756781d96375052508e567d6b49648133036a97c8b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/MsgPack/util/TeensyDirtySTLErrorSolution/TeensyDirtySTLErrorSolution.h": {
+      "sha256": "db461df1ccdb22ceecf34aa39d2e3878edfd55d227eb9d9d5b2d5298c15f6eda",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/README.md": {
+      "sha256": "9f690a991c73591e45802639d68491ba7b782bba1ba810ed80c26dbdce51e246",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/arduinojson/arduinojson.ino": {
+      "sha256": "2fae6c433476ba909df97dce6a8ab35c8ef975eae356825e5e617a19a589cbda",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/custom_class/custom_class.ino": {
+      "sha256": "c359b8d00625cb275ea33dc4a818901023f916e1e82956cffa72ff84c92d7eef",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/json_compatibility/json_compatibility.ino": {
+      "sha256": "5f9e79c33c32deead87b945a36595707d29d7cc950288eabf1d7ea633b2d4271",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/nested/nested.ino": {
+      "sha256": "e766e4e7d6f3847c15f1d646e95be085b11437d4cd193ccf1201d1cf96e80437",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/nested_custom_class/nested_custom_class.ino": {
+      "sha256": "1eded84e6510443db63c54025d10ccf2d4e25e9f9c1a2704ce12b05fd4483a5e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/save_load_as_json_file/save_load_as_json_file.ino": {
+      "sha256": "89be575670d778993339a964f9fb0d89eedff3cc13f258b812d546ea00e5a052",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/save_load_eeprom/save_load_eeprom.ino": {
+      "sha256": "84c7308c4e4a1cef3a5e0bae6baccdc31b934a325b95281730cee226ed8d6753",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/simple/simple.ino": {
+      "sha256": "54728c152823b8afc77c4e808a1bfd95327e918cf1588b35967be47925687b18",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/tests/arduino/arduino.ino": {
+      "sha256": "aa4a8112213892afe1e9fb9126cbe92a9976c21659911d01e0b27c36d01d3c09",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/tests/arduino_no_stl/arduino_no_stl.ino": {
+      "sha256": "e121449cc47134a8f0a4b9db8bd159da99d7ad4ae5f4117b7decafa631e840ef",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/tests/cpp/main.cpp": {
+      "sha256": "f1b3f4aff63e3075e701303e01f3676cdd61dd16e848a1d1eec97f1c1060385d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/tests/original/README.md": {
+      "sha256": "dfe08b15c715935bee2e104281ba7db1d45dff053dafa07f6becc0beb402715b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/examples/tests/original/main.cpp": {
+      "sha256": "c51c526eaa1f75d7f305713ca2a7f336968f4cc695f1bfb9f2b6f2d97dd80c23",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/library.json": {
+      "sha256": "16fe927798c8ccd5684cc3b04acbe30ae23c1e39640ba4aba88419edc3303d7d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/firmware_dependencies/libraries/MsgPack/library.properties": {
+      "sha256": "a7027295fe10bc712084522fdfababb600e2fa02e37b2c46c780378ddeda442a",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/patches/custom-parser.patch": {
+      "sha256": "8d243deefa787d970f4148421f341de2ddd34d0c668be1815fb87f300c459edf",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/patches/ftservo-read.patch": {
+      "sha256": "5d4d696c6a6ec783e78acc3ed7fea154f9007cfd1cd5ec6a63e29b0b3a2d9b8b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/run_native.py": {
+      "sha256": "06c463a81dfc40c2c6046efe43af2a98769632386b875b2f21f1bdceb4c4b598",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/sketch/current_telemetry.h": {
+      "sha256": "6a40c41a715a369d4eda672a23b8a9f2fbba0f34559049b6fd212dbbf5b1362b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/sketch/display_telemetry.h": {
+      "sha256": "8abf6c66b81d20e1cb5862b67a726a55594e7c26cb4849dc90c112bd15d3559e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/sketch/duck_config.h": {
+      "sha256": "d7877465e68aa3da03ff80657d0a42a4e99feb28d44fbd1eb32c904e58f79955",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/sketch/factory_calibration.h": {
+      "sha256": "22a0d55b4bd1302ee5d24d5d3352ed867695df08d2ccc4548b32541b2cde163a",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/sketch/protocol.h": {
+      "sha256": "c9c73ea760d8a21d8f6e76d26cb6856e882151825af80c16ee59c386a6aacb1c",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/sketch/qmi8658.h": {
+      "sha256": "3d6b501dba41e76e6fc63cbd81d35eb5d5cd34ff80f18e0bb44ec3cc9772f4b1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/sketch/route_refresh.h": {
+      "sha256": "07ed36223db35f15c900021f7f305f418a73277ee74269754428548bdc92bb43",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/sketch/scs_bus.h": {
+      "sha256": "9a0596c102a11f41d661ff2c48779120e4b90b9b7bb93d34ace8c70b1aabcec5",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/sketch/sketch.ino": {
+      "sha256": "09eb23897face7cb89212fefc36c64ed155b0a0d723d7b38a618b52f7ada2599",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/sketch/sketch.yaml": {
+      "sha256": "58f2d25c791cae6d19e052859f20bed08ea4ad38cb609b5116a68e4ce1c5433d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/sketch/uart_fifo.h": {
+      "sha256": "f3dc8d93e2f0c7e8908be3eb071adf60484f009b55964cea0c44655a956ac942",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/tests/parser/candidate_actual.inc": {
+      "sha256": "e0b79980dad4c7aa494c2c2a4744a047c0c2a4b6b6e800176db8f877ac7f69c0",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/tests/parser/fixture_base.inc": {
+      "sha256": "63d6425d46db8c698b19155bfaca1ec7f89bc18b3523f17fe7911e5133c0a3f6",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/tests/parser/fixture_probe.inc": {
+      "sha256": "306aa54d53568f3b358e9624f93551c8bf18af273afd348fb78f805fc5b6b7a6",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/tests/parser/original_actual.inc": {
+      "sha256": "81aaa228f9c546ca213f1468547fb7a0e4b9fbd6b62eba828bc5802879ce3da2",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/tests/parser/test_parser.cpp": {
+      "sha256": "b72b72c38d67c99fe72d66c3e657a8a2fad7f5f8e41b6013313be6107510c33d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/tests/sdk/Arduino.h": {
+      "sha256": "acf40fdeeefed7363dcec62848c5a9c31419258dd631a07f922afade24418e87",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/tests/sdk/HLSCL_actual.inc": {
+      "sha256": "41d217d20fd23ceb7237b9087f50aac8776cac57b805b8c1747a41ff201eda4b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/tests/sdk/test_sdk.cpp": {
+      "sha256": "a8e02d0798cff9fe49d1943991cdc8994516aa2cb922bb354e258cdd04204167",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/tests/test_route_refresh.cpp": {
+      "sha256": "6ad50f1870dc93d386e4d860d5d624df46d60d82228edda879a1f3637b8d236f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/tests/test_startup.cpp": {
+      "sha256": "e4c8ce693b8a35a9c437d571c261869125755b57e04f05f5facd764c5b69fe12",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/validation/native-result.json": {
+      "sha256": "949b5a7a3d0e485899cf5f109bcb3416f4e059b8689f1d5e5ca6fce3c2c45d1c",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "firmware-support/verify_sources.py": {
+      "sha256": "77c4cb3edd43c920ac1c0de65fb72ffe1d1f4f1b8c8b0e6f1f1b1ee059ad425f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "pc/config/device.example.json": {
+      "sha256": "d3b384e2853e1dfad5b818ac300c2b6f500d09067bbbbb70de50f0f201c87b74",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "pc/config/ssh-identity.example.json": {
+      "sha256": "62f2f0ba1e3f1b6a497c08f4be6a0c4ae04fe7173506d49030a67a1d23e6d000",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "pc/config/wireless-calibration-auth.example.json": {
+      "sha256": "f14ac01ef13aaa31a9a86fa8932936cd1769f7d7c43e4d0550c5727a23dff942",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "pc/device_config.py": {
+      "sha256": "9b2e31a379d0dece8a3ea04f0bfbe77b7b044645254033fba49d2fc341e92278",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "pc/release_runtime.py": {
+      "sha256": "31256f930764d51c481b34e0c49bf63c784b28aeefd0b086702fc1c20b20bab6",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "pc/requirements-simulation.txt": {
+      "sha256": "9fad41f4c9683a7c608ec80bc5e04f2879b816f2eec2e8c9390cc61f9137bd95",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "pc/requirements.txt": {
+      "sha256": "95fdad543f34e4a191cd17219e1a73b4ab4b0b5ad9806a25c3b49e7b48ab8ca0",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "pc/tools/fetch_robot_models.py": {
+      "sha256": "09dc083bda969ccc930c1822a66b20a9fdfbb6eaf6c2e99a7f3c6bb9a2947f46",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "reports/20261020-SNAPSHOT_VERIFICATION.json": {
+      "sha256": "ca6477213077d7c772cd5d65590da8b15ce08758b9c57468fce5397e030e428e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "reports/20261020-snapshot-README.md": {
+      "sha256": "2a9c7793d3c1190f6bb332e34c06c55c0855ab8131a0dbcf6254472d625be84c",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "reports/standing-system-audit-20261020/README.md": {
+      "sha256": "03709b445fb2e1a9414ae3e7e6ea9f9eb5eda2253bf8c9b298e597aca3150cb5",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "reports/standing-system-audit-20261020/audit-v2-validation-summary.json": {
+      "sha256": "ae77b89d1ed5045fdd8a98bed4bf29a3e2dd36342e6d612524c9a3b12ebbc803",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_audit_publication.py": {
+      "sha256": "063334e26f0e7f233dba8f44da3939d1a44e555bc8842e464769692ab5c891ae",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_audit_v2_public.py": {
+      "sha256": "2e16cde5b06b6e592473e3847d6db528ce8201f20501dae6a1210713855d192d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_bench_calibration.py": {
+      "sha256": "db43c2193d7844cd78a30dc2808ae3da80ca807226ce845ff8c1d5a07894ed29",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_calibration_flow.mjs": {
+      "sha256": "b9bc9eae8c2b9fbfef3c6876cebec5554e6bda4ac74e6eff02a66b8d36a529d0",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_calibration_labels.mjs": {
+      "sha256": "81a92fa74683799411d22a26d4873278e93a072b25424da05c4c985e87aaccc4",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_control_telemetry_gap.mjs": {
+      "sha256": "cbb73122422a19350f4be23c26a04013467071b095a12f7c369d06bec8f6d1e1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_current_curve_ui.mjs": {
+      "sha256": "67088610ec89147bca939f3c58a7f950818c0e09dae67b17c52740473eda41be",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_current_recorder.py": {
+      "sha256": "466ff56d843441016bec3b3474edba1b0a6767a3d37603b056908f6a1b22bd37",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_factory_calibration.py": {
+      "sha256": "26fd90cd8cbd47f023ed62e8c5fbe6a81c21d623e8ecb20149ac13116fd20a25",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_fetch_robot_models.py": {
+      "sha256": "f3eb7a4727f6998a6d153da3f7e2352a1385395f614f21f3766593c3203751fd",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_home_middle.mjs": {
+      "sha256": "fd39bfe39887e0f2380731eb292ce530d4934a3681443bf813b290b4f20ca12b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_official_status_stream.py": {
+      "sha256": "2f64307a22fdf4f05e39023ca0844e29b9669ba8bf746d40644ec184d35509e3",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_official_workbench_pose.mjs": {
+      "sha256": "81ea0021b35c219b0bd109d559032ffa7404ee5dea8c3eb73b9581f5c252bf1b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_release.py": {
+      "sha256": "9ea33e164221cf8f17882d295af39cdebe82f20276437ac8e02cb51b61bad8a1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_wireless_stall_recovery.py": {
+      "sha256": "cd47e0712bd2e4df691140248c8335e9e5e49ab96731daac5c91d777de0bee0d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_workbench.mjs": {
+      "sha256": "51c8215cd6b12f45c8b700f4cd62fd75909602fd8fe7c2444631b890ba466277",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/.gitignore": {
+      "sha256": "798bb7c6321a1cbc82ffe8f83009612189c14925d3cf328d4536c6167f0a070a",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/ASSET_MANIFEST.json": {
+      "sha256": "4f99b031ca5127bfc799ae71e30119cad11cbba71d7aa2693132dcfad3a80bda",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/README.md": {
+      "sha256": "a60ce6e28e7865a0a2c80ff8222d95395c484c74ca5de33b6fae20e4ad830fbd",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/SOURCE_LINEAGE.json": {
+      "sha256": "7c74f6de3fb2bbbb474214c184c7d19864b645a2f7883c253f6925bc1ec3209f",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/VALIDATION.json": {
+      "sha256": "1bc9472da7b72c36a17eac2bb9726844bf06c704f770fb8e1312502a894ecc7b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/checkpoints/MANIFEST.json": {
+      "sha256": "280753530091e6ef1039b180fa3e5611806d63ad0a8b4a4f0bfb715bb7f425a7",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/config.json": {
+      "sha256": "f9689f6407c24dc5454209c686885c87973c237c692508480da3cd84365ec80d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/__init__.py": {
+      "sha256": "166e1731aa74d6f4d0b169b654501ab64517bd9d953439e8dde2cec409b0f93d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/actuator.py": {
+      "sha256": "bb4c6bb61395a6c695c45b55d60de16fdf6fd4decba0dabf993ad02a283a1107",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/actuators.py": {
+      "sha256": "37b26e3f6fb0abd818c615579da4cb3b8156ae0a5c3d37f6144b07c3d2a71397",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/dynamixel/__init__.py": {
+      "sha256": "166e1731aa74d6f4d0b169b654501ab64517bd9d953439e8dde2cec409b0f93d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/dynamixel/actuator.py": {
+      "sha256": "4944a6bc42671c9d2b92f04d92e8b7aebaa24a0b787d8fb901e47f1d2db2b7d9",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/erob/__init__.py": {
+      "sha256": "166e1731aa74d6f4d0b169b654501ab64517bd9d953439e8dde2cec409b0f93d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/erob/actuator.py": {
+      "sha256": "395c5175cb7e2b55e42d7108328ee1e0cedc1b001e662728b55b9913167e8e6e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/feetech/__init__.py": {
+      "sha256": "166e1731aa74d6f4d0b169b654501ab64517bd9d953439e8dde2cec409b0f93d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/feetech/actuator.py": {
+      "sha256": "7cca1b7b21d3424be0e09d035c4436da6b52823a30f1fb1c604a6a68ff2ba23a",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/message.py": {
+      "sha256": "7d476066df439effbaaa82d0a02aab708bf0af82a99d37d2b71a84739263204c",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/model.py": {
+      "sha256": "63c6537d7c6a3fa8b2ba9564274dc658fb1f8440b467315b8ffcb2a3869d6311",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/mujoco.py": {
+      "sha256": "64c0b6b8bd220a5bc64c00870cd710d6fd4ded992cc913b33411f6704b663cb6",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/parameter.py": {
+      "sha256": "1db6ca5019242c7291540fc7b779d31fdaf298f888ae50cede0e1d8a63fde0aa",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/testbench.py": {
+      "sha256": "7f916dc3075074cc4c2794ede103a783a18049e438687cdf9081c40107f68b06",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/testbench_mujoco.py": {
+      "sha256": "34c8e11a306d31725dc847ef7e7572b80407c12157a9a14a21093ea7bebbd6e1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/unitree/__init__.py": {
+      "sha256": "166e1731aa74d6f4d0b169b654501ab64517bd9d953439e8dde2cec409b0f93d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/bam/unitree/actuator.py": {
+      "sha256": "f50a2eb70fcdaf43210f89405a8b6bbc75c5f732cf51e601c3cd28d45bdb2799",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/policy.py": {
+      "sha256": "0eb9113594bce4e04fcfb03dbfc2118b263fcf2ea5e615494101fd1af3691d69",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/policy_runtime.py": {
+      "sha256": "c0721355cedd591ce608d6c4bbd3bbe12c73193b519272082087e9252b353e66",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/recovery.py": {
+      "sha256": "94474f1196e8c9dde9ab01e3233fc81b8176b7e5a5311ba4f1790f8d02907367",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/rl_core.py": {
+      "sha256": "d257aa5ddd8cb7c0094cb29195c19ef2d280fb72724bebb00f79d8aa4a9458ba",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/engine/worker.py": {
+      "sha256": "dfcc968249915c8f15d1959e9bfd20d01d74a9ffbda7f95c891abe50b9c7aa98",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/evaluate.py": {
+      "sha256": "9b07ce69187b3bd1f4ed8fee1356126389d8e23d3989be4948a02575445caadc",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/lateral_reward.py": {
+      "sha256": "8c6bbf79950575e304aaf94c8657cda696d9137a02a05f1af90c714ce90275c6",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/licenses/BAM-LICENSE": {
+      "sha256": "49bbe9114e49214df2ccc324cb3ac8d1d1aa1c3a0947f94c286765e86647b32e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/licenses/README.md": {
+      "sha256": "292e0211ec929c08c5ad7461bd1efe753413d3fa97b0d04fd9d63c51f36177ff",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/cover.stl": {
+      "sha256": "c170283e6a9ec5e528f128f1b3ba3f59445004bb18c1ca84ff3946b3a25f76b4",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/extension.obj": {
+      "sha256": "521fd12018ed8975a75a82e1765f2fd62e8b8ae9574a243c6fe54309c7faa802",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/head_pitch.stl": {
+      "sha256": "b820aa681dff1657d0a93f627b1ec0a096c951f97958debd86def6ea799da278",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/head_roll.stl": {
+      "sha256": "8db9efa162520f1fb24a03c6deebc2f9aa765f6ffd835ceb872643674756b77b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/head_yaw.stl": {
+      "sha256": "dbb1dfa4b2bb0166e4494d504640a85006202d42167e6077c15c9bcd328cbcaa",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/left_ankle.stl": {
+      "sha256": "19d137ca4d27a3e3913edc36be23bd31f6d19e5320c169fac87c8b2f126c9715",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/left_hip_pitch.stl": {
+      "sha256": "7299fe834de11465fd642865f276ba615fe045f7cf664948200a9cf2ac1d2a75",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/left_hip_roll.stl": {
+      "sha256": "396249addf4d073e578de5ff267c0e793bd6e0c69475cb3221ad8004ab022bcc",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/left_hip_yaw.stl": {
+      "sha256": "5cbf68e6812068d826dc40fab23b89e02d0e684c41a9ab173ade9bddd41a2d54",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/left_knee.stl": {
+      "sha256": "87bdc2d38a1c64a6c388d363c402a19da1f1fa690e4312cddd02420770020e94",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/neck_pitch.stl": {
+      "sha256": "a1e73e301029176601c88790e741b3da3543da62009286d344b91889bc715fbb",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/right_ankle.stl": {
+      "sha256": "e2d0dad75b940d3fb45f5affd77b647e821887feecc552da65c39a80fb5d043e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/right_hip_pitch.stl": {
+      "sha256": "87e1bea55e5a230b7b0bd244f9f53bf2888ad1def78cf9d2f726b3f2f9f4cd25",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/right_hip_roll.stl": {
+      "sha256": "21ef53f02de7b0a13b11d7d558ccad58aca4fcf603d1b0649ed20886726a0232",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/right_hip_yaw.stl": {
+      "sha256": "9ddd7049d1f2f963a9bafebcd3f1805f964e489c31daef78e942923a327a82a3",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/right_knee.stl": {
+      "sha256": "1946e1c4fea03585df166791ef5e0421fe469ea13e91e993c6b3b6d6212c7740",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/trunk_base.stl": {
+      "sha256": "2c615df07a5a7c820cf76c3911f84a025391cabfbe7c3dcf7a755f091c58d2af",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/assets/uno-q.stl": {
+      "sha256": "3a429404e252a3057591846c3101d57d0f7b19f712bfeec6a976f4c0e06b12d8",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/model/robot.xml": {
+      "sha256": "4160b1cb64baac710049cf91a9faf37975c9311dc63dac2413d4a9ac82883231",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/motion_stall.py": {
+      "sha256": "5432d9dec99f5a23e4db0659477a54d92be2ab3cc94bff2208add1e85b775e6d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/native_env.py": {
+      "sha256": "4cd5cadaa99f61257e256fc1dc250df9f53966d6d16aec3d6c13b3c846263aa1",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/params/1910_m6.json": {
+      "sha256": "ef2d51adfb1cc0831b9b02ca19aa9176fceecdf725148d084378d7d9a64afceb",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/precision_reward.py": {
+      "sha256": "6c36f3aa06df0c3db3cb0d71d6f21d1b261fbff3f38768e10dc6224c281edd35",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/reference-refinement/README.md": {
+      "sha256": "36d2c7d1ec00f98abb048aae1a22491b47187b395ecce720c59f9c0f195f9949",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/reference-refinement/preflight.py": {
+      "sha256": "04d95f4c78430f87f0e796bcc7dc59b7bbc3abeed6b09d41abc37635f1e33de7",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/reference-refinement/residual_model.py": {
+      "sha256": "dbb9cc44350d785fa950bd631ae0112df5365c2dde3bffe16047f8810732db6d",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/refine.py": {
+      "sha256": "c858d76e4e20922ba49791cd164370aa6f85aa9ef8901a190555977d0d3bb609",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/refine_model.py": {
+      "sha256": "c53c970129341fb38178cf9fb5506452b2183992cecbe4deb33687f3c90fa8ed",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/requirements.txt": {
+      "sha256": "1f3faca719f41eb270d927c938a4c3a774f68c013c3c0ab514c5bf88f48ce2ea",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/tests/test_contract.py": {
+      "sha256": "1cff392327d36d07321e13825f02c228ab8d8832acccad23964669d20ae3db7e",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/tools/check_assets.py": {
+      "sha256": "83ed66d975345eb5203008827f69c80d37a12a294bc9a9028b23b844dcf42a73",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/train.py": {
+      "sha256": "2f59d7018f5f3c93c1947588d77e8a07dabef06be89f5c2cb1be5f40c6849821",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/training_adapter.py": {
+      "sha256": "fd40b8d52f6111509852527584494b8248e0e15d4761e549d95c4daf106d0e8b",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "training/yaw_reward.py": {
+      "sha256": "70bfeefa4e5a36ce27d08cea06a19839873f5f14bfa27e3c63ae902df367e9cc",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     }
   },
   "audit_visualization_v2": {
@@ -2192,6 +3455,53 @@
     "device_requests": 0,
     "default_main_ui_worker_and_runtime_changed": false,
     "private_original_records_included": false,
-    "hardware_acceptance": "NOT_PASSED"
+    "hardware_acceptance": "NOT_PASSED",
+    "historical_snapshot_date": "2026-10-20"
+  },
+  "snapshot_date": "2026-10-22",
+  "external_models": {
+    "python/xgoduck_roulade.onnx": {
+      "path": "robot-app/python/xgoduck_roulade.onnx",
+      "sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97",
+      "included": true,
+      "acquisition": "Bundled current snapshot; optional exact-SHA read-only refresh from the robot.",
+      "bytes": 793686
+    },
+    "python/xgoduck_getup.onnx": {
+      "path": "robot-app/python/xgoduck_getup.onnx",
+      "sha256": "c414f2bd84b0a79b89f0ba6997135eb45e4ecd9df9271ea989c237864027b2a3",
+      "included": true,
+      "acquisition": "Bundled current snapshot; optional exact-SHA read-only refresh from the robot.",
+      "bytes": 793706
+    },
+    "python/xgoduck_pick.onnx": {
+      "path": "robot-app/python/xgoduck_pick.onnx",
+      "sha256": "f34e990dda785e9a8c53890bdcd0f7f1d457592691fd3703f3776b48fb2d14b8",
+      "included": true,
+      "acquisition": "Bundled current snapshot; optional exact-SHA read-only refresh from the robot.",
+      "bytes": 793686
+    },
+    "python/xgoduck_walk.onnx": {
+      "path": "robot-app/python/xgoduck_walk.onnx",
+      "sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+      "included": true,
+      "acquisition": "Bundled current snapshot; optional exact-SHA read-only refresh from the robot.",
+      "bytes": 918165
+    }
+  },
+  "hardware_validation": false,
+  "snapshot_source_count": 39,
+  "published_runtime_count": 38,
+  "weights_included_by_user_request": true,
+  "previous_public_commit": "c245fac256d616336e6384686c883e7128d96cde",
+  "upstream_runtime_commit": "9dc36787bc61b102c2da0f97c9c758e639e90ab8",
+  "historical_20261020_optimization_scope": {
+    "simulation_receiver_source_sha256": "7b39524e93866dc5c5cf0471cf31e6cfb377e7b4078d1c889bb08343e8101b4b",
+    "visual_sha256": "04afa3bed3b27093763863071be67850c892f1bf970fc6d925fb58a048e9c71e",
+    "default_controller_sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78",
+    "host_candidates_installed": false,
+    "behavior_acceptance": "NOT_PASSED",
+    "hardware_operations": 0,
+    "previous_visual_v1_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1"
   }
 }

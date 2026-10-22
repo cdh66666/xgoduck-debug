@@ -197,7 +197,7 @@ class Simulation:
         before=self._feedback_filter_time
         if before is not None and now<=before:return
         velocity=np.zeros(6)
-        mujoco.mj_objectVelocity(self.model,self.data,mujoco.mjtObj.mjOBJ_BODY,self.root_id,velocity,1)
+        mujoco.mj_objectVelocity(self.model,self.data,mujoco.mjtObj.mjOBJ_XBODY,self.root_id,velocity,1)
         raw=self.data.qvel[self.vadr]
         if before is None or now-before>.1:
             self.filtered_gyro=velocity[:3].copy();self.filtered_velocity=raw.copy()
@@ -211,7 +211,7 @@ class Simulation:
     def infer(self):
         rotation = self.data.xmat[self.root_id].reshape(3, 3)
         velocity = np.zeros(6)
-        mujoco.mj_objectVelocity(self.model, self.data, mujoco.mjtObj.mjOBJ_BODY, self.root_id, velocity, 1)
+        mujoco.mj_objectVelocity(self.model, self.data, mujoco.mjtObj.mjOBJ_XBODY, self.root_id, velocity, 1)
         gravity=rotation.T @ np.array([0.,0.,-1.])
         raw_velocity=self.data.qvel[self.vadr]
         if self.filtered_gyro is None:self._receive_policy_feedback()
@@ -272,7 +272,7 @@ class Simulation:
                 mujoco.mj_applyFT(self.model, self.data, self.force, np.zeros(3), point, self.force_body, self.data.qfrc_applied)
             if self.grab_position is not None:
                 velocity = np.zeros(6)
-                mujoco.mj_objectVelocity(self.model, self.data, mujoco.mjtObj.mjOBJ_BODY, self.root_id, velocity, 0)
+                mujoco.mj_objectVelocity(self.model, self.data, mujoco.mjtObj.mjOBJ_XBODY, self.root_id, velocity, 0)
                 force = 120 * (self.grab_position - self.data.xpos[self.root_id]) - 8 * velocity[3:]
                 norm = np.linalg.norm(force)
                 if norm > 20:

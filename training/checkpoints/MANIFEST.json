@@ -1,0 +1,30 @@
+{
+  "schema": "xgoduck-public-training-weights-v1",
+  "weights_included": true,
+  "files": {
+    "model_047500.onnx": {
+      "sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+      "bytes": 918165
+    },
+    "model_047500.pt": {
+      "sha256": "ff6d88962d0c2703e17e343bfa9e9c17decba3435d896d6e315aab5ec7fe22db",
+      "bytes": 3307783
+    }
+  },
+  "actor_input_dim": 61,
+  "actor_output_dim": 14,
+  "critic_input_dim": 64,
+  "iteration": 47500,
+  "architecture": "frozen_parent_mlp_plus_bounded_residual_plus_moving_feature_head_plus_back_linear61",
+  "parent_checkpoint_required": false,
+  "base_and_all_heads_embedded_in_final_checkpoint": true,
+  "source_checkpoint_sha256": "c9544dc3c975e875e271a4e0b95c1a5a49ffade243dea20e0dfbd75c674594bc",
+  "source_onnx_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+  "metadata_sanitization": "Only tensor states, optimizer, iteration and public interface metadata retained; original infos/env/session/local paths omitted",
+  "optimizer_parameter_objects": 10,
+  "optimizer_entries": 10,
+  "raw_source_checkpoint_bytes": 3335815,
+  "hardware_acceptance": "NOT_PASSED",
+  "offline_acceptance_source": "47500 basic native CPU final8 qualified; separate GPU domain had failures; extension behaviors untrained",
+  "source_label": "r5-comprehensive-cpu-backskip-20261021 model_047500 final delivery"
+}

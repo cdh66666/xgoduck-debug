@@ -102,6 +102,11 @@ def read_small_json(path):
 
 def cached_candidates(root):
     result = []
+    # Optional new-computer hint; every candidate is still SSH-pinned and
+    # serial-checked before use. This never marks an address as authenticated.
+    host = os.environ.get('XGODUCK_HOST','').strip()
+    ip = private_ipv4(host)
+    if ip:result.append(f'http://{ip}:9527')
     filenames=('wireless-connection.json','provisioning-state.json','discovery-last.json')
     # A recent verified discovery must win after DHCP assigns the board a new IP.
     filenames=sorted(filenames,key=lambda name:(Path(root)/'qa'/name).stat().st_mtime if (Path(root)/'qa'/name).is_file() else 0,reverse=True)

@@ -1,26 +1,14 @@
-# XGO Duck 当前代码快照（2026-10-20）
+# XGO Duck 调试与训练交接（2026-10-22）
 
-这是当前调试台和 Uno Q 程序的源码快照，**不是稳定发布，站立稳定性与受推恢复均为 NOT_PASSED**。用户实机观察到站起后向后撤步；当前交互仿真的受推恢复也未通过。尚未确定单一根因，不能把页面流畅、源码一致或离线检查当作机器人验收通过。
+给另一台电脑接手的当前代码快照：完整调试台、机器人源码、固件依赖、训练代码、仿真资源和可携带的模型权重。**站立后持续后撤、实物走停和无线尖峰尚未通过验收；这不是稳定产品发布。**
 
-默认配置仅允许原版零速站立 / 必要起身与普通头嘴控制。行走、快跑、深度 Pick、自动 Pick 和翻滚默认停用；历史翻滚曾触发电池供电中断，原因未解决。失败的 9391 前进图及新 600 轮候选不包含在发布运行清单中。禁用入口是当前范围限制，不是策略或供电问题已经修复。
+仓库：https://github.com/cdh66666/xgoduck-debug
 
-## 内容与证据边界
+## 换电脑调试
 
-- `pc/`：当前完整调试台、无线状态流、舵机电流曲线/CSV、校准流水、编号及可选交互仿真。控制为非模态侧面板，提示为悬浮通知，顶部六张状态卡保留。
-- `robot-app/`：由当前37份绑定源导出，除失败的前进 ONNX 外保留36份默认源。包括当前校准中位 HOME、Host、MCU、原四个 ONNX 及发布范围 guard。原始 SHA 与公开 SHA 在 `SOURCE_MANIFEST.json` 对照。
-- `pc/assets/calibration-tray-r7/` 与 `pc/downloads/`：同源 R7 托盘和鸭子真实 STL 预览、manifest 与打印 STL。仅同步已有几何，不代表新增装配/打印验收。
-- `simulation-model/`：当前 R5 无 EVA XML、网格与 BAM 参数；交互环境包含显示碰撞扩展，不能视为训练环境或实机的精确复制。
-- `legacy/2026-10-17/`：原公开 master 完整归档供追溯，不能与当前程序混装。
+先读 [换电脑步骤](docs/MOVE_TO_ANOTHER_PC.md)，将原电脑单独提供的 **XGODuck-PRIVATE-CONNECTION.zip** 解压到本仓库 `pc/`。私钥、认证、实际连接缓存和机械零位不上传GitHub；首次启动只读，不自动恢复运动。
 
-校准入口先展示 R7 摆放预览，用户确认后才执行一次 `recalibrate`：串行停止/卸力、进入、读回并逐轴保存。不会因打开页面、重连或打开预览而写校准。当前失败、取消、缺轴与历史记录均保留；旧15颗回执不会冒充本次完成。校准覆盖 EEPROM 零位，请先正确放入固定托盘。
-
-HOME 回到已保存的校准中位并保持，不进入旧默认站姿。15轴新鲜反馈已在中位时只提示，不重新发动作。固定托盘内只做校准，站立/起身应取出后在地面明确启动。
-
-电流是15颗舵机反馈电流幅值之和，**不是电源端总电流**，不能直接推算电池功率或证明断电原因。原始记录、CSV、真实零位、密钥、SSH配置、设备序列号、连接缓存和原始轨迹均未上传。
-
-## 电脑启动
-
-Windows、Python 3.10+、OpenSSH；网页无需 Node 构建。
+在仓库根目录运行（推荐Python 3.12/3.13）：
 
 ```powershell
 python -m venv .venv
@@ -28,69 +16,56 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -B pc/server.py
 ```
 
-入口 `http://127.0.0.1:8791/`。无自己的身份和认证配置时只显示离线，不借用开发机器的配置。
+打开 **http://127.0.0.1:8791/**。先看同一主控、15/15舵机、IMU在线与卸力。关闭旧电脑调试台页面，避免两台同时控制。已有鸭子不用因为换电脑重新烧录或校准。
 
-1. 将 `pc/config/device.example.json` 复制为 `pc/device.local.json`，填写自己的 Uno Q 序列号，也可设置 `XGODUCK_SERIAL`。
-2. 在 `pc/tools/.private/` 放自己的固定 SSH 身份、已核实 known_hosts 和与板端相同的认证密钥，模板见 `pc/config/*.example.json`。实际文件受 gitignore 排除。
-3. 将 Arduino `mdns-discovery` 放入 PATH 或设置 `XGODUCK_MDNS`。自动发现与重连只读，不恢复旧运动目标。
+当前基础键盘是同一47500 actor：W前进0.2、Shift+W 0.3、S后退−0.3、A/D原地转向±1，松键发零速；保留官方起身。头嘴、深Pick、自动Pick和翻滚仍未开放。当前walk SHA：`8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f`。
 
-**保留原主控整个 `data/`、认证和校准备份。** 仓库不提供设备零位，不附自动烧录脚本；旧 legacy 更新器不能用于本版。便携化适配包括相对路径清单、用户身份配置、当前 Python 解释器和移除私有部署回执依赖，未独立安装到另一台机器人验收。
+**姿态显示晚到不等于模型推理晚到。** 模型和传感闭环在鸭子本地；控制命令真正超过1秒中断仍会保护卸力。界面不再仅因显示迟到而强制卸力，控制回执正常时先发零速。详细差异和剩余问题见 [旧远端与当前版对比](docs/CHANGES_20261022.md)。不能保证换电脑就消除网络问题。
 
-## 可选仿真
+## 模型与可选仿真
+
+`robot-app/python/` 包含当前四个运行ONNX，约 **3.30MB**。`training/checkpoints/` 附47500完整架构的便携PT和配对ONNX，约 **4.23MB**；新增权重合计约 **7.53MB**，不需另找父模型链。PT只剔除本机路径等`infos`元数据，Actor/Critic/Adam/迭代数逐值保留。失败旧9391前进专用模型不作默认入口。包含Pick/翻滚权重不代表对应实机动作已开放或通过。旧历史归档沿用原有内容，不改写Git历史。
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r pc/requirements-simulation.txt
 ```
 
-在启动PC服务的同一Python环境安装这些依赖；也可设置 `XGODUCK_SIM_PYTHON` 指向自己已配置好的仿真解释器。原工作环境的原生vendor与Python ABI绑定，不随包复制。
+模型页运行的是本地MuJoCo仿真。`simulation-model/` 是交互环境资产；它与训练/实物的验收边界分别记录，不能用仿真画面代替实机通过。需要从已有鸭子重新核对相同SHA模型时，可选运行 `python pc/tools/fetch_robot_models.py --fetch`，该工具只读，不改变机器人。
 
-依赖锁定 MuJoCo 3.15.0、ONNX Runtime 1.26.0，使用兼容 SciPy 1.15.3 的 NumPy 2.2.6；不打包原生二进制、venv 或 CUDA。模型库打开预览才运行独立 CPU 仿真，加载包内 XML、网格和同源策略。无设备的离线启动/API 与资源绑定有检查；本快照不宣称稳定站立、受推恢复、速度跟踪或松键停稳已经通过。
+## 在新电脑训练
+
+完整入口和精确命令见 **[training/README.md](training/README.md)**。使用独立环境，避免训练依赖影响调试台：
+
+```powershell
+python -m venv .venv-training
+.\.venv-training\Scripts\python.exe -m pip install -r training/requirements.txt
+.\.venv-training\Scripts\python.exe training/tools/check_assets.py
+.\.venv-training\Scripts\python.exe training/refine.py --mode inspect --output training/outputs/47500-inspect
+```
+
+保留原生MuJoCo 3.15、XBODY机身坐标、100Hz滤波/50Hz策略、61维actor输入和14维动作、BAM物理配置。当前入口使用CPU；Windows已做短PPO和导出验证，Linux仅设计兼容，另一台电脑尚未验收。神经网络权重、物理电机配置和训练超参数是三类不同文件。
+
+既有47500是带冻结父网络的精修结构，不能把它直接喂给全新scratch MLP的resume。已有权重的正确加载/续训与从零训练路线分别说明，不能把一次smoke说成已经训练好。训练不连接硬件；新训练结果需独立仿真评估后再单独部署。
+
+## 源码布局
+
+- `pc/`：已认可的完整界面、非模态控制、校准、编号、电流曲线/CSV、无线状态流和本地仿真。
+- `robot-app/`：当前应用源码和4个运行模型；不含实际 `data/`、认证或机械零位。
+- `firmware-support/`：已安装固件实际使用的7个依赖库、11份编译sketch、源码锁定及首包/启动原生回归。**只复制应用头文件不足以复现固件**，构建时按其README保留库补丁。
+- `training/`：独立训练、环境资源、导出、评估和训练权重交接。
+- `reports/`、`candidates/`、`legacy/`：历史审计和候选，均有边界说明，不能与当前运行程序混装。
+
+`RELEASE_RUNTIME.json` 记录当前代码与模型SHA；`SOURCE_MANIFEST.json` 区分原始与便携适配SHA，`PACKAGE_FILES.json` 是公开文件库存。便携代码使用相对路径、当前解释器和用户自己的身份配置，不能把本机路径/部署回执当作新电脑依赖。
 
 ## 离线检查
 
-```powershell
-python -B -m unittest discover -s tests -p "test_*.py"
-node tests/test_workbench.mjs
-node tests/test_calibration_flow.mjs
-node tests/test_home_middle.mjs
-node tests/test_current_curve_ui.mjs
-```
-
-检查使用假隧道/合成数据，禁止连接硬件。`SOURCE_MANIFEST.json` 记录原始与便携化 SHA，`PACKAGE_FILES.json` 记录每个公开文件；`MODEL_ACCEPTANCE.json` 明确当前失败与未验证项。源码快照发布与实机通过是两回事。
-
-第三方来源和许可证见 [THIRD_PARTY.md](THIRD_PARTY.md)。
-
-
-## 第二次更新：系统审查与本地仿真时序修复
-
-第一份当前快照是 `4432aab`，保留完整历史，不重置或覆盖。此次仅把确定的100Hz接收/50Hz推理时序修复集成本地仿真，并加入独立只读整体逻辑图 `/assets/standing-system-audit.html`，主调试界面不新增入口。
-
-系统证据、匿名6项场景对照及3场景前后对照见 [审查报告](reports/standing-system-audit-20261020/README.md)。20秒无外力仿真保持静稳；±2N扰动恢复前后仍0/2通过，负方向末态变差，**不是稳定性改善或实物通过**。
-
-[Host反馈候选](candidates/host-feedback-20261020/README.md)包含zero-only、clock-only与combined三份未安装Controller；[位置解码候选](candidates/servo-position-decoder-20261020/README.md)只验证负方向位置编码的隔离函数。本次正位置记录未触发该负域，不声称完整多圈ABI或实物根因修复。默认机器人Controller仍181d，默认MCU、HOME、PD、权重和物理参数未由第二次更新改动。factory-route另一候选仍独立未安装、未做ARM编译，不包含在本包。
-
-可选仿真依赖安装后，运行额外5项dispatch与4项receiver测试：
+完整`tests/`包含本地仿真回归，先安装`pc/requirements-simulation.txt`；仅运行调试台不需要仿真依赖。训练检查使用独立训练环境。
 
 ```powershell
-python -B -m unittest discover -s tests -p "test_recovery_dispatch.py" -v
-python -B -m unittest discover -s tests -p "test_receiver_sampling.py" -v
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests -p "test_*.py"
+node --test tests/test_control_telemetry_gap.mjs tests/test_official_workbench_pose.mjs
+.\.venv-training\Scripts\python.exe -m unittest discover -s training/tests -v
+python firmware-support/verify_sources.py
 ```
 
-Host候选和C++解码候选的离线命令在各目录README。原始设备记录、壁钟、私有路径和身份信息不随此次报告上传；历史曲线按相对时间标明，不冒充实时或修复后实机数据。
-
-
-## 独立全链路审计页 V2
-
-继续使用 `/assets/standing-system-audit.html`，不改变主调试台或添加设备操作。V2按链路、历史、仿真对照、修复/验收四个视图组织；12个模块和13条连线均可选，检查器列接口字段/维度/单位、条件与错误、证据和源码定位。历史提供共享游标、15轴明细、误差热图、播放暂停及原始电流值；未使能时不画有效软件目标，缺测不连线。
-
-回放复用图层，只更新游标/读数；布局变化由ResizeObserver重新定位连线。显示的是已有匿名历史与诊断仿真，不是实时设备数据，也没有新增训练或实验。两组仿真分开显示51dbc历史场景对照与51dbc→7b395接收时序对照，末态稳定不代替末2秒连续静稳，实物验收仍NOT_PASSED。
-
-只从本地加载HTML/CSS/JS、D3和静态JSON；没有设备API、动作、校准、部署或训练接口。静态数据约1.23MB，打包脱敏端点、标量和相对来源指纹，不打包原bin、私有路径、真实壁钟或浏览器截图。来源路径/行号描述构建时审查的本机源码和证据，并不意味着全部原始记录已公开，也不保证便携路径/行号完全相同。
-
-原始证据独立8项检查与公开包自包含8项检查的范围分开，见 [V2验证摘要](reports/standing-system-audit-20261020/audit-v2-validation-summary.json)。公开检查无需私有记录：
-
-```powershell
-python -B -m unittest discover -s tests -p "test_audit_v2_public.py" -v
-```
-
-测试需本地Node作JS语法检查；网页本身无需Node构建。D3及许可证保留在 `pc/model-assets/vendor/d3/`。
+这些检查不应访问设备或启动动作。软件、仿真、实物验收分别记录在 `SNAPSHOT_VERIFICATION.json`、`training/VALIDATION.json`、`MODEL_ACCEPTANCE.json`。历史2026-10-20说明保存在 [原快照README](reports/20261020-snapshot-README.md)。第三方来源与许可证见 [THIRD_PARTY.md](THIRD_PARTY.md)。

@@ -3,8 +3,8 @@
 Every remote operation checks the hardware serial before running its source.
 The remote runtime owns motion admission; lost replies are never replayed.
 """
-import json
 from device_config import DEVICE_SERIAL
+import json
 from pathlib import Path
 import shlex
 import subprocess
@@ -22,6 +22,13 @@ def _configuration(root):
         identity=update.strict_identity(root)
         if identity.get('serial')!=DEVICE_SERIAL:raise ValueError('controller_identity_mismatch')
         choices=discovery.cached_candidates(root)
+        # The workbench can have authenticated a new DHCP address while an
+        # older standalone discovery cache still points at the previous boot.
+        connected=discovery.read_small_json(root/'qa/official-connection.json')
+        if (connected and connected.get('ssh_pin_verified') is True
+                and connected.get('sys_serial')==identity['serial']):
+            current=discovery.literal_url(connected.get('network_url'))
+            if current:choices=[current]+[u for u in choices if u!=current]
         if not choices:raise ValueError('controller_address_missing')
         target=discovery.literal_url(choices[0])
         if not target:raise ValueError('controller_address_invalid')

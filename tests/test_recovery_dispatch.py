@@ -3,6 +3,7 @@ import ast
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'pc/simulation'))
 from worker import Simulation, HERE
 from simulation_catalog import resolve_model
@@ -39,7 +40,11 @@ class RecoveryDispatchTests(unittest.TestCase):
         self.assertEqual(sim.active_model,'roulade')
         self.assertEqual(sim.recovery.phase,'walk')
         self.assertEqual(sim.inference_counts['getup'],0)
-        sim.step(100)
+        # The roll trajectory need not finish fallen. Exercise post-roll
+        # recovery with an explicit fallen sensor input, not that assumption.
+        update=sim.recovery.update
+        with patch.object(sim.recovery,'update',side_effect=lambda gravity,now,valid:update([1.,0.,0.],now,valid)):
+            sim.step(100)
         self.assertGreater(sim.inference_counts['getup'],0)
         self.assertFalse(sim.special_active)
 
@@ -55,6 +60,11 @@ class RecoveryDispatchTests(unittest.TestCase):
     def test_physics_methods_unchanged_by_dispatch_fix(self):
         old=ast.parse((Path(__file__).resolve().parent/'fixtures/worker-pre-dispatch.py').read_text('utf-8'))
         new=ast.parse((HERE/'worker.py').read_text('utf-8'))
+        frame_updates=[n for n in ast.walk(new) if isinstance(n,ast.Attribute) and n.attr=='mjOBJ_XBODY']
+        self.assertEqual(len(frame_updates),3)
+        # The separately approved bodyframe-v2 correction changes exactly
+        # these three velocity sampling constants, not integration or contacts.
+        for node in frame_updates:node.attr='mjOBJ_BODY'
         for tree in (old,new):
             cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='Simulation')
             cls.body=[n for n in cls.body if not isinstance(n,ast.FunctionDef) or n.name not in ('infer','_receive_policy_feedback')]

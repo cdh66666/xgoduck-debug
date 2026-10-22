@@ -43,7 +43,7 @@ class ReleaseTests(unittest.TestCase):
     def test_relative_manifest_and_original_graphs(self):
         manifest=release_runtime.verified_sources(PC)
         expected=json.loads((ROOT/'RELEASE_RUNTIME.json').read_text('utf-8'))
-        self.assertEqual(len(manifest['new_source_manifest']),len(expected['runtime_sources']))
+        self.assertEqual(len(manifest['new_source_manifest']),len(expected['runtime_sources'])+len(expected['external_models']))
         self.assertIsNone(manifest['zero_sha256'])
         self.assertNotIn('python/xgoduck_fast_forward.onnx',manifest['new_source_manifest'])
         for name in manifest['new_source_manifest']:
@@ -62,10 +62,10 @@ class ReleaseTests(unittest.TestCase):
             server=factory_workbench.FactoryWorkbenchServer(('127.0.0.1',0),Tunnel())
             thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
             try:
-                for path in ('/','/api/health','/api/bench/status','/assets/official-workbench.js','/api/models/official-walk/geometry'):
+                for path in ('/','/api/health','/api/bench/status','/assets/official-workbench.js'):
                     c=http.client.HTTPConnection('127.0.0.1',server.server_port,timeout=3);c.request('GET',path);reply=c.getresponse();data=reply.read();c.close();self.assertEqual(reply.status,200,path)
                     if path.startswith('/api/') and 'geometry' not in path:
-                        state=json.loads(data);self.assertFalse(state['connected']);self.assertTrue(state['startup_read_only']);self.assertFalse(state['baseline']['fast_policy']['active']);self.assertFalse(state['baseline']['navigation_policy']['active']);self.assertFalse(state['baseline']['manual_pick']['active']);self.assertEqual(state['baseline']['release_profile']['core'],['original_walk_zero_standing','original_getup'])
+                        state=json.loads(data);self.assertFalse(state['connected']);self.assertTrue(state['startup_read_only']);self.assertTrue(state['baseline']['basic_keyboard_policy']['active']);self.assertFalse(state['baseline']['manual_pick']['active']);self.assertEqual(state['baseline']['release_profile']['schema'],'xgoduck-basic-keyboard-publication-v2')
                 self.assertEqual(server.events,[])
             finally:server.shutdown();server.calibration.close();server.server_close();thread.join(timeout=2)
 
@@ -77,18 +77,18 @@ class ReleaseTests(unittest.TestCase):
             self.assertNotIn(path.suffix,('.pyd','.dll','.exe','.bin','.elf','.pt','.log','.pid'))
             if path.suffix=='.py':ast.parse(path.read_text('utf-8-sig'))
 
-    def test_publication_http_guard_and_original_head_mouth(self):
+    def test_publication_http_guard_and_basic_six_points(self):
         import release_profile as profile
         from official_control_proxy import OfficialServer
         class Tunnel:port=None;official=False;error='not_configured'
         server=OfficialServer(('127.0.0.1',0),Tunnel());thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
         try:
-            for endpoint,body,expected in [('/api/command',{'twist':[.2,0,0]},403),('/api/command',{'manual_pick_depth':.05},403),('/api/command',{'fast_forward':True},403),('/api/pick',{},403),('/api/roulade',{},403),('/api/command',{'head':[.2,-.2,.1,0],'mouth':3},503),('/api/mode',{'mode':'off'},503)]:
+            for endpoint,body,expected in [('/api/command',{'twist':[.2,0,0]},503),('/api/command',{'twist':[.1,.1,0]},403),('/api/command',{'manual_pick_depth':.05},403),('/api/pick',{},403),('/api/roulade',{},403),('/api/command',{'head':[.2,-.2,.1,0],'mouth':3},403),('/api/mode',{'mode':'off'},503)]:
                 connection=http.client.HTTPConnection('127.0.0.1',server.server_port,timeout=2)
                 connection.request('POST',endpoint,json.dumps(body),{'Content-Type':'application/json'});response=connection.getresponse();response.read();connection.close();self.assertEqual(response.status,expected,(endpoint,body))
-            body={'head':[.2,-.2,.1,0],'mouth':3}
+            body={'twist':[-.3,0,0]}
             result=profile.constrain_command(body)
-            self.assertEqual(result['head'],body['head']);self.assertEqual(result['mouth'],3);self.assertEqual(result['twist'],[0,0,0])
+            self.assertEqual(result['head'],[0,0,0,0]);self.assertEqual(result['mouth'],0);self.assertEqual(result['twist'],[-.3,0,0])
         finally:server.shutdown();server.server_close();thread.join(timeout=2)
 
     def test_actual_host_http_functions_reject_motion_before_controller(self):
@@ -100,11 +100,11 @@ class ReleaseTests(unittest.TestCase):
         class HTTPError(Exception):pass
         controller=Mock();namespace={'controller':controller,'HTTPException':HTTPError,'constrain_command':release_profile.constrain_command,'validate_release_action':release_profile.validate_release_action}
         exec(compile(ast.fix_missing_locations(ast.Module(body=functions,type_ignores=[])),'published-host-endpoints','exec'),namespace)
-        for endpoint,body in [('command',{'twist':[0,0,1]}),('command',{'navigation_specialist':True}),('pick',{}),('roulade',{})]:
+        for endpoint,body in [('command',{'twist':[.2,0,1]}),('command',{'head':[0,0,.1,0]}),('pick',{}),('roulade',{})]:
             with self.assertRaises(HTTPError):namespace[endpoint](body)
         self.assertEqual(controller.mock_calls,[])
-        namespace['command']({'head':[0,0,.1,0],'mouth':6});controller.command.assert_called_once()
-        self.assertEqual(controller.command.call_args.kwargs['twist'],[0,0,0])
+        namespace['command']({'twist':[0,0,1]});controller.command.assert_called_once()
+        self.assertEqual(controller.command.call_args.kwargs['twist'],[0,0,1])
 
     def test_passive_current_recorder_uses_own_pinned_serial(self):
         import servo_current_recorder as recorder

@@ -1,27 +1,25 @@
 {
-  "schema": "xgoduck-code-snapshot-acceptance-v3",
+  "schema": "xgoduck-code-snapshot-acceptance-v4",
   "publication_allowed": true,
   "publication_kind": "current code snapshot; not a stable release",
-  "authorization": "User explicitly authorized updating this repository on 2026-10-20",
+  "authorization": "User explicitly authorized this migration publication and inclusion of small model weights on 2026-10-22",
   "hardware_acceptance": "NOT_PASSED",
   "portable_adapter_hardware_verified": false,
   "current_findings": {
-    "standing": "NOT_PASSED: user observed backward steps after getting up",
+    "standing": "NOT_PASSED: previous physical getup followed by backward steps; no new complete passing trial",
     "interactive_push_recovery": "NOT_PASSED",
     "walking_and_release_stop": "NOT_PASSED",
-    "battery_roll_power_loss": "unresolved; no root cause fix claimed"
+    "battery_roll_power_loss": "unresolved; no root cause fix claimed",
+    "wireless": "Receive stalls remain; NIC-specific root cause unproven"
   },
   "default_enabled": [
-    "original_walk_zero_standing",
-    "original_getup",
-    "ordinary_head_mouth",
+    "basic_keyboard_six_points",
+    "official_getup",
     "calibration_and_numbering",
     "current_monitor"
   ],
   "default_disabled": [
-    "walking",
-    "fast_forward",
-    "navigation",
+    "ordinary_head_mouth",
     "deep_pick",
     "automatic_pick",
     "roulade"
@@ -43,5 +41,16 @@
     "decoder_candidate_installed": false,
     "hardware_operations": 0,
     "physical_acceptance": "NOT_PASSED"
+  },
+  "snapshot_date": "2026-10-22",
+  "wireless_acceptance": "NOT_PASSED",
+  "latest_motion_attempt": "unconfirmed; request marker and later heartbeat-disarmed state only, not a completed pose trace",
+  "new_computer_tested": false,
+  "current_features": {
+    "basic_actor_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+    "local_model_not_driven_by_pc_pose_stream": true,
+    "command_watchdog_s": 1.0,
+    "local_feedback_watchdog_s": 0.15,
+    "weights_included_by_user_request": true
   }
 }

@@ -1,0 +1,16 @@
+--- baseline/FTServo/src/SCS.cpp
++++ firmware_dependencies/libraries/FTServo/src/SCS.cpp
+@@ -185,6 +185,13 @@
+ 		u8Error = ERR_NO_REPLY;
+ 		return 0;
+ 	}
++	// ID 0xff is invalid; bound redundant-header recovery to 10 extra bytes.
++	u8 extraHeaderBytes = 0;
++	while(bBuf[0]==0xff){
++		if(extraHeaderBytes++ >= 10){u8Error=ERR_NO_REPLY; return 0;}
++		bBuf[0]=bBuf[1]; bBuf[1]=bBuf[2];
++		if(readSCS(bBuf+2,1)!=1){u8Error=ERR_NO_REPLY; return 0;}
++	}
+ 	if(bBuf[0]!=ID && ID!=0xfe){
+ 		u8Error = ERR_SLAVE_ID;
+ 		return 0;

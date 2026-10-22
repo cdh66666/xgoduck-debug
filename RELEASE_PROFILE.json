@@ -1,18 +1,51 @@
 {
-  "schema": "xgoduck-stand-getup-publication-profile-v1",
-  "core": [
-    "original_walk_zero_standing",
-    "original_getup"
-  ],
-  "ordinary_head_mouth": true,
-  "walking": false,
-  "fast_forward": false,
-  "navigation": false,
+  "schema": "xgoduck-basic-keyboard-publication-v2",
+  "model_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+  "ordinary_head_mouth": false,
+  "walking": true,
+  "fast_forward": true,
+  "navigation": true,
   "deep_pick": false,
   "automatic_pick": false,
   "roulade": false,
   "current_monitor": true,
   "calibration_and_numbering": true,
-  "roll_power_loss_cause": "Unresolved battery power loss; no hardware root-cause fix claimed",
-  "portable_profile_hardware_verified": false
+  "single_actor": true,
+  "native_basic_offline_qualified": true,
+  "portable_profile_hardware_verified": false,
+  "physical_acceptance": "pending",
+  "recovery_source": "retained official getup; new-actor handoff unverified",
+  "head_mouth_scope": "zero only; mixed motion not qualified",
+  "command_points": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.2,
+      0.0,
+      0.0
+    ],
+    [
+      0.3,
+      0.0,
+      0.0
+    ],
+    [
+      -0.3,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ],
+    [
+      0.0,
+      0.0,
+      -1.0
+    ]
+  ]
 }

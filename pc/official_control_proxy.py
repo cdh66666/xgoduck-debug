@@ -84,15 +84,41 @@ class WirelessTunnel:
             self.process=subprocess.Popen(args,stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
                 creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
             self.port=port;self.error=None
+            (ROOT/'qa').mkdir(exist_ok=True)
             (ROOT/'qa/official-connection.json').write_text(json.dumps({'network_url':selected[0],
                 'ssh_pin_verified':True,'sys_serial':DEVICE_SERIAL,'checked_at':time.time()},indent=2)+'\n',encoding='utf-8')
             return port
     def close(self):
         self.stopped.set()
-        if self.process is not None and self.process.poll() is None:
-            self.process.terminate()
-            try:self.process.wait(timeout=3)
-            except subprocess.TimeoutExpired:self.process.kill()
+        with self.lock:
+            process,self.process=self.process,None;self.port=None
+        if process is not None:
+            try:
+                if process.poll() is None:process.terminate()
+                try:process.wait(timeout=3)
+                except subprocess.TimeoutExpired:process.kill();process.wait(timeout=.5)
+            except (OSError,subprocess.TimeoutExpired):pass
+
+    def invalidate_stalled(self, port, process):
+        """Retire only the same owned relay after repeated read failures.
+
+        The next watcher pass reauthenticates and opens a new relay. Requests
+        are never replayed and no robot mode/target is restored.
+        """
+        with self.lock:
+            if process is None or self.process is not process or self.port != port:
+                return False
+            try:
+                if process.poll() is None:process.terminate()
+            except OSError:
+                if process.poll() is None:return False
+            self.process=None;self.port=None;self.official=False
+            self.error='wireless_reconnecting';self.next_attempt=0
+        try:
+            try:process.wait(timeout=.5)
+            except subprocess.TimeoutExpired:process.kill();process.wait(timeout=.5)
+        except (OSError,subprocess.TimeoutExpired):pass
+        return True
 
 
 class OfficialServer(ThreadingHTTPServer):

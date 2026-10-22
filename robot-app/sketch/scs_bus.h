@@ -235,6 +235,9 @@ static void parseServoRx() {
         }
         break;
       case 2:
+        if (res == 0xFF) {
+          break;  // Keep the two-byte header synchronized across extra FF.
+        }
         servoRxBuffer[2] = res;
         servoParserFlag = 3;
         break;

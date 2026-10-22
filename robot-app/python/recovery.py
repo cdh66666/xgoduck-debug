@@ -22,6 +22,20 @@ class Recovery:
         self.fall_elapsed = self.stand_elapsed = 0.0
         self.angle_deg = None
 
+    def start(self, gravity, now, valid=True):
+        """Classify an explicit policy start; normal running keeps its debounce."""
+        self.reset()
+        norm = math.sqrt(sum(v*v for v in gravity))
+        if not valid or not math.isfinite(norm) or norm < 1e-6:
+            return False
+        self.angle_deg = math.degrees(math.acos(max(-1.0, min(1.0, -gravity[2]/norm))))
+        if self.angle_deg > self.FALL_DEG:
+            self.phase = 'getup'
+            self.phase_since = now
+            self.transitions = 1
+            return True
+        return False
+
     def update(self, gravity, now, valid=True):
         norm = math.sqrt(sum(v*v for v in gravity))
         if not valid or not math.isfinite(norm) or norm < 1e-6:

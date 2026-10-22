@@ -1,0 +1,34 @@
+{
+  "source_family": "r5 comprehensive native CPU, bodyframe-v2",
+  "model_xml_source_sha256": "4160b1cb64baac710049cf91a9faf37975c9311dc63dac2413d4a9ac82883231",
+  "packaged_model_xml_sha256": "4160b1cb64baac710049cf91a9faf37975c9311dc63dac2413d4a9ac82883231",
+  "bam_parameter_sha256": "ef2d51adfb1cc0831b9b02ca19aa9176fceecdf725148d084378d7d9a64afceb",
+  "original_worker_sha256": "82e507146f05d32e8e65b7c0e030ad9b62f065fb20da46b8e4fe9cb9a04f39f2",
+  "packaged_worker_sha256": "dfcc968249915c8f15d1959e9bfd20d01d74a9ffbda7f95c891abe50b9c7aa98",
+  "worker_math_AST_unchanged": [
+    "reset",
+    "_receive_policy_feedback",
+    "infer",
+    "step"
+  ],
+  "native_episode_math_AST_unchanged": [
+    "observe",
+    "metrics",
+    "critic_linear_velocity",
+    "reset",
+    "step"
+  ],
+  "changes": [
+    "portable asset paths",
+    "explicit external raw-action sessions instead of ONNX parent sessions",
+    "random full MLP/PPO entry instead of frozen-parent residual refinement",
+    "explicit new output paths and independent basic evaluation matrix"
+  ],
+  "weights_included": true,
+  "portable_training_convergence_verified": false,
+  "scratch_architecture_reproduces47500": false,
+  "packaged47500_graph_matches_source": true,
+  "portable_continuation_validated": true,
+  "checkpoint_manifest": "checkpoints/MANIFEST.json",
+  "composite_graph_AST_unchanged": true
+}

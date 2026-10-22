@@ -2,9 +2,11 @@
 (() => {
   'use strict';
   const $=id=>document.getElementById(id), IDS=[10,11,12,13,14,20,21,22,23,24,30,31,32,33,34];
-  let last=null,page='imu',owned=false,busy=false,commandBusy=false,selected=10,stoppedAt=null,actionGeneration=0,ownedForwardSpeed=.2,controlledMode=null,rollPending=false,rollSeen=false,statusErrorMessage=null,sessionPending=null,feedbackGapAt=null;
+  let last=null,page='imu',owned=false,busy=false,commandBusy=false,selected=10,stoppedAt=null,actionGeneration=0,ownedForwardSpeed=.2,controlledMode=null,rollPending=false,rollSeen=false,statusErrorMessage=null,sessionPending=null,feedbackGapAt=null,lastCommandAckAt=null;
   const keyboard=window.DuckKeyboard.create();
   const STAND_ONLY=window.XGO_RELEASE_PROFILE?.schema==='xgoduck-stand-getup-publication-profile-v1';
+  const BASIC=window.XGO_RELEASE_PROFILE?.schema==='xgoduck-basic-keyboard-publication-v2';
+  const BASIC_MODEL_SHA='8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f';
   const labels={off:'已卸力',shadow:'只推理',hold:'校准中位保持',policy:'策略遥控',servo_debug:'舵机维护'};
   const text=(id,value)=>{if($(id)&&$(id).textContent!==value)$(id).textContent=value;};
   function statusItem(id,label,value,detail,state='unknown'){
@@ -189,6 +191,7 @@
   keyboardDetails.innerHTML='<output id="bench-keyboard-readout" aria-live="polite"></output><p>W 前进 0.2 m/s · Shift + W 快跑 0.3 m/s · S 后退 · A / D 左右转 · Space 翻滚 · Esc 停止卸力。</p><small>净转向优先，走动松键停止。K沿Pick姿态逐步低头，I逐步抬回；每次累加，松键保持。专用运动模型期间头部指令累计，回原站立后应用。历史翻滚实物未通过。</small>';
   $('bench-more-tests-content').append(keyboardDetails);
   if(STAND_ONLY){keyboardPanel.querySelector('p').textContent='启动站立后可控制头嘴；行走、快跑与翻滚当前停用。Esc 停止卸力。';keyboardDetails.querySelector('p').textContent='当前仅原版零速站立 / 起身；行走、快跑、深度Pick、翻滚默认停用。Esc停止卸力。';keyboardDetails.querySelector('small').textContent='头嘴逐档累加、松键保持；K退回HOME，不进入深度Pick。翻滚断电原因未修复，相关入口保留但停用。';}
+  if(BASIC){keyboardPanel.querySelector('.control-guide-group:last-child strong').textContent='头部 / 嘴部 · 本轮停用';keyboardPanel.querySelector('p').textContent='本轮基础测试：W/S/A/D走动，Shift+W加速；松键立即发送零速度。头嘴、深低头和翻滚尚未验收，相关键暂时停用。Esc停止卸力。';keyboardDetails.querySelector('p').textContent='同一模型：W前进0.2、Shift+W前进0.3、S后退−0.3 m/s，A/D左右转±1 rad/s；松键零速。';keyboardDetails.querySelector('small').textContent='全程同一actor，没有旧版3秒刹车或模型互换。JKLUIO、Space、头部回中、Pick本轮停用；基础行走实物效果仍待验收。';}
   $('bench-control-stop').onclick=()=>stop();
   $('bench-policy').onclick=()=>prepare('policy');$('bench-pick').onclick=()=>prepare('pick');$('bench-roulade').onclick=()=>prepare('roulade');
   $('bench-tests-toggle').onclick=()=>{const visible=$('bench-test-panel').hidden;setCalibrationVisible(false);setTestsVisible(visible);};
@@ -196,9 +199,10 @@
   document.body.append(dialog);let pending=null;
   $('bench-cancel').onclick=()=>dialog.close();
   function forwardSpeed(){return .2;}
-  function keyboardCapabilitiesReady(){if(STAND_ONLY)return true;const basis=last?.baseline;return basis?.fast_policy?.active===true&&basis?.navigation_policy?.active===true&&basis?.manual_pick?.active===true;}
+  function keyboardCapabilitiesReady(){if(STAND_ONLY)return true;const basis=last?.baseline;if(BASIC)return basis?.basic_keyboard_policy?.active===true&&basis.basic_keyboard_policy.sha256===BASIC_MODEL_SHA&&basis?.walk_policy?.sha256===BASIC_MODEL_SHA;return basis?.fast_policy?.active===true&&basis?.navigation_policy?.active===true&&basis?.manual_pick?.active===true;}
   function paintSpeed(){
     if(STAND_ONLY){const selector=$('bench-forward-speed');selector.value='0.2';selector.disabled=true;selector.title='本次发布仅零速站立/起身；行走与快跑停用。';for(const option of selector.options)option.disabled=true;if(selector.options[0])selector.options[0].textContent='行走 / 快跑默认停用';return;}
+    if(BASIC){const selector=$('bench-forward-speed');selector.value='0.2';selector.disabled=true;if(selector.options[0])selector.options[0].textContent='同一模型 0.2 m/s';selector.title='W 0.2、Shift+W 0.3；前后左右与松键零速均使用同一actor，实物待验收。';return;}
     const selector=$('bench-forward-speed'),available=last?.baseline?.fast_policy?.active===true;selector.value='0.2';
     for(const option of selector.options)option.disabled=Number(option.value)!==.2;
     if(selector.options[0])selector.options[0].textContent=available?'新模型 0.2 m/s':'原版 0.2 m/s（新模型尚未部署）';
@@ -208,18 +212,20 @@
   function manualReady(){const s=last?.runtime;return keyboardCapabilitiesReady()&&owned&&!sessionPending&&controlledMode==='policy'&&last?.connected&&s?.full_robot_ready===true&&s?.mode==='policy'&&s?.recovery?.phase==='walk'&&!s?.pick?.active&&!s?.roulade?.active&&!rollPending;}
   const recovering=()=>controlledMode==='policy'&&last?.runtime?.mode==='policy'&&!!last.runtime.recovery?.phase&&last.runtime.recovery.phase!=='walk';
   function clearRecoveryIntent(){if(recovering()){keyboard.clearMotion();keyboard.centerHead();}}
-  function automaticReady(){if(STAND_ONLY)return false;const s=last?.runtime,forward=s?.forward_specialist||s?.fast_forward,navigation=s?.navigation_specialist,motionHeld=keyboard.snapshot().held.some(key=>['w','s','a','d'].includes(key));return manualReady()&&!motionHeld&&!forward?.active&&!forward?.braking&&!navigation?.active&&!navigation?.braking&&keyboard.snapshot().manualPickDepth===0&&!s?.manual_pick?.active&&!(s?.manual_pick?.target_depth>0);}
+  function automaticReady(){if(STAND_ONLY||BASIC)return false;const s=last?.runtime,forward=s?.forward_specialist||s?.fast_forward,navigation=s?.navigation_specialist,motionHeld=keyboard.snapshot().held.some(key=>['w','s','a','d'].includes(key));return manualReady()&&!motionHeld&&!forward?.active&&!forward?.braking&&!navigation?.active&&!navigation?.braking&&keyboard.snapshot().manualPickDepth===0&&!s?.manual_pick?.active&&!(s?.manual_pick?.target_depth>0);}
   function paintKeyboard(){
     const value=keyboard.snapshot(),degrees=v=>(v*180/Math.PI).toFixed(1),manual=last?.runtime?.manual_pick,forward=last?.runtime?.forward_specialist||last?.runtime?.fast_forward,navigation=last?.runtime?.navigation_specialist;
-    document.querySelectorAll('.control-key').forEach(key=>{const blocked=STAND_ONLY&&['w','a','s','d','shift','space'].includes(key.dataset.key);key.setAttribute('aria-disabled',String(blocked||!owned));key.dataset.pressed=String(!blocked&&owned&&value.held.includes(key.dataset.key));});
+    document.querySelectorAll('.control-key').forEach(key=>{const blocked=(STAND_ONLY&&['w','a','s','d','shift','space'].includes(key.dataset.key))||(BASIC&&['j','k','l','u','i','o','space'].includes(key.dataset.key));key.setAttribute('aria-disabled',String(blocked||!owned));key.dataset.pressed=String(!blocked&&owned&&value.held.includes(key.dataset.key));if(BASIC)key.style.opacity=blocked?'.45':'';});
     const phase=Number.isFinite(manual?.depth)?`${Math.round(manual.depth*100)}%${manual.returning?'（抬回中）':''}`:'待读取';
     const deferred=navigation?.active||navigation?.braking?' · 导航模型期间头部指令已累计，回原站立后应用':forward?.active||forward?.braking?' · 前进模型期间头部指令已累计，回原版行走后应用':manual?.active?' · 左右看抬回后生效':'';
     text('bench-keyboard-readout',`低头目标阶段 ${Math.round(value.manualPickDepth*100)}% · 主控当前阶段 ${phase} · 抬头指令 ${degrees(Math.max(0,-value.pitchLevel))}° · 左右 ${degrees(value.head[2])}° · 嘴 ${value.mouth.toFixed(0)}° · 松键保持${deferred}`);
-    $('bench-head-center').disabled=!manualReady();
+    if(BASIC)text('bench-keyboard-readout','基础键盘测试 · 头部、嘴部和深低头指令固定为零；松键立即发零速，实物停稳待验收。');
+    $('bench-head-center').disabled=BASIC||!manualReady();
     text('bench-keyboard-state',!keyboardCapabilitiesReady()?'键盘控制升级待部署；回正、校准与停止入口保留。':!owned?'尚未启动，键盘不会动作。':sessionPending?'启动确认中 · 保持零指令心跳，主控确认后才开放按键。':last?.runtime?.pick?.active?'官方 Pick 进行中，头嘴由模型控制。':last?.runtime?.roulade?.active||rollPending?'翻滚请求 / 动作中；历史实物翻滚未通过。':navigation?.braking?`导航退出：主控零速刹停中，剩余 ${Number(navigation.brake_remaining_s||0).toFixed(1)} s；松键后不续走。`:forward?.braking?`前进退出：主控零速度刹停中，剩余 ${Number(forward.brake_remaining_s||0).toFixed(1)} s；行走松键后目标为零，不自动续走。`:STAND_ONLY?'站立保持中 · 头嘴松键保持。':'本页已启动 · W 0.2 / Shift+W 0.3 · S/A/D导航纯点、转向优先（实物待验收）；K低头 / I抬回，松键保持。');
+    if(BASIC&&owned&&!sessionPending)text('bench-keyboard-state',recovering()?'原版起身中，保持零指令；站稳后重新按键。新版行走与起身交接尚待实物验收。':'同一actor基础控制 · W .2 / Shift+W .3 / S −.3 / A/D ±1；松键零速。头嘴/翻滚本轮停用，实物效果待验收。');
   }
-  function loseOwnership(){++actionGeneration;owned=false;controlledMode=null;sessionPending=null;feedbackGapAt=null;keyboard.reset();rollPending=false;rollSeen=false;paintSpeed();paintKeyboard();}
-  $('bench-head-center').onclick=()=>{if(!manualReady())return;keyboard.centerHead();paintKeyboard();command();};
+  function loseOwnership(){++actionGeneration;owned=false;controlledMode=null;sessionPending=null;feedbackGapAt=null;lastCommandAckAt=null;keyboard.reset();rollPending=false;rollSeen=false;paintSpeed();paintKeyboard();}
+  $('bench-head-center').onclick=()=>{if(BASIC||!manualReady())return;keyboard.centerHead();paintKeyboard();command();};
   async function triggerRoulade(){
     if(!automaticReady()){note('先松开走动键，停稳后再按空格。');return false;}
     rollPending=true;rollSeen=false;keyboard.clearMotion();paintKeyboard();
@@ -232,6 +238,7 @@
     pending={action,forwardSpeed:forwardSpeed()};
     text('bench-motion-description',{hold:'回到已保存的校准中位并保持。',policy:'将进入站立 / 跌倒起身策略并启用本页键盘，起步零速度。W用前进策略0.2 m/s，Shift+W同策略0.3；S用原模型后退指令0.3（仿真实测约0.18–0.22 m/s），A/D用原模型原地左右转1 rad/s。有净AD优先转向，无净转向再按净WS前后，相反键抵消，走动松键停止。专用模型互换先当前零速刹停3秒、原站立一帧，再执行仍按住的最新方向；头部先累计，回原站立后应用，嘴即时。K/I按档低头抬回、松键保持，腿配合；J/L左右看（低头时延后），U/O张闭嘴；走动前先抬回。Space请求一次官方翻滚（历史实物未通过），Esc停止卸力。所有运动实物待验收。',pick:'将执行一次空载低头开合嘴动作，结束后回到站立策略。',roulade:'将执行一次官方翻滚模型。历史实物翻滚未通过，不预设本次成功。'}[action]);
     if(STAND_ONLY&&action==='policy')text('bench-motion-description','将启动原版零速站立/必要起身并保持。普通抬头、左右看与嘴部原接口保留；行走/快跑/深度Pick/翻滚默认停用，翻滚断电原因尚未修复。');
+    if(BASIC&&action==='policy')text('bench-motion-description','将启用新版基础键盘模型与原版必要起身，初始零速度。W前进0.2、Shift+W前进0.3、S后退−0.3 m/s，A/D原地左右转±1 rad/s；净转向优先，相反键抵消，松键立即发送零速。同一actor连续运行，没有旧版3秒刹车。JKLUIO、Space、Pick和头部回中本轮停用。实物行走/停稳及起身交接尚待验收。');
     dialog.showModal();
   }
   async function leaveCalibrationForHome(generation){
@@ -285,7 +292,8 @@
     // Same manual command units and endpoint as the official browser. The policy creates joint targets.
     const packet=controlledMode==='hold'?{twist:[0,0,0],head:[0,0,0,0],mouth:0}:sessionPending||feedbackGapAt!==null?{twist:[0,0,0],head:[0,0,0,0],mouth:0,manual_pick_depth:0,forward_specialist:false,fast_forward:false,navigation_specialist:false}:keyboard.packet({fastAllowed:last?.baseline?.fast_policy?.active===true,navAllowed:last?.baseline?.navigation_policy?.active===true,pickActive:!!last?.runtime?.pick?.active,pickMouth:last?.runtime?.mouth});
     if(STAND_ONLY){packet.twist=[0,0,0];packet.manual_pick_depth=0;packet.forward_specialist=false;packet.navigation_specialist=false;packet.fast_forward=false;}
-    try{await api('/api/command',packet);}
+    if(BASIC){packet.head=[0,0,0,0];packet.mouth=0;packet.manual_pick_depth=0;}
+    try{await api('/api/command',packet);if(generation===actionGeneration&&owned)lastCommandAckAt=performance.now();}
     catch(e){if(generation!==actionGeneration)return;loseOwnership();note('控制通信中断；不重发、不恢复：'+e.message);}finally{commandBusy=false;}
   }
   window.addEventListener('keydown',e=>{
@@ -297,10 +305,11 @@
     if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)||e.target.isContentEditable||dialog.open||currentDialog.open||trayDialog.open||calibrationDialog.open||!owned||sessionPending||controlledMode!=='policy')return;
     if(recovering()){e.preventDefault();clearRecoveryIntent();paintKeyboard();note('正在起身，保持零指令；站稳后需重新按键。');return;}
     const publicationKey=window.DuckKeyboard.keyName(e);
+    if(BASIC&&['j','k','l','u','i','o','space'].includes(publicationKey)){e.preventDefault();note('本轮只测基础行走与停止；头嘴、深低头和翻滚尚未验收，暂时停用。');return;}
     if(STAND_ONLY&&(['w','s','a','d','shift','space'].includes(publicationKey)||publicationKey==='k'&&keyboard.snapshot().pitchLevel>=-1e-9)){e.preventDefault();note('发布配置默认停用移步/快跑/深度Pick/翻滚；普通抬头、左右看与头嘴控制保留。');return;}
     if(e.repeat&&!keyboard.snapshot().held.includes(window.DuckKeyboard.keyName(e))){e.preventDefault();return;}
     if(window.DuckKeyboard.keyName(e)==='space'&&!automaticReady()){e.preventDefault();note('先松开走动键，停稳后再按空格。');return;}
-    const outcome=keyboard.keydown(e,{allowHead:manualReady()});if(!outcome.handled)return;e.preventDefault();paintKeyboard();
+    const outcome=keyboard.keydown(e,{allowHead:!BASIC&&manualReady()});if(!outcome.handled)return;e.preventDefault();paintKeyboard();
     if(outcome.roll){triggerRoulade();return;}if(outcome.changed)command();
   });
   window.addEventListener('keyup',e=>{if(window.DuckKeyboard.keyName(e)==='space'&&$('bench-test-panel').open&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)&&!e.target.isContentEditable)e.preventDefault();if(keyboard.keyup(e)){paintKeyboard();if(['w','s','a','d','shift'].includes(window.DuckKeyboard.keyName(e)))command();}});
@@ -319,10 +328,26 @@
     $('bench-test-annotate').disabled=!!t.active||!(t.run_id||t.id);
     const run=t.run_id||t.id;if(run){$('bench-report').href='/api/bench/report/'+encodeURIComponent(run)+'/result.json';$('bench-report').hidden=false;}
   }
+  async function handleFeedbackGap(fresh){
+    if(owned&&!fresh&&!sessionPending){
+      const now=performance.now();
+      if(feedbackGapAt===null)feedbackGapAt=now;
+      keyboard.releaseAll();
+      // Display receipt and command acknowledgement are separate channels.
+      // Continue zero heartbeats when commands are still acknowledged; the
+      // controller retains its own 1s command watchdog and local sensor guard.
+      const commandsAcknowledged=lastCommandAckAt!==null&&now-lastCommandAckAt<750;
+      note(commandsAcknowledged?'姿态显示延迟，控制回执正常；暂发零速度，等待新姿态。':'正在核对控制回执，暂时保持零速度。');
+      if(!commandsAcknowledged&&now-feedbackGapAt>=500){await stop();note('控制与姿态回执均中断，已请求停止卸力。');return true;}
+    }else if(fresh&&feedbackGapAt!==null){feedbackGapAt=null;keyboard.releaseAll();note('主控反馈已恢复，请重新按键。');}
+    return false;
+  }
   async function poll(){
     if(busy)return;busy=true;const generation=actionGeneration;
     try{
-      const snapshot=await api('/api/bench/status');if(generation!==actionGeneration)return;
+      const observation=last?.runtime?.pc_observation_id;
+      const cursor=Number.isSafeInteger(observation)?'?after_observation='+encodeURIComponent(observation):'';
+      const snapshot=await api('/api/bench/status'+cursor);if(generation!==actionGeneration)return;
       last=snapshot;window.dispatchEvent(new CustomEvent('duck-restored-status',{detail:last}));const s=last.runtime;
       if(statusErrorMessage&&$('wl-result').textContent===statusErrorMessage)note('');statusErrorMessage=null;
       const fresh=last.connected&&s?.full_robot_ready===true;
@@ -332,7 +357,7 @@
         if(fresh&&s?.mode===sessionPending.mode&&s.enabled===true&&newer){sessionPending=null;keyboard.reset();note('主控已确认启动，键盘控制已就绪。');}
         else if(performance.now()>=sessionPending.deadline){await stop();note('启动状态未在3.5秒内确认，已请求停止卸力；请核对当前状态。');return;}
       }
-      statusItem('simple-link','无线',last.connected?'已连接':'未连接','官方运行链',last.connected?'ok':'error');
+      statusItem('simple-link','无线',last.connected?'已连接':last.wireless_transport_alive?'状态延迟':'未连接','官方运行链',last.connected?'ok':last.wireless_transport_alive?'pending':'error');
       const servoCount=new Set((s?.servo_ids||[]).filter(id=>IDS.includes(id))).size;
       statusItem('simple-servos','主控舵机',s?servoCount+' / 15':'— / 15','真实反馈',!last.connected?'unknown':servoCount===15?'ok':'error');
       statusItem('simple-imu','IMU',s?.imu_ok?'在线':'待连接','主控官方重力估计',!last.connected?'unknown':s?.imu_ok?'ok':'error');
@@ -361,11 +386,7 @@
       $('wl-home').disabled=!homeFeedbackFresh()||!last.runtime_basis_matches||!!maintenanceView?.calibration?.active;
       $('bench-policy').disabled=$('wl-home').disabled||!keyboardCapabilitiesReady();
       $('bench-pick').disabled=$('bench-roulade').disabled=!fresh||!automaticReady();
-      if(owned&&!fresh&&!sessionPending){
-        if(feedbackGapAt===null)feedbackGapAt=performance.now();
-        keyboard.releaseAll();note('正在核对主控反馈，暂时保持零速度。');
-        if(performance.now()-feedbackGapAt>=500){await stop();note('主控反馈中断，已请求停止卸力。');return;}
-      }else if(fresh&&feedbackGapAt!==null){feedbackGapAt=null;keyboard.releaseAll();note('主控反馈已恢复，请重新按键。');}
+      if(await handleFeedbackGap(fresh))return;
       if(owned&&(fresh&&!sessionPending&&(s?.mode==='off'||s?.mode==='shadow')||controlledMode==='policy'&&!keyboardCapabilitiesReady())){
         const reason=s?.last_error;loseOwnership();
         note(reason?(reason==='web heartbeat lost; disarmed'?'网页控制心跳中断，主控已保护卸力；需要重新明确启动。':'主控已暂停控制：'+reason):!fresh?'主控反馈未确认，键盘控制已暂停。':'主控已退出上力控制，键盘已暂停；需要重新明确启动。');
@@ -375,6 +396,7 @@
       if(rollPending&&rollSeen&&!s?.roulade?.active){rollPending=false;rollSeen=false;}
       if(stoppedAt&&s?.mode==='off'&&s.enabled===false&&s.feedback_age_ms<150&&s.mcu_command_age_us<150000){note('停止已确认：OFF、disabled、MCU 新鲜卸力回执。');stoppedAt=null;}
       paintSpeed();text('simple-pending',keyboardCapabilitiesReady()?'基线：前进0.2/0.3 + 导航纯后退/原地转向 + 手动Pick；净转向优先，实物待验收。':'键盘控制升级待部署；原回正、校准与停止入口保留。');
+      if(BASIC&&keyboardCapabilitiesReady())text('simple-pending','新版基础模型：前后左右与松键零速均为同一actor；头嘴、Pick、翻滚本轮停用，实物验收待进行。');
       text('diag-service','工作台 '+last.revision);text('diag-controller',last.connected?'已连接':'未连接');text('diag-torque',torqueKnown?(s.enabled?'上力':'卸力'):'未知');
       text('diag-identity',last.runtime_basis_matches?'新零位 / 直接起身参数匹配':'当前主控基线待读取或不匹配');text('diag-model',s?.active_model||'模型尚未运行');text('diag-refresh-note',last.error||`本地源文件 ${last.baseline.files_checked} 项核对：${last.baseline.local_sources_verified?'通过':'失败'}；主控源哈希另行验收。`);
       text('comm-version','基于 '+last.baseline.reference.slice(0,12));text('comm-result','安装 / 更新继续使用已验证的专项流程。');

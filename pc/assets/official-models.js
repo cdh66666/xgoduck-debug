@@ -44,15 +44,16 @@
  function drawRow(model){model.button.innerHTML='<strong>'+model.name+'</strong><small style="display:block;margin-top:8px">'+model.file+(model.sha?' · SHA '+model.sha.slice(0,12):'')+'</small>';}
  for(const model of models){const button=document.createElement('button');model.button=button;button.className='model-row';button.dataset.id=model.id;drawRow(model);button.onclick=()=>choose(model);$('model-list').append(button);}
  function paintBasis(basis){
+  const basic=basis?.basic_keyboard_policy?.active===true;
   const policy=basis?.walk_policy,active=policy?.active===true&&/^[a-f0-9]{64}$/i.test(policy.sha256||'');
-  const fastPolicy=basis?.fast_policy,fastActive=fastPolicy?.active===true&&/^[a-f0-9]{64}$/i.test(fastPolicy.sha256||'');
-  const navPolicy=basis?.navigation_policy,navActive=navPolicy?.active===true&&/^[a-f0-9]{64}$/i.test(navPolicy.sha256||'');
+  const fastPolicy=basis?.fast_policy,fastActive=!basic&&fastPolicy?.active===true&&/^[a-f0-9]{64}$/i.test(fastPolicy.sha256||'');
+  const navPolicy=basis?.navigation_policy,navActive=!basic&&navPolicy?.active===true&&/^[a-f0-9]{64}$/i.test(navPolicy.sha256||'');
   const key=(active?policy.sha256:'official')+'/'+(fastActive?fastPolicy.sha256:'no-fast')+'/'+(navActive?navPolicy.sha256:'no-navigation');if(key===basisKey)return;basisKey=key;
   if(fastActive){fast.sha=fastPolicy.sha256;if(!fast.button){const button=document.createElement('button');fast.button=button;button.className='model-row';button.dataset.id=fast.id;button.onclick=()=>choose(fast);$('model-list').append(button);}fast.button.hidden=false;drawRow(fast);}else if(fast.button){fast.button.hidden=true;if(selected===fast)choose(models[0]);}
   if(navActive){navigation.sha=navPolicy.sha256;if(!navigation.button){const button=document.createElement('button');navigation.button=button;button.className='model-row';button.dataset.id=navigation.id;button.onclick=()=>choose(navigation);$('model-list').append(button);}navigation.button.hidden=false;drawRow(navigation);}else if(navigation.button){navigation.button.hidden=true;if(selected===navigation)choose(models[0]);}
   $('model-count').textContent=String(4+Number(fastActive)+Number(navActive));
-  const walk=models[0];walk.name=active?'R5无EVA·速度训练':'站立 / 行走';walk.sha=active?policy.sha256:'';
-  walk.note=active?`版本 ${policy.run_id||'当前训练'} · SHA ${walk.sha.slice(0,12)}。物理行走待测试。原官方零速度站立已有实物确认、行走稳定性未通过，均为旧权重历史结论。`:'原版权重；本轮实机站立失稳、出现后撤，稳定性未通过。';
+  const walk=models[0];walk.name=basic?'基础键盘 · 站立 / 前后左右':active?'R5无EVA·速度训练':'站立 / 行走';walk.sha=active?policy.sha256:'';
+  walk.note=basic?`47500基础单一actor · SHA ${walk.sha.slice(0,12)}。W/S/A/D、Shift+W和松键零速共用同一模型；实物站立与走停未通过。`:active?`版本 ${policy.run_id||'当前训练'} · SHA ${walk.sha.slice(0,12)}。物理行走待测试。原官方零速度站立已有实物确认、行走稳定性未通过，均为旧权重历史结论。`:'原版权重；本轮实机站立失稳、出现后撤，稳定性未通过。';
   if(fastActive){walk.name='原版站立 / 后退 / 转向';walk.note='原版零速度站立已有实物确认；后退、转向另验。W直线前进和Shift快跑由单独的R5新模型负责。';}
   if(navActive){walk.name='原版站立 / 头部控制';walk.note='原版零速度站立已有实物确认；头部普通控制沿用原接口。W/S/A/D使用单独训练的前进和导航模型，实物另验。';}
   drawRow(walk);$('page-message').textContent=fastActive?'W直行和Shift+W快跑使用R5无EVA模型；后退及转向保留原模型。实物行走与翻滚待验。':active?'当前为官方运行链 + R5无EVA速度训练行走权重；其他三个模型保留原版本。':'当前基于固定官方运行链；模型来源与实物结论分别记录。';

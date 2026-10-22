@@ -9,6 +9,7 @@
 #include "uart_fifo.h"
 #include <SCServo.h>
 #include "factory_calibration.h"
+#include "route_refresh.h"
 
 Motor motors[NUM_MOTORS];
 struct k_mutex motorsMu;
@@ -557,16 +558,53 @@ void setup() {
   displayBoot[0]=micros();displayBoot[1]=millis();
   ARDUINO_ROUTER_SERIAL.begin(BRIDGE_BAUD);
   enableUartFifo(reinterpret_cast<USART_TypeDef*>(DT_REG_ADDR(ARDUINO_ROUTER_PHANDLE)));
-  Bridge.begin(BRIDGE_BAUD);
-  Bridge.provide("duck_command", receiveCommand);
-  Bridge.provide("duck_cal", receiveCal);
-  Bridge.provide("duck_servo", receiveServo);
-  Bridge.provide("duck_factory", receiveFactory);
-  k_thread_create(&reportThread, reportStack, K_THREAD_STACK_SIZEOF(reportStack),
-                  reportTask, nullptr, nullptr, nullptr, 6, 0, K_NO_WAIT);
-  k_thread_name_set(&reportThread, "duck_report100");
+  // Bridge startup is driven by the bounded, rate-limited loop below.
+  // The watchdog/control task remains alive and unloaded while Linux boots.
   // GCC 14 otherwise emits a tail B.W to a flash syscall from RAM, outside
   // Thumb JUMP24 range; the Uno Q extension loader rejects it with ENOEXEC.
   asm volatile("nop" ::: "memory");
 }
-void loop() { delay(100); }
+struct StartupPort {
+  bool reported=false;
+  bool beginBounded(uint32_t deadlineMs) {return Bridge.beginBounded(BRIDGE_BAUD,deadlineMs);}
+  bool bindLocal(unsigned index) {
+    switch(index) {
+      case 0:return Bridge.bindLocalOnce("duck_command",receiveCommand);
+      case 1:return Bridge.bindLocalOnce("duck_cal",receiveCal);
+      case 2:return Bridge.bindLocalOnce("duck_servo",receiveServo);
+      case 3:return Bridge.bindLocalOnce("duck_factory",receiveFactory);
+      default:return false;
+    }
+  }
+  bool startReports() {
+    if(reported) return true;
+    const k_tid_t tid=k_thread_create(&reportThread,reportStack,K_THREAD_STACK_SIZEOF(reportStack),
+                                    reportTask,nullptr,nullptr,nullptr,6,0,K_NO_WAIT);
+    if(!tid) return false;
+    k_thread_name_set(&reportThread,"duck_report100");reported=true;return true;
+  }
+};
+struct RoutePort {
+  bool allowed() {
+    if(k_mutex_lock(&stateMu,K_NO_WAIT)!=0) return false;
+    const uint32_t seq=snapshot.seq,sampleUs=snapshot.sampleUs;
+    const uint8_t flags=snapshot.flags;
+    k_mutex_unlock(&stateMu);
+    return routeRefreshAllowed(seq,flags,sampleUs,micros());
+  }
+  bool registerOnly(const char *name,uint32_t deadlineMs) {
+    return Bridge.registerOnly(name,deadlineMs);
+  }
+};
+void loop() {
+  static StartupPort startupPort;
+  static RouteStartup startup;
+  if(!startup.reportsStarted()) {
+    startup.tick(k_uptime_get_32(),startupPort);
+    if(!startup.reportsStarted()) {delay(100);return;}
+  }
+  static RoutePort port;
+  static RouteRefresh refresh;
+  refresh.tick(k_uptime_get_32(),port);
+  delay(100);
+}

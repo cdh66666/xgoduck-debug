@@ -1,14 +1,14 @@
 {
   "schema": "xgoduck-portable-release-runtime-v1",
-  "snapshot_source_count": 37,
+  "snapshot_source_count": 39,
   "runtime_sources": {
     "app.yaml": {
       "path": "robot-app/app.yaml",
       "sha256": "ca80d2677e7f58bea4d3e7e1c3866ed1ae43ac8cacb11209c1018eda92616a47"
     },
-    "python/xgoduck_roulade.onnx": {
-      "path": "robot-app/python/xgoduck_roulade.onnx",
-      "sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97"
+    "python/gyro_bias_control.py": {
+      "path": "robot-app/python/gyro_bias_control.py",
+      "sha256": "565b450d37d5b25eff8bd00bc1402129b309abe2fa28047eef04f1e3914e26d3"
     },
     "python/display_telemetry.py": {
       "path": "robot-app/python/display_telemetry.py",
@@ -16,11 +16,7 @@
     },
     "python/keyboard_runtime.py": {
       "path": "robot-app/python/keyboard_runtime.py",
-      "sha256": "b6741b646a12510967ffe124a92c4c347e8939506141cc5ef4b4410f60279e69"
-    },
-    "python/xgoduck_getup.onnx": {
-      "path": "robot-app/python/xgoduck_getup.onnx",
-      "sha256": "c414f2bd84b0a79b89f0ba6997135eb45e4ecd9df9271ea989c237864027b2a3"
+      "sha256": "4834ee543f3a4c52a5c783ec16085445fcfc4e991bf4abfd393d4d75078319dc"
     },
     "python/main.py": {
       "path": "robot-app/python/main.py",
@@ -32,15 +28,11 @@
     },
     "python/controller.py": {
       "path": "robot-app/python/controller.py",
-      "sha256": "181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78"
+      "sha256": "5c798b211b3ef05deeef6802316c8307d5f7c0655e54c346652be10b7fd2afe5"
     },
     "python/rl_core.py": {
       "path": "robot-app/python/rl_core.py",
       "sha256": "d257aa5ddd8cb7c0094cb29195c19ef2d280fb72724bebb00f79d8aa4a9458ba"
-    },
-    "python/xgoduck_pick.onnx": {
-      "path": "robot-app/python/xgoduck_pick.onnx",
-      "sha256": "f34e990dda785e9a8c53890bdcd0f7f1d457592691fd3703f3776b48fb2d14b8"
     },
     "python/wire.py": {
       "path": "robot-app/python/wire.py",
@@ -48,7 +40,7 @@
     },
     "python/policy.py": {
       "path": "robot-app/python/policy.py",
-      "sha256": "c0721355cedd591ce608d6c4bbd3bbe12c73193b519272082087e9252b353e66"
+      "sha256": "2029e370328ae7e55f43e70a98a86030c63508439cc607e6d202b1c1f207c017"
     },
     "python/current_telemetry.py": {
       "path": "robot-app/python/current_telemetry.py",
@@ -58,21 +50,17 @@
       "path": "robot-app/python/factory_calibration.py",
       "sha256": "4ff880610d2bf634348cdeebdda0a7e88aee0338393599cb11a3f4a5e90b5422"
     },
-    "python/xgoduck_walk.onnx": {
-      "path": "robot-app/python/xgoduck_walk.onnx",
-      "sha256": "5727b909d5ea1a0f9ff63bf4cea9707339dea6a522374c7a120da633605b923f"
-    },
     "python/proc.py": {
       "path": "robot-app/python/proc.py",
       "sha256": "01a6a501d225f73e73bdef66105bd6e516e50182be00c02af7116ec6367a35fd"
     },
     "python/recovery.py": {
       "path": "robot-app/python/recovery.py",
-      "sha256": "94474f1196e8c9dde9ab01e3233fc81b8176b7e5a5311ba4f1790f8d02907367"
+      "sha256": "125e7a2cb2d20186dc88b95652a35b55a4d6859a7ce187e728d25c54cceff664"
     },
     "python/release_profile.py": {
       "path": "robot-app/python/release_profile.py",
-      "sha256": "63cadfd1950c8460886c8d6a8b678843f768363f0458fa045cbbca425e102207"
+      "sha256": "6c3d3786697e3b6472796c8a4ac0151584f7481e47a484f7925a7a6e858467df"
     },
     "sketch/sketch.yaml": {
       "path": "robot-app/sketch/sketch.yaml",
@@ -84,7 +72,11 @@
     },
     "sketch/sketch.ino": {
       "path": "robot-app/sketch/sketch.ino",
-      "sha256": "df9f8a6e99a2fc4dcc06a5e83457c8d95c6e39ab3951c1c6682b23679388a1e5"
+      "sha256": "09eb23897face7cb89212fefc36c64ed155b0a0d723d7b38a618b52f7ada2599"
+    },
+    "sketch/route_refresh.h": {
+      "path": "robot-app/sketch/route_refresh.h",
+      "sha256": "07ed36223db35f15c900021f7f305f418a73277ee74269754428548bdc92bb43"
     },
     "sketch/uart_fifo.h": {
       "path": "robot-app/sketch/uart_fifo.h",
@@ -108,7 +100,7 @@
     },
     "sketch/scs_bus.h": {
       "path": "robot-app/sketch/scs_bus.h",
-      "sha256": "652cd6696cafb087e84d751523f0eed356eb7dabd6cc9662b3276d800e81a1f2"
+      "sha256": "9a0596c102a11f41d661ff2c48779120e4b90b9b7bb93d34ace8c70b1aabcec5"
     },
     "sketch/display_telemetry.h": {
       "path": "robot-app/sketch/display_telemetry.h",
@@ -147,13 +139,94 @@
       "sha256": "128961199c01e31057be3ddb61d82ba5a0d412a8cb25c3bc8f5c247a654cb1b2"
     }
   },
+  "external_models": {
+    "python/xgoduck_roulade.onnx": {
+      "path": "robot-app/python/xgoduck_roulade.onnx",
+      "sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97",
+      "included": true,
+      "acquisition": "Bundled current snapshot; optional exact-SHA read-only refresh from the robot.",
+      "bytes": 793686
+    },
+    "python/xgoduck_getup.onnx": {
+      "path": "robot-app/python/xgoduck_getup.onnx",
+      "sha256": "c414f2bd84b0a79b89f0ba6997135eb45e4ecd9df9271ea989c237864027b2a3",
+      "included": true,
+      "acquisition": "Bundled current snapshot; optional exact-SHA read-only refresh from the robot.",
+      "bytes": 793706
+    },
+    "python/xgoduck_pick.onnx": {
+      "path": "robot-app/python/xgoduck_pick.onnx",
+      "sha256": "f34e990dda785e9a8c53890bdcd0f7f1d457592691fd3703f3776b48fb2d14b8",
+      "included": true,
+      "acquisition": "Bundled current snapshot; optional exact-SHA read-only refresh from the robot.",
+      "bytes": 793686
+    },
+    "python/xgoduck_walk.onnx": {
+      "path": "robot-app/python/xgoduck_walk.onnx",
+      "sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+      "included": true,
+      "acquisition": "Bundled current snapshot; optional exact-SHA read-only refresh from the robot.",
+      "bytes": 918165
+    }
+  },
   "excluded_models": [
     {
       "source": "robot-app/python/xgoduck_fast_forward.onnx",
       "sha256": "9391ee2255977546a4b308302c409d64a408fe4383d88abadc554f3452552247",
-      "reason": "9391 graph failed current interactive and physical forward/stop checks; not a stable default"
+      "reason": "historical failed forward-only actor; inactive in current basic profile"
     }
   ],
-  "hardware_validation": "portable adaptation has not been installed or physically tested",
-  "zero_data_included": false
+  "publication_date": "2026-10-22",
+  "release_profile": {
+    "schema": "xgoduck-basic-keyboard-publication-v2",
+    "model_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+    "ordinary_head_mouth": false,
+    "walking": true,
+    "fast_forward": true,
+    "navigation": true,
+    "deep_pick": false,
+    "automatic_pick": false,
+    "roulade": false,
+    "current_monitor": true,
+    "calibration_and_numbering": true,
+    "single_actor": true,
+    "native_basic_offline_qualified": true,
+    "portable_profile_hardware_verified": false,
+    "physical_acceptance": "pending",
+    "recovery_source": "retained official getup; new-actor handoff unverified",
+    "head_mouth_scope": "zero only; mixed motion not qualified",
+    "command_points": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.2,
+        0.0,
+        0.0
+      ],
+      [
+        0.3,
+        0.0,
+        0.0
+      ],
+      [
+        -0.3,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    ]
+  },
+  "hardware_validation": false
 }

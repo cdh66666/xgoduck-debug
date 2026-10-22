@@ -1,0 +1,176 @@
+{
+  "runtime_interface_version": "bodyframe-v2",
+  "weights_included": true,
+  "bindings": {
+    "model/assets/cover.stl": {
+      "path": "model/assets/cover.stl",
+      "sha256": "c170283e6a9ec5e528f128f1b3ba3f59445004bb18c1ca84ff3946b3a25f76b4"
+    },
+    "model/assets/extension.obj": {
+      "path": "model/assets/extension.obj",
+      "sha256": "521fd12018ed8975a75a82e1765f2fd62e8b8ae9574a243c6fe54309c7faa802"
+    },
+    "model/assets/head_pitch.stl": {
+      "path": "model/assets/head_pitch.stl",
+      "sha256": "b820aa681dff1657d0a93f627b1ec0a096c951f97958debd86def6ea799da278"
+    },
+    "model/assets/head_roll.stl": {
+      "path": "model/assets/head_roll.stl",
+      "sha256": "8db9efa162520f1fb24a03c6deebc2f9aa765f6ffd835ceb872643674756b77b"
+    },
+    "model/assets/head_yaw.stl": {
+      "path": "model/assets/head_yaw.stl",
+      "sha256": "dbb1dfa4b2bb0166e4494d504640a85006202d42167e6077c15c9bcd328cbcaa"
+    },
+    "model/assets/left_ankle.stl": {
+      "path": "model/assets/left_ankle.stl",
+      "sha256": "19d137ca4d27a3e3913edc36be23bd31f6d19e5320c169fac87c8b2f126c9715"
+    },
+    "model/assets/left_hip_pitch.stl": {
+      "path": "model/assets/left_hip_pitch.stl",
+      "sha256": "7299fe834de11465fd642865f276ba615fe045f7cf664948200a9cf2ac1d2a75"
+    },
+    "model/assets/left_hip_roll.stl": {
+      "path": "model/assets/left_hip_roll.stl",
+      "sha256": "396249addf4d073e578de5ff267c0e793bd6e0c69475cb3221ad8004ab022bcc"
+    },
+    "model/assets/left_hip_yaw.stl": {
+      "path": "model/assets/left_hip_yaw.stl",
+      "sha256": "5cbf68e6812068d826dc40fab23b89e02d0e684c41a9ab173ade9bddd41a2d54"
+    },
+    "model/assets/left_knee.stl": {
+      "path": "model/assets/left_knee.stl",
+      "sha256": "87bdc2d38a1c64a6c388d363c402a19da1f1fa690e4312cddd02420770020e94"
+    },
+    "model/assets/neck_pitch.stl": {
+      "path": "model/assets/neck_pitch.stl",
+      "sha256": "a1e73e301029176601c88790e741b3da3543da62009286d344b91889bc715fbb"
+    },
+    "model/assets/right_ankle.stl": {
+      "path": "model/assets/right_ankle.stl",
+      "sha256": "e2d0dad75b940d3fb45f5affd77b647e821887feecc552da65c39a80fb5d043e"
+    },
+    "model/assets/right_hip_pitch.stl": {
+      "path": "model/assets/right_hip_pitch.stl",
+      "sha256": "87e1bea55e5a230b7b0bd244f9f53bf2888ad1def78cf9d2f726b3f2f9f4cd25"
+    },
+    "model/assets/right_hip_roll.stl": {
+      "path": "model/assets/right_hip_roll.stl",
+      "sha256": "21ef53f02de7b0a13b11d7d558ccad58aca4fcf603d1b0649ed20886726a0232"
+    },
+    "model/assets/right_hip_yaw.stl": {
+      "path": "model/assets/right_hip_yaw.stl",
+      "sha256": "9ddd7049d1f2f963a9bafebcd3f1805f964e489c31daef78e942923a327a82a3"
+    },
+    "model/assets/right_knee.stl": {
+      "path": "model/assets/right_knee.stl",
+      "sha256": "1946e1c4fea03585df166791ef5e0421fe469ea13e91e993c6b3b6d6212c7740"
+    },
+    "model/assets/trunk_base.stl": {
+      "path": "model/assets/trunk_base.stl",
+      "sha256": "2c615df07a5a7c820cf76c3911f84a025391cabfbe7c3dcf7a755f091c58d2af"
+    },
+    "model/assets/uno-q.stl": {
+      "path": "model/assets/uno-q.stl",
+      "sha256": "3a429404e252a3057591846c3101d57d0f7b19f712bfeec6a976f4c0e06b12d8"
+    },
+    "model/robot.xml": {
+      "path": "model/robot.xml",
+      "sha256": "4160b1cb64baac710049cf91a9faf37975c9311dc63dac2413d4a9ac82883231"
+    },
+    "params/1910_m6.json": {
+      "path": "params/1910_m6.json",
+      "sha256": "ef2d51adfb1cc0831b9b02ca19aa9176fceecdf725148d084378d7d9a64afceb"
+    },
+    "engine/bam/__init__.py": {
+      "path": "engine/bam/__init__.py",
+      "sha256": "166e1731aa74d6f4d0b169b654501ab64517bd9d953439e8dde2cec409b0f93d"
+    },
+    "engine/bam/actuator.py": {
+      "path": "engine/bam/actuator.py",
+      "sha256": "bb4c6bb61395a6c695c45b55d60de16fdf6fd4decba0dabf993ad02a283a1107"
+    },
+    "engine/bam/actuators.py": {
+      "path": "engine/bam/actuators.py",
+      "sha256": "37b26e3f6fb0abd818c615579da4cb3b8156ae0a5c3d37f6144b07c3d2a71397"
+    },
+    "engine/bam/dynamixel/__init__.py": {
+      "path": "engine/bam/dynamixel/__init__.py",
+      "sha256": "166e1731aa74d6f4d0b169b654501ab64517bd9d953439e8dde2cec409b0f93d"
+    },
+    "engine/bam/dynamixel/actuator.py": {
+      "path": "engine/bam/dynamixel/actuator.py",
+      "sha256": "4944a6bc42671c9d2b92f04d92e8b7aebaa24a0b787d8fb901e47f1d2db2b7d9"
+    },
+    "engine/bam/erob/__init__.py": {
+      "path": "engine/bam/erob/__init__.py",
+      "sha256": "166e1731aa74d6f4d0b169b654501ab64517bd9d953439e8dde2cec409b0f93d"
+    },
+    "engine/bam/erob/actuator.py": {
+      "path": "engine/bam/erob/actuator.py",
+      "sha256": "395c5175cb7e2b55e42d7108328ee1e0cedc1b001e662728b55b9913167e8e6e"
+    },
+    "engine/bam/feetech/__init__.py": {
+      "path": "engine/bam/feetech/__init__.py",
+      "sha256": "166e1731aa74d6f4d0b169b654501ab64517bd9d953439e8dde2cec409b0f93d"
+    },
+    "engine/bam/feetech/actuator.py": {
+      "path": "engine/bam/feetech/actuator.py",
+      "sha256": "7cca1b7b21d3424be0e09d035c4436da6b52823a30f1fb1c604a6a68ff2ba23a"
+    },
+    "engine/bam/message.py": {
+      "path": "engine/bam/message.py",
+      "sha256": "7d476066df439effbaaa82d0a02aab708bf0af82a99d37d2b71a84739263204c"
+    },
+    "engine/bam/model.py": {
+      "path": "engine/bam/model.py",
+      "sha256": "63c6537d7c6a3fa8b2ba9564274dc658fb1f8440b467315b8ffcb2a3869d6311"
+    },
+    "engine/bam/mujoco.py": {
+      "path": "engine/bam/mujoco.py",
+      "sha256": "64c0b6b8bd220a5bc64c00870cd710d6fd4ded992cc913b33411f6704b663cb6"
+    },
+    "engine/bam/parameter.py": {
+      "path": "engine/bam/parameter.py",
+      "sha256": "1db6ca5019242c7291540fc7b779d31fdaf298f888ae50cede0e1d8a63fde0aa"
+    },
+    "engine/bam/testbench.py": {
+      "path": "engine/bam/testbench.py",
+      "sha256": "7f916dc3075074cc4c2794ede103a783a18049e438687cdf9081c40107f68b06"
+    },
+    "engine/bam/testbench_mujoco.py": {
+      "path": "engine/bam/testbench_mujoco.py",
+      "sha256": "34c8e11a306d31725dc847ef7e7572b80407c12157a9a14a21093ea7bebbd6e1"
+    },
+    "engine/bam/unitree/__init__.py": {
+      "path": "engine/bam/unitree/__init__.py",
+      "sha256": "166e1731aa74d6f4d0b169b654501ab64517bd9d953439e8dde2cec409b0f93d"
+    },
+    "engine/bam/unitree/actuator.py": {
+      "path": "engine/bam/unitree/actuator.py",
+      "sha256": "f50a2eb70fcdaf43210f89405a8b6bbc75c5f732cf51e601c3cd28d45bdb2799"
+    },
+    "engine/policy.py": {
+      "path": "engine/policy.py",
+      "sha256": "0eb9113594bce4e04fcfb03dbfc2118b263fcf2ea5e615494101fd1af3691d69"
+    },
+    "engine/policy_runtime.py": {
+      "path": "engine/policy_runtime.py",
+      "sha256": "c0721355cedd591ce608d6c4bbd3bbe12c73193b519272082087e9252b353e66"
+    },
+    "engine/recovery.py": {
+      "path": "engine/recovery.py",
+      "sha256": "94474f1196e8c9dde9ab01e3233fc81b8176b7e5a5311ba4f1790f8d02907367"
+    },
+    "engine/rl_core.py": {
+      "path": "engine/rl_core.py",
+      "sha256": "d257aa5ddd8cb7c0094cb29195c19ef2d280fb72724bebb00f79d8aa4a9458ba"
+    },
+    "engine/worker.py": {
+      "path": "engine/worker.py",
+      "sha256": "dfcc968249915c8f15d1959e9bfd20d01d74a9ffbda7f95c891abe50b9c7aa98"
+    }
+  },
+  "neural_weights_in_asset_bindings": false,
+  "checkpoint_manifest": "checkpoints/MANIFEST.json"
+}

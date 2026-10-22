@@ -111,11 +111,27 @@ def current_series(folder, seconds=60, limit=6000):
         stale=latest is None or time.time() - latest > 2,
         full_samples=len(full), partial_samples=sum(row['attempted'] and row['mask'] != 32767 for row in samples),
         skipped_samples=sum(not row['attempted'] for row in samples), ids=list(IDS))
+REMOTE_EMIT = r'''
+import select
+os.set_blocking(sys.stdout.fileno(),False)
+def emit(value,timeout=2.):
+ raw=(json.dumps(value)+'\n').encode();offset=0;deadline=time.monotonic()+timeout
+ while offset<len(raw):
+  remaining=deadline-time.monotonic()
+  if remaining<=0 or not select.select([],[sys.stdout.fileno()],[],remaining)[1]:
+   raise TimeoutError('current_log_reader_stalled')
+  try:written=os.write(sys.stdout.fileno(),raw[offset:])
+  except BlockingIOError:continue
+  if not written:raise BrokenPipeError('current_log_reader_closed')
+  offset+=written
+'''
+
 REMOTE = r'''
 import base64,json,os,struct,sys,time
 from pathlib import Path
 p=json.load(sys.stdin)
 os.nice(19)
+''' + REMOTE_EMIT + r'''
 folder=Path('/home/arduino/ArduinoApps/xgoduck-commissioning/data/servo-current')
 positions={}
 for item in p.get('resume',[]):
@@ -146,13 +162,14 @@ while True:
     stream.seek(0)
     if stream.read(32)!=header:continue
    if raw:
-    print(json.dumps(dict(slot=slot,header=header.hex(),offset=offset,
-                          data=base64.b64encode(raw).decode())),flush=True)
+    emit(dict(slot=slot,header=header.hex(),offset=offset,
+              data=base64.b64encode(raw).decode()))
     positions={k:v for k,v in positions.items() if k[0]!=slot}
     positions[key]=offset+len(raw)
     budget-=len(raw)//336
+  except (TimeoutError,BrokenPipeError):raise
   except (FileNotFoundError,OSError):pass
- print('{"alive":true}',flush=True)
+ emit({'alive':True})
  time.sleep(.1)
 '''
 
