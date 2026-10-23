@@ -53,7 +53,8 @@ class ReleaseTests(unittest.TestCase):
         manifest=json.loads((ROOT/'SOURCE_MANIFEST.json').read_text('utf-8'))
         for name,item in manifest['files'].items():
             self.assertEqual(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),item['published_sha256'],name)
-        self.assertFalse(manifest['actual_device_data_included'])
+        self.assertFalse(manifest['raw_robot_traces_included'])
+        self.assertTrue(manifest['plaintext_connection_configuration_included'])
 
     def test_disconnected_start_and_gets_never_spawn_hardware_process(self):
         class Tunnel:

@@ -10,12 +10,12 @@
       "sha256": "edeaca5fda3f6b703c5a3bbbee33b7512a407ff0ac5bd87d1caeef444091e51c"
     },
     "MODEL_ACCEPTANCE.json": {
-      "bytes": 2306,
-      "sha256": "6a1b221ef3ac5f7cdbc968512894f05444c72464c2d744e44ade376e8d68f2d4"
+      "bytes": 2513,
+      "sha256": "3906a81b49d5fc917ecf96491c9657ae342b9c66543fd507d3ed9569ea8168d1"
     },
     "README.md": {
-      "bytes": 5741,
-      "sha256": "4a4ab2f56be476b2e89855b2ef44d44e5b32980e0dfa509cd6795d42523b81f4"
+      "bytes": 5955,
+      "sha256": "a36f6dac5450238fe6f96c4b7e315de83bcd4ff6ec216e12955f2ecc603d74d1"
     },
     "RELEASE_PROFILE.json": {
       "bytes": 960,
@@ -26,16 +26,16 @@
       "sha256": "f39e3116fb385403315faf224174a6a03b03a516424b37ae141c21da88d4d1ad"
     },
     "SNAPSHOT_VERIFICATION.json": {
-      "bytes": 2467,
-      "sha256": "1d6c9c4dbad041649c684548dbc893bc05d5a4b8f0ad292218b8cbe88c2df8d5"
+      "bytes": 2099,
+      "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 214322,
-      "sha256": "f94234f9b70e9ee6c1c36d1e357c73ccd233cb5faa11d38692d9dca1b30d310e"
+      "bytes": 214868,
+      "sha256": "d42f7ccc7dc3ad17a9b4e903d543c4bfdee6252adc15e67e68452c89a0021d7e"
     },
     "Start-Duck.ps1": {
-      "bytes": 1486,
-      "sha256": "3504651b617ced5a236d49adf1f3e71f4e780e064ec830d72d572e8e637a77f1"
+      "bytes": 1433,
+      "sha256": "1d0771dbc36608abf6bc8438db08c79c873fd03a589a47f50eff86f6c15d81b3"
     },
     "THIRD_PARTY.md": {
       "bytes": 1844,
@@ -110,20 +110,40 @@
       "sha256": "96cf4246f31ab10c5803cd6000a977dccac98d2a7bdf9ea880770cdf0779f206"
     },
     "connection/README.md": {
-      "bytes": 854,
-      "sha256": "795b6f736b99a79b72029ecaf947a9751559a937008cf8f0b080101e4f846433"
+      "bytes": 1653,
+      "sha256": "bc5254ac878ce961c0f8b9cf80641b0911742b6104a2f13383f07c9bc22f4100"
     },
-    "connection/private-connection.enc": {
-      "bytes": 1586,
-      "sha256": "237d5b98437be9b000f04470c8fb4fab69ea32f07fd344f2acd7ede432914bb4"
+    "connection/profile/device.json": {
+      "bytes": 27,
+      "sha256": "9810d6a651d63e4101d33bbbbb7c08787d595ce6517e28351a3fe4c662f39cd1"
+    },
+    "connection/profile/id_ed25519": {
+      "bytes": 411,
+      "sha256": "7b5227420e68b24d8854465d6d3507d4a85ce8dda6eda60b019799eb19b0c627"
+    },
+    "connection/profile/known_hosts": {
+      "bytes": 99,
+      "sha256": "4b3b9ec0f4294fa9f58c74459212de9941afbc0d4f03b8e14f832985ce1fc07b"
+    },
+    "connection/profile/network.json": {
+      "bytes": 157,
+      "sha256": "7a50d35031a3942529dc2e94eac44e5fd0287cbedbd679bcf1a70e87210b84dc"
+    },
+    "connection/profile/ssh-identity.json": {
+      "bytes": 133,
+      "sha256": "32d2b4f9cbdbc5c74f94e8d0f401d875af865de6ddcd5cdb85fe663b647b3775"
+    },
+    "connection/profile/wireless-auth.json": {
+      "bytes": 108,
+      "sha256": "b7e52d3f992a09b12d46a00788b8919df65bf4792ee8a5fa8ca08eea5981bc9f"
     },
     "docs/CHANGES_20261022.md": {
       "bytes": 4094,
       "sha256": "f1c55e3ded7c7376d1843be0a83c1cc2416f1b7c9b11ab4f4d5abc7c497bd931"
     },
     "docs/MOVE_TO_ANOTHER_PC.md": {
-      "bytes": 3602,
-      "sha256": "a16b68c45c72a8f384d077f54022165665c06683a9d8b51c93a391f82c43761f"
+      "bytes": 3726,
+      "sha256": "3e4e20811ca09bca07a2906b22314cdd6746502f6393130369abeb860e07581f"
     },
     "firmware-support/.gitignore": {
       "bytes": 56,
@@ -2826,8 +2846,8 @@
       "sha256": "9fad41f4c9683a7c608ec80bc5e04f2879b816f2eec2e8c9390cc61f9137bd95"
     },
     "pc/requirements.txt": {
-      "bytes": 38,
-      "sha256": "2c8a343f18f654c598e8d1287fa6e84cc2f54faa7fe016b83d329c1982072814"
+      "bytes": 18,
+      "sha256": "1f9cd0f05c4f38521c72b1465fdbcda66d71bda860e3adde9a1e2c214e6a17ff"
     },
     "pc/server.py": {
       "bytes": 74,
@@ -3182,8 +3202,8 @@
       "sha256": "09dc083bda969ccc930c1822a66b20a9fdfbb6eaf6c2e99a7f3c6bb9a2947f46"
     },
     "pc/tools/import_connection.py": {
-      "bytes": 5880,
-      "sha256": "1c66e593cdc9c24fae0c03b10ae9b54e0eccb6a841cf39ff9299f46d4e736be0"
+      "bytes": 4217,
+      "sha256": "273f56a92b56b65c2f790cfbb9b721dbb888cfcb0604e2007b5d18a02c58143d"
     },
     "pc/workbench_keyboard_manifest.py": {
       "bytes": 4186,
@@ -3481,6 +3501,10 @@
       "bytes": 3904,
       "sha256": "81a92fa74683799411d22a26d4873278e93a072b25424da05c4c985e87aaccc4"
     },
+    "tests/test_connection_profile.py": {
+      "bytes": 2906,
+      "sha256": "9dd939d8353f4b46f78206f26dbd9b8137628387594778f7daa5ce0b7942798e"
+    },
     "tests/test_control_telemetry_gap.mjs": {
       "bytes": 2243,
       "sha256": "cbb73122422a19350f4be23c26a04013467071b095a12f7c369d06bec8f6d1e1"
@@ -3492,10 +3516,6 @@
     "tests/test_current_recorder.py": {
       "bytes": 7294,
       "sha256": "466ff56d843441016bec3b3474edba1b0a6767a3d37603b056908f6a1b22bd37"
-    },
-    "tests/test_encrypted_connection.py": {
-      "bytes": 3474,
-      "sha256": "4e4a51a565b9ae26b5bda48e07e7512ecb587fc7a02e35e0c66e031607e3ba08"
     },
     "tests/test_factory_calibration.py": {
       "bytes": 5680,
@@ -3526,8 +3546,8 @@
       "sha256": "ed44bdc2070953173063a78d702deba6d17897c447a02d98a77e296031f4c722"
     },
     "tests/test_release.py": {
-      "bytes": 8049,
-      "sha256": "9ea33e164221cf8f17882d295af39cdebe82f20276437ac8e02cb51b61bad8a1"
+      "bytes": 8128,
+      "sha256": "42149b3774264c17fbd0a556d89286f2f14ed56ce5b472592d96d8eff6bdafbf"
     },
     "tests/test_wireless_stall_recovery.py": {
       "bytes": 5018,

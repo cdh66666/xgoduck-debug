@@ -52,5 +52,9 @@
     "command_watchdog_s": 1.0,
     "local_feedback_watchdog_s": 0.15,
     "weights_included_by_user_request": true
-  }
+  },
+  "connection_profile_mode": "plain_device_instance",
+  "plaintext_connection_configuration_included": true,
+  "encrypted_connection_configuration_included": false,
+  "raw_robot_traces_included": false
 }

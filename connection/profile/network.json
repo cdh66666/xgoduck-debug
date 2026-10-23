@@ -1,0 +1,5 @@
+{
+  "network_url": "http://192.168.10.27:9527",
+  "ssh_pin_verified": false,
+  "note": "Address hint only; authenticate pinned host and serial before use."
+}

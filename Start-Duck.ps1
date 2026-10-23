@@ -15,7 +15,6 @@ if ($taskMissing.Count -gt 0) {
     & $taskPython (Join-Path $PSScriptRoot 'pc\tools\import_connection.py')
     if ($LASTEXITCODE -ne 0) { throw '连接配置未导入；未启动调试台。' }
 }
-Remove-Item Env:\XGODUCK_CONNECTION_PASSWORD -ErrorAction SilentlyContinue
 if (-not $ImportOnly) {
     Write-Host '调试台：http://127.0.0.1:8791/；启动与重连只读，不会自动上力。'
     & $taskPython -B (Join-Path $PSScriptRoot 'pc\server.py')
