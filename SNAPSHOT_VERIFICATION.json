@@ -30,12 +30,37 @@
   ],
   "no_long_training_started": true,
   "migration_device_actions": 0,
-  "device_credentials_included": false,
+  "device_credentials_included": true,
   "mechanical_zero_data_included": false,
   "raw_robot_traces_included": false,
   "native_dependency_binaries_included": false,
   "wireless_acceptance": "NOT_PASSED",
   "standing_acceptance": "NOT_PASSED",
   "physical_test_last_attempt": "UNCONFIRMED, not admitted as a completed motion trial",
-  "tested_git_tree": "2d7201d4668cb84407af73636323ffff3943f1f7"
+  "tested_git_tree": "2d7201d4668cb84407af73636323ffff3943f1f7",
+  "connection_handoff_20261023": {
+    "date": "2026-10-23",
+    "encrypted_bundle": "connection/private-connection.enc",
+    "cipher_sha256": "237d5b98437be9b000f04470c8fb4fab69ea32f07fd344f2acd7ede432914bb4",
+    "cipher_bytes": 1586,
+    "algorithm": "AES-256-GCM",
+    "kdf": "PBKDF2-HMAC-SHA256",
+    "iterations": 600000,
+    "password_in_repository": false,
+    "plaintext_secrets_included": false,
+    "encrypted_device_credentials_included": true,
+    "tests": 7,
+    "real_isolated_import": {
+      "schema": "xgoduck-imported-connection-v1",
+      "bundle_sha256": "237d5b98437be9b000f04470c8fb4fab69ea32f07fd344f2acd7ede432914bb4",
+      "files": 6,
+      "network_requests": 0,
+      "robot_actions": 0,
+      "actual_files_equal": true,
+      "private_key_locally_readable": true
+    },
+    "robot_actions": 0,
+    "device_network_requests": 0
+  },
+  "plaintext_device_credentials_included": false
 }

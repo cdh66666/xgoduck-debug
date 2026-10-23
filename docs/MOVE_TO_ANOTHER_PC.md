@@ -6,21 +6,17 @@
 
 1. 关闭旧电脑调试台页面，避免两台同时发送控制心跳。
 2. 新电脑克隆 `https://github.com/cdh66666/xgoduck-debug.git`。
-3. 从旧电脑单独拷贝 **XGODuck-PRIVATE-CONNECTION.zip**。它不在GitHub；将其解压到克隆目录的 `pc/`。其中只有设备身份、SSH私钥/known_hosts、认证和地址提示，没有动作目标或模型。
-4. 在仓库根创建 Python 3.12/3.13 虚拟环境，安装 `pc/requirements.txt` 后启动 `pc/server.py`，打开 `http://127.0.0.1:8791/`。
+3. 连接配置已在仓库的 `connection/private-connection.enc`，无需旧电脑另拷ZIP。准备好原交接对话中单独给出的口令。
+4. 在仓库根运行 `pwsh -File .\Start-Duck.ps1`，输入口令；脚本会创建环境、安装依赖、导入配置并启动调试台，打开 `http://127.0.0.1:8791/`。需要Python 3.12/3.13和PowerShell 7。
 5. 先核对同一主控、15/15舵机、IMU在线、卸力。程序重连只读，不恢复旧动作。换电脑不会修复已经存在的站立失稳。
 
 ```powershell
 git clone https://github.com/cdh66666/xgoduck-debug.git
 Set-Location xgoduck-debug
-# 替换为你单独拷过来的私有连接包路径
-Expand-Archive -LiteralPath 'D:\transfer\XGODuck-PRIVATE-CONNECTION.zip' -DestinationPath '.\pc' -Force
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r pc/requirements.txt
-.\.venv\Scripts\python.exe -B pc/server.py
+pwsh -File .\Start-Duck.ps1
 ```
 
-私有连接包只能单独拷贝，不能上传到仓库或聊天公开链接。若没有此包，按 `pc/config/` 的示例配置自己的设备序列号、固定SSH主机密钥、SSH身份和板端认证；不要关闭主机密钥核对。Windows OpenSSH若拒绝解压后的私钥权限，应按其提示仅给当前用户读取权限。
+明文私钥和解密口令不上传仓库。导入器会设置本机私有文件权限，不会连接或操作机器人。已有不同配置默认不覆盖；明确备份后可手动运行 `python pc/tools/import_connection.py --replace`。Linux可按根README手动建立环境，安装依赖后执行导入器与`pc/server.py`。
 
 地址改变时可以通过Arduino mDNS重发现；已知新地址也可在启动前设置 `$env:XGODUCK_HOST='192.168.1.50'`（填你自己的局域网IP）。地址只作候选，仍会核对SSH主机密钥和主控序列号，不会把填写地址当作已经认证。
 
@@ -48,7 +44,7 @@ python -m venv .venv
 
 可以直接粘贴：
 
-> 请接手这个仓库。先读 README.md、docs/MOVE_TO_ANOTHER_PC.md、docs/CHANGES_20261022.md 和 MODEL_ACCEPTANCE.json。配置我单独拷贝的私有连接包，启动PC调试台，先只读核对主控和卸力状态，不自动烧录、改零位、改PD或恢复旧运动。当前站立后撤和无线尖峰都没有验收通过，不要假定换电脑已解决。需要动作时按我本次明确指令执行并记录主控本地反馈。训练按 training/README.md，在独立环境/输出目录执行，不参与硬件部署。
+> 请接手这个仓库。先读 README.md、docs/MOVE_TO_ANOTHER_PC.md、docs/CHANGES_20261022.md 和 MODEL_ACCEPTANCE.json。使用我单独提供的口令导入仓库里的加密连接配置，启动PC调试台，先只读核对主控和卸力状态，不自动烧录、改零位、改PD或恢复旧运动。当前站立后撤和无线尖峰都没有验收通过，不要假定换电脑已解决。需要动作时按我本次明确指令执行并记录主控本地反馈。训练按 training/README.md，在独立环境/输出目录执行，不参与硬件部署。
 
 ## 固件源码
 

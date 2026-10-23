@@ -14,8 +14,8 @@
       "sha256": "6a1b221ef3ac5f7cdbc968512894f05444c72464c2d744e44ade376e8d68f2d4"
     },
     "README.md": {
-      "bytes": 5549,
-      "sha256": "e93b29043d1b49f7bccc3cf7c15a12576a5d0343d4adb5efafd0a4dc56aea963"
+      "bytes": 5741,
+      "sha256": "4a4ab2f56be476b2e89855b2ef44d44e5b32980e0dfa509cd6795d42523b81f4"
     },
     "RELEASE_PROFILE.json": {
       "bytes": 960,
@@ -26,12 +26,16 @@
       "sha256": "f39e3116fb385403315faf224174a6a03b03a516424b37ae141c21da88d4d1ad"
     },
     "SNAPSHOT_VERIFICATION.json": {
-      "bytes": 1530,
-      "sha256": "87ebdb003652a6c1ad5b5e1ddb59d88a0fd187ba43757f80f92ae593b5a2f0da"
+      "bytes": 2467,
+      "sha256": "1d6c9c4dbad041649c684548dbc893bc05d5a4b8f0ad292218b8cbe88c2df8d5"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 212234,
-      "sha256": "2634facca6d0dc1d2f89b85c377dd699b07086f5542e8a7846384f1bef73c371"
+      "bytes": 214322,
+      "sha256": "f94234f9b70e9ee6c1c36d1e357c73ccd233cb5faa11d38692d9dca1b30d310e"
+    },
+    "Start-Duck.ps1": {
+      "bytes": 1486,
+      "sha256": "3504651b617ced5a236d49adf1f3e71f4e780e064ec830d72d572e8e637a77f1"
     },
     "THIRD_PARTY.md": {
       "bytes": 1844,
@@ -105,13 +109,21 @@
       "bytes": 976,
       "sha256": "96cf4246f31ab10c5803cd6000a977dccac98d2a7bdf9ea880770cdf0779f206"
     },
+    "connection/README.md": {
+      "bytes": 854,
+      "sha256": "795b6f736b99a79b72029ecaf947a9751559a937008cf8f0b080101e4f846433"
+    },
+    "connection/private-connection.enc": {
+      "bytes": 1586,
+      "sha256": "237d5b98437be9b000f04470c8fb4fab69ea32f07fd344f2acd7ede432914bb4"
+    },
     "docs/CHANGES_20261022.md": {
       "bytes": 4094,
       "sha256": "f1c55e3ded7c7376d1843be0a83c1cc2416f1b7c9b11ab4f4d5abc7c497bd931"
     },
     "docs/MOVE_TO_ANOTHER_PC.md": {
-      "bytes": 3852,
-      "sha256": "68a1865b945d88ee2cf3654d4d921261f78a6eaefc10ec894e24eb928fbe1e5d"
+      "bytes": 3602,
+      "sha256": "a16b68c45c72a8f384d077f54022165665c06683a9d8b51c93a391f82c43761f"
     },
     "firmware-support/.gitignore": {
       "bytes": 56,
@@ -2814,8 +2826,8 @@
       "sha256": "9fad41f4c9683a7c608ec80bc5e04f2879b816f2eec2e8c9390cc61f9137bd95"
     },
     "pc/requirements.txt": {
-      "bytes": 17,
-      "sha256": "95fdad543f34e4a191cd17219e1a73b4ab4b0b5ad9806a25c3b49e7b48ab8ca0"
+      "bytes": 38,
+      "sha256": "2c8a343f18f654c598e8d1287fa6e84cc2f54faa7fe016b83d329c1982072814"
     },
     "pc/server.py": {
       "bytes": 74,
@@ -3169,6 +3181,10 @@
       "bytes": 5965,
       "sha256": "09dc083bda969ccc930c1822a66b20a9fdfbb6eaf6c2e99a7f3c6bb9a2947f46"
     },
+    "pc/tools/import_connection.py": {
+      "bytes": 5880,
+      "sha256": "1c66e593cdc9c24fae0c03b10ae9b54e0eccb6a841cf39ff9299f46d4e736be0"
+    },
     "pc/workbench_keyboard_manifest.py": {
       "bytes": 4186,
       "sha256": "3764364e93b4b3b5d434bcacb16f6f236e40deef79bd797e560d7db468037468"
@@ -3476,6 +3492,10 @@
     "tests/test_current_recorder.py": {
       "bytes": 7294,
       "sha256": "466ff56d843441016bec3b3474edba1b0a6767a3d37603b056908f6a1b22bd37"
+    },
+    "tests/test_encrypted_connection.py": {
+      "bytes": 3474,
+      "sha256": "4e4a51a565b9ae26b5bda48e07e7512ecb587fc7a02e35e0c66e031607e3ba08"
     },
     "tests/test_factory_calibration.py": {
       "bytes": 5680,

@@ -1,4 +1,4 @@
-# XGO Duck 调试与训练交接（2026-10-22）
+# XGO Duck 调试与训练交接（2026-10-23连接配置已补齐）
 
 给另一台电脑接手的当前代码快照：完整调试台、机器人源码、固件依赖、训练代码、仿真资源和可携带的模型权重。**站立后持续后撤、实物走停和无线尖峰尚未通过验收；这不是稳定产品发布。**
 
@@ -6,13 +6,14 @@
 
 ## 换电脑调试
 
-先读 [换电脑步骤](docs/MOVE_TO_ANOTHER_PC.md)，将原电脑单独提供的 **XGODuck-PRIVATE-CONNECTION.zip** 解压到本仓库 `pc/`。私钥、认证、实际连接缓存和机械零位不上传GitHub；首次启动只读，不自动恢复运动。
+**连接配置已经加密放入仓库**，不需要从旧电脑另拷ZIP。克隆后，在仓库根运行 `pwsh -File .\Start-Duck.ps1`，按提示粘贴原交接对话提供的口令；脚本会安装依赖、导入配置并启动调试台。口令和明文私钥不在GitHub里，机械零位始终不包含在连接包中；首次启动只读，不自动恢复运动。
 
 在仓库根目录运行（推荐Python 3.12/3.13）：
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r pc/requirements.txt
+.\.venv\Scripts\python.exe pc/tools/import_connection.py
 .\.venv\Scripts\python.exe -B pc/server.py
 ```
 

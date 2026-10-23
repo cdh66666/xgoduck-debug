@@ -2041,7 +2041,7 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "README.md": {
-      "sha256": "e93b29043d1b49f7bccc3cf7c15a12576a5d0343d4adb5efafd0a4dc56aea963",
+      "sha256": "4a4ab2f56be476b2e89855b2ef44d44e5b32980e0dfa509cd6795d42523b81f4",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "RELEASE_PROFILE.json": {
@@ -2053,7 +2053,11 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "SNAPSHOT_VERIFICATION.json": {
-      "sha256": "87ebdb003652a6c1ad5b5e1ddb59d88a0fd187ba43757f80f92ae593b5a2f0da",
+      "sha256": "1d6c9c4dbad041649c684548dbc893bc05d5a4b8f0ad292218b8cbe88c2df8d5",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "Start-Duck.ps1": {
+      "sha256": "3504651b617ced5a236d49adf1f3e71f4e780e064ec830d72d572e8e637a77f1",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "THIRD_PARTY.md": {
@@ -2100,12 +2104,20 @@
       "sha256": "e84f8ae69621c532bf592d63b477f31ce780412d40d8771ede5aea10e5303ea2",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
+    "connection/README.md": {
+      "sha256": "795b6f736b99a79b72029ecaf947a9751559a937008cf8f0b080101e4f846433",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "connection/private-connection.enc": {
+      "sha256": "237d5b98437be9b000f04470c8fb4fab69ea32f07fd344f2acd7ede432914bb4",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
     "docs/CHANGES_20261022.md": {
       "sha256": "f1c55e3ded7c7376d1843be0a83c1cc2416f1b7c9b11ab4f4d5abc7c497bd931",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "docs/MOVE_TO_ANOTHER_PC.md": {
-      "sha256": "68a1865b945d88ee2cf3654d4d921261f78a6eaefc10ec894e24eb928fbe1e5d",
+      "sha256": "a16b68c45c72a8f384d077f54022165665c06683a9d8b51c93a391f82c43761f",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "firmware-support/.gitignore": {
@@ -3061,11 +3073,15 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "pc/requirements.txt": {
-      "sha256": "95fdad543f34e4a191cd17219e1a73b4ab4b0b5ad9806a25c3b49e7b48ab8ca0",
+      "sha256": "2c8a343f18f654c598e8d1287fa6e84cc2f54faa7fe016b83d329c1982072814",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "pc/tools/fetch_robot_models.py": {
       "sha256": "09dc083bda969ccc930c1822a66b20a9fdfbb6eaf6c2e99a7f3c6bb9a2947f46",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "pc/tools/import_connection.py": {
+      "sha256": "1c66e593cdc9c24fae0c03b10ae9b54e0eccb6a841cf39ff9299f46d4e736be0",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "reports/20261020-SNAPSHOT_VERIFICATION.json": {
@@ -3114,6 +3130,10 @@
     },
     "tests/test_current_recorder.py": {
       "sha256": "466ff56d843441016bec3b3474edba1b0a6767a3d37603b056908f6a1b22bd37",
+      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+    },
+    "tests/test_encrypted_connection.py": {
+      "sha256": "4e4a51a565b9ae26b5bda48e07e7512ecb587fc7a02e35e0c66e031607e3ba08",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "tests/test_factory_calibration.py": {
@@ -3503,5 +3523,29 @@
     "behavior_acceptance": "NOT_PASSED",
     "hardware_operations": 0,
     "previous_visual_v1_sha256": "459f63837ac1efb11949dd8981cf2c6f685e94074e693d55b26e8d4669b826b1"
+  },
+  "encrypted_connection_handoff": {
+    "date": "2026-10-23",
+    "encrypted_bundle": "connection/private-connection.enc",
+    "cipher_sha256": "237d5b98437be9b000f04470c8fb4fab69ea32f07fd344f2acd7ede432914bb4",
+    "cipher_bytes": 1586,
+    "algorithm": "AES-256-GCM",
+    "kdf": "PBKDF2-HMAC-SHA256",
+    "iterations": 600000,
+    "password_in_repository": false,
+    "plaintext_secrets_included": false,
+    "encrypted_device_credentials_included": true,
+    "tests": 7,
+    "real_isolated_import": {
+      "schema": "xgoduck-imported-connection-v1",
+      "bundle_sha256": "237d5b98437be9b000f04470c8fb4fab69ea32f07fd344f2acd7ede432914bb4",
+      "files": 6,
+      "network_requests": 0,
+      "robot_actions": 0,
+      "actual_files_equal": true,
+      "private_key_locally_readable": true
+    },
+    "robot_actions": 0,
+    "device_network_requests": 0
   }
 }
