@@ -27,7 +27,7 @@ MOTOR_IDS = [
     30, 31, 32, 33, 34,
 ]
 
-q = 23.0
+q = 22.0
 DEFAULT_DEG = [
     0.0, -5.0, -q, 0.0, q,
     0.0, 5.0, q, 0.0, -q,
@@ -45,6 +45,8 @@ POLICY_INDEX = np.array([MOTOR_IDS.index(i) for i in POLICY_IDS])
 HOME_DEG = np.array(DEFAULT_DEG, dtype=np.float32)[POLICY_INDEX]
 
 MOUTH_INDEX = MOTOR_IDS.index(34)
+HEAD_YAW_INDEX = MOTOR_IDS.index(32)
+HEAD_YAW_LIMIT_DEG = 90.0  # User-confirmed front half-circle; rear motion pulls the cable.
 
 MOUTH_MAX_DEG = 30.0
 
@@ -56,7 +58,7 @@ ACTION_SCALE = 1.0
 
 ACTION_ALPHA = 0.45
 
-ACTION_ALPHA_HEAD = 0.45
+ACTION_ALPHA_HEAD = 0.2
 
 @dataclass
 class State:

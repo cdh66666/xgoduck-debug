@@ -1,6 +1,7 @@
 """ONNX policy adapter matching the Raspberry Pi deployment math."""
 from __future__ import annotations
 import math
+import hashlib
 from pathlib import Path
 from typing import Optional
 import numpy as np
@@ -18,7 +19,8 @@ def default_onnx() -> Optional[Path]:
     return p if p.is_file() else None
 
 class Policy:
-    def __init__(self):
+    def __init__(self, *, reference_home=False):
+        self.reference_home = reference_home
         self.action_scale = ACTION_SCALE
         self.action_alpha = ACTION_ALPHA
         self.action_alpha_head = ACTION_ALPHA_HEAD
@@ -31,6 +33,8 @@ class Policy:
     def unload(self):
         self.session = None
         self.in_name = self.file = ''
+        self.artifact_sha256 = None
+        self.last_inference = None
         self.home_rad = HOME_RAD.copy()
         self.home_deg = HOME_DEG.copy()
         self.home_source = 'legacy_runtime_fallback'
@@ -51,7 +55,8 @@ class Policy:
             options = ort.SessionOptions()
             options.intra_op_num_threads = 1
             options.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
-            sess = ort.InferenceSession(str(p), sess_options=options, providers=['CPUExecutionProvider'])
+            model_bytes = p.read_bytes()
+            sess = ort.InferenceSession(model_bytes, sess_options=options, providers=['CPUExecutionProvider'])
             inp, out = sess.get_inputs()[0], sess.get_outputs()[0]
             if len(inp.shape) != 2 or inp.shape[-1] != OBS_DIM:
                 raise ValueError(f'expected observation shape [1,61], got {inp.shape}')
@@ -61,6 +66,7 @@ class Policy:
             self.session, self.in_name = sess, inp.name
             self._outputs = [out.name]
             self.file = p.name
+            self.artifact_sha256 = hashlib.sha256(model_bytes).hexdigest()
             self._feed = {self.in_name: self._obs.reshape(1, OBS_DIM)}
             # Touch all graph arenas before the control loop so the first live
             # switch does not pay cold-session latency.
@@ -77,6 +83,12 @@ class Policy:
         names = metadata.get('joint_names')
         if names is not None and tuple(value.strip() for value in names.split(',')) != JOINT_NAMES:
             raise ValueError('model joint_names do not match the 14 policy joints')
+        if self.reference_home:
+            # The official deployment uses one HOME for every bundled policy,
+            # independently of each export's training-pose metadata.
+            self.home_rad, self.home_deg = HOME_RAD.copy(), HOME_DEG.copy()
+            self.home_source, self._legacy_home_math = 'official_runtime', True
+            return
         values = metadata.get('default_joint_pos')
         if values is None:
             self.home_rad, self.home_deg = HOME_RAD.copy(), HOME_DEG.copy()
@@ -129,6 +141,11 @@ class Policy:
                           (slice(10, 14), self.action_alpha)):
             self._act_filt[sl] *= alpha
             self._act_filt[sl] += action[sl] * (1 - alpha)
+        # Freeze the exact input/output before warm() or the next infer() reuses
+        # the ONNX input arena. The motion recorder samples this immutable row.
+        self.last_inference = dict(model=self.file, model_sha256=self.artifact_sha256,
+            observation=self._obs.tolist(), raw_action=action.tolist(),
+            filtered_action=self._act_filt.tolist())
         return self._act_filt.copy()
 
     def set_action_alphas(self, *, leg=None, head=None):
@@ -141,6 +158,7 @@ class Policy:
         return leg, head
 
     def reset_action_filter(self):
+        self.last_inference = None
         self.prev_action = np.zeros(ACTION_DIM, dtype=np.float32)
         self._act_filt = np.zeros(ACTION_DIM, dtype=np.float32)
 

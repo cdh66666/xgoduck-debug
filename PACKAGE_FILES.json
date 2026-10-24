@@ -6,108 +6,40 @@
       "sha256": "382a0222d5a617bcf92776f9d5313c625e9d0d884d9941aa780851b91d8653e0"
     },
     ".gitignore": {
-      "bytes": 477,
-      "sha256": "edeaca5fda3f6b703c5a3bbbee33b7512a407ff0ac5bd87d1caeef444091e51c"
+      "bytes": 499,
+      "sha256": "bf163d2f95592215af2cc98c481e26944f30fa0c6a8105f47d83b45437a099da"
     },
     "MODEL_ACCEPTANCE.json": {
-      "bytes": 2513,
-      "sha256": "3906a81b49d5fc917ecf96491c9657ae342b9c66543fd507d3ed9569ea8168d1"
+      "bytes": 3741,
+      "sha256": "be6dc9323dfff036f7952649c3205d31c4dd9cb1317b54d11169ae6354320619"
     },
     "README.md": {
-      "bytes": 5955,
-      "sha256": "a36f6dac5450238fe6f96c4b7e315de83bcd4ff6ec216e12955f2ecc603d74d1"
+      "bytes": 8554,
+      "sha256": "41294acd2c9857f7bd9d36ae2a7f749449cec3a4a17aedf01f48aae4a28ed9ce"
     },
     "RELEASE_PROFILE.json": {
       "bytes": 960,
       "sha256": "2fc534417e7d3a6f621eaabe9bcc91f31821f01dcd1e0f8d6142a037d8344972"
     },
     "RELEASE_RUNTIME.json": {
-      "bytes": 8787,
-      "sha256": "f39e3116fb385403315faf224174a6a03b03a516424b37ae141c21da88d4d1ad"
+      "bytes": 12240,
+      "sha256": "cfce4a95fbdb1f9275fd62b5f77d12cf7caf5d35b9a6516da0c230ea9e15d44e"
     },
     "SNAPSHOT_VERIFICATION.json": {
       "bytes": 2099,
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 214868,
-      "sha256": "d42f7ccc7dc3ad17a9b4e903d543c4bfdee6252adc15e67e68452c89a0021d7e"
+      "bytes": 214386,
+      "sha256": "8ffb184b3755154ffc148b1b0a8d75a6cef2fbff446f49d5a7b715da6b366970"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
       "sha256": "1d0771dbc36608abf6bc8438db08c79c873fd03a589a47f50eff86f6c15d81b3"
     },
     "THIRD_PARTY.md": {
-      "bytes": 1844,
-      "sha256": "31cb02796e44b05f6136d336ecfbff5b281a37c7f2653a3a62ce6db03cadd564"
-    },
-    "candidates/host-feedback-20261020/MANIFEST.json": {
-      "bytes": 2508,
-      "sha256": "8703f2a440426fbcd36b28d9d2ac9386daf453bc4120df8e0c2e26d20d3065bb"
-    },
-    "candidates/host-feedback-20261020/OFFLINE_EVIDENCE.json": {
-      "bytes": 1686,
-      "sha256": "571a70bf34417e7ee7d7f0051cd0245bd18e9049655708b6d7077391792a1ed3"
-    },
-    "candidates/host-feedback-20261020/README.md": {
-      "bytes": 3065,
-      "sha256": "253d7fed958396de3f7f57429ea0d9399ead4957c14e15fd71d1a36f917ef109"
-    },
-    "candidates/host-feedback-20261020/candidate/python/controller.py": {
-      "bytes": 36342,
-      "sha256": "0298f6bff2eafe07c3316fd90f1c7db55bec87006aa3a40c22eef48d40daed90"
-    },
-    "candidates/host-feedback-20261020/clock-candidate/python/controller.py": {
-      "bytes": 35465,
-      "sha256": "9a1da375fb29c569036f340c316ddeac57ec88753b86ac84bb65397a563aa962"
-    },
-    "candidates/host-feedback-20261020/combined-candidate/python/controller.py": {
-      "bytes": 37359,
-      "sha256": "f557e7506e8a59a9dc790c9550db2eab04c7f7af7ba6aac900808f27163b913a"
-    },
-    "candidates/host-feedback-20261020/patches/clock-only.diff": {
-      "bytes": 3516,
-      "sha256": "70ecb2afa7dc949c40d48436b775d1b33b10ae38ebcf449aca35609d95482a6b"
-    },
-    "candidates/host-feedback-20261020/patches/combined.diff": {
-      "bytes": 3517,
-      "sha256": "3512b4406ad4934ade99ba3ad99f4df25bf0be67231c5b3ab019a99d571489d4"
-    },
-    "candidates/host-feedback-20261020/patches/zero-only.diff": {
-      "bytes": 6777,
-      "sha256": "e6f5c648eb7a23ddc22db9695710a82e7376704916169690e736ad2e41b137e4"
-    },
-    "candidates/host-feedback-20261020/requirements-test.txt": {
-      "bytes": 13,
-      "sha256": "a23aaf94250a9f53031a592980142245a848e2372b6c6c3093e8260b129265b8"
-    },
-    "candidates/host-feedback-20261020/test_clock_sync.py": {
-      "bytes": 5081,
-      "sha256": "2391a0c762346dfa45a6bf0133445a97c0c0755378cfb60a8db0061af59b7288"
-    },
-    "candidates/host-feedback-20261020/test_zero_sync.py": {
-      "bytes": 11582,
-      "sha256": "e3a2ed7b2c23ab87ff29274e721bbd2995434ad8c90bb9291defd37f0c66f2e1"
-    },
-    "candidates/servo-position-decoder-20261020/CMakeLists.txt": {
-      "bytes": 475,
-      "sha256": "e9b0648a253a844438ac16d6c703c18fb1606682c0b0772dc5af80bc83bdf44b"
-    },
-    "candidates/servo-position-decoder-20261020/MANIFEST.json": {
-      "bytes": 935,
-      "sha256": "30c6206e74c33b9c49fc9ab3877d79b52d3be04bad810e1d61d45886cb9e40f7"
-    },
-    "candidates/servo-position-decoder-20261020/README.md": {
-      "bytes": 1393,
-      "sha256": "e84f8ae69621c532bf592d63b477f31ce780412d40d8771ede5aea10e5303ea2"
-    },
-    "candidates/servo-position-decoder-20261020/position_decode_candidate.h": {
-      "bytes": 383,
-      "sha256": "9d8fed4936efa3c95c715ec15a919cd156b4f82cf4629e63752a5a06f8438f37"
-    },
-    "candidates/servo-position-decoder-20261020/test_position_decode.cpp": {
-      "bytes": 976,
-      "sha256": "96cf4246f31ab10c5803cd6000a977dccac98d2a7bdf9ea880770cdf0779f206"
+      "bytes": 2953,
+      "sha256": "ba958abf70f2afe16aa29002bda16b4f9de05b8317d42ca97cb106664913eb7c"
     },
     "connection/README.md": {
       "bytes": 1653,
@@ -141,25 +73,49 @@
       "bytes": 4094,
       "sha256": "f1c55e3ded7c7376d1843be0a83c1cc2416f1b7c9b11ab4f4d5abc7c497bd931"
     },
+    "docs/CONTROL_COMPARE_20261023.md": {
+      "bytes": 4852,
+      "sha256": "314fbf1fb8e864b045229c4dc33df8a7ddc01e257f7ceaa6c7063ccab9d9106c"
+    },
+    "docs/IMU_WIFI_FIX_20261023.md": {
+      "bytes": 14115,
+      "sha256": "8869d3dc0fa5a9477ec91aec5fd53d21e4830e61e388b223b9c7dd8d607e8262"
+    },
+    "docs/MOTION_HISTORY_20261023.md": {
+      "bytes": 9147,
+      "sha256": "516639e354481bd7cdcd0cd8c96b1ac75c3782b66c20726b4d3b1dd39d54b781"
+    },
     "docs/MOVE_TO_ANOTHER_PC.md": {
       "bytes": 3726,
       "sha256": "3e4e20811ca09bca07a2906b22314cdd6746502f6393130369abeb860e07581f"
+    },
+    "docs/SIMPLIFY_20261024.md": {
+      "bytes": 8067,
+      "sha256": "3f539cc19df3b835c76e497f10de3754d4200fa6c4ea7bc97094624a275c27af"
+    },
+    "docs/STANDING_OFFLINE_20261023.md": {
+      "bytes": 5530,
+      "sha256": "46bab13554f599fe959a62f596037b16d7b4ed3dc1e21d797c66f771c90d1a5d"
+    },
+    "docs/STATIC_DEBUG_20261023.md": {
+      "bytes": 4402,
+      "sha256": "4461ee858d070d1fd55b0347cf2c7287c7c210abc61e21857605655e36d8e468"
     },
     "firmware-support/.gitignore": {
       "bytes": 56,
       "sha256": "27ce5655d3e370af74eea9ac4d3ce5cca6cc590683bb637fd7fd32898b92d424"
     },
     "firmware-support/BUILD_BINDING.json": {
-      "bytes": 4678,
-      "sha256": "45daed2de538f5a72e18c1c4082404081043cd1592a0d2facd90bbe65a57ebb1"
+      "bytes": 6632,
+      "sha256": "47583ef5d7df51bf66b4292330e2e9cce631985eeeabebc6942fcf96ac03715c"
     },
     "firmware-support/README.md": {
-      "bytes": 6671,
-      "sha256": "bf97d5fe44724632179595c5f7880e64c97bbc8b91aea2e0d014f8e79d216837"
+      "bytes": 7892,
+      "sha256": "ece74512738ba47027c807ef9f2b72d195eafeb1f61395b5b16e4f57def6af13"
     },
     "firmware-support/SOURCE_LOCK.json": {
-      "bytes": 33127,
-      "sha256": "c8cd291e454e4ce4c03b735bf329719e08e8cea7ea5f8a7173f02aaf5a1a37fa"
+      "bytes": 34108,
+      "sha256": "59d1983dec2231024b54ebd485ca658b75c0af34bec85d684685086fe397265e"
     },
     "firmware-support/baseline/FTServo/src/SCS.cpp": {
       "bytes": 8678,
@@ -978,8 +934,8 @@
       "sha256": "5d4d696c6a6ec783e78acc3ed7fea154f9007cfd1cd5ec6a63e29b0b3a2d9b8b"
     },
     "firmware-support/run_native.py": {
-      "bytes": 3547,
-      "sha256": "06c463a81dfc40c2c6046efe43af2a98769632386b875b2f21f1bdceb4c4b598"
+      "bytes": 3716,
+      "sha256": "fd40c9b55745a50e2e670a6e6ebbc948e1bb7d4763cb279ef35386316b401a9a"
     },
     "firmware-support/sketch/current_telemetry.h": {
       "bytes": 2229,
@@ -997,21 +953,25 @@
       "bytes": 4036,
       "sha256": "22a0d55b4bd1302ee5d24d5d3352ed867695df08d2ccc4548b32541b2cde163a"
     },
+    "firmware-support/sketch/joint_limits.h": {
+      "bytes": 1023,
+      "sha256": "ab30178d228f635d8b664af3a326d6a06d35fdb5f80f95a9364a9577df8f6368"
+    },
     "firmware-support/sketch/protocol.h": {
       "bytes": 2170,
       "sha256": "c9c73ea760d8a21d8f6e76d26cb6856e882151825af80c16ee59c386a6aacb1c"
     },
     "firmware-support/sketch/qmi8658.h": {
-      "bytes": 4080,
-      "sha256": "3d6b501dba41e76e6fc63cbd81d35eb5d5cd34ff80f18e0bb44ec3cc9772f4b1"
+      "bytes": 5508,
+      "sha256": "a4fb9e985adf4a6c57ff906f8f8bd5c3c6b13dc9b3460fd880f8a34073c014cc"
     },
     "firmware-support/sketch/route_refresh.h": {
       "bytes": 3323,
       "sha256": "07ed36223db35f15c900021f7f305f418a73277ee74269754428548bdc92bb43"
     },
     "firmware-support/sketch/scs_bus.h": {
-      "bytes": 8881,
-      "sha256": "9a0596c102a11f41d661ff2c48779120e4b90b9b7bb93d34ace8c70b1aabcec5"
+      "bytes": 9156,
+      "sha256": "538ae49ca7c670d41aab0a96fc83c4ccc0d936489dacd0876c4f5278cc3ecf5a"
     },
     "firmware-support/sketch/sketch.ino": {
       "bytes": 24902,
@@ -1024,6 +984,10 @@
     "firmware-support/sketch/uart_fifo.h": {
       "bytes": 579,
       "sha256": "f3dc8d93e2f0c7e8908be3eb071adf60484f009b55964cea0c44655a956ac942"
+    },
+    "firmware-support/tests/joint_limits.cpp": {
+      "bytes": 1157,
+      "sha256": "4e024f0d63bfaf0697c791eb024770cf267a60c5a63507293994d1c195da7b54"
     },
     "firmware-support/tests/parser/candidate_actual.inc": {
       "bytes": 5036,
@@ -1045,6 +1009,14 @@
       "bytes": 6208,
       "sha256": "b72b72c38d67c99fe72d66c3e657a8a2fad7f5f8e41b6013313be6107510c33d"
     },
+    "firmware-support/tests/qmi_sync.cpp": {
+      "bytes": 1817,
+      "sha256": "e9d6fb7b3c62c5d03053e6abbc1b51daabd44545279e13c07b743f819bdadead"
+    },
+    "firmware-support/tests/qmi_sync/Wire.h": {
+      "bytes": 1966,
+      "sha256": "795ad0b390f6f1f12fb7b52ea3a3618cea6bc97200ec2edfa249636d8884847f"
+    },
     "firmware-support/tests/sdk/Arduino.h": {
       "bytes": 1334,
       "sha256": "acf40fdeeefed7363dcec62848c5a9c31419258dd631a07f922afade24418e87"
@@ -1065,1153 +1037,33 @@
       "bytes": 3384,
       "sha256": "e4c8ce693b8a35a9c437d571c261869125755b57e04f05f5facd764c5b69fe12"
     },
+    "firmware-support/validation/control-comparison-20261023.json": {
+      "bytes": 6132,
+      "sha256": "a262db850825f84ed0f7709b2f8996cd990eaf3715dae32557d95486b7c37e0c"
+    },
+    "firmware-support/validation/imu-sync-install-20261023.json": {
+      "bytes": 2273,
+      "sha256": "499080ddd1893183925b2966dce606fc17546ebf8c050ed58f27ddd2e00ae403"
+    },
+    "firmware-support/validation/motion-history-20261023.json": {
+      "bytes": 8708,
+      "sha256": "67b5b91f51012f40f3994e941cdeb5311b9b06a1b5c0d96cd18eebcd8595f5e5"
+    },
     "firmware-support/validation/native-result.json": {
-      "bytes": 2081,
-      "sha256": "949b5a7a3d0e485899cf5f109bcb3416f4e059b8689f1d5e5ca6fce3c2c45d1c"
+      "bytes": 2521,
+      "sha256": "ecc62a16b6f2a6066ca5faeb09f5ff7d8ee86b9955b3e6bf72331c537d723536"
+    },
+    "firmware-support/validation/review-fix-static-20261023.json": {
+      "bytes": 5783,
+      "sha256": "3c2fef2852da40b35aa70668c60e6cdf5f4deed437f679cb3e8d7797b456d6b4"
+    },
+    "firmware-support/validation/standing-offline-20261023.json": {
+      "bytes": 14470,
+      "sha256": "73218de9dd3236deee176d8556e8418895f5d096b15770469d48cba7f81f87f8"
     },
     "firmware-support/verify_sources.py": {
       "bytes": 3209,
       "sha256": "77c4cb3edd43c920ac1c0de65fb72ffe1d1f4f1b8c8b0e6f1f1b1ee059ad425f"
-    },
-    "legacy/2026-10-17/.gitattributes": {
-      "bytes": 8,
-      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
-    },
-    "legacy/2026-10-17/.gitattributes.original": {
-      "bytes": 8,
-      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
-    },
-    "legacy/2026-10-17/.gitignore": {
-      "bytes": 213,
-      "sha256": "2a5219d794bc69a5437a6c0ae41c56f42e4b0895ef51562f71f9f9e45e3b5c7d"
-    },
-    "legacy/2026-10-17/README.md": {
-      "bytes": 4224,
-      "sha256": "16ec74068f5e755d1e57eb22cd3f41171569ea6f62c9a807c5d5fc66799749ad"
-    },
-    "legacy/2026-10-17/SOURCE_MANIFEST.json": {
-      "bytes": 71980,
-      "sha256": "192731b1438d379d9c67301c17675aaca6e3589716c508d7804e9310e6f460ec"
-    },
-    "legacy/2026-10-17/THIRD_PARTY.md": {
-      "bytes": 1276,
-      "sha256": "cae3f3d47e7c156cfc238f96bd618eba605cace856e97eff74996ef9853151ba"
-    },
-    "legacy/2026-10-17/assets/commissioning.css": {
-      "bytes": 8742,
-      "sha256": "cbd0aae2d65d6bf4fc8645441ea386b785c3c221238f112fd53a1f0b6b46f564"
-    },
-    "legacy/2026-10-17/assets/communication.js": {
-      "bytes": 10650,
-      "sha256": "addba090d92fb2f99076ecab422ffbf3639721585fedfb8baa1d95e0b5cf0934"
-    },
-    "legacy/2026-10-17/assets/connection-model.css": {
-      "bytes": 3978,
-      "sha256": "47bc3fe1882cec9ec6be23db7a93c6a725e0af1862d498967cfc9b6ea679a71b"
-    },
-    "legacy/2026-10-17/assets/connection-model.html": {
-      "bytes": 1620,
-      "sha256": "15ed2b3bfca350f60994de93008e7d7dd888dfecd998d171a1139acf0856dbae"
-    },
-    "legacy/2026-10-17/assets/connection-model.js": {
-      "bytes": 12649,
-      "sha256": "f1b017560765c2e28ef0b4901e3c0aa67a7502dd3e53d5ea95ea92ee0f1f9e9c"
-    },
-    "legacy/2026-10-17/assets/duck-dark.css": {
-      "bytes": 25333,
-      "sha256": "2951efa28b3975b741ff7034c0098837d6cc47607aaae2d869631a0f3294b454"
-    },
-    "legacy/2026-10-17/assets/imu-live.js": {
-      "bytes": 18494,
-      "sha256": "dc7261ac959068c83551a28f3cbde1a60ca0c600895da6ee95acf3c5328e9624"
-    },
-    "legacy/2026-10-17/assets/imu-math.js": {
-      "bytes": 1408,
-      "sha256": "91ce15e9cdd14a3d3d9ba1e9a3422390002c7756370d1750e657070d75261349"
-    },
-    "legacy/2026-10-17/assets/imu-model.css": {
-      "bytes": 5635,
-      "sha256": "eb5c0166ce6a91c4916576e2f90f5422adff531b0944cdf8d3aba8ff5d7f009d"
-    },
-    "legacy/2026-10-17/assets/imu-model.html": {
-      "bytes": 3223,
-      "sha256": "c4b2efbea22d09d8afbc8e880fa7215a2f2a12c14c23c865e8e3952a00902434"
-    },
-    "legacy/2026-10-17/assets/imu-model.js": {
-      "bytes": 64127,
-      "sha256": "d0ffb75cf54afa74ec9feaeb2253bca0b7c0fd8db2d7ab60d7f829dcf23ef3be"
-    },
-    "legacy/2026-10-17/assets/live-runtime.js": {
-      "bytes": 9645,
-      "sha256": "decabdbfa806daa379a892c4e32dce93b3531856fb865459c49ccdbe417d792a"
-    },
-    "legacy/2026-10-17/assets/motor-current.js": {
-      "bytes": 1948,
-      "sha256": "60a55b0cc06426c871d6547dafbb58628329d7708dfdbec3491f7fb2dc957605"
-    },
-    "legacy/2026-10-17/assets/native-pose-parent.js": {
-      "bytes": 7368,
-      "sha256": "98fa336e9bbaec9c94e92c4f9bec864cc25c3397548c78cc6c2bb22c1739be35"
-    },
-    "legacy/2026-10-17/assets/native-pose.js": {
-      "bytes": 12473,
-      "sha256": "5a10e9a93a58b21b483edb8fa67a7e563b26f9696599afea9d5925c47ffe4991"
-    },
-    "legacy/2026-10-17/assets/numbering.js": {
-      "bytes": 16140,
-      "sha256": "7f02f913c29215f05ea90ae7e3b7b5b14e77f476bdd3f998d312651e96ea4245"
-    },
-    "legacy/2026-10-17/assets/official-assembly.html": {
-      "bytes": 629,
-      "sha256": "5a2dd23c0165893e71684c9e692c1ba8cb88902b72dfc1bc7565d2a2d2788d5e"
-    },
-    "legacy/2026-10-17/assets/pose-playback.js": {
-      "bytes": 8516,
-      "sha256": "4448d64db5bd2b46baa391ea4c121b396d3035b29840f3ddebac57588d1846b1"
-    },
-    "legacy/2026-10-17/assets/relative-heading.js": {
-      "bytes": 7245,
-      "sha256": "af00d745a66263586e559df292dbf7a9a2e69b06bfd70b0c2af79e24a7639a02"
-    },
-    "legacy/2026-10-17/assets/sequence-calibration.js": {
-      "bytes": 14336,
-      "sha256": "f2fa05e7c88b3605fed695694ebd8c6c9d16b18cc5f0f23aa520efe75d9bf3cd"
-    },
-    "legacy/2026-10-17/assets/simple-debug.css": {
-      "bytes": 23107,
-      "sha256": "daf3608e84e9ec779cacfd49a93fbd1ad9e17b0f61d9f0cfd7f246d8d3a05588"
-    },
-    "legacy/2026-10-17/assets/simple-debug.js": {
-      "bytes": 14888,
-      "sha256": "aedb5c45359e3ba834952e19b00fd13e756a9fc1ed30f27b94b644f9622c12ad"
-    },
-    "legacy/2026-10-17/assets/visual-debug.css": {
-      "bytes": 14239,
-      "sha256": "1a78f1eeda84e5f45eb697bca988b671a616256ae60adeb6fd431406cab8e262"
-    },
-    "legacy/2026-10-17/assets/visual-debug.js": {
-      "bytes": 4164,
-      "sha256": "4d91420329048840b26e50680ed4732836356ac0b5f173bf77a0954ff64a57dc"
-    },
-    "legacy/2026-10-17/assets/wireless-calibration.css": {
-      "bytes": 4781,
-      "sha256": "d956e26c045862ba57b4bf11289f83d9f2a9226dbc1392c56edc52abacb6691b"
-    },
-    "legacy/2026-10-17/assets/wireless-calibration.js": {
-      "bytes": 59226,
-      "sha256": "b04d6e063a8c636ad8b3d99ff7b2959634e0de9f1f2c99bb4ca0ebeba0f96dab"
-    },
-    "legacy/2026-10-17/assets/workflow.js": {
-      "bytes": 15833,
-      "sha256": "41fddf83b388fb5d3966d3b39c77d1b6328ac1a279f766d4cf16fead6de0db96"
-    },
-    "legacy/2026-10-17/assets/zero-guide-parent.js": {
-      "bytes": 2267,
-      "sha256": "cb2b518c420819b5e21c0a7121acb62180f6db69ea3f39ad61e8ddfd5e11bfd5"
-    },
-    "legacy/2026-10-17/assets/zero-guide.css": {
-      "bytes": 8246,
-      "sha256": "b68d338970e0d91f05de0c2b154598d6d26190a6a3ba84a42e93852c08d38eeb"
-    },
-    "legacy/2026-10-17/assets/zero-guide.html": {
-      "bytes": 1575,
-      "sha256": "48459bc7ff2e6d8bada1d00d52a075c63122d09d8a7a61702869a6fe60ca24dc"
-    },
-    "legacy/2026-10-17/assets/zero-guide.js": {
-      "bytes": 20575,
-      "sha256": "42ff087008601d490c0403cc0bf02f469613df52a9a0872a71c6f374a373c345"
-    },
-    "legacy/2026-10-17/board/app.yaml": {
-      "bytes": 235,
-      "sha256": "451136068026cab7ab333151b1aa0794efcecf664584a61c2db7fd11df750937"
-    },
-    "legacy/2026-10-17/board/assets/index.html": {
-      "bytes": 13418,
-      "sha256": "51947c7d61428eb319368d909e76efe428ac932b7e1a5c32d1fee4fa58ad9c75"
-    },
-    "legacy/2026-10-17/board/component-origin.json": {
-      "bytes": 24069,
-      "sha256": "95feb00adcc3fa0c584726aea1470f66396b70463106706adf45196472e6c8df"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/core-evidence/manifest.json": {
-      "bytes": 1348,
-      "sha256": "30e4f51f129e6ef51fe071fd92ebcbe1eb7a24390c8985bf9839639c4475e407"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/.gitignore": {
-      "bytes": 29,
-      "sha256": "acd60ce0d996a3da3739cacfb354b210c001812ddacdbac5dcc37fb141f175e2"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/LICENSE": {
-      "bytes": 16724,
-      "sha256": "4b89d4518bd135ab4ee154a7bce722246b57a98c3d7efc1a09409898160c2bd1"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/README.md": {
-      "bytes": 1965,
-      "sha256": "52abc7650c6e99526b2b86e28c3a9e43fc57ed810b2c01f17406c2221483b8f7"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/library.properties": {
-      "bytes": 562,
-      "sha256": "d74d2c5cb35ad2bbf46f6a6519d5f1a2dc487645c2bde101fa0a837779c23900"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/Arduino_RPClite.h": {
-      "bytes": 698,
-      "sha256": "35dd81b176aad21ebdc8b07715ebc466ba2c7f9ac91be7172aa1dac616faad1e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/SerialTransport.h": {
-      "bytes": 1234,
-      "sha256": "80a72de9f4c6766177b097173340cc9a8d37fc9f45aa2ce1d34f3d36310290ce"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/client.h": {
-      "bytes": 2837,
-      "sha256": "9f6ddeef2e60c54a856129984c3c176143d23dc6dc1bac4e6d4e4c7b8b77c285"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/decoder.h": {
-      "bytes": 12390,
-      "sha256": "42e189ca9d0ba0a44907d2bbc14e2e9e374333900c53163a844f90056c333eff"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/decoder_manager.h": {
-      "bytes": 1705,
-      "sha256": "d999fc99564f0c32e9ce3f50152c3b328f5d6bbbd61599a93a1d7a2751846e9d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/dispatcher.h": {
-      "bytes": 1884,
-      "sha256": "89b2da59a2c9b98370ef6452eec9beee9333d13c6bd3cd28ffcb0c7d954938a4"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/duck_msgpack_frame.h": {
-      "bytes": 2847,
-      "sha256": "084e37deccdca7b9c11c217ec60606fba7014895b5cada971b71d39b325b658e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/error.h": {
-      "bytes": 1055,
-      "sha256": "c2a928c136d7a190d5caecd58a301cd3372a8c35f70c6b35b69f6334901c74ff"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/request.h": {
-      "bytes": 2167,
-      "sha256": "e26197897d6fb145b2479ae685a95644b5d4e839e06b4c98a0dce07cde72ce7f"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/rpclite_utils.h": {
-      "bytes": 4961,
-      "sha256": "ddd8d2b4dfaf1ab10b71f0a72c5ee32430fcdd6efdb09035f1332d4b0f072337"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/server.h": {
-      "bytes": 2771,
-      "sha256": "8f252cc9362e53ec63321857833c92398266e1b94d5a4b44db145b2c274d354e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/transport.h": {
-      "bytes": 732,
-      "sha256": "12d81c7cc75f988393af35ed753c0b061826ae68f5ca7a5e20e38334c16702e2"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RPClite/src/wrapper.h": {
-      "bytes": 4066,
-      "sha256": "2096c831e7ce78c3cb27fcda438109bd6116b5fff8d672bbe6f68702aad33934"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/.gitignore": {
-      "bytes": 29,
-      "sha256": "acd60ce0d996a3da3739cacfb354b210c001812ddacdbac5dcc37fb141f175e2"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/LICENSE": {
-      "bytes": 16724,
-      "sha256": "4b89d4518bd135ab4ee154a7bce722246b57a98c3d7efc1a09409898160c2bd1"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/README.md": {
-      "bytes": 3021,
-      "sha256": "cd4a925774962d380ac39309ff3583c9bfcd778be4052bc843b842f4aaf3515e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/library.properties": {
-      "bytes": 417,
-      "sha256": "a7d74f8dee9513cd7e4e29486de32bad071ddb6a1bcbd1ecc541f3ebeacd2aba"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/src/Arduino_RouterBridge.h": {
-      "bytes": 562,
-      "sha256": "c283abd94478dedf5e55db274e376dde694fd0827e9d05e9a8404be798b11b7e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/src/bridge.h": {
-      "bytes": 15809,
-      "sha256": "1a94c270e1ff31753d632b413f49b18e5c2b219f00d811a9bbaa69514d55b47f"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/src/hci.h": {
-      "bytes": 4284,
-      "sha256": "3151c72764945649405ad189f3954402f9d2e074d5542df13878a634d872e050"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/src/monitor.h": {
-      "bytes": 5078,
-      "sha256": "d3c8940c58db82eae0064208cdee6bb8e0c4ea68ee56cf75c38ff98038d5cf9e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/src/routerbridge_provides_serial.h": {
-      "bytes": 638,
-      "sha256": "1c9c402d2a5dc62c6c1de2c91b2a6c88cc4afea690dbdee209c8ae2cb765c5ec"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/src/singletons.cpp": {
-      "bytes": 696,
-      "sha256": "6184e7a02393b01457dc4233d0e96e543f2b8cf051e9a03adeb6da343dc3b045"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/src/tcp_client.h": {
-      "bytes": 6117,
-      "sha256": "3cb833e26b9e4d43042f23704e419e3a68d317ecadede4602cd6c5c79bdf78c9"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/src/tcp_server.h": {
-      "bytes": 4294,
-      "sha256": "6afe0c5de4237be616ef5215c5384c7b953c7b1af72027a5cdb1ca1959849b9d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/Arduino_RouterBridge/src/udp_bridge.h": {
-      "bytes": 9089,
-      "sha256": "d0cf4354b361ac0bba30aaaca93d7f994611e7738a5d8f88002b94ab631f553b"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxContainer/ArxContainer.h": {
-      "bytes": 23344,
-      "sha256": "c34c600608e73039f3125a22c5b46e21fd032835d51edbac0f568010a2f4e445"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxContainer/ArxContainer/has_include.h": {
-      "bytes": 1447,
-      "sha256": "0666187b3cc5fe4cdc375260b359c01e1b47b0fda4d197a94c59950b8b96fc8e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxContainer/ArxContainer/has_libstdcplusplus.h": {
-      "bytes": 1440,
-      "sha256": "c996272c5402831c182e08b3aace51b4de7201b65b0840ac3dda5462e4bca1dc"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxContainer/ArxContainer/initializer_list.h": {
-      "bytes": 873,
-      "sha256": "3818d4f8758f0209bdbb46f4b74228563f669c68afb8c94b03dc5864c6501e3f"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxContainer/ArxContainer/replace_minmax_macros.h": {
-      "bytes": 903,
-      "sha256": "b995896fa5ddbd2a7eb2bf7a7f68d7cf08c19a9e64338eb2937aeb7c68d7557f"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxContainer/LICENSE": {
-      "bytes": 1068,
-      "sha256": "de2a732a9f9b1915f8956d01f9c2c3b8201f9bb32ba20161b56b51e72bee3e69"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxContainer/README.md": {
-      "bytes": 4750,
-      "sha256": "c38cc04edb65caaa52f1c66d5b41e6511879109eea60bcf9f650261421a1dfca"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxContainer/library.json": {
-      "bytes": 524,
-      "sha256": "99a0b996615cb47585f02c087157653de4006ca5e929a1ab08bd0fdd2e4cc118"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxContainer/library.properties": {
-      "bytes": 336,
-      "sha256": "d3c5ea49d33fa35af3dcea00b01ef997f0697ccc225a618e850de461cee4277c"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits.h": {
-      "bytes": 1235,
-      "sha256": "e1803a1f648e597ee18e340945d09abcc1907d8530292b525003f495e6b435eb"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/functional.h": {
-      "bytes": 4830,
-      "sha256": "7f7d667f973d4aa3c5a68e4ce0c2ce4a3bcc368db61ec7e5bdeaf73c1de2de5b"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/has_include.h": {
-      "bytes": 1447,
-      "sha256": "0666187b3cc5fe4cdc375260b359c01e1b47b0fda4d197a94c59950b8b96fc8e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/has_libstdcplusplus.h": {
-      "bytes": 1440,
-      "sha256": "c996272c5402831c182e08b3aace51b4de7201b65b0840ac3dda5462e4bca1dc"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/initializer_list.h": {
-      "bytes": 913,
-      "sha256": "92444029d4d9470a61b64219064508734f77d228fb95590fc50e6180c390d6a9"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/replace_minmax_macros.h": {
-      "bytes": 903,
-      "sha256": "b995896fa5ddbd2a7eb2bf7a7f68d7cf08c19a9e64338eb2937aeb7c68d7557f"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/tuple.h": {
-      "bytes": 2352,
-      "sha256": "08c7c56651b115ba809c325db939e2723937221f4667b3c3d224726003f944a7"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/ArxTypeTraits/type_traits.h": {
-      "bytes": 36151,
-      "sha256": "7222e640257e6d48e286ee2aec0bf8e6d6a809afc2f9177785db4b2b2c953e59"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/LICENSE": {
-      "bytes": 1068,
-      "sha256": "924ea9fc49895eeb075b1a2a0769afadefc263d4b845b9e48dae8701efe1748d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/README.md": {
-      "bytes": 4142,
-      "sha256": "8cfc6be5a63f832cd8b299c0953d25f5f843990c2db959c90ba4e526f23c2984"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/library.json": {
-      "bytes": 510,
-      "sha256": "6c0c75aae0638e31c73d593f8c000ea4c653f8d0b4309ce9e88db0799b260593"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/ArxTypeTraits/library.properties": {
-      "bytes": 296,
-      "sha256": "b6d1f0c66814bd0fb665ede779bc274b647093984acbd9de33a36dde62c0c53e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/DebugLog/DebugLog.h": {
-      "bytes": 2131,
-      "sha256": "2806ecb63f42f754baeee00a3d80c33ca34549d947195f8008bafec570a89a7d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/DebugLog/DebugLog/FileLogger.h": {
-      "bytes": 4603,
-      "sha256": "8457395629c5b0d67a774ceac00ae340c1c6bf593892a5f53fdfe8e08b571ba8"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/DebugLog/DebugLog/Manager.h": {
-      "bytes": 12056,
-      "sha256": "e52319bdb33f009c50de5c2daf915880c5e3048b147972f603467d0eff1a7ce4"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/DebugLog/DebugLog/Types.h": {
-      "bytes": 3357,
-      "sha256": "ccaf91427dce83d5154adc0558ebcee9325b5d86457d0483d0f6805341bfb434"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/DebugLog/DebugLogDisable.h": {
-      "bytes": 337,
-      "sha256": "58be92f9ad52cb81b35d22720a52387a3b763823d018e76c23eb0b13f5ce4869"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/DebugLog/DebugLogEnable.h": {
-      "bytes": 3865,
-      "sha256": "2ce16cba9789c1760f36dbbf6932e49890b0521984801c09454af14cee3e4749"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/DebugLog/DebugLogRestoreState.h": {
-      "bytes": 98,
-      "sha256": "9b61e2af4aed9b403ae13284415a054e29d943b905d0b3f83f018cd9c4b3ce09"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/DebugLog/LICENSE": {
-      "bytes": 1068,
-      "sha256": "de2a732a9f9b1915f8956d01f9c2c3b8201f9bb32ba20161b56b51e72bee3e69"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/DebugLog/README.md": {
-      "bytes": 16905,
-      "sha256": "c9e002daa4944a08ba2fc9c81855490bd68367ab9c9598fad42065a44492d6c2"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/DebugLog/library.json": {
-      "bytes": 544,
-      "sha256": "6058263771659a3789323ae03e4432a1db39e56e933265ad9d2b94ec25624a4e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/DebugLog/library.properties": {
-      "bytes": 489,
-      "sha256": "c3dcffa16d0ec55a50ab3cd6754222e49479b75fa4d15c0820c11ae65ab62ca0"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/.gitignore": {
-      "bytes": 27,
-      "sha256": "62fe00c718c375d05fc19ac5596a32884c2549d07191a942343c8cf120f0bba5"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/LICENSE": {
-      "bytes": 1068,
-      "sha256": "924ea9fc49895eeb075b1a2a0769afadefc263d4b845b9e48dae8701efe1748d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/MsgPack.h": {
-      "bytes": 411,
-      "sha256": "acf03f1001f8d744a1a1e4c381a6f0fbca2a4a03e8689f3f81baefd394ad1685"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/MsgPack/Packer.h": {
-      "bytes": 33528,
-      "sha256": "178fe16159ead5e5a5a92df9202ee20674cfcbe7db92878f8af13c9cf78124c4"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/MsgPack/Types.h": {
-      "bytes": 8996,
-      "sha256": "4699db90d4d2905375d20fb6c5b9b53cbfcc3253092dbc8b1a2cd1fc3e1d598e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/MsgPack/Unpacker.h": {
-      "bytes": 68531,
-      "sha256": "4de797546ea6a9d1cb40ad23a3bc31185970bc792456cfc7534b9959483421a8"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/MsgPack/Utility.h": {
-      "bytes": 7110,
-      "sha256": "dd6b85f02d56bd8d388ca061da990cd5e14fc9987bc4f3b5b7287d1a6f61ae40"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/MsgPack/util/TeensyDirtySTLErrorSolution/LICENSE": {
-      "bytes": 1068,
-      "sha256": "924ea9fc49895eeb075b1a2a0769afadefc263d4b845b9e48dae8701efe1748d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/MsgPack/util/TeensyDirtySTLErrorSolution/README.md": {
-      "bytes": 2121,
-      "sha256": "b4b7341216ad4797835c3f756781d96375052508e567d6b49648133036a97c8b"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/MsgPack/util/TeensyDirtySTLErrorSolution/TeensyDirtySTLErrorSolution.h": {
-      "bytes": 1947,
-      "sha256": "db461df1ccdb22ceecf34aa39d2e3878edfd55d227eb9d9d5b2d5298c15f6eda"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/README.md": {
-      "bytes": 29493,
-      "sha256": "9f690a991c73591e45802639d68491ba7b782bba1ba810ed80c26dbdce51e246"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/library.json": {
-      "bytes": 651,
-      "sha256": "16fe927798c8ccd5684cc3b04acbe30ae23c1e39640ba4aba88419edc3303d7d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/libraries/MsgPack/library.properties": {
-      "bytes": 377,
-      "sha256": "a7027295fe10bc712084522fdfababb600e2fa02e37b2c46c780378ddeda442a"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor-manifest.json": {
-      "bytes": 18364,
-      "sha256": "03893ff8a80546a85734713a7feda40595e13f2614c56a903ada759f2f1deee7"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/.gitignore": {
-      "bytes": 29,
-      "sha256": "acd60ce0d996a3da3739cacfb354b210c001812ddacdbac5dcc37fb141f175e2"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/LICENSE": {
-      "bytes": 16724,
-      "sha256": "4b89d4518bd135ab4ee154a7bce722246b57a98c3d7efc1a09409898160c2bd1"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/README.md": {
-      "bytes": 1965,
-      "sha256": "52abc7650c6e99526b2b86e28c3a9e43fc57ed810b2c01f17406c2221483b8f7"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/library.properties": {
-      "bytes": 562,
-      "sha256": "d74d2c5cb35ad2bbf46f6a6519d5f1a2dc487645c2bde101fa0a837779c23900"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/Arduino_RPClite.h": {
-      "bytes": 698,
-      "sha256": "35dd81b176aad21ebdc8b07715ebc466ba2c7f9ac91be7172aa1dac616faad1e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/SerialTransport.h": {
-      "bytes": 1234,
-      "sha256": "80a72de9f4c6766177b097173340cc9a8d37fc9f45aa2ce1d34f3d36310290ce"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/client.h": {
-      "bytes": 2199,
-      "sha256": "c50e110e68f8bded7862c37f4febd0c3fd47544391f3ea41abf6cd0149f770e0"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/decoder.h": {
-      "bytes": 10217,
-      "sha256": "817328dcfb400cf89a5cedf22384f06557829a55cc659e15b6681a8641a9b2be"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/decoder_manager.h": {
-      "bytes": 1705,
-      "sha256": "d999fc99564f0c32e9ce3f50152c3b328f5d6bbbd61599a93a1d7a2751846e9d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/dispatcher.h": {
-      "bytes": 1884,
-      "sha256": "89b2da59a2c9b98370ef6452eec9beee9333d13c6bd3cd28ffcb0c7d954938a4"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/error.h": {
-      "bytes": 1055,
-      "sha256": "c2a928c136d7a190d5caecd58a301cd3372a8c35f70c6b35b69f6334901c74ff"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/request.h": {
-      "bytes": 2167,
-      "sha256": "e26197897d6fb145b2479ae685a95644b5d4e839e06b4c98a0dce07cde72ce7f"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/rpclite_utils.h": {
-      "bytes": 4961,
-      "sha256": "ddd8d2b4dfaf1ab10b71f0a72c5ee32430fcdd6efdb09035f1332d4b0f072337"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/server.h": {
-      "bytes": 2579,
-      "sha256": "c1111eca01bcd56ad358cdfcc1abb3271a6795039aaf44df05e2be4a5706bb1c"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/transport.h": {
-      "bytes": 732,
-      "sha256": "12d81c7cc75f988393af35ed753c0b061826ae68f5ca7a5e20e38334c16702e2"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RPClite/src/wrapper.h": {
-      "bytes": 4066,
-      "sha256": "2096c831e7ce78c3cb27fcda438109bd6116b5fff8d672bbe6f68702aad33934"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/.gitignore": {
-      "bytes": 29,
-      "sha256": "acd60ce0d996a3da3739cacfb354b210c001812ddacdbac5dcc37fb141f175e2"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/LICENSE": {
-      "bytes": 16724,
-      "sha256": "4b89d4518bd135ab4ee154a7bce722246b57a98c3d7efc1a09409898160c2bd1"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/README.md": {
-      "bytes": 3021,
-      "sha256": "cd4a925774962d380ac39309ff3583c9bfcd778be4052bc843b842f4aaf3515e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/library.properties": {
-      "bytes": 417,
-      "sha256": "a7d74f8dee9513cd7e4e29486de32bad071ddb6a1bcbd1ecc541f3ebeacd2aba"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/src/Arduino_RouterBridge.h": {
-      "bytes": 562,
-      "sha256": "c283abd94478dedf5e55db274e376dde694fd0827e9d05e9a8404be798b11b7e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/src/bridge.h": {
-      "bytes": 9487,
-      "sha256": "ca275c57d1865db16a24e14c901757c31fac7ada91bb09130e07dfb6b4b9febb"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/src/hci.h": {
-      "bytes": 4284,
-      "sha256": "3151c72764945649405ad189f3954402f9d2e074d5542df13878a634d872e050"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/src/monitor.h": {
-      "bytes": 5078,
-      "sha256": "d3c8940c58db82eae0064208cdee6bb8e0c4ea68ee56cf75c38ff98038d5cf9e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/src/routerbridge_provides_serial.h": {
-      "bytes": 638,
-      "sha256": "1c9c402d2a5dc62c6c1de2c91b2a6c88cc4afea690dbdee209c8ae2cb765c5ec"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/src/singletons.cpp": {
-      "bytes": 696,
-      "sha256": "6184e7a02393b01457dc4233d0e96e543f2b8cf051e9a03adeb6da343dc3b045"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/src/tcp_client.h": {
-      "bytes": 6117,
-      "sha256": "3cb833e26b9e4d43042f23704e419e3a68d317ecadede4602cd6c5c79bdf78c9"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/src/tcp_server.h": {
-      "bytes": 4294,
-      "sha256": "6afe0c5de4237be616ef5215c5384c7b953c7b1af72027a5cdb1ca1959849b9d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/Arduino_RouterBridge/src/udp_bridge.h": {
-      "bytes": 9089,
-      "sha256": "d0cf4354b361ac0bba30aaaca93d7f994611e7738a5d8f88002b94ab631f553b"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxContainer/ArxContainer.h": {
-      "bytes": 23344,
-      "sha256": "c34c600608e73039f3125a22c5b46e21fd032835d51edbac0f568010a2f4e445"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxContainer/ArxContainer/has_include.h": {
-      "bytes": 1447,
-      "sha256": "0666187b3cc5fe4cdc375260b359c01e1b47b0fda4d197a94c59950b8b96fc8e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxContainer/ArxContainer/has_libstdcplusplus.h": {
-      "bytes": 1440,
-      "sha256": "c996272c5402831c182e08b3aace51b4de7201b65b0840ac3dda5462e4bca1dc"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxContainer/ArxContainer/initializer_list.h": {
-      "bytes": 873,
-      "sha256": "3818d4f8758f0209bdbb46f4b74228563f669c68afb8c94b03dc5864c6501e3f"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxContainer/ArxContainer/replace_minmax_macros.h": {
-      "bytes": 903,
-      "sha256": "b995896fa5ddbd2a7eb2bf7a7f68d7cf08c19a9e64338eb2937aeb7c68d7557f"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxContainer/LICENSE": {
-      "bytes": 1068,
-      "sha256": "de2a732a9f9b1915f8956d01f9c2c3b8201f9bb32ba20161b56b51e72bee3e69"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxContainer/README.md": {
-      "bytes": 4750,
-      "sha256": "c38cc04edb65caaa52f1c66d5b41e6511879109eea60bcf9f650261421a1dfca"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxContainer/library.json": {
-      "bytes": 524,
-      "sha256": "99a0b996615cb47585f02c087157653de4006ca5e929a1ab08bd0fdd2e4cc118"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxContainer/library.properties": {
-      "bytes": 336,
-      "sha256": "d3c5ea49d33fa35af3dcea00b01ef997f0697ccc225a618e850de461cee4277c"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/ArxTypeTraits.h": {
-      "bytes": 1235,
-      "sha256": "e1803a1f648e597ee18e340945d09abcc1907d8530292b525003f495e6b435eb"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/ArxTypeTraits/functional.h": {
-      "bytes": 4830,
-      "sha256": "7f7d667f973d4aa3c5a68e4ce0c2ce4a3bcc368db61ec7e5bdeaf73c1de2de5b"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/ArxTypeTraits/has_include.h": {
-      "bytes": 1447,
-      "sha256": "0666187b3cc5fe4cdc375260b359c01e1b47b0fda4d197a94c59950b8b96fc8e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/ArxTypeTraits/has_libstdcplusplus.h": {
-      "bytes": 1440,
-      "sha256": "c996272c5402831c182e08b3aace51b4de7201b65b0840ac3dda5462e4bca1dc"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/ArxTypeTraits/initializer_list.h": {
-      "bytes": 913,
-      "sha256": "92444029d4d9470a61b64219064508734f77d228fb95590fc50e6180c390d6a9"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/ArxTypeTraits/replace_minmax_macros.h": {
-      "bytes": 903,
-      "sha256": "b995896fa5ddbd2a7eb2bf7a7f68d7cf08c19a9e64338eb2937aeb7c68d7557f"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/ArxTypeTraits/tuple.h": {
-      "bytes": 2352,
-      "sha256": "08c7c56651b115ba809c325db939e2723937221f4667b3c3d224726003f944a7"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/ArxTypeTraits/type_traits.h": {
-      "bytes": 36151,
-      "sha256": "7222e640257e6d48e286ee2aec0bf8e6d6a809afc2f9177785db4b2b2c953e59"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/LICENSE": {
-      "bytes": 1068,
-      "sha256": "924ea9fc49895eeb075b1a2a0769afadefc263d4b845b9e48dae8701efe1748d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/README.md": {
-      "bytes": 4142,
-      "sha256": "8cfc6be5a63f832cd8b299c0953d25f5f843990c2db959c90ba4e526f23c2984"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/library.json": {
-      "bytes": 510,
-      "sha256": "6c0c75aae0638e31c73d593f8c000ea4c653f8d0b4309ce9e88db0799b260593"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/ArxTypeTraits/library.properties": {
-      "bytes": 296,
-      "sha256": "b6d1f0c66814bd0fb665ede779bc274b647093984acbd9de33a36dde62c0c53e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/DebugLog/DebugLog.h": {
-      "bytes": 2131,
-      "sha256": "2806ecb63f42f754baeee00a3d80c33ca34549d947195f8008bafec570a89a7d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/DebugLog/DebugLog/FileLogger.h": {
-      "bytes": 4603,
-      "sha256": "8457395629c5b0d67a774ceac00ae340c1c6bf593892a5f53fdfe8e08b571ba8"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/DebugLog/DebugLog/Manager.h": {
-      "bytes": 12056,
-      "sha256": "e52319bdb33f009c50de5c2daf915880c5e3048b147972f603467d0eff1a7ce4"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/DebugLog/DebugLog/Types.h": {
-      "bytes": 3357,
-      "sha256": "ccaf91427dce83d5154adc0558ebcee9325b5d86457d0483d0f6805341bfb434"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/DebugLog/DebugLogDisable.h": {
-      "bytes": 337,
-      "sha256": "58be92f9ad52cb81b35d22720a52387a3b763823d018e76c23eb0b13f5ce4869"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/DebugLog/DebugLogEnable.h": {
-      "bytes": 3865,
-      "sha256": "2ce16cba9789c1760f36dbbf6932e49890b0521984801c09454af14cee3e4749"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/DebugLog/DebugLogRestoreState.h": {
-      "bytes": 98,
-      "sha256": "9b61e2af4aed9b403ae13284415a054e29d943b905d0b3f83f018cd9c4b3ce09"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/DebugLog/LICENSE": {
-      "bytes": 1068,
-      "sha256": "de2a732a9f9b1915f8956d01f9c2c3b8201f9bb32ba20161b56b51e72bee3e69"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/DebugLog/README.md": {
-      "bytes": 16905,
-      "sha256": "c9e002daa4944a08ba2fc9c81855490bd68367ab9c9598fad42065a44492d6c2"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/DebugLog/library.json": {
-      "bytes": 544,
-      "sha256": "6058263771659a3789323ae03e4432a1db39e56e933265ad9d2b94ec25624a4e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/DebugLog/library.properties": {
-      "bytes": 489,
-      "sha256": "c3dcffa16d0ec55a50ab3cd6754222e49479b75fa4d15c0820c11ae65ab62ca0"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/.gitignore": {
-      "bytes": 27,
-      "sha256": "62fe00c718c375d05fc19ac5596a32884c2549d07191a942343c8cf120f0bba5"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/LICENSE": {
-      "bytes": 1068,
-      "sha256": "924ea9fc49895eeb075b1a2a0769afadefc263d4b845b9e48dae8701efe1748d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/MsgPack.h": {
-      "bytes": 411,
-      "sha256": "acf03f1001f8d744a1a1e4c381a6f0fbca2a4a03e8689f3f81baefd394ad1685"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/MsgPack/Packer.h": {
-      "bytes": 33528,
-      "sha256": "178fe16159ead5e5a5a92df9202ee20674cfcbe7db92878f8af13c9cf78124c4"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/MsgPack/Types.h": {
-      "bytes": 8996,
-      "sha256": "4699db90d4d2905375d20fb6c5b9b53cbfcc3253092dbc8b1a2cd1fc3e1d598e"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/MsgPack/Unpacker.h": {
-      "bytes": 68531,
-      "sha256": "4de797546ea6a9d1cb40ad23a3bc31185970bc792456cfc7534b9959483421a8"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/MsgPack/Utility.h": {
-      "bytes": 7110,
-      "sha256": "dd6b85f02d56bd8d388ca061da990cd5e14fc9987bc4f3b5b7287d1a6f61ae40"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/MsgPack/util/TeensyDirtySTLErrorSolution/LICENSE": {
-      "bytes": 1068,
-      "sha256": "924ea9fc49895eeb075b1a2a0769afadefc263d4b845b9e48dae8701efe1748d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/MsgPack/util/TeensyDirtySTLErrorSolution/README.md": {
-      "bytes": 2121,
-      "sha256": "b4b7341216ad4797835c3f756781d96375052508e567d6b49648133036a97c8b"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/MsgPack/util/TeensyDirtySTLErrorSolution/TeensyDirtySTLErrorSolution.h": {
-      "bytes": 1947,
-      "sha256": "db461df1ccdb22ceecf34aa39d2e3878edfd55d227eb9d9d5b2d5298c15f6eda"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/README.md": {
-      "bytes": 29493,
-      "sha256": "9f690a991c73591e45802639d68491ba7b782bba1ba810ed80c26dbdce51e246"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/library.json": {
-      "bytes": 651,
-      "sha256": "16fe927798c8ccd5684cc3b04acbe30ae23c1e39640ba4aba88419edc3303d7d"
-    },
-    "legacy/2026-10-17/board/firmware_dependencies/vendor/MsgPack/library.properties": {
-      "bytes": 377,
-      "sha256": "a7027295fe10bc712084522fdfababb600e2fa02e37b2c46c780378ddeda442a"
-    },
-    "legacy/2026-10-17/board/python/calibration_host.py": {
-      "bytes": 139535,
-      "sha256": "d56fc303fc4ff5eec72a1b04ec0fd78103fe8ec86d2619d42ba6fc28988f81e9"
-    },
-    "legacy/2026-10-17/board/python/calibration_wire.py": {
-      "bytes": 10856,
-      "sha256": "e50461844ce3473160d4adf46cfac90be38e6d3046691425e7347adc3b45ac20"
-    },
-    "legacy/2026-10-17/board/python/checked_bridge.py": {
-      "bytes": 2379,
-      "sha256": "fc465ed11834efb6e4681599515514e12c4dc96914b30f25cc213bc88a994d61"
-    },
-    "legacy/2026-10-17/board/python/device_config.py": {
-      "bytes": 1483,
-      "sha256": "8e7d02650e05fc4633cd1d4b4d33dc00de8a2334095737e8477f4fc572bd320f"
-    },
-    "legacy/2026-10-17/board/python/imu_relay_service.py": {
-      "bytes": 15047,
-      "sha256": "b14f050facd49b484a819c8f9d91f73bc84a7e7eb493115f06cda35b00013e1e"
-    },
-    "legacy/2026-10-17/board/python/imu_transport/__init__.py": {
-      "bytes": 233,
-      "sha256": "96b430417a3c44a519ac4b57b9769e72d85469f89004b79e79e64af6654460e2"
-    },
-    "legacy/2026-10-17/board/python/imu_transport/host.py": {
-      "bytes": 4436,
-      "sha256": "ebbd2cbe6c238657088700ac6dce77f6b81cac62f5f1c85204eeff46d4ffcd43"
-    },
-    "legacy/2026-10-17/board/python/imu_transport/integration.py": {
-      "bytes": 5688,
-      "sha256": "a965fa70fa0dea9d3cded2fbca51124e64fbc8157b358c048a74cc88ab8305ac"
-    },
-    "legacy/2026-10-17/board/python/imu_transport/pc.py": {
-      "bytes": 3545,
-      "sha256": "0c427e3870c8aa60f7897062a282c3a8293f92f6433df984a91836b069052ef2"
-    },
-    "legacy/2026-10-17/board/python/imu_transport/pose_codec.py": {
-      "bytes": 2529,
-      "sha256": "b4c52c23237fd63cb56853445fb40a00608664b0bce66afbf2ee5f82e07aa5fd"
-    },
-    "legacy/2026-10-17/board/python/imu_transport/protocol.py": {
-      "bytes": 18360,
-      "sha256": "2bbdf9495b675c7aa16a0ff37a37cdb6c964a2352a0ba3a8a5c3d39d1bb53567"
-    },
-    "legacy/2026-10-17/board/python/main.py": {
-      "bytes": 4977,
-      "sha256": "c6633e0238276d43e713c8c0357f758373470198f7dac54686585162f3d5c293"
-    },
-    "legacy/2026-10-17/board/python/pose_observation.py": {
-      "bytes": 5219,
-      "sha256": "454d6dc0aca1f2bbfe40adcf4c9749b38273a6fa7d289a58836bcd001593064b"
-    },
-    "legacy/2026-10-17/board/python/requirements.txt": {
-      "bytes": 160,
-      "sha256": "77ee4738b8963d3e12eea49bbf03a64903f08bd672ca0719b19ccda8d1d231f2"
-    },
-    "legacy/2026-10-17/board/python/sequence_host.py": {
-      "bytes": 20474,
-      "sha256": "da05e90d11b28227f30cf8fdb728b72a29b3c485b0f3588440331a783d17d940"
-    },
-    "legacy/2026-10-17/board/python/sequence_store.py": {
-      "bytes": 5854,
-      "sha256": "e6416b702e0201d403c5525676710fdf25e5eee92de1f033ee20853385cf89ea"
-    },
-    "legacy/2026-10-17/board/python/sequence_wire.py": {
-      "bytes": 4383,
-      "sha256": "b32c5ad0bdf9bfe1e940565a4b24767f7f6ab6123a69cfbdfc5dbbcb8b451d8a"
-    },
-    "legacy/2026-10-17/board/python/servo_current.py": {
-      "bytes": 2554,
-      "sha256": "1de954fd98b6ac8c0b02f8fe81f00d32306d8eb8ea5fab7d5749e076b6e1af01"
-    },
-    "legacy/2026-10-17/board/python/servo_probe.py": {
-      "bytes": 8711,
-      "sha256": "eb3cd48dbc2927136ae35e3e201f5534913694fa3f8bb89ae6808f925ba628cc"
-    },
-    "legacy/2026-10-17/board/python/startup_serial_recovery.py": {
-      "bytes": 11780,
-      "sha256": "d8fe81db4d8f59b18a3bc2d58d8e61e820b72d9aeb1486edbe8cd46a1b01a8e3"
-    },
-    "legacy/2026-10-17/board/python/telemetry.py": {
-      "bytes": 15105,
-      "sha256": "80199329e4c967e646b01efb0ecc0b481f04b2f6320167e1b71fe2ccc15277c9"
-    },
-    "legacy/2026-10-17/board/python/unix_command_rpc.py": {
-      "bytes": 4952,
-      "sha256": "c177131fe0217e491ba923d266aa4e565d6d69cb69ba66ff8c1680675b8fe626"
-    },
-    "legacy/2026-10-17/board/python/wire.py": {
-      "bytes": 4330,
-      "sha256": "e6e645ad554f3c33228127fc704907a9972f98568719461c21e64a5b5ee89e74"
-    },
-    "legacy/2026-10-17/board/sketch/calibration_engine.h": {
-      "bytes": 61237,
-      "sha256": "bfe9362803a0db6c15cd3eb157fd3c23c5a74aa4daf3fbca957fb770911e82f0"
-    },
-    "legacy/2026-10-17/board/sketch/calibration_protocol.h": {
-      "bytes": 7565,
-      "sha256": "b478c2d1f49c8dfefb65fe3d21ce76fe36c596057821792d1037da6f3ce7c4c4"
-    },
-    "legacy/2026-10-17/board/sketch/duck_config.h": {
-      "bytes": 1954,
-      "sha256": "ae4a93a3184be069865613bdd96058324347649d43b8876d53168ecf88bb3016"
-    },
-    "legacy/2026-10-17/board/sketch/protocol.h": {
-      "bytes": 2151,
-      "sha256": "4f04fafe416338e01bfff023e2f83b93d105b99e4fdd36e39e2dff3e8dd206b5"
-    },
-    "legacy/2026-10-17/board/sketch/qmi8658.h": {
-      "bytes": 4080,
-      "sha256": "3d6b501dba41e76e6fc63cbd81d35eb5d5cd34ff80f18e0bb44ec3cc9772f4b1"
-    },
-    "legacy/2026-10-17/board/sketch/route_refresh.h": {
-      "bytes": 1850,
-      "sha256": "4338f57689fab73483fa45efbe24cf91f9328811341067d2f175061612335aa4"
-    },
-    "legacy/2026-10-17/board/sketch/scs_bus.h": {
-      "bytes": 7755,
-      "sha256": "a09cdd7081c6ee712245189415cc9b758fa173f4d003405a089b4b4f7dc9a60e"
-    },
-    "legacy/2026-10-17/board/sketch/servo_probe.h": {
-      "bytes": 10439,
-      "sha256": "dc85407043681de18414ad3c22a633c559416492164b221e413fbbbffd96ac2e"
-    },
-    "legacy/2026-10-17/board/sketch/sketch.ino": {
-      "bytes": 23381,
-      "sha256": "ba947f5f40e8d8b059406fc73a83a0e4767c12b5183654834e657f702dcd7772"
-    },
-    "legacy/2026-10-17/board/sketch/sketch.yaml": {
-      "bytes": 529,
-      "sha256": "c8a65ad27903468779125d20a3d5418a680cddca7d7b9c00721b5ae71d318f4f"
-    },
-    "legacy/2026-10-17/board/sketch/uart_fifo.h": {
-      "bytes": 579,
-      "sha256": "f3dc8d93e2f0c7e8908be3eb071adf60484f009b55964cea0c44655a956ac942"
-    },
-    "legacy/2026-10-17/board/tools/patches/duck_msgpack_frame.h": {
-      "bytes": 2847,
-      "sha256": "084e37deccdca7b9c11c217ec60606fba7014895b5cada971b71d39b325b658e"
-    },
-    "legacy/2026-10-17/board/tools/patches/parse_packet.txt": {
-      "bytes": 1447,
-      "sha256": "e1c7a5032e9b6c62e86fe6cb3653c2a6e54b94e99776302a88bc8c555fa90b3f"
-    },
-    "legacy/2026-10-17/board/tools/prepare-bridge.py": {
-      "bytes": 961,
-      "sha256": "3475eaff2596305312c92280ba60399d8a0bad313ad1b183cba319e7e517a9c5"
-    },
-    "legacy/2026-10-17/board/tools/reuse-toolchain.py": {
-      "bytes": 770,
-      "sha256": "6af777d1ed9b5fe5eb82006377ed4e20eef548e8f6ae24a4ad0b9724b7ddd638"
-    },
-    "legacy/2026-10-17/board/tools/router-2m.sh": {
-      "bytes": 1439,
-      "sha256": "9498539ced5f789c0c7c2ad693e2e02c82f2175fad20bb24667efe5d579bfc86"
-    },
-    "legacy/2026-10-17/board/tools/verify-elf.py": {
-      "bytes": 1258,
-      "sha256": "87d8be67b06cb1b3081ea58baa0c8f11f9b94c56ca4b4ff0195236d2e91264e1"
-    },
-    "legacy/2026-10-17/commissioning_support.py": {
-      "bytes": 9500,
-      "sha256": "9bc7525e229099bf222ecfd3c233b0ddab2e7b45abdf459a2d9bb684e92ba2a9"
-    },
-    "legacy/2026-10-17/config/device.example.json": {
-      "bytes": 66,
-      "sha256": "87dc5a144975890ee0b84aa8a88caecb6a390d70b23cb9ff4e6243e06bb09ef7"
-    },
-    "legacy/2026-10-17/config/ssh-identity.example.json": {
-      "bytes": 137,
-      "sha256": "62f2f0ba1e3f1b6a497c08f4be6a0c4ae04fe7173506d49030a67a1d23e6d000"
-    },
-    "legacy/2026-10-17/config/wireless-calibration-auth.example.json": {
-      "bytes": 114,
-      "sha256": "f14ac01ef13aaa31a9a86fa8932936cd1769f7d7c43e4d0550c5727a23dff942"
-    },
-    "legacy/2026-10-17/device_config.py": {
-      "bytes": 1483,
-      "sha256": "8e7d02650e05fc4633cd1d4b4d33dc00de8a2334095737e8477f4fc572bd320f"
-    },
-    "legacy/2026-10-17/imu_stream.py": {
-      "bytes": 11061,
-      "sha256": "d0483a831f50c836ad2ef0b0861addc75f7784c5015f728d7797b2ceeaa29c31"
-    },
-    "legacy/2026-10-17/imu_transport/__init__.py": {
-      "bytes": 233,
-      "sha256": "96b430417a3c44a519ac4b57b9769e72d85469f89004b79e79e64af6654460e2"
-    },
-    "legacy/2026-10-17/imu_transport/host.py": {
-      "bytes": 4436,
-      "sha256": "ebbd2cbe6c238657088700ac6dce77f6b81cac62f5f1c85204eeff46d4ffcd43"
-    },
-    "legacy/2026-10-17/imu_transport/integration.py": {
-      "bytes": 5688,
-      "sha256": "a965fa70fa0dea9d3cded2fbca51124e64fbc8157b358c048a74cc88ab8305ac"
-    },
-    "legacy/2026-10-17/imu_transport/pc.py": {
-      "bytes": 3545,
-      "sha256": "0c427e3870c8aa60f7897062a282c3a8293f92f6433df984a91836b069052ef2"
-    },
-    "legacy/2026-10-17/imu_transport/pipeline.py": {
-      "bytes": 14636,
-      "sha256": "1ce4b2bcccc46cc794edef5d0259584f104f22f08c12434405aeafb65d49da61"
-    },
-    "legacy/2026-10-17/imu_transport/pose_codec.py": {
-      "bytes": 2529,
-      "sha256": "b4c52c23237fd63cb56853445fb40a00608664b0bce66afbf2ee5f82e07aa5fd"
-    },
-    "legacy/2026-10-17/imu_transport/protocol.py": {
-      "bytes": 18360,
-      "sha256": "ff20a5b32a06ba0ba10b6756d83b81254e841937fe5ff297f8e5cfe7ef29c08a"
-    },
-    "legacy/2026-10-17/index.html": {
-      "bytes": 8228,
-      "sha256": "4a67c10103b1002e16c56172ada490872b32ee4e47c805e784c43a16b30d07c5"
-    },
-    "legacy/2026-10-17/live_relay.py": {
-      "bytes": 8624,
-      "sha256": "4d6ad54636fd8fac976bdcab6d2710a1d39e9117420182e4aad4cc9f70aa0218"
-    },
-    "legacy/2026-10-17/model-assets/LICENSE-xgoduck_rl": {
-      "bytes": 11553,
-      "sha256": "48a029ca4cffafe32428e9f7d3f6a54ce637fac5327a9ccf88c93cb3c40e5a8a"
-    },
-    "legacy/2026-10-17/model-assets/head_pitch.stl": {
-      "bytes": 80884,
-      "sha256": "aef526ce7a58f65e4efca3f6c4a0abcd6b4a2e54a51b3949502d325472fdfcb1"
-    },
-    "legacy/2026-10-17/model-assets/head_roll.stl": {
-      "bytes": 927984,
-      "sha256": "dcbe8ae093a842399e94eecc6f41a533575df9e8367f26690d737a9d38f8b327"
-    },
-    "legacy/2026-10-17/model-assets/head_roll_static.stl": {
-      "bytes": 864384,
-      "sha256": "cea3a0b2729c98ad55e3fa3fa22212c1fc1bb3c613fbb4f6d404a5cf3d23fd03"
-    },
-    "legacy/2026-10-17/model-assets/head_yaw.stl": {
-      "bytes": 278284,
-      "sha256": "a509eadd3172b79826b635bdb1b239b567b71f1fcf6c665eb9d2d3fc455cebe1"
-    },
-    "legacy/2026-10-17/model-assets/left_ankle.stl": {
-      "bytes": 79584,
-      "sha256": "305c7e2900136c4d3e525ebdde4dd8b64c254ab3e92a4eb6c296ec1d84af0566"
-    },
-    "legacy/2026-10-17/model-assets/left_hip_pitch.stl": {
-      "bytes": 287484,
-      "sha256": "5948191de26a4f209b7dcc7d18e9b1928920c01b687368cf77769d14553fa356"
-    },
-    "legacy/2026-10-17/model-assets/left_hip_roll.stl": {
-      "bytes": 131484,
-      "sha256": "4745eb3c27645971c1a92a067cffafb024934660f0bd887415e73462f65440d4"
-    },
-    "legacy/2026-10-17/model-assets/left_hip_yaw.stl": {
-      "bytes": 222584,
-      "sha256": "34bcf92d98d9ca2fef20ee5ef70d05ca71e05079e88a08d30d7a791e208be508"
-    },
-    "legacy/2026-10-17/model-assets/left_knee.stl": {
-      "bytes": 215484,
-      "sha256": "0a879a561f2d46b8f91f201e4530cfa1b8de6fc6263f3dcf041b3479f14de832"
-    },
-    "legacy/2026-10-17/model-assets/model-data-mouth.json": {
-      "bytes": 46040,
-      "sha256": "49529c6ac4da96d34d9a538333ec27a657c4826c98ebb38f372af86870eb8703"
-    },
-    "legacy/2026-10-17/model-assets/model-data.json": {
-      "bytes": 42529,
-      "sha256": "0d75e3ba93839ee24b0c57322c60525a2f748363371221bf17e4e215ed8b47d1"
-    },
-    "legacy/2026-10-17/model-assets/mouth_jaw.stl": {
-      "bytes": 63684,
-      "sha256": "6015dc55361fc2b12c12fa55aacf3212ef85c76531af8a3c61fbb73b395b18aa"
-    },
-    "legacy/2026-10-17/model-assets/neck_pitch.stl": {
-      "bytes": 177684,
-      "sha256": "48fd73c630b929a68dd7a192bee3920f5eed478d48948067f49223abb9297984"
-    },
-    "legacy/2026-10-17/model-assets/right_ankle.stl": {
-      "bytes": 80284,
-      "sha256": "1f2a6b317277be4b6f22802e6fa74b8f0ffab502cb8bd36dacb9e13ab0896a2f"
-    },
-    "legacy/2026-10-17/model-assets/right_hip_pitch.stl": {
-      "bytes": 287284,
-      "sha256": "e580ffa06a66c0143a0eebdb9f346304bde98c754dec1af2e9ad2318038f71a7"
-    },
-    "legacy/2026-10-17/model-assets/right_hip_roll.stl": {
-      "bytes": 131484,
-      "sha256": "6f709cd1e2caf44c9c6dde112a8e8d8ac0bf1ef97b3542801b9c9deed08cd09c"
-    },
-    "legacy/2026-10-17/model-assets/right_hip_yaw.stl": {
-      "bytes": 222584,
-      "sha256": "a27fa340a4f7ae5a6fbb0224feb2203cb1c62827a20db786da022cb9c9abd12d"
-    },
-    "legacy/2026-10-17/model-assets/right_knee.stl": {
-      "bytes": 215484,
-      "sha256": "644e3fcc3b9b4815f8a5185aa2c4597cc54afcfdc876e42d5f9f04c0838c830d"
-    },
-    "legacy/2026-10-17/model-assets/trunk_base.stl": {
-      "bytes": 779084,
-      "sha256": "7df63591596f4cf627c80e78ac5e37dff889c67f63c9f2a726e61899d3c358c3"
-    },
-    "legacy/2026-10-17/model-assets/vendor/LICENSE": {
-      "bytes": 1081,
-      "sha256": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601"
-    },
-    "legacy/2026-10-17/model-assets/vendor/build/three.core.js": {
-      "bytes": 1401321,
-      "sha256": "3cd45beb4da9ce682bb7f5894dafd8a146379aa4b6b5aa3acd9ef5d47fdaaf92"
-    },
-    "legacy/2026-10-17/model-assets/vendor/build/three.module.js": {
-      "bytes": 603380,
-      "sha256": "ce6be0cb5ead0027e1f6094dd82ad43bba0886c03324a3b21fd9a33ac93fc2b4"
-    },
-    "legacy/2026-10-17/model-assets/vendor/examples/jsm/controls/OrbitControls.js": {
-      "bytes": 38703,
-      "sha256": "b97879c748170baadeb3fb84cea1ffdf4674e283dc06042f34e2acb95a76042c"
-    },
-    "legacy/2026-10-17/model-assets/vendor/examples/jsm/loaders/STLLoader.js": {
-      "bytes": 10715,
-      "sha256": "023ed97f848b633d8bcd53d4db3b996d29d0c644088700691297c552257d480b"
-    },
-    "legacy/2026-10-17/model-view.html": {
-      "bytes": 4482,
-      "sha256": "df61cc1f8a5889aeb58de21ffb06a3f818f525ae44d2373d03fbcd44bd620a82"
-    },
-    "legacy/2026-10-17/model-view.js": {
-      "bytes": 13227,
-      "sha256": "69d80049e03fd1eaf3c4ac4dbf9e7b972a27956ff2785baf09d3e96c10970a6e"
-    },
-    "legacy/2026-10-17/numbering.html": {
-      "bytes": 5259,
-      "sha256": "954ae3801389e3d39f4c113dbd345f9c6e5204f11c1a1950f433ae907c72a0f9"
-    },
-    "legacy/2026-10-17/provisioning.py": {
-      "bytes": 30265,
-      "sha256": "3021c5b794b73055a81ce18555bb295b4c5c375b05550c0f7276488e70c065d6"
-    },
-    "legacy/2026-10-17/release_policy.py": {
-      "bytes": 1442,
-      "sha256": "c2928e36e7ddb50dd22533436c4872cf2837e7fd30c93c68f0b081cc852eb7cf"
-    },
-    "legacy/2026-10-17/requirements.txt": {
-      "bytes": 14,
-      "sha256": "0b81718d1cbe8a7696e45a9388c9205272b5e345cd79d0cf1ccfb7a9fd1925e9"
-    },
-    "legacy/2026-10-17/server.py": {
-      "bytes": 54712,
-      "sha256": "d943c47b5ca649c1393eb733111994ed028798db947587a172267977e83a4271"
-    },
-    "legacy/2026-10-17/tools/deploy_readonly_wifi.py": {
-      "bytes": 41186,
-      "sha256": "968b3d4430fa1683fc28533e341e68014dc942f27075b9f4e64d84ca53020672"
-    },
-    "legacy/2026-10-17/tools/discover_unoq.py": {
-      "bytes": 36932,
-      "sha256": "90301712492391e3fc8207a82d6ccd2639788a8de2020bc9156c724c4ec6961a"
-    },
-    "legacy/2026-10-17/tools/discover_wireless_unoq.py": {
-      "bytes": 508,
-      "sha256": "23993ea72810fc9ff7d0476e28accc33393c1895b9ac64b2f4f1b7d036b95abd"
-    },
-    "legacy/2026-10-17/tools/sync_source.py": {
-      "bytes": 21145,
-      "sha256": "271cc8e9a4f1fc32a776998541521774789f3d3ee1ca42a22e5c3cd4bd52e73a"
-    },
-    "legacy/2026-10-17/wireless_calibration_proxy.py": {
-      "bytes": 35293,
-      "sha256": "7975a1f03ad01bdb99331e1303c057448c3c319e0cf1a7b321b33b5dadf1744a"
-    },
-    "legacy/2026-10-17/wireless_rediscovery.py": {
-      "bytes": 3478,
-      "sha256": "4be09dd47536843396e872c70d8102e5a32abfbc1dfd3d384b806abff3fc6567"
-    },
-    "legacy/README.md": {
-      "bytes": 173,
-      "sha256": "ffe85e8b56d292f625740fd1a203f79f3526558fe9d67e3e9e5a8ed72a0a1001"
     },
     "pc/active_runtime.py": {
       "bytes": 117,
@@ -2226,12 +1078,12 @@
       "sha256": "bcd470a6569264d771e57a98f558ffd20380e932cd93908ef8b3f0dddaafb88b"
     },
     "pc/assets/bench-models.html": {
-      "bytes": 3674,
-      "sha256": "6a41affb9ca02959cb16a52cb2d15beb61d78d21336f63c3e410b1d35fe4f8e1"
+      "bytes": 2260,
+      "sha256": "dc82c1ab0c05bfe634fc6e8d22eccfa1f37d98e5573e6e28e3cba0750f1f20aa"
     },
     "pc/assets/bench-workbench.css": {
-      "bytes": 17588,
-      "sha256": "ac4f67da2c918fe6102c6bb9f6b5d188f4f8ac50914d190aad6f89a929486dd5"
+      "bytes": 18090,
+      "sha256": "13374f476f8de040913a299595bed4fb4f234e81fc9302a8e8edb502d95e07e2"
     },
     "pc/assets/calibration-tray-r7/manifest.json": {
       "bytes": 5304,
@@ -2333,225 +1185,97 @@
       "bytes": 8742,
       "sha256": "cbd0aae2d65d6bf4fc8645441ea386b785c3c221238f112fd53a1f0b6b46f564"
     },
-    "pc/assets/commissioning.js": {
-      "bytes": 36526,
-      "sha256": "c98b6f32d0d1aefdc6affe8559a83c120656251245ad364910a81f7f00654dfe"
-    },
-    "pc/assets/communication.js": {
-      "bytes": 10581,
-      "sha256": "c13f95ff06c78c5be5fcd7479490317f84f5585b63203c78d7c4e2f94da47b91"
-    },
-    "pc/assets/connection-model.css": {
-      "bytes": 3978,
-      "sha256": "47bc3fe1882cec9ec6be23db7a93c6a725e0af1862d498967cfc9b6ea679a71b"
-    },
-    "pc/assets/connection-model.html": {
-      "bytes": 1620,
-      "sha256": "15ed2b3bfca350f60994de93008e7d7dd888dfecd998d171a1139acf0856dbae"
-    },
-    "pc/assets/connection-model.js": {
-      "bytes": 12649,
-      "sha256": "f1b017560765c2e28ef0b4901e3c0aa67a7502dd3e53d5ea95ea92ee0f1f9e9c"
-    },
-    "pc/assets/controller-safe.css": {
-      "bytes": 9004,
-      "sha256": "45f31d877471c08d4d18caecb95eb5aa326aac13e1b1535dd9e5a9d741f27c24"
-    },
-    "pc/assets/controller-safe.html": {
-      "bytes": 5608,
-      "sha256": "122dafc5218c8d6aad8692bb64acf4cc0c730174f509ba3f7aa71b514445536e"
-    },
-    "pc/assets/controller-safe.js": {
-      "bytes": 29790,
-      "sha256": "94b511ff1cf38aa432afc1830ab52198513e71be067b5d1190035829d038cdc2"
-    },
-    "pc/assets/controller-stream.css": {
-      "bytes": 6143,
-      "sha256": "2b13bc5c0d7c7d44cfac4166ecbdc29decd33b26601674080bc68be7f91e8d2e"
-    },
-    "pc/assets/controller-stream.html": {
-      "bytes": 6882,
-      "sha256": "54f072e624b0d3fc1fe9440e2e72329adc468e3bb6b5a4be6b26b36f4063851a"
-    },
-    "pc/assets/controller-stream.js": {
-      "bytes": 42962,
-      "sha256": "fbd7a4974bfcfaa37870b0d90d57248157d46a6bef6f9190efc1bca0b14cbb72"
-    },
     "pc/assets/diagnostics.css": {
       "bytes": 1948,
       "sha256": "6474e5f87f4c9bd8ba49ec5e5f12bb0413acb4aecee2f197d66b940d6dd258e5"
     },
-    "pc/assets/diagnostics.js": {
-      "bytes": 8046,
-      "sha256": "51b42884fc5f997cb5900147cdb3139305c5f5737776b2f2e6d28e6f07137833"
-    },
     "pc/assets/duck-dark.css": {
-      "bytes": 37051,
-      "sha256": "b35146faf34a43464f2742718613ce2665aec9ae6be5b7d974bcb86d5dbc26ed"
+      "bytes": 37661,
+      "sha256": "fcbc5ccbc33d360189fdac36d448d9763d41e2a0d76075566fdf30a949011e93"
     },
     "pc/assets/duck-keyboard.js": {
       "bytes": 3597,
       "sha256": "b81823c295e704750b3f20c1ca9b6ceb565c75eb6b138e295404f02d6932ed10"
     },
-    "pc/assets/enclosure-proposal.html": {
-      "bytes": 5788,
-      "sha256": "30762e39fe5e2f94f3944dc9a54e4ab60faae4a8a540345fe21ed74935d327aa"
-    },
-    "pc/assets/id10-drag.html": {
-      "bytes": 5153,
-      "sha256": "113477b15e8266accb0c0c74cb48ce077008a69473f614cefde7e39f61d163c3"
-    },
-    "pc/assets/id10-drag.js": {
-      "bytes": 16812,
-      "sha256": "abeda50276c8e9940a113a09c1574a215f1bb4d5acabc63959c02ce1cef5c972"
-    },
-    "pc/assets/id10-manual.html": {
-      "bytes": 5292,
-      "sha256": "1239c951470a63ce49429988a826128378d7482b53ea36da3e49de4164d04e24"
-    },
-    "pc/assets/id10-manual.js": {
-      "bytes": 12577,
-      "sha256": "8af383dd1782bd6a44b49cbcfa08d4727afa8588477c58312037c13412326581"
-    },
-    "pc/assets/imu-follow-regression.html": {
-      "bytes": 1670,
-      "sha256": "4264c73292873233e3301f760a4942016de86373ee905420c517206606b31c6d"
-    },
-    "pc/assets/imu-live.js": {
-      "bytes": 18800,
-      "sha256": "9711c14ddb9e33c163d9c20e7330dfbb8d1e891a3d24be14b40686d7334ed77b"
-    },
-    "pc/assets/imu-math.js": {
-      "bytes": 1408,
-      "sha256": "91ce15e9cdd14a3d3d9ba1e9a3422390002c7756370d1750e657070d75261349"
-    },
     "pc/assets/imu-model.css": {
-      "bytes": 1709,
-      "sha256": "1145ab48600a8afb446d43b0e2b2f96f93131a095fd0221740287282df3ea836"
+      "bytes": 2858,
+      "sha256": "2bdbe0b5199d3a4d59180395a9ee756f9dea5c1a4c896c1b80e328fba48a0a10"
     },
     "pc/assets/imu-model.html": {
-      "bytes": 3466,
-      "sha256": "6856c7c29e53e07e37bdc32ce3d33aaadeb1c0b2940b8c434bbb4c60f6cc66a5"
+      "bytes": 3740,
+      "sha256": "f8cf6118faa2439137d0de12e143a4ed492106d293fd6d05710d24ed19f452ca"
     },
     "pc/assets/imu-model.js": {
-      "bytes": 75451,
-      "sha256": "af2cc195ed5261458b8c3219c70fa27e4e238dae39807a7f913f16b2fa345ab7"
-    },
-    "pc/assets/live-runtime.js": {
-      "bytes": 11721,
-      "sha256": "779f8738684917cd77bc252544f98493ad3806417d009e4af8d1d87819a28e59"
-    },
-    "pc/assets/main-native-controller.css": {
-      "bytes": 6361,
-      "sha256": "72f517cd0d1f52087e933e15f313c8fd066af883f7cd1db1d1df8176cacc4545"
-    },
-    "pc/assets/main-native-controller.js": {
-      "bytes": 48729,
-      "sha256": "3648befd7577980c9e24615f79998bdb86b1f0f5f30c7d56a6dbae3b35b1363f"
+      "bytes": 81953,
+      "sha256": "8139ad636b9c17f6550786848cbe8456ad913c1320e7eb1bb152d3095b65a8e9"
     },
     "pc/assets/model-training.html": {
-      "bytes": 3944,
-      "sha256": "d298fa5b5c03d6d93e855682dc4c6ea4290a5858aa7fcfd0397dcc06020b452f"
+      "bytes": 4781,
+      "sha256": "22a1c602ab17352f657b41141b5f70031e1a1cc666d820c146e93b62d240564a"
     },
     "pc/assets/model-training.js": {
-      "bytes": 23089,
-      "sha256": "f3ead4f8ec6e28b51459adb8ea43e88a8248824948955c3a46b51ca12c9818aa"
+      "bytes": 20668,
+      "sha256": "301ad5b5a98dfd7103e917eadd8ae526d9e24da5b1226a23cc77426be6c3833e"
     },
     "pc/assets/models.css": {
-      "bytes": 10601,
-      "sha256": "8fc806ec9e49191c647e71994596c4899944d3f7b72874670368cb9c82a8dae8"
+      "bytes": 10865,
+      "sha256": "458fd364d394bcb155fe358510be90cee4f130bc5d9ca57783f43e73a0a3a770"
     },
-    "pc/assets/models.js": {
-      "bytes": 16214,
-      "sha256": "66b9410378d777576ac3e646744f21e64f2e3d1d04ae888262d08d0c06b5aeb4"
+    "pc/assets/motion-history.css": {
+      "bytes": 1718,
+      "sha256": "0cd546fc9122a295624459b0bae012272e8194938173e628ca12bbad77430364"
+    },
+    "pc/assets/motion-history.js": {
+      "bytes": 11148,
+      "sha256": "f882afd4300e22b19bf084e6ba5308856f95f844fb060267e25a5a51927b32d4"
     },
     "pc/assets/motor-current.js": {
       "bytes": 3261,
       "sha256": "aff3dc1a7467de76782feb3b93e269c12a75ccffb7f531f590be2f145a87f6a9"
-    },
-    "pc/assets/native-pose-parent.js": {
-      "bytes": 7500,
-      "sha256": "059d89a86d440fd6348acefc69250046e19105389802ce6218c6d9ee96acbc16"
     },
     "pc/assets/native-pose.js": {
       "bytes": 12473,
       "sha256": "5a10e9a93a58b21b483edb8fa67a7e563b26f9696599afea9d5925c47ffe4991"
     },
     "pc/assets/numbering-restored.html": {
-      "bytes": 3120,
-      "sha256": "a30493e86cc1e510add9b5452697ef3eb2655bcab6f0aabe348512862da216b2"
+      "bytes": 2230,
+      "sha256": "e28081ff2dc14af5002caf4d791ef315b6b14a73c66702097a876f3231231221"
     },
     "pc/assets/numbering-restored.js": {
-      "bytes": 12375,
-      "sha256": "701a72adf7c30f8d9036099fbdf0e970288a3254e6ab3c8e55ab485581b38c00"
+      "bytes": 12379,
+      "sha256": "5bc43f0097fa7dae8dd07a4152f5f6712e55ede48a67b35a7a42df47f49b5b64"
     },
     "pc/assets/numbering-simple.css": {
-      "bytes": 6669,
-      "sha256": "3803ff52eec513d8b8a8a1378439909aaf2031776a860bdf894f0963d991d95e"
-    },
-    "pc/assets/numbering.js": {
-      "bytes": 16140,
-      "sha256": "7f02f913c29215f05ea90ae7e3b7b5b14e77f476bdd3f998d312651e96ea4245"
+      "bytes": 4286,
+      "sha256": "4e6da5e8592ff149e095dc42fd09b241116777c723e61e1c98ca27f5f340aa33"
     },
     "pc/assets/official-assembly.html": {
       "bytes": 1737,
       "sha256": "852858920533225d12a74f33a154dfa5f4632fb47258528efc09ae53a50c668f"
     },
     "pc/assets/official-models.js": {
-      "bytes": 9669,
-      "sha256": "95c857b3fb1a1a48e1d8cbf19c0202bfe65f4a73b8d987df1e8b7fdf37e50472"
+      "bytes": 6573,
+      "sha256": "acba36b0cd8ba8dffad2758c4496f71ba4440f2fce371f8e85a28ff89386a4dd"
     },
     "pc/assets/official-pose-playback.js": {
-      "bytes": 7336,
-      "sha256": "766da7c4339c16d149046060449b1de561d895bb52952de0dbd62543f32d0f48"
-    },
-    "pc/assets/official-servo-workbench.html": {
-      "bytes": 2799,
-      "sha256": "b8ddaa0615ceb87c6376206dfe7c6cff40b37f9548f9497292a2ce0982078059"
-    },
-    "pc/assets/official-servo-workbench.js": {
-      "bytes": 7132,
-      "sha256": "0165f6b64174f8c0f5cd034052b91db60eb2537399b5a9251357020026803278"
-    },
-    "pc/assets/official-servo.css": {
-      "bytes": 767,
-      "sha256": "f2c20ab76c1afd0652cb443e81a2634743a1f1c352ebc9bc82100de4e61459ed"
-    },
-    "pc/assets/official-style.css": {
-      "bytes": 5304,
-      "sha256": "f7b697d025d7eff1635c1acbf3fbe6a42322067b62fecdb69447e0f17588373c"
+      "bytes": 8382,
+      "sha256": "daf1e940eea549e6f2f46ecc2653cc06b684a08fdd8b8c1ca862695efe407b8e"
     },
     "pc/assets/official-workbench.js": {
-      "bytes": 48201,
-      "sha256": "3c5b64ff84367df530fcf7734b118798fc1e64321e43f34c80c13ed302e60456"
+      "bytes": 57002,
+      "sha256": "3d2899d945c208d88c2dd37be674632be4f6ce0559dc5a2f0727bc0365887759"
     },
     "pc/assets/pose-playback.js": {
-      "bytes": 8901,
-      "sha256": "30b443d6f5a12def12833c2722ca45f366d4cb99de1123f482732281057276b7"
+      "bytes": 9401,
+      "sha256": "42ecf86cbad1e35c12b8c535887073bc0fbb6fe1770d3968dab5b9ff02cec714"
     },
     "pc/assets/relative-heading.js": {
       "bytes": 7245,
       "sha256": "af00d745a66263586e559df292dbf7a9a2e69b06bfd70b0c2af79e24a7639a02"
     },
-    "pc/assets/sequence-calibration.js": {
-      "bytes": 18402,
-      "sha256": "5cfa2b3f85d7acf62ed3549969ed447ac5cfc35b982b9f87c07154d9fa7b4b51"
-    },
-    "pc/assets/servo-isolation.html": {
-      "bytes": 5297,
-      "sha256": "2b68c842f5b26162294836cc8c6428c97dbc46c44d46b752e37e25c6d44f457a"
-    },
-    "pc/assets/servo-u3-check.html": {
-      "bytes": 3885,
-      "sha256": "595a3da0aaddf1d3f12fe9756e7da2e54e90e67f2c9a1991305fa607545e7a84"
-    },
     "pc/assets/simple-debug.css": {
       "bytes": 23107,
       "sha256": "daf3608e84e9ec779cacfd49a93fbd1ad9e17b0f61d9f0cfd7f246d8d3a05588"
-    },
-    "pc/assets/simple-debug.js": {
-      "bytes": 14919,
-      "sha256": "a2c0383d6862f61ac76c726958cb45bf933333b854377cbfbdbefe3f6d184ef0"
     },
     "pc/assets/standing-audit-v2-data.json": {
       "bytes": 1233997,
@@ -2581,57 +1305,17 @@
       "bytes": 14239,
       "sha256": "1a78f1eeda84e5f45eb697bca988b671a616256ae60adeb6fd431406cab8e262"
     },
-    "pc/assets/visual-debug.js": {
-      "bytes": 4164,
-      "sha256": "4d91420329048840b26e50680ed4732836356ac0b5f173bf77a0954ff64a57dc"
-    },
     "pc/assets/wireless-calibration.css": {
       "bytes": 4781,
       "sha256": "d956e26c045862ba57b4bf11289f83d9f2a9226dbc1392c56edc52abacb6691b"
     },
-    "pc/assets/wireless-calibration.js": {
-      "bytes": 57429,
-      "sha256": "0b857bbb82fc498a04dc559d8c3f488a022ade726234ef11ac342f08127c4e6a"
-    },
-    "pc/assets/workflow.js": {
-      "bytes": 16242,
-      "sha256": "e56412b1bf532904ebc5a04705d84cdd8c881427a07538414190ee74c4e588d4"
-    },
-    "pc/assets/zero-guide-parent.js": {
-      "bytes": 2267,
-      "sha256": "cb2b518c420819b5e21c0a7121acb62180f6db69ea3f39ad61e8ddfd5e11bfd5"
-    },
-    "pc/assets/zero-guide.css": {
-      "bytes": 8246,
-      "sha256": "b68d338970e0d91f05de0c2b154598d6d26190a6a3ba84a42e93852c08d38eeb"
-    },
-    "pc/assets/zero-guide.html": {
-      "bytes": 1782,
-      "sha256": "2952e417eec48da394ee7cc7198b5c33c172699398b46827dd6406626d0cbe76"
-    },
-    "pc/assets/zero-guide.js": {
-      "bytes": 20575,
-      "sha256": "42ff087008601d490c0403cc0bf02f469613df52a9a0872a71c6f374a373c345"
-    },
     "pc/bench_calibration.py": {
-      "bytes": 9457,
-      "sha256": "f42a132965eedde8d8dc708d061855abb3fa7177b81f6e44b86d218981c83c67"
-    },
-    "pc/bench_calibration_rpc.py": {
-      "bytes": 12091,
-      "sha256": "ed57a92b0b492821b0cec725513873bf2e6be2ff5a27c70891118699d0a1f675"
-    },
-    "pc/bench_calibration_transport.py": {
-      "bytes": 8428,
-      "sha256": "ac47564dc28ee37d8dd58c871e6be6d5ded75398d981e93e0673e4960745b9c6"
-    },
-    "pc/bench_maintenance.py": {
-      "bytes": 21523,
-      "sha256": "40bb866bbf85a038e29afa998b3a110b93ad51fb75a30c6ea31b218552c6c974"
+      "bytes": 9652,
+      "sha256": "d97c3433ca84d59dfaca556fe77539719b0b43883f8822e45fa6cb8ec06fdc9b"
     },
     "pc/bench_server.py": {
-      "bytes": 12011,
-      "sha256": "2cb01fa6b5ce0f58503db7ccc1307a15da2e4123148b7d1608db89283e60c86e"
+      "bytes": 8651,
+      "sha256": "fe627d19ace45e2198621738a33730fc58a762277417f38b709818fdd20ab403"
     },
     "pc/bench_tests.py": {
       "bytes": 16930,
@@ -2649,10 +1333,6 @@
       "bytes": 114,
       "sha256": "f14ac01ef13aaa31a9a86fa8932936cd1769f7d7c43e4d0550c5727a23dff942"
     },
-    "pc/current_monitor_manifest.py": {
-      "bytes": 4546,
-      "sha256": "eeda3c6f871f2e1784cac539bf4a97b50f17ce373fc418c673e91d5f7bd5758a"
-    },
     "pc/device_config.py": {
       "bytes": 519,
       "sha256": "9b2e31a379d0dece8a3ea04f0bfbe77b7b044645254033fba49d2fc341e92278"
@@ -2669,21 +1349,17 @@
       "bytes": 4802348,
       "sha256": "c0d21c9258a4f31c590e31bc07974dd5fe12714226438cf3850a367663eaa406"
     },
-    "pc/factory_calibration.py": {
-      "bytes": 9758,
-      "sha256": "36937a23ecac05dff74f0b4cb4ab8dd66ce2023e869c928477d8744ed90fd801"
-    },
     "pc/factory_workbench.py": {
-      "bytes": 8959,
-      "sha256": "ecc196447e070a5245127016413e87f809a83ee9db6c243a6f8099412db1940d"
-    },
-    "pc/home_calibration_manifest.py": {
-      "bytes": 1361,
-      "sha256": "f4c48baf03afb2fac53c0b8c04887b4c7ff218b39b0e4897561b54bcba23138d"
+      "bytes": 6797,
+      "sha256": "0cce96c694c4c70809e8aed2015dd083e239a2cdef8d2a04e48dfa60afbe48a5"
     },
     "pc/index.html": {
-      "bytes": 17134,
-      "sha256": "83f01d2104a29e6065207da21c04a050289dd729475519dedcb83d24d36ff5aa"
+      "bytes": 19165,
+      "sha256": "1dda1a105d877cbfdcd2e996f78f6dd795cbfd9c96943df6ddd21ce1e81143d9"
+    },
+    "pc/model-assets/LICENSE-xgoduck_rl": {
+      "bytes": 11553,
+      "sha256": "48a029ca4cffafe32428e9f7d3f6a54ce637fac5327a9ccf88c93cb3c40e5a8a"
     },
     "pc/model-assets/head_pitch.stl": {
       "bytes": 80884,
@@ -2761,6 +1437,10 @@
       "bytes": 779084,
       "sha256": "7df63591596f4cf627c80e78ac5e37dff889c67f63c9f2a726e61899d3c358c3"
     },
+    "pc/model-assets/vendor/LICENSE": {
+      "bytes": 1081,
+      "sha256": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601"
+    },
     "pc/model-assets/vendor/build/three.core.js": {
       "bytes": 1401321,
       "sha256": "3cd45beb4da9ce682bb7f5894dafd8a146379aa4b6b5aa3acd9ef5d47fdaaf92"
@@ -2781,61 +1461,41 @@
       "bytes": 38703,
       "sha256": "b97879c748170baadeb3fb84cea1ffdf4674e283dc06042f34e2acb95a76042c"
     },
+    "pc/model-assets/vendor/examples/jsm/loaders/OBJLoader.js": {
+      "bytes": 22922,
+      "sha256": "e3ceb6a8ed48ca146049a8f0879c7acbf884d430f2e728779af26c6ea3a57c65"
+    },
     "pc/model-assets/vendor/examples/jsm/loaders/STLLoader.js": {
       "bytes": 10715,
       "sha256": "023ed97f848b633d8bcd53d4db3b996d29d0c644088700691297c552257d480b"
     },
-    "pc/model-view.html": {
-      "bytes": 4482,
-      "sha256": "df61cc1f8a5889aeb58de21ffb06a3f818f525ae44d2373d03fbcd44bd620a82"
-    },
-    "pc/model-view.js": {
-      "bytes": 13227,
-      "sha256": "69d80049e03fd1eaf3c4ac4dbf9e7b972a27956ff2785baf09d3e96c10970a6e"
-    },
-    "pc/model_auditor.py": {
-      "bytes": 6478,
-      "sha256": "2346678e0a4862a28d972c23009d395a0a4c9da13088d5e53f8e78aed5143aaf"
-    },
     "pc/model_http.py": {
-      "bytes": 9577,
-      "sha256": "7a6cb803db8c2879e8d7482c293f4fd579a8ac5366b95f62988898ccdc8e06ad"
-    },
-    "pc/model_library.py": {
-      "bytes": 15536,
-      "sha256": "e70418a100ff1be69f4406231235558b1d514341d1d3f773ddc2aea83044c586"
+      "bytes": 2918,
+      "sha256": "d5a656fbd94c898d1201b257ad722a2c71bbfc52170907eb7bbcbd8af51359bd"
     },
     "pc/model_transport.py": {
       "bytes": 4176,
       "sha256": "9ce5e207445f6390a9388c0b8353bbf38de8a3b5a21d2215d75602379ca6bd05"
     },
-    "pc/models.html": {
-      "bytes": 3644,
-      "sha256": "b0cb3011e9f1b628f1505c02d0f45a3226d5b7f2a65fee3d87c3cd103275603b"
-    },
-    "pc/numbering.html": {
-      "bytes": 5259,
-      "sha256": "954ae3801389e3d39f4c113dbd345f9c6e5204f11c1a1950f433ae907c72a0f9"
+    "pc/motion_archive.py": {
+      "bytes": 6192,
+      "sha256": "11871050892dd355640154ab231d1451d78d5a77ebab876b7a0ab38c8f37b640"
     },
     "pc/official_control_proxy.py": {
-      "bytes": 12738,
-      "sha256": "0ada255935f6bec1046e89acd1d436ef296c34a96bf7cce00b7ee26fe7d720b1"
+      "bytes": 13403,
+      "sha256": "d86ec4a55b0685f9bb4a17524b4c3952a0ca927d327fa1931d430dde0106f768"
     },
     "pc/official_status_reader.py": {
-      "bytes": 4178,
-      "sha256": "fb02586baab3bf363214f8b350de82a1b30d682b1368c6e8946d502950fc3645"
+      "bytes": 4263,
+      "sha256": "6033273c49c0ffed05db468762fd84addfe0cbf5d222f90e50aa502bcb50bc0d"
     },
     "pc/official_status_stream.py": {
-      "bytes": 14337,
-      "sha256": "207713f4e3f9cdf2af9f74eb64c974843fb3603517829781f1d56271aaa3d438"
-    },
-    "pc/performance_release_manifest.py": {
-      "bytes": 1880,
-      "sha256": "1739f0803001aa91bc55d4b5c5114aaaa30ecdebc95adf0b3791a17a97e9958f"
+      "bytes": 15809,
+      "sha256": "caa624d818dd345d8148747ddbadd143d43ed3e7eee9eecada62680981514b22"
     },
     "pc/release_profile.py": {
-      "bytes": 2493,
-      "sha256": "6c3d3786697e3b6472796c8a4ac0151584f7481e47a484f7925a7a6e858467df"
+      "bytes": 2510,
+      "sha256": "61820ce920d8b456a1f35eeaf46464c3c6bad6356aed28af7a18bb66dcf2544e"
     },
     "pc/release_runtime.py": {
       "bytes": 2730,
@@ -2846,8 +1506,8 @@
       "sha256": "9fad41f4c9683a7c608ec80bc5e04f2879b816f2eec2e8c9390cc61f9137bd95"
     },
     "pc/requirements.txt": {
-      "bytes": 18,
-      "sha256": "1f9cd0f05c4f38521c72b1465fdbcda66d71bda860e3adde9a1e2c214e6a17ff"
+      "bytes": 38,
+      "sha256": "c6d62250a995ece0e9ae6e886767531d5c35256d75f5ebe30cfa522110e6dc4a"
     },
     "pc/server.py": {
       "bytes": 74,
@@ -3162,12 +1822,12 @@
       "sha256": "f50a2eb70fcdaf43210f89405a8b6bbc75c5f732cf51e601c3cd28d45bdb2799"
     },
     "pc/simulation/worker.py": {
-      "bytes": 22191,
-      "sha256": "4fe554242ac6d582b90ce8a9df15d2df30523b70176d178ee954e8f8941b4709"
+      "bytes": 22245,
+      "sha256": "b6b7170a5297c409eb225a9421a94d77228c43a7bcde53030ce8f9a9d9f5cd45"
     },
     "pc/simulation_catalog.py": {
-      "bytes": 6799,
-      "sha256": "03316b0e498a573549e74b2499acc1d4e071b411bdda391d846e603dddd779c6"
+      "bytes": 3790,
+      "sha256": "5f73ae787130747a984dc21e3131abd065d436fe17c31e95c846ce234862859f"
     },
     "pc/simulation_http.py": {
       "bytes": 5124,
@@ -3177,37 +1837,25 @@
       "bytes": 10561,
       "sha256": "8f29454ac74e0b2bb32a89896142ef78e83bf127685cc6eb7aa991c7860d7f3f"
     },
-    "pc/stand_profile_manifest.py": {
-      "bytes": 1869,
-      "sha256": "dcace408f45dad856bcdf43f333df159665785b8dfba676a3baeadba57869b3a"
-    },
-    "pc/telemetry_manifest.py": {
-      "bytes": 4424,
-      "sha256": "2ddc0721a99c197049ddac14ce1fad9ff4438766bdc6053f15803edc8814c4e0"
+    "pc/status_age.py": {
+      "bytes": 2320,
+      "sha256": "7eb588f173682301d35d7d3f6f3012c15b1b5336c33661f94dde7b8139e3ca9a"
     },
     "pc/tools/deploy_readonly_wifi.py": {
       "bytes": 41293,
       "sha256": "0df121442f0f40b63f26dcb69f610e949e7b350ae469ab54666c909d643f8b6f"
     },
     "pc/tools/discover_unoq.py": {
-      "bytes": 37282,
-      "sha256": "5d0effe9e281385cbab9b6b03b55f9f68544bc6de36cd50696ffe351dbf46925"
-    },
-    "pc/tools/discover_wireless_unoq.py": {
-      "bytes": 508,
-      "sha256": "23993ea72810fc9ff7d0476e28accc33393c1895b9ac64b2f4f1b7d036b95abd"
+      "bytes": 38986,
+      "sha256": "4b4250c17917e6e8046dac42116c085382b2e990413a32796a51cc636113ecc9"
     },
     "pc/tools/fetch_robot_models.py": {
       "bytes": 5965,
       "sha256": "09dc083bda969ccc930c1822a66b20a9fdfbb6eaf6c2e99a7f3c6bb9a2947f46"
     },
     "pc/tools/import_connection.py": {
-      "bytes": 4217,
-      "sha256": "273f56a92b56b65c2f790cfbb9b721dbb888cfcb0604e2007b5d18a02c58143d"
-    },
-    "pc/workbench_keyboard_manifest.py": {
-      "bytes": 4186,
-      "sha256": "3764364e93b4b3b5d434bcacb16f6f236e40deef79bd797e560d7db468037468"
+      "bytes": 4351,
+      "sha256": "d6fe3eb8df1655d2f59752f88224dadd1bc20b2ea4b1a90d19951937b8894a88"
     },
     "reports/20261020-SNAPSHOT_VERIFICATION.json": {
       "bytes": 3196,
@@ -3242,8 +1890,8 @@
       "sha256": "ca80d2677e7f58bea4d3e7e1c3866ed1ae43ac8cacb11209c1018eda92616a47"
     },
     "robot-app/assets/app.js": {
-      "bytes": 7177,
-      "sha256": "273ea703f6dc8c5ad2b53d9d89b5e877a2e3bb303a680ba043079eea0362dd60"
+      "bytes": 8378,
+      "sha256": "fe530384a6dab1c2f91069166a3d1d9ed20e66965d22fcf85cc2b10b0306be2f"
     },
     "robot-app/assets/calibrate.html": {
       "bytes": 1434,
@@ -3274,36 +1922,40 @@
       "sha256": "f7b697d025d7eff1635c1acbf3fbe6a42322067b62fecdb69447e0f17588373c"
     },
     "robot-app/python/controller.py": {
-      "bytes": 41409,
-      "sha256": "5c798b211b3ef05deeef6802316c8307d5f7c0655e54c346652be10b7fd2afe5"
+      "bytes": 48822,
+      "sha256": "a8d02835ed3b2c9a1f40f9b483f16b25cb628b3108dac0027aa9da529883a844"
     },
     "robot-app/python/current_telemetry.py": {
-      "bytes": 12368,
-      "sha256": "3df40ebec339739a8d979026b3fe32420cd926a04d45e4c90da33f6c2eb9d7de"
+      "bytes": 12925,
+      "sha256": "9e31be319f54f2b52a0e5cdbaeb6ab6af49cd7d0a57e49ca0136cca0a74fef5a"
     },
     "robot-app/python/display_telemetry.py": {
-      "bytes": 5649,
-      "sha256": "a8c59e8dfbe655a9bf1d417690e7a73a3e8bb94494ef9c3535e74c576ab6d7b3"
+      "bytes": 5911,
+      "sha256": "ae5cae3d75984d4f5f0d35e61c4b11fe982ad164ad383de50958d62a9bac8bf3"
     },
     "robot-app/python/factory_calibration.py": {
       "bytes": 6919,
       "sha256": "4ff880610d2bf634348cdeebdda0a7e88aee0338393599cb11a3f4a5e90b5422"
     },
     "robot-app/python/gyro_bias_control.py": {
-      "bytes": 6573,
-      "sha256": "565b450d37d5b25eff8bd00bc1402129b309abe2fa28047eef04f1e3914e26d3"
+      "bytes": 8880,
+      "sha256": "5d9902b7a06d6398d49c4cc49048415523527cd099c4c84bd007c1dd986e4322"
     },
     "robot-app/python/keyboard_runtime.py": {
       "bytes": 5237,
-      "sha256": "4834ee543f3a4c52a5c783ec16085445fcfc4e991bf4abfd393d4d75078319dc"
+      "sha256": "302800087ccca64c9e4c88c28caf2f9612872bce8177665b310fd3fb60149792"
     },
     "robot-app/python/main.py": {
-      "bytes": 6289,
-      "sha256": "702045380734619107b7282f4ce58f18ec5a4b4800c370b23812d2b6630a9a8e"
+      "bytes": 8229,
+      "sha256": "96f8d4c7dee6d1b0e0078baa0d4b147104b66c56a47cd5d72fa0641aa3c1a710"
+    },
+    "robot-app/python/motion_recording.py": {
+      "bytes": 17664,
+      "sha256": "2f3c4c479e23929861effead3e1d2e09dd790f725736954d9ff3ce2022e87e7a"
     },
     "robot-app/python/policy.py": {
-      "bytes": 7574,
-      "sha256": "2029e370328ae7e55f43e70a98a86030c63508439cc607e6d202b1c1f207c017"
+      "bytes": 8631,
+      "sha256": "04c0303f976446c97b4bf6b148f729ca721b58ce4c1f8110a0a8579df17572da"
     },
     "robot-app/python/proc.py": {
       "bytes": 2020,
@@ -3314,20 +1966,20 @@
       "sha256": "125e7a2cb2d20186dc88b95652a35b55a4d6859a7ce187e728d25c54cceff664"
     },
     "robot-app/python/release_profile.py": {
-      "bytes": 2493,
-      "sha256": "6c3d3786697e3b6472796c8a4ac0151584f7481e47a484f7925a7a6e858467df"
+      "bytes": 2510,
+      "sha256": "61820ce920d8b456a1f35eeaf46464c3c6bad6356aed28af7a18bb66dcf2544e"
     },
     "robot-app/python/requirements.txt": {
       "bytes": 35,
       "sha256": "5b6db4186746fa17242709037ff7f7b55c449ca621d24776a982192576f39c08"
     },
     "robot-app/python/rl_core.py": {
-      "bytes": 6226,
-      "sha256": "d257aa5ddd8cb7c0094cb29195c19ef2d280fb72724bebb00f79d8aa4a9458ba"
+      "bytes": 6356,
+      "sha256": "0ab3f52a82e2f7513ceb0322b3eb838896eada0708b99e6545c5bfcc01a13a95"
     },
     "robot-app/python/wire.py": {
-      "bytes": 6371,
-      "sha256": "0083ef513f97dedac7cd075fcc0842bb80afb4ad64e5e9f6fcae46387c2d4fdb"
+      "bytes": 6448,
+      "sha256": "21f8acfe61e220edf40f18a53f69ffca93fa8d4bebb19fb63abdf1a666a4d36f"
     },
     "robot-app/python/xgoduck_getup.onnx": {
       "bytes": 793706,
@@ -3342,8 +1994,8 @@
       "sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97"
     },
     "robot-app/python/xgoduck_walk.onnx": {
-      "bytes": 918165,
-      "sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f"
+      "bytes": 793706,
+      "sha256": "57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db"
     },
     "robot-app/sketch/current_telemetry.h": {
       "bytes": 2229,
@@ -3361,21 +2013,25 @@
       "bytes": 4036,
       "sha256": "22a0d55b4bd1302ee5d24d5d3352ed867695df08d2ccc4548b32541b2cde163a"
     },
+    "robot-app/sketch/joint_limits.h": {
+      "bytes": 1023,
+      "sha256": "ab30178d228f635d8b664af3a326d6a06d35fdb5f80f95a9364a9577df8f6368"
+    },
     "robot-app/sketch/protocol.h": {
       "bytes": 2170,
       "sha256": "c9c73ea760d8a21d8f6e76d26cb6856e882151825af80c16ee59c386a6aacb1c"
     },
     "robot-app/sketch/qmi8658.h": {
-      "bytes": 4080,
-      "sha256": "3d6b501dba41e76e6fc63cbd81d35eb5d5cd34ff80f18e0bb44ec3cc9772f4b1"
+      "bytes": 5508,
+      "sha256": "a4fb9e985adf4a6c57ff906f8f8bd5c3c6b13dc9b3460fd880f8a34073c014cc"
     },
     "robot-app/sketch/route_refresh.h": {
       "bytes": 3323,
       "sha256": "07ed36223db35f15c900021f7f305f418a73277ee74269754428548bdc92bb43"
     },
     "robot-app/sketch/scs_bus.h": {
-      "bytes": 8881,
-      "sha256": "9a0596c102a11f41d661ff2c48779120e4b90b9b7bb93d34ace8c70b1aabcec5"
+      "bytes": 9156,
+      "sha256": "538ae49ca7c670d41aab0a96fc83c4ccc0d936489dacd0876c4f5278cc3ecf5a"
     },
     "robot-app/sketch/sketch.ino": {
       "bytes": 24902,
@@ -3482,16 +2138,12 @@
       "sha256": "410a39296cfdaa64316f1f0a51e747ac3b069dd52c6be48b1a06972fae3ebb8b"
     },
     "tests/test_audit_publication.py": {
-      "bytes": 2811,
-      "sha256": "063334e26f0e7f233dba8f44da3939d1a44e555bc8842e464769692ab5c891ae"
+      "bytes": 2248,
+      "sha256": "893ed43994e3a981b167e9ad82da19515014f8eb64a5153e09b150c619cca7e0"
     },
     "tests/test_audit_v2_public.py": {
-      "bytes": 8428,
-      "sha256": "2e16cde5b06b6e592473e3847d6db528ce8201f20501dae6a1210713855d192d"
-    },
-    "tests/test_bench_calibration.py": {
-      "bytes": 6047,
-      "sha256": "db43c2193d7844cd78a30dc2808ae3da80ca807226ce845ff8c1d5a07894ed29"
+      "bytes": 8583,
+      "sha256": "39a4115b6acd1d89ba52f47e53f62566a8403b146a0012ed00a49fc9f413719a"
     },
     "tests/test_calibration_flow.mjs": {
       "bytes": 6304,
@@ -3502,60 +2154,108 @@
       "sha256": "81a92fa74683799411d22a26d4873278e93a072b25424da05c4c985e87aaccc4"
     },
     "tests/test_connection_profile.py": {
-      "bytes": 2906,
-      "sha256": "9dd939d8353f4b46f78206f26dbd9b8137628387594778f7daa5ce0b7942798e"
+      "bytes": 3836,
+      "sha256": "353af46a642d107162686ba7e7cc560bdd224321cc4d027721cf9562cca155d3"
     },
     "tests/test_control_telemetry_gap.mjs": {
-      "bytes": 2243,
-      "sha256": "cbb73122422a19350f4be23c26a04013467071b095a12f7c369d06bec8f6d1e1"
+      "bytes": 3079,
+      "sha256": "707cc71830f0a61441050e80292c550478d7f5d9992b942318f2a55b92252f43"
     },
     "tests/test_current_curve_ui.mjs": {
       "bytes": 11110,
       "sha256": "67088610ec89147bca939f3c58a7f950818c0e09dae67b17c52740473eda41be"
     },
     "tests/test_current_recorder.py": {
-      "bytes": 7294,
-      "sha256": "466ff56d843441016bec3b3474edba1b0a6767a3d37603b056908f6a1b22bd37"
+      "bytes": 7389,
+      "sha256": "b219cfcc36ee9bf0a853f6d99fcd571aab79bed27a712b2a25840cb8639d5460"
     },
     "tests/test_factory_calibration.py": {
-      "bytes": 5680,
-      "sha256": "26fd90cd8cbd47f023ed62e8c5fbe6a81c21d623e8ecb20149ac13116fd20a25"
+      "bytes": 5678,
+      "sha256": "2e382e739e149cc3503cbfac294d0b7658ec9acb0c3058f7d387eaed588fcf9f"
+    },
+    "tests/test_feedback_order.py": {
+      "bytes": 11031,
+      "sha256": "2cda7a141a76ed2588a1df6d9215c41eed5dff9fe801f1f3c8bb934bf1c42dfb"
     },
     "tests/test_fetch_robot_models.py": {
       "bytes": 7696,
       "sha256": "f3eb7a4727f6998a6d153da3f7e2352a1385395f614f21f3766593c3203751fd"
     },
+    "tests/test_gyro_bias_control.py": {
+      "bytes": 3072,
+      "sha256": "be3fb0db1d855cf9543ec38f9cc0ef26767100324af3c776acd76ae2cc8211cd"
+    },
     "tests/test_home_middle.mjs": {
-      "bytes": 12818,
-      "sha256": "fd39bfe39887e0f2380731eb292ce530d4934a3681443bf813b290b4f20ca12b"
+      "bytes": 12950,
+      "sha256": "b167968a0fd35e91f4ba18a221e0e131d5c2d72860524f1b3dbe6315c0e63b05"
+    },
+    "tests/test_joint_feedback_loss.py": {
+      "bytes": 4810,
+      "sha256": "93dd07168cf14443358b8231660c14e3d30d112ac46a042fbe35c552e944e167"
+    },
+    "tests/test_motion_history.mjs": {
+      "bytes": 4524,
+      "sha256": "dedb76d9c29391fd4d30973d8548fd9be02d97bd1950032f4049c48778dbb7aa"
+    },
+    "tests/test_motion_inhibit.py": {
+      "bytes": 2300,
+      "sha256": "1d074764b5bd395676c5f77d84d843ee79321b3c802901876824933261caf77c"
+    },
+    "tests/test_motion_recording.py": {
+      "bytes": 12783,
+      "sha256": "d7188ba4f86f6ecb46edde31e27876287454f522fd96eb0e8005113ad0964118"
+    },
+    "tests/test_native_disconnect.mjs": {
+      "bytes": 6984,
+      "sha256": "700f4b8c5983a6036e11ca87e62ae79f35c1550d8964198b1fd05821c1db0bc6"
+    },
+    "tests/test_official_policy_contract.py": {
+      "bytes": 1817,
+      "sha256": "44b61f5115702d3f531dc5e4f78e789d5ea0fa6f18bfc0a529dc9bfe10999803"
+    },
+    "tests/test_official_pose_playback.mjs": {
+      "bytes": 4963,
+      "sha256": "823daa50b621d5cb6a90d76e88fe5e56cc3a0be9aa25ea5434aaf7b8cb638dd9"
     },
     "tests/test_official_status_stream.py": {
-      "bytes": 11724,
-      "sha256": "2f64307a22fdf4f05e39023ca0844e29b9669ba8bf746d40644ec184d35509e3"
+      "bytes": 14864,
+      "sha256": "2323cda5ec7629c756ef43fb5f0fd1597c4aa9916674f2dca6219e4b2123e6c7"
     },
     "tests/test_official_workbench_pose.mjs": {
-      "bytes": 1532,
-      "sha256": "81ea0021b35c219b0bd109d559032ffa7404ee5dea8c3eb73b9581f5c252bf1b"
+      "bytes": 1822,
+      "sha256": "dc50ec02c1833dc63a15e83c5b66206f6551382f53a231709108e5902c463184"
+    },
+    "tests/test_policy_recording.py": {
+      "bytes": 4402,
+      "sha256": "acee55507245ca5c4d1220db41cc88067c7eae447c05e60d35d1de704b567c09"
     },
     "tests/test_receiver_sampling.py": {
-      "bytes": 4529,
-      "sha256": "12bf827837772458260c702bc1f4340e5773ff79d1e76b56d9db3032d25c448c"
+      "bytes": 5579,
+      "sha256": "4851ef256d77b41a7989df5b02736c7818c20122f5269fdc0704fb161cc676ff"
     },
     "tests/test_recovery_dispatch.py": {
-      "bytes": 5118,
-      "sha256": "ed44bdc2070953173063a78d702deba6d17897c447a02d98a77e296031f4c722"
+      "bytes": 6268,
+      "sha256": "f41f9aa79fb1230fc91924ae857b5b46c6555498d1a65310efd8312b108b48ae"
     },
     "tests/test_release.py": {
-      "bytes": 8128,
-      "sha256": "42149b3774264c17fbd0a556d89286f2f14ed56ce5b472592d96d8eff6bdafbf"
+      "bytes": 9803,
+      "sha256": "0234d5c2ead2ffefb69d98c440cac7ba6f92f50eda69cf1859434f0573f0ba4e"
+    },
+    "tests/test_remote_disconnect.py": {
+      "bytes": 5836,
+      "sha256": "7708321254ad7db12b69ef26b4c9ca419271e372f3b24a14318d84b73531a549"
+    },
+    "tests/test_status_age.py": {
+      "bytes": 3619,
+      "sha256": "0b0d2c35beed72953812728d4332756d40e5146070e4c70680967eb44e99d9d3"
     },
     "tests/test_wireless_stall_recovery.py": {
       "bytes": 5018,
       "sha256": "cd47e0712bd2e4df691140248c8335e9e5e49ab96731daac5c91d777de0bee0d"
     },
     "tests/test_workbench.mjs": {
-      "bytes": 46388,
-      "sha256": "51c8215cd6b12f45c8b700f4cd62fd75909602fd8fe7c2444631b890ba466277"
+      "bytes": 60586,
+      "sha256": "22fa5762c0125f784b39e5174f41dac4aed7de29300f21555fa4d53153bbee17"
     },
     "training/.gitignore": {
       "bytes": 153,
@@ -3566,8 +2266,16 @@
       "sha256": "4f99b031ca5127bfc799ae71e30119cad11cbba71d7aa2693132dcfad3a80bda"
     },
     "training/README.md": {
-      "bytes": 7792,
-      "sha256": "a60ce6e28e7865a0a2c80ff8222d95395c484c74ca5de33b6fae20e4ad830fbd"
+      "bytes": 15075,
+      "sha256": "65d584db306d501b1dd26083494a14365a7466b85715bae942311310bc472f8b"
+    },
+    "training/SESSION_20261023.md": {
+      "bytes": 3608,
+      "sha256": "4835f992878e268dc2c16f4ebf8c589cc53b130d3ece084cd32c821488e0225e"
+    },
+    "training/SESSION_20261023_STABILITY.md": {
+      "bytes": 10425,
+      "sha256": "9358ec7d68201175163f7605ed51c08e35bf6162e56ef9c91cd920e0c274be85"
     },
     "training/SOURCE_LINEAGE.json": {
       "bytes": 1407,
@@ -3576,6 +2284,18 @@
     "training/VALIDATION.json": {
       "bytes": 4644,
       "sha256": "1bc9472da7b72c36a17eac2bb9726844bf06c704f770fb8e1312502a894ecc7b"
+    },
+    "training/VALIDATION_20261023.json": {
+      "bytes": 53068,
+      "sha256": "b77da0c7b5f4880a2e86e0308984c43fe82b0a858cb6ad3c279d1f0435d83193"
+    },
+    "training/brake.py": {
+      "bytes": 3181,
+      "sha256": "309575ef366fd83f58384d0f4b3c437d9fb81dfc9c93826a52d77450eb478e09"
+    },
+    "training/brake_model.py": {
+      "bytes": 1851,
+      "sha256": "4168587c1bfc887a7d732d8e4f5af7ac618a203fadc25f71a8b64e8e0d944f96"
     },
     "training/checkpoints/MANIFEST.json": {
       "bytes": 1429,
@@ -3682,8 +2402,16 @@
       "sha256": "dfcc968249915c8f15d1959e9bfd20d01d74a9ffbda7f95c891abe50b9c7aa98"
     },
     "training/evaluate.py": {
-      "bytes": 4973,
-      "sha256": "9b07ce69187b3bd1f4ed8fee1356126389d8e23d3989be4948a02575445caadc"
+      "bytes": 5650,
+      "sha256": "af0d9d88ec1aea4d7903d447e8ff2248904d185ddda4a658f6ab7111023dd584"
+    },
+    "training/full_refine.py": {
+      "bytes": 3255,
+      "sha256": "bed6b9106a3be72c478e1fff4d74030c2b950d8ee58300ef13f14b2ab9fd3e8c"
+    },
+    "training/full_refine_model.py": {
+      "bytes": 342,
+      "sha256": "9c4f75b7faa7990aa5ae40e0b27aa349426bf7a6d5770bee70ca701d4a0c4e71"
     },
     "training/lateral_reward.py": {
       "bytes": 639,
@@ -3778,8 +2506,8 @@
       "sha256": "5432d9dec99f5a23e4db0659477a54d92be2ab3cc94bff2208add1e85b775e6d"
     },
     "training/native_env.py": {
-      "bytes": 22241,
-      "sha256": "4cd5cadaa99f61257e256fc1dc250df9f53966d6d16aec3d6c13b3c846263aa1"
+      "bytes": 25190,
+      "sha256": "73d4db88e7f9d4674b8836135aaf4cd5a810b6d66a08c20976cccaabc0d3daac"
     },
     "training/params/1910_m6.json": {
       "bytes": 754,
@@ -3802,8 +2530,8 @@
       "sha256": "dbb9cc44350d785fa950bd631ae0112df5365c2dde3bffe16047f8810732db6d"
     },
     "training/refine.py": {
-      "bytes": 6047,
-      "sha256": "c858d76e4e20922ba49791cd164370aa6f85aa9ef8901a190555977d0d3bb609"
+      "bytes": 6160,
+      "sha256": "8d0b4a681e9bd670d941a4fe200fa353320a09812aeda3686e74d87053aa2d47"
     },
     "training/refine_model.py": {
       "bytes": 3247,
@@ -3813,17 +2541,57 @@
       "bytes": 237,
       "sha256": "1f3faca719f41eb270d927c938a4c3a774f68c013c3c0ab514c5bf88f48ce2ea"
     },
+    "training/stability_protocol.py": {
+      "bytes": 5373,
+      "sha256": "c1ffb782b592fa4a2be07b74762b0a5bd7ef3c0fc69949596c9ee7c09627ad5e"
+    },
+    "training/standstop.py": {
+      "bytes": 3200,
+      "sha256": "ae6849487bd2258e75172d97c8443e5512236a7c1533a0a86885b91e30eeb0c5"
+    },
+    "training/standstop_model.py": {
+      "bytes": 1147,
+      "sha256": "160feb496cfb9cb335bdcdef8a92ba20a5bf10b3ac6621b88fa00433aa4e83c3"
+    },
     "training/tests/test_contract.py": {
-      "bytes": 2638,
-      "sha256": "1cff392327d36d07321e13825f02c228ab8d8832acccad23964669d20ae3db7e"
+      "bytes": 7560,
+      "sha256": "a45f57c073902bac493b4d86f8121d2b913f56f8fa4d0f57183017fd82584efc"
     },
     "training/tools/check_assets.py": {
       "bytes": 1176,
       "sha256": "83ed66d975345eb5203008827f69c80d37a12a294bc9a9028b23b844dcf42a73"
     },
+    "training/tools/compare_evaluations.py": {
+      "bytes": 4796,
+      "sha256": "6664ef3a8124e4d319007fa1a222df3bd1c02e9bf9be8c385c325db0ebcc74d0"
+    },
+    "training/tools/compare_stability.py": {
+      "bytes": 2604,
+      "sha256": "3e5d22193ed8b831dc772d882b0ca447392bef2b8f31312bea2ab12b5693a921"
+    },
+    "training/tools/evaluate_no_backfall.py": {
+      "bytes": 4159,
+      "sha256": "e873a9599e6f33510886db529c28aa4b15ad4c7c1af48a5bbfe45d714d9c41df"
+    },
+    "training/tools/evaluate_stability.py": {
+      "bytes": 2243,
+      "sha256": "d379d5c6923d16b491daee1126d78ea054a511a662b7c587f862d4166a9c0d5c"
+    },
+    "training/tools/export_standstop.py": {
+      "bytes": 1536,
+      "sha256": "e24377af122da31d35d2dc64a1cb16d6568fedffaee9ce108f1a41a04d09394d"
+    },
+    "training/tools/render_native_video.py": {
+      "bytes": 6269,
+      "sha256": "eb7c543e14daccf7d73eec93160e35fdda5d965369d4250a2e6f58aa7b23ca41"
+    },
+    "training/tools/render_stable_baseline.py": {
+      "bytes": 4800,
+      "sha256": "b582c0e89b8fd811582d547693f512f5b15ee1b24fd6d86dfe3ccb300c24633a"
+    },
     "training/train.py": {
-      "bytes": 6119,
-      "sha256": "2f59d7018f5f3c93c1947588d77e8a07dabef06be89f5c2cb1be5f40c6849821"
+      "bytes": 9475,
+      "sha256": "4f5d603aa6850905b0ca75e26d80290c7d69b8583332d240693d6e9f3144f681"
     },
     "training/training_adapter.py": {
       "bytes": 2283,
@@ -3832,9 +2600,54 @@
     "training/yaw_reward.py": {
       "bytes": 806,
       "sha256": "70bfeefa4e5a36ce27d08cea06a19839873f5f14bfa27e3c63ae902df367e9cc"
+    },
+    "tests/test_discovery_fallback.py": {
+      "bytes": 1945,
+      "sha256": "3989fc5217b824ce0335f427eb514472a868cca243373bf3d5e9fd7126f870b9"
+    },
+    "firmware-support/validation/static-20261024.json": {
+      "bytes": 1281,
+      "sha256": "7493d8d0854125f1739860d1d2f95b9571cce4f2c1a72a424bb0d33bc372929e"
+    },
+    "docs/STATIC_DEBUG_20261024.md": {
+      "bytes": 4691,
+      "sha256": "6513321e12e6e10f89ad0f5cee3fad488a8ecea691c026832e17fa9e0d37a622"
+    },
+    "docs/LATENCY_FIX_20261024.md": {
+      "bytes": 6010,
+      "sha256": "997ebb9d72b5f1c69bb15334d634c07cdead52c2355f05af3991bc30c96477b8"
+    },
+    "firmware-support/validation/latency-20261024.json": {
+      "bytes": 15772,
+      "sha256": "b6785327bf1465abcf666d4775242c4aa8017e4dcb215f66b89ef4063773b7a3"
+    },
+    "docs/STATUS_STABILITY_20261024.md": {
+      "bytes": 4483,
+      "sha256": "d3517b7c861b1a39b878cd1f1cfe9df497eb2ef4653e696bb84a909399d0e64b"
+    },
+    "firmware-support/validation/status-stability-20261024.json": {
+      "bytes": 6233,
+      "sha256": "ed1ba27578f6c8cca5455f1eb3041e446ad93141631125a574274096763c2459"
+    },
+    "firmware-support/validation/status-banner-20261024.json": {
+      "bytes": 1595,
+      "sha256": "8d895efdd23189008e7ba018850f985af13baff98c33d1b25505b20f46f7b2d6"
+    },
+    "tests/test_simulation_keyboard.mjs": {
+      "bytes": 6220,
+      "sha256": "8b3f5238006906fdc263a35520e8539169bbc4997dab94a5a8d736089ea31a5c"
+    },
+    "docs/KEYBOARD_SIMULATION_20261024.md": {
+      "bytes": 3739,
+      "sha256": "20511cb9d59f54eb47216023a9203bbf55f84902d4489cca30021b873411fc81"
+    },
+    "firmware-support/validation/keyboard-simulation-20261024.json": {
+      "bytes": 6227,
+      "sha256": "dbb04e7a5afcf02b41097f36a30db399dcdbbcc35f9e6bec35963dfe5420abfc"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",
   "hardware_validation": false,
-  "snapshot_date": "2026-10-22"
+  "snapshot_date": "2026-10-24",
+  "current_cleanup": "docs/SIMPLIFY_20261024.md"
 }

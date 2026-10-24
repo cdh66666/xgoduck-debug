@@ -2,15 +2,34 @@
   "passed": true,
   "source_verification": {
     "passed": true,
-    "locked_input_files": 225,
-    "package_files": 229,
-    "bytes": 901560,
+    "locked_input_files": 239,
+    "package_files": 241,
+    "bytes": 959592,
     "actual_parser_fixture_bindings": 2,
     "actual_sdk_fixture_bindings": 1,
     "hardware_access": false,
     "network_access": false
   },
   "native": {
+    "qmi_sync": {
+      "passed": true,
+      "result": {
+        "output": "QMI sync: locking, recovery, handshake and saturated body-axis mapping PASS"
+      }
+    },
+    "joint_limits": {
+      "passed": true,
+      "result": {
+        "passed": true,
+        "checks": 40981,
+        "head_yaw_id": 32,
+        "range_deg": [
+          -90,
+          90
+        ],
+        "hardware_access": false
+      }
+    },
     "custom_parser": {
       "passed": true,
       "result": {
@@ -78,7 +97,7 @@
       }
     }
   },
-  "scope": "desktop fake UART/clock/route only",
+  "scope": "desktop fake I2C/UART/clock/route only",
   "arm_recompiled": false,
   "hardware_access": false,
   "network_access": false

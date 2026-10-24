@@ -515,9 +515,57 @@ def event_candidates(event):
     return list(dict.fromkeys(result))[:8]
 
 
+def python_mdns_candidates(seconds=MDNS_WINDOW_S):
+    """Browse Arduino advertisements when the optional CLI tool is absent.
+
+    Addresses remain untrusted hints; callers still verify the SSH pin/serial.
+    """
+    try:
+        from zeroconf import IPVersion, ServiceBrowser, ServiceListener, Zeroconf
+    except ImportError:
+        raise DiscoveryError('dependency_failed') from None
+    pending = queue.Queue()
+
+    class Listener(ServiceListener):
+        def add_service(self, zc, type_, name):
+            pending.put((type_, name))
+
+        update_service = add_service
+
+        def remove_service(self, zc, type_, name):
+            pass
+
+    results, seen = [], set()
+    deadline = time.monotonic() + min(max(seconds, .1), MDNS_WINDOW_S)
+    zc = Zeroconf(ip_version=IPVersion.V4Only)
+    browser = None
+    try:
+        browser = ServiceBrowser(zc, '_arduino._tcp.local.', Listener())
+        while (remaining := deadline-time.monotonic()) > 0 and len(results) < 8:
+            try:
+                type_, name = pending.get(timeout=remaining)
+            except queue.Empty:
+                break
+            if (type_, name) in seen:
+                continue
+            info = zc.get_service_info(type_, name, timeout=max(1, int(min(.5, remaining)*1000)))
+            if info is None:
+                continue
+            seen.add((type_, name))
+            for address in info.parsed_addresses(IPVersion.V4Only):
+                ip = private_ipv4(address)
+                if ip and (url := f'http://{ip}:9527') not in results:
+                    results.append(url)
+        return results[:8]
+    finally:
+        if browser is not None:
+            browser.cancel()
+        zc.close()
+
+
 def mdns_candidates(seconds=MDNS_WINDOW_S, process_factory=subprocess.Popen, clock=time.monotonic):
     if not MDNS_EXE.is_file():
-        raise DiscoveryError('dependency_failed')
+        return python_mdns_candidates(seconds)
     process, reader = None, None
     chunks = queue.Queue(maxsize=32)
 

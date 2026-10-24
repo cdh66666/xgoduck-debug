@@ -1,11 +1,11 @@
 /* Official sequential numbering. Opening this page never contacts the robot. */
 (() => {
   'use strict';
+  document.body.dataset.embedded = String(window.parent !== window);
   const $ = id => document.getElementById(id);
   const IDS = [10,11,12,13,14,20,21,22,23,24,30,31,32,33,34];
   const PENDING_KEY = 'xgoduck-numbering-pending-v1';
   const CANCELLED = new Error('cancelled');
-  const slots = new Map();
   let run = null, visible = true, unloading = false, sequence = 0;
   let observed = new Set(), scanned = false, pending = loadPending();
   const note = text => { $('status').textContent = text; };
@@ -30,24 +30,16 @@
   }
   function paint() {
     const next = scanned ? IDS.find(id => !observed.has(id)) : undefined;
-    for (const [id, el] of slots) {
-      const state = pending?.target === id ? 'unknown' : observed.has(id) ? 'confirmed' : scanned && id === next ? 'next' : 'unread';
-      el.dataset.state = state;
-      el.lastChild.textContent = state === 'unknown' ? '待核对' : state === 'confirmed' ? '已读到' : state === 'next' ? '下一颗' : scanned ? '待接入' : '待检查';
-    }
-    $('target-id').textContent = pending ? pending.target : !scanned ? '待读取' : next ?? '已齐';
+    document.body.dataset.scanned = String(scanned);
+    $('numbering-progress').value = scanned ? observed.size : 0;
+    $('numbering-model').contentWindow?.postMessage({type:'numbering-progress',version:1,
+      confirmed:[...observed],target:pending?.target ?? next ?? null},location.origin);
+    $('target-id').textContent = pending ? pending.target : !scanned ? '—' : next ?? '已齐';
     $('target-label').textContent = pending ? '上次改号结果待核对' : '下一颗 ID';
     $('completed-count').textContent = scanned ? observed.size+' / 15' : '— / 15';
     $('restart').disabled = $('continue').disabled = !!run || !visible || unloading;
     $('stop').disabled = !run;
-    $('read-state').textContent = scanned ? '本轮真实读取 · '+observed.size+' / 15' : '还没读取总线';
-  }
-  for (const [group, ids] of [['left',IDS.slice(0,5)],['right',IDS.slice(5,10)],['head',IDS.slice(10)]]) {
-    for (const id of ids) {
-      const slot = document.createElement('span'); slot.className = 'joint-slot';
-      slot.append(document.createTextNode(String(id)), document.createElement('small'));
-      $(group+'-slots').append(slot); slots.set(id,slot);
-    }
+    $('read-state').textContent = scanned ? observed.size+' / 15 已读到' : '尚未检查';
   }
   function phase(id,state) { $(id).dataset.state = state; }
   function stage(r, value, text) {
@@ -215,6 +207,14 @@
   $('continue').onclick = () => start(false);
   $('stop').onclick = stop;
   window.addEventListener('message', event => {
+    if(event.origin===location.origin&&event.source===$('numbering-model').contentWindow){
+      if(event.data?.type==='imu-model-ready')paint();
+      if(event.data?.type==='imu-model-joint-selected'&&IDS.includes(event.data.id)){
+        $('model-caption').textContent='ID '+event.data.id;
+        $('numbering-model').contentWindow.postMessage({type:'imu-model-highlight',version:1,ids:[event.data.id]},location.origin);
+      }
+      return;
+    }
     if (event.origin !== location.origin || event.source !== parent || event.data?.type !== 'duck-numbering-visibility') return;
     visible = event.data.visible === true;
     if (!visible) stop();

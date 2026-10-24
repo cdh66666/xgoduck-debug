@@ -19,3 +19,7 @@ test('tipped official gravity produces the measured pitch without gyro integrati
 test('missing, malformed and stale gravity never becomes a fresh pose',()=>{
   for(const change of [{gravity:null},{gravity:[0,0,0]},{gravity:[NaN,0,-1]},{feedback_age_ms:150},{imu_ok:false},{pc_observed_monotonic_s:undefined}])assert.equal(officialWorkbenchPose(status(change)),null);
 });
+test('delivery-stale current data is still a valid historical native observation',()=>{
+  assert.ok(officialWorkbenchPose(status({feedback_age_ms:303,native_feedback_age_ms:3})));
+  assert.equal(officialWorkbenchPose(status({feedback_age_ms:400,native_feedback_age_ms:150})),null);
+});

@@ -1,0 +1,68 @@
+{
+  "schema": "xgoduck-imu-sync-static-install-v1",
+  "date": "2026-10-23",
+  "platform": "arduino:zephyr (1.0.0)",
+  "fqbn": "arduino:zephyr:unoq",
+  "frozen_libraries_unchanged": true,
+  "firmware": {
+    "qmi8658_h_sha256": "f0a2f1fb0a70a68968c9b1afaec4f2a4c7f98d78e211808d6bd19342a65a1ecc",
+    "elf_sha256": "bf30103b507a6fa693414fc83420c3cf60cb3c915c6008ba0fb170feecce6217",
+    "elf_zsk_sha256": "fb0e4cf7151c1129b8c31068aaaae2061be6bc95f688b62cc4dec1096cbd6f4a",
+    "arm_compile_passed": true,
+    "unresolved_short_branch_relocations": [],
+    "fresh_openocd_upload_verified": true,
+    "new_mcu_boot_verified": true
+  },
+  "host_receive": {
+    "sha256": {
+      "controller.py": "ff15fbb6bfea6a6086f06adba4c94626f37f7d119bbb791cefb27f262781c9d8",
+      "wire.py": "21f8acfe61e220edf40f18a53f69ffca93fa8d4bebb19fb63abdf1a666a4d36f"
+    },
+    "same_boot_reordered_frames": "discard without resetting filter, OFF fit or control generation",
+    "real_boot_change": "retain existing disarm/reset and zero-synchronization requirement"
+  },
+  "static_validation": {
+    "duration_s": 67.4564283890004,
+    "samples": 1200,
+    "enabled_frames": 0,
+    "modes": {
+      "off": 1200
+    },
+    "imu_invalid_frames": 0,
+    "qualified_frames": 1200,
+    "raw_gyro_dps": [
+      {
+        "min": -0.78125,
+        "max": 0.15625,
+        "mean": -0.27856770833333333,
+        "std": 0.15450221174153392
+      },
+      {
+        "min": -8.59375,
+        "max": -7.9375,
+        "mean": -8.263411458333334,
+        "std": 0.11274927773078612
+      },
+      {
+        "min": -0.75,
+        "max": 0.1875,
+        "mean": -0.2749479166666667,
+        "std": 0.13908592334975803
+      }
+    ],
+    "window_max_std_dps": [
+      0.1739406546701541,
+      0.13062733213026861,
+      0.15234861064078462
+    ],
+    "max_joint_spread_deg": 0.0
+  },
+  "gyro_std_threshold_dps_unchanged": 0.35,
+  "correction_active_during_validation": false,
+  "mechanical_calibration_unchanged": true,
+  "models_unchanged": true,
+  "arming_requests_sent": 0,
+  "motion_requests_sent": 0,
+  "physical_motion_acceptance": "NOT_TESTED",
+  "scope": "stationary sensor/receive validation only; no RF or physical motion acceptance"
+}

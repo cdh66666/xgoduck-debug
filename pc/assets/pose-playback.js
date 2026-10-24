@@ -131,6 +131,14 @@ export class DelayedPosePlayback {
     // Callers should schedule the next callback at nextFrameAtMs (50ms default).
     this.nextFrameAtMs=now+this.frameMs;
     if(!this.rows.length||this.originAtMs===null)return this.frame(now,'buffering','waiting-for-observations');
+    if(this.delayMs===0){
+      const row=this.rows.at(-1),sourceGap=!!this.held&&row.sourceMs-this.held.sourceMs>this.maxGapMs;
+      this.held={quaternion:row.quaternion.slice(),sourceMs:row.sourceMs,left:row,right:row,fraction:0};
+      this.rows=[row];this.hasPlayed=true;
+      const stale=now-row.receivedAtMs+row.ageMs>=150;
+      return {...this.frame(now,stale?'underflow':'playing',stale?'latest-observation-stale':'latest-observed-presentation'),
+        bufferAheadMs:0,sourceGap};
+    }
     const target=now-this.originAtMs-this.delayMs;
     if(target<this.rows[0].timelineMs)return this.frame(now,'buffering','filling-delay-buffer');
     let leftIndex=0;

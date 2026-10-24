@@ -61,6 +61,7 @@ class Feedback:
     angles: tuple
     velocities: tuple
     targets: tuple
+    boot: int | None = None
 
     @property
     def imu_ok(self):
@@ -99,11 +100,10 @@ def decode_state(data):
         raise ValueError('invalid state ABI')
     if not all(math.isfinite(v) for v in x[20:]):
         raise ValueError('non-finite state')
-    if len(data) != STATE.size:
-        decode_current(data[STATE.size:], x[4])
+    current = decode_current(data[STATE.size:], x[4]) if len(data) != STATE.size else None
     return Feedback(x[2], x[3], *x[4:14], tuple(v*9.8/16384 for v in x[14:17]),
                     tuple(v/32 for v in x[17:20]), tuple(x[20:35]),
-                    tuple(x[35:50]), tuple(x[50:65]))
+                    tuple(x[35:50]), tuple(x[50:65]), current['boot'] if current else None)
 
 def encode_command(seq, sample_us, mode, targets, ttl_us=250000):
     if mode not in range(4):

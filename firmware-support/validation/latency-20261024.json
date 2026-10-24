@@ -1,0 +1,564 @@
+{
+  "schema": "xgoduck-static-latency-v1",
+  "date": "2026-10-24",
+  "conditions": "OFF, disabled, inhibited; same tray/AP/PC, 60 s read-only samples",
+  "before": {
+    "duration_s": 60.0,
+    "board_errors": [],
+    "pc_errors": [],
+    "off_disabled_inhibited_all": true,
+    "counter_deltas": {
+      "sequence_gaps": 1077,
+      "out_of_order_frames": 98,
+      "loop_missed": 748,
+      "mcu_overruns": 0,
+      "mcu_report_drops": 0
+    },
+    "receiver_epochs": [
+      2,
+      3
+    ],
+    "mcu_frames": 4409,
+    "board_feedback_age_ms": {
+      "n": 600,
+      "min": 0.6444370001190691,
+      "mean": 14.110163524998143,
+      "p50": 11.408097999947131,
+      "p95": 31.974528000091595,
+      "p99": 48.230999999987034,
+      "max": 89.46575599998141
+    },
+    "board_feedback_hz": {
+      "n": 600,
+      "min": 50.98501311035733,
+      "mean": 70.38303309278791,
+      "p50": 62.106544238923924,
+      "p95": 97.64077028593702,
+      "p99": 105.36686534021689,
+      "max": 114.44082014307094
+    },
+    "pc_age_ms": {
+      "n": 1186,
+      "min": 15.741486980004993,
+      "mean": 157.8666094515324,
+      "p50": 141.61900698081809,
+      "p95": 320.64463297888324,
+      "p99": 382.29934201399374,
+      "max": 438.95331799376436
+    },
+    "pc_transport_queue_ms": {
+      "n": 1186,
+      "min": 0.0,
+      "mean": 18.33615249313962,
+      "p50": 0.0,
+      "p95": 104.76482800527265,
+      "p99": 197.92775397240803,
+      "max": 260.51404199188255
+    },
+    "pc_request_ms": {
+      "n": 1200,
+      "min": 2.614900004118681,
+      "mean": 19.506374250049703,
+      "p50": 18.920900009106845,
+      "p95": 34.388700034469366,
+      "p99": 49.88529998809099,
+      "max": 235.83600000711158
+    },
+    "pc_response_bytes": {
+      "n": 1200,
+      "min": 24970,
+      "mean": 126356.14666666667,
+      "p50": 121017,
+      "p95": 173986,
+      "p99": 216708,
+      "max": 248631
+    },
+    "pc_connected_samples": 1186,
+    "pc_samples": 1200,
+    "max_joint_spread_deg": 0.0,
+    "motion_requests_sent": 0,
+    "arming_requests_sent": 0
+  },
+  "after": {
+    "duration_s": 60.0,
+    "board_errors": [],
+    "pc_errors": [],
+    "off_disabled_inhibited_all": true,
+    "counter_deltas": {
+      "sequence_gaps": 0,
+      "out_of_order_frames": 0,
+      "loop_missed": 121,
+      "mcu_overruns": 0,
+      "mcu_report_drops": 0
+    },
+    "receiver_epochs": [
+      1,
+      1
+    ],
+    "mcu_frames": 5972,
+    "board_feedback_age_ms": {
+      "n": 600,
+      "min": 0.7385980002254655,
+      "mean": 7.400143701664395,
+      "p50": 6.389258000126574,
+      "p95": 16.422026999862283,
+      "p99": 24.86140399969372,
+      "max": 31.87164400014808
+    },
+    "board_feedback_hz": {
+      "n": 600,
+      "min": 97.74515705149923,
+      "mean": 99.92067973339701,
+      "p50": 99.86935779092671,
+      "p95": 100.56728310210954,
+      "p99": 101.18111118149054,
+      "max": 102.1153256033454
+    },
+    "pc_age_ms": {
+      "n": 1193,
+      "min": 13.35150996419543,
+      "mean": 102.31874374913922,
+      "p50": 86.16865095473258,
+      "p95": 227.68850300462873,
+      "p99": 321.1923900644251,
+      "max": 464.4354890569957
+    },
+    "pc_transport_queue_ms": {
+      "n": 1193,
+      "min": 0.0,
+      "mean": 26.89006720667744,
+      "p50": 10.531165037718893,
+      "p95": 111.90488099236973,
+      "p99": 195.4535349800608,
+      "max": 281.1425780978425
+    },
+    "pc_request_ms": {
+      "n": 1200,
+      "min": 1.583700010087341,
+      "mean": 7.349527333426522,
+      "p50": 4.323699977248907,
+      "p95": 23.173500027041882,
+      "p99": 26.91749995574355,
+      "max": 146.03230002103373
+    },
+    "pc_response_bytes": {
+      "n": 1200,
+      "min": 3862,
+      "mean": 14484.290833333333,
+      "p50": 14538,
+      "p95": 14609,
+      "p99": 14623,
+      "max": 14667
+    },
+    "pc_connected_samples": 1193,
+    "pc_samples": 1200,
+    "max_joint_spread_deg": 0.0,
+    "motion_requests_sent": 0,
+    "arming_requests_sent": 0
+  },
+  "browser_before": {
+    "duration_s": 60,
+    "samples": 931,
+    "counts": {
+      "playing": 912,
+      "gap": 17,
+      "underflow": 2
+    },
+    "known_endpoint_age_ms": {
+      "n": 931,
+      "min": 42.7,
+      "mean": 809.5471535982813,
+      "p50": 828.7,
+      "p95": 917.6,
+      "p99": 1079,
+      "max": 1461.9
+    },
+    "delay_ms": [
+      "350"
+    ],
+    "buffer_ahead_ms": {
+      "n": 931,
+      "min": -61.5,
+      "mean": 651.0127819548873,
+      "p50": 683.4,
+      "p95": 757.3,
+      "p99": 773.8,
+      "max": 785.9
+    },
+    "errors": [],
+    "hardwareWrites": [],
+    "motionLocked": true,
+    "motion": "上次已卸力"
+  },
+  "browser_after": {
+    "duration_s": 60,
+    "samples": 918,
+    "counts": {
+      "playing": 694,
+      "underflow": 224
+    },
+    "known_endpoint_age_ms": {
+      "n": 918,
+      "min": 16.5,
+      "mean": 120.54771241830062,
+      "p50": 98.1,
+      "p95": 256,
+      "p99": 402.1,
+      "max": 714
+    },
+    "delay_ms": [
+      "0"
+    ],
+    "buffer_ahead_ms": {
+      "n": 918,
+      "min": 0,
+      "mean": 0,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "max": 0
+    },
+    "errors": [],
+    "hardwareWrites": [],
+    "motionLocked": true,
+    "motion": "已卸力"
+  },
+  "intermediate_router_only": {
+    "duration_s": 60.0,
+    "board_errors": [],
+    "pc_errors": [],
+    "off_disabled_inhibited_all": true,
+    "counter_deltas": {
+      "sequence_gaps": 0,
+      "out_of_order_frames": 0,
+      "loop_missed": 1058,
+      "mcu_overruns": 0,
+      "mcu_report_drops": 0
+    },
+    "receiver_epochs": [
+      0,
+      0
+    ],
+    "mcu_frames": 3490,
+    "board_feedback_age_ms": {
+      "n": 600,
+      "min": 1.7964289997962624,
+      "mean": 17.714569059999878,
+      "p50": 16.254733000096167,
+      "p95": 36.49921199985329,
+      "p99": 49.98224100017978,
+      "max": 56.21732700001303
+    },
+    "board_feedback_hz": {
+      "n": 600,
+      "min": 43.53839106889656,
+      "mean": 53.09317482910642,
+      "p50": 50.94216111474216,
+      "p95": 71.6904995393358,
+      "p99": 99.0153355485936,
+      "max": 100.09491592489941
+    },
+    "pc_age_ms": {
+      "n": 1179,
+      "min": 19.571912035644345,
+      "mean": 176.466432160917,
+      "p50": 159.27669902339403,
+      "p95": 347.76109396852917,
+      "p99": 421.3825860140332,
+      "max": 565.4140919934889
+    },
+    "pc_transport_queue_ms": {
+      "n": 1179,
+      "min": 0.0,
+      "mean": 24.477857511839947,
+      "p50": 0.6946930257072381,
+      "p95": 142.24453100928258,
+      "p99": 233.64166702708644,
+      "max": 295.69074301025466
+    },
+    "pc_request_ms": {
+      "n": 1200,
+      "min": 2.4213999859057367,
+      "mean": 18.574647915374953,
+      "p50": 19.802900031208992,
+      "p95": 30.391599982976913,
+      "p99": 33.92240003449842,
+      "max": 254.0642999811098
+    },
+    "pc_response_bytes": {
+      "n": 1200,
+      "min": 25136,
+      "mean": 116399.22083333334,
+      "p50": 110198,
+      "p95": 152665,
+      "p99": 216209,
+      "max": 247899
+    },
+    "pc_connected_samples": 1179,
+    "pc_samples": 1200,
+    "max_joint_spread_deg": 0.0,
+    "motion_requests_sent": 0,
+    "arming_requests_sent": 0
+  },
+  "intermediate_runtime": {
+    "duration_s": 60.0,
+    "board_errors": [],
+    "pc_errors": [],
+    "off_disabled_inhibited_all": true,
+    "counter_deltas": {
+      "sequence_gaps": 0,
+      "out_of_order_frames": 0,
+      "loop_missed": 119,
+      "mcu_overruns": 0,
+      "mcu_report_drops": 0
+    },
+    "receiver_epochs": [
+      0,
+      0
+    ],
+    "mcu_frames": 5976,
+    "board_feedback_age_ms": {
+      "n": 600,
+      "min": 0.6078719998185989,
+      "mean": 7.057828278329528,
+      "p50": 6.2709589999485615,
+      "p95": 14.61335899966798,
+      "p99": 20.407794000220747,
+      "max": 31.482085999869014
+    },
+    "board_feedback_hz": {
+      "n": 600,
+      "min": 98.52484126879469,
+      "mean": 99.89691695636624,
+      "p50": 99.86524294188969,
+      "p95": 100.37692521154261,
+      "p99": 101.05546591819518,
+      "max": 101.42685599859304
+    },
+    "pc_age_ms": {
+      "n": 1195,
+      "min": 12.931163994835515,
+      "mean": 115.18415152563172,
+      "p50": 90.34580798152092,
+      "p95": 289.83166895113754,
+      "p99": 377.8092650027247,
+      "max": 495.6939279645667
+    },
+    "pc_transport_queue_ms": {
+      "n": 1195,
+      "min": 0.0,
+      "mean": 33.89970410185509,
+      "p50": 16.113604997372022,
+      "p95": 148.65898402786115,
+      "p99": 208.85267900803228,
+      "max": 290.79089394781477
+    },
+    "pc_request_ms": {
+      "n": 1200,
+      "min": 8.817300025839359,
+      "mean": 23.55870974982584,
+      "p50": 24.953900021500885,
+      "p95": 36.3684999756515,
+      "p99": 39.24489999189973,
+      "max": 172.3529999726452
+    },
+    "pc_response_bytes": {
+      "n": 1200,
+      "min": 131458,
+      "mean": 257001.655,
+      "p50": 259229,
+      "p95": 312478,
+      "p99": 333926,
+      "max": 354958
+    },
+    "pc_connected_samples": 1195,
+    "pc_samples": 1200,
+    "max_joint_spread_deg": 0.0,
+    "motion_requests_sent": 0,
+    "arming_requests_sent": 0
+  },
+  "ssh_nodelay_ab": [
+    {
+      "session": false,
+      "summary": {
+        "frames": 446,
+        "queue_relative_ms": {
+          "n": 446,
+          "min": 0.0,
+          "mean": 94.97879863160165,
+          "p50": 68.307169014588,
+          "p95": 270.74692596215755,
+          "p99": 428.62945701926947,
+          "max": 548.303998017218
+        },
+        "arrival_interval_ms": {
+          "n": 445,
+          "min": 0.08329999400302768,
+          "mean": 40.510737528145484,
+          "p50": 21.85250003822148,
+          "p95": 123.96210001315922,
+          "p99": 224.6002999600023,
+          "max": 553.9538000011817
+        }
+      }
+    },
+    {
+      "session": true,
+      "summary": {
+        "frames": 445,
+        "queue_relative_ms": {
+          "n": 445,
+          "min": 0.0,
+          "mean": 61.865310249667026,
+          "p50": 28.22087099775672,
+          "p95": 215.892595006153,
+          "p99": 315.95320702763274,
+          "max": 475.8345250156708
+        },
+        "arrival_interval_ms": {
+          "n": 444,
+          "min": 0.08060003165155649,
+          "mean": 40.536906981976024,
+          "p50": 37.24650002550334,
+          "p95": 112.91839997284114,
+          "p99": 159.7386000212282,
+          "max": 492.0991000253707
+        }
+      }
+    }
+  ],
+  "router": {
+    "version": "Arduino Router 0.7.0",
+    "binary_sha256": "237059d6dd9ffa0e39cabca1e3723503123e282c1626afe50f73711a7ec3eef4",
+    "backup": "/home/arduino/ArduinoApps/xgoduck-commissioning/.codex-backups/latency-router-20261024",
+    "protected_unchanged": true,
+    "states": [
+      {
+        "mode": "off",
+        "enabled": false,
+        "motion_inhibited": true,
+        "feedback_hz": 99.85283583945558,
+        "feedback_age_ms": 5.047095999998419,
+        "out_of_order_frames": 0,
+        "mcu_seq": 94859
+      },
+      {
+        "mode": "off",
+        "enabled": false,
+        "motion_inhibited": true,
+        "feedback_hz": 99.95878737641203,
+        "feedback_age_ms": 8.245886999930008,
+        "out_of_order_frames": 0,
+        "mcu_seq": 94913
+      },
+      {
+        "mode": "off",
+        "enabled": false,
+        "motion_inhibited": true,
+        "feedback_hz": 99.8723677819242,
+        "feedback_age_ms": 5.920753000054901,
+        "out_of_order_frames": 0,
+        "mcu_seq": 94967
+      }
+    ]
+  },
+  "runtime": {
+    "installed": {
+      "main.py": "a0199e4f8444d9dad72bf99f9fd498ede388a431f9d4994d0332cb2255fecd87",
+      "motion_recording.py": "2f3c4c479e23929861effead3e1d2e09dd790f725736954d9ff3ce2022e87e7a",
+      "gyro_bias_control.py": "3408f79d993792487a8522f95db935cfdb02ded6062e61ee94b06977cc1a4d11"
+    },
+    "backup": "/home/arduino/ArduinoApps/xgoduck-commissioning/.codex-backups/latency-runtime-20261024",
+    "protected_unchanged": true,
+    "states": [
+      {
+        "mode": "off",
+        "enabled": false,
+        "motion_inhibited": true,
+        "mcu_seq": 118920,
+        "feedback_hz": 99.90999527265156,
+        "feedback_age_ms": 3.6573869999756425,
+        "out_of_order_frames": 0,
+        "sequence_gaps": 0
+      },
+      {
+        "mode": "off",
+        "enabled": false,
+        "motion_inhibited": true,
+        "mcu_seq": 118978,
+        "feedback_hz": 99.86674409695745,
+        "feedback_age_ms": 6.04038300002685,
+        "out_of_order_frames": 0,
+        "sequence_gaps": 0
+      },
+      {
+        "mode": "off",
+        "enabled": false,
+        "motion_inhibited": true,
+        "mcu_seq": 119033,
+        "feedback_hz": 99.89517052958867,
+        "feedback_age_ms": 12.64759600007892,
+        "out_of_order_frames": 0,
+        "sequence_gaps": 0
+      },
+      {
+        "mode": "off",
+        "enabled": false,
+        "motion_inhibited": true,
+        "mcu_seq": 119094,
+        "feedback_hz": 99.86130578929202,
+        "feedback_age_ms": 9.28120300000046,
+        "out_of_order_frames": 0,
+        "sequence_gaps": 0
+      },
+      {
+        "mode": "off",
+        "enabled": false,
+        "motion_inhibited": true,
+        "mcu_seq": 119156,
+        "feedback_hz": 99.82626036383444,
+        "feedback_age_ms": 9.90667900009612,
+        "out_of_order_frames": 0,
+        "sequence_gaps": 0
+      }
+    ]
+  },
+  "validation": {
+    "python_full_suite": {
+      "passed": 152,
+      "failed": 0
+    },
+    "latest_release_tests": {
+      "passed": 10,
+      "failed": 0
+    },
+    "ssh_recovery_tests": {
+      "passed": 8,
+      "failed": 0
+    },
+    "javascript_top_level_tests": {
+      "passed": 30,
+      "failed": 0
+    },
+    "hardware_motion_tested": false
+  },
+  "limitations": [
+    "Known displayed data age is not an externally measured absolute motion-to-screen latency.",
+    "Final browser P99 402.1 ms, max 714 ms; wireless/OS/render spikes remain visible, not buffered.",
+    "No physical standing/walking acceptance in the tray."
+  ],
+  "raw_local_evidence": "pc/qa/latency-20261024/",
+  "sources": {
+    "robot-app/python/gyro_bias_control.py": "5d9902b7a06d6398d49c4cc49048415523527cd099c4c84bd007c1dd986e4322",
+    "robot-app/python/motion_recording.py": "2f3c4c479e23929861effead3e1d2e09dd790f725736954d9ff3ce2022e87e7a",
+    "robot-app/python/main.py": "96f8d4c7dee6d1b0e0078baa0d4b147104b66c56a47cd5d72fa0641aa3c1a710",
+    "pc/official_control_proxy.py": "d86ec4a55b0685f9bb4a17524b4c3952a0ca927d327fa1931d430dde0106f768",
+    "pc/factory_workbench.py": "0cce96c694c4c70809e8aed2015dd083e239a2cdef8d2a04e48dfa60afbe48a5",
+    "pc/assets/official-workbench.js": "433e6ba757dd43538d358e4a849cf243afbaaadb01020a99857bd3d5b60899df",
+    "pc/assets/official-pose-playback.js": "daf1e940eea549e6f2f46ecc2653cc06b684a08fdd8b8c1ca862695efe407b8e",
+    "pc/assets/pose-playback.js": "42ecf86cbad1e35c12b8c535887073bc0fbb6fe1770d3968dab5b9ff02cec714",
+    "pc/assets/imu-model.js": "8139ad636b9c17f6550786848cbe8456ad913c1320e7eb1bb152d3095b65a8e9",
+    "pc/assets/motion-history.js": "f882afd4300e22b19bf084e6ba5308856f95f844fb060267e25a5a51927b32d4"
+  },
+  "deployment_text_encoding": "UTF-8 LF on Linux; local source inventory preserves Windows CRLF. Normalized text hashes match all three installed Python files."
+}

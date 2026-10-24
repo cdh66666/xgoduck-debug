@@ -1,0 +1,226 @@
+{
+  "schema": "xgoduck-status-stability-v1",
+  "date": "2026-10-24",
+  "scope": "Display semantics only; controller, motor commands, freshness gate and zero display buffer unchanged.",
+  "conditions": "Two 60 s read-only captures, same PC/board/AP, headless Edge 1440x1000 software renderer; discard first 2 s after geometry loads.",
+  "before": {
+    "seconds": 60,
+    "samples": 1955,
+    "offline": 0,
+    "stale": 177,
+    "currentMissing": 5,
+    "safety": true,
+    "age": {
+      "n": 1955,
+      "p50": 56.59221865622385,
+      "p95": 175.2751984700153,
+      "p99": 259.7678896895777,
+      "max": 3497.747622682011
+    },
+    "native": {
+      "n": 1955,
+      "p50": 21.402840000064316,
+      "p95": 28.67858299987347,
+      "p99": 41.640199000084976,
+      "max": 62.202051000440406
+    },
+    "delivery": {
+      "n": 1955,
+      "p50": 3.0812130412414263,
+      "p95": 91.27859993168386,
+      "p99": 139.72488291301488,
+      "max": 267.0016559618489
+    },
+    "cache": {
+      "n": 1955,
+      "p50": 23.833899991586804,
+      "p95": 97.15699998196214,
+      "p99": 132.80580000719056,
+      "max": 319.51960001606494
+    },
+    "frameAge": {
+      "n": 861,
+      "p50": 71.2,
+      "p95": 189.6,
+      "p99": 261.9,
+      "max": 392.7
+    },
+    "pollInterval": {
+      "n": 1954,
+      "p50": 25,
+      "p95": 26.900000035762787,
+      "p99": 30.80000001192093,
+      "max": 3502.099999964237
+    },
+    "tileCounts": {
+      "simple-current": {
+        "changes": 691,
+        "values": {
+          "0.312 A|ok": 114,
+          "0.292 A|ok": 48,
+          "0.332 A|ok": 60,
+          "0.325 A|ok": 80,
+          "0.305 A|ok": 111,
+          "0.299 A|ok": 88,
+          "0.319 A|ok": 86,
+          "0.344 A|ok": 8,
+          "0.279 A|ok": 15,
+          "0.338 A|ok": 32,
+          "0.286 A|ok": 29,
+          "0.273 A|ok": 7,
+          "0.331 A|ok": 2,
+          "0.351 A|ok": 6,
+          "本帧未齐|pending": 2,
+          "0.357 A|ok": 2,
+          "0.267 A|ok": 1
+        }
+      },
+      "simple-link": {
+        "changes": 198,
+        "values": {
+          "状态延迟|pending": 99,
+          "已连接|ok": 99
+        }
+      },
+      "simple-servos": {
+        "changes": 198,
+        "values": {
+          "— / 15|unknown": 99,
+          "15 / 15|ok": 99
+        }
+      },
+      "simple-imu": {
+        "changes": 198,
+        "values": {
+          "反馈过期|unknown": 99,
+          "在线|ok": 99
+        }
+      },
+      "simple-motion": {
+        "changes": 198,
+        "values": {
+          "上次已卸力|unknown": 99,
+          "已卸力|ok": 99
+        }
+      }
+    },
+    "errors": [],
+    "writes": [],
+    "motionLocked": true
+  },
+  "after": {
+    "seconds": 60,
+    "samples": 1908,
+    "offline": 0,
+    "stale": 143,
+    "currentMissing": 11,
+    "safety": true,
+    "age": {
+      "n": 1908,
+      "p50": 56.312461080178764,
+      "p95": 167.54378584370716,
+      "p99": 216.69903493718448,
+      "max": 2175.797672481058
+    },
+    "native": {
+      "n": 1908,
+      "p50": 20.72144500016293,
+      "p95": 28.826055000081396,
+      "p99": 37.13509199997134,
+      "max": 55.80229799988956
+    },
+    "delivery": {
+      "n": 1908,
+      "p50": 2.799531022901647,
+      "p95": 77.88381497039154,
+      "p99": 121.88765402743229,
+      "max": 197.9876810123642
+    },
+    "cache": {
+      "n": 1908,
+      "p50": 23.529900005087256,
+      "p95": 96.10359999351203,
+      "p99": 132.0807000156492,
+      "max": 198.8744999980554
+    },
+    "frameAge": {
+      "n": 833,
+      "p50": 70.3,
+      "p95": 174.9,
+      "p99": 221.4,
+      "max": 283.7
+    },
+    "pollInterval": {
+      "n": 1907,
+      "p50": 25,
+      "p95": 27,
+      "p99": 28.600000023841858,
+      "max": 2912
+    },
+    "tileCounts": {
+      "simple-current": {
+        "changes": 661,
+        "values": {
+          "0.312 A|reported": 106,
+          "0.305 A|reported": 112,
+          "0.325 A|reported": 57,
+          "0.319 A|reported": 90,
+          "0.332 A|reported": 39,
+          "0.299 A|reported": 85,
+          "0.292 A|reported": 68,
+          "0.286 A|reported": 36,
+          "0.344 A|reported": 13,
+          "0.279 A|reported": 17,
+          "0.338 A|reported": 20,
+          "0.357 A|reported": 3,
+          "0.331 A|reported": 3,
+          "0.273 A|reported": 8,
+          "0.267 A|reported": 2,
+          "0.351 A|reported": 1,
+          "0.364 A|reported": 1
+        }
+      },
+      "simple-battery": {
+        "changes": 2,
+        "values": {
+          "8.2 V|reported": 1,
+          "8.1 V|reported": 1
+        }
+      }
+    },
+    "errors": [],
+    "writes": [],
+    "motionLocked": true
+  },
+  "device_status_transitions_before": {
+    "simple-link": 198,
+    "simple-servos": 198,
+    "simple-imu": 198,
+    "simple-motion": 198
+  },
+  "device_status_transitions_after": {
+    "simple-link": 0,
+    "simple-servos": 0,
+    "simple-imu": 0,
+    "simple-motion": 0
+  },
+  "validation": {
+    "javascript_top_level_passed": 19,
+    "workbench_checks": 331,
+    "current_viewer_checks": 21,
+    "hardware_writes": 0,
+    "motion_tested": false
+  },
+  "raw_local_evidence": "pc/qa/status-stability-20261024/",
+  "sources": {
+    "pc/assets/official-workbench.js": "3d2899d945c208d88c2dd37be674632be4f6ce0559dc5a2f0727bc0365887759",
+    "pc/assets/bench-workbench.css": "13374f476f8de040913a299595bed4fb4f234e81fc9302a8e8edb502d95e07e2",
+    "pc/index.html": "ca7ca5128b5f02b58e692daae9bb9b4187dac0b47e763d75c5e5b9ea3ab7a119",
+    "tests/test_workbench.mjs": "22fa5762c0125f784b39e5174f41dac4aed7de29300f21555fa4d53153bbee17"
+  },
+  "limitations": [
+    "No claim of zero RF or OS scheduling jitter. Numeric current changes are real measurements, not status alarms.",
+    "Retained hardware values are explicitly last reports; displayed age continues to increase; motion eligibility still expires at 150 ms.",
+    "TCP direct/SSH comparison and board loopback probes are diagnostic observations under extra readers, not final user latency claims."
+  ]
+}

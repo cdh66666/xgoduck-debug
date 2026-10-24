@@ -12,6 +12,9 @@ static const uint8_t QMI8658C_REG_CTRL2 = 0x03;
 static const uint8_t QMI8658C_REG_CTRL3 = 0x04;
 static const uint8_t QMI8658C_REG_CTRL5 = 0x06;
 static const uint8_t QMI8658C_REG_CTRL7 = 0x08;
+static const uint8_t QMI8658C_REG_CTRL9 = 0x0A;
+static const uint8_t QMI8658C_REG_CAL1_L = 0x0B;
+static const uint8_t QMI8658C_REG_STATUSINT = 0x2D;
 static const uint8_t QMI8658C_REG_ACC_X_L = 0x35;
 static const uint8_t QMI8658C_I2C_ADDRS[2] = {0x6A, 0x6B};
 
@@ -24,6 +27,12 @@ struct ImuSample {
 };
 
 static ImuSample imu = {};
+
+static int16_t qmiNegateRaw(int16_t value) {
+  // -(-32768) is +32768, outside int16_t. Saturate the mapped axis instead
+  // of wrapping a positive full-scale sample back to negative full scale.
+  return value == -32768 ? 32767 : (int16_t)-value;
+}
 
 static bool qmiWrite(uint8_t reg, uint8_t value) {
   Wire.beginTransmission(qmiAddr);
@@ -46,6 +55,25 @@ static bool qmiRead(uint8_t reg, uint8_t *buf, uint8_t len) {
     buf[i] = (uint8_t)Wire.read();
   }
   return true;
+}
+
+static bool qmiCommand(uint8_t command) {
+  if (!qmiWrite(QMI8658C_REG_CTRL9, command)) return false;
+  uint8_t status = 0;
+  uint32_t started = millis();
+  do {
+    if (!qmiRead(QMI8658C_REG_STATUSINT, &status, 1)) return false;
+    if (status & 0x80) break;
+    delay(1);
+  } while ((uint32_t)(millis() - started) < 20u);
+  if (!(status & 0x80) || !qmiWrite(QMI8658C_REG_CTRL9, 0x00)) return false;
+  started = millis();
+  do {
+    if (!qmiRead(QMI8658C_REG_STATUSINT, &status, 1)) return false;
+    if (!(status & 0x80)) return true;
+    delay(1);
+  } while ((uint32_t)(millis() - started) < 20u);
+  return false;
 }
 
 static bool initImu() {
@@ -84,17 +112,19 @@ static bool initImu() {
   if (!qmiRead(0x4D, &resetResult, 1) || resetResult!=0x80) {
     qmiAddr=0; return false;
   }
-  // CTRL1 enable, CTRL7 accel+gyro, CTRL2 ±2 g, CTRL3 ±1024 dps (32 LSB/dps), ODR code 4, CTRL5 LPF off.
+  // QST Rev B section 13: lock each 6-axis sample before the burst read.
+  // I2C requires AHB clock gating disabled; ranges, ODR and LPF stay unchanged.
   if (!qmiWrite(QMI8658C_REG_CTRL7, 0x00) || !qmiWrite(QMI8658C_REG_CTRL1, 0x40) ||
       !qmiWrite(QMI8658C_REG_CTRL2, 0x04) || !qmiWrite(QMI8658C_REG_CTRL3, 0x64) ||
-      !qmiWrite(QMI8658C_REG_CTRL5, 0x00) || !qmiWrite(QMI8658C_REG_CTRL7, 0x03)) {
+      !qmiWrite(QMI8658C_REG_CTRL5, 0x00) || !qmiWrite(QMI8658C_REG_CAL1_L, 0x01) ||
+      !qmiCommand(0x12) || !qmiWrite(QMI8658C_REG_CTRL7, 0x83)) {
     qmiAddr = 0;
     return false;
   }
   delay(250);
   uint8_t config[7];
   if (!qmiRead(QMI8658C_REG_CTRL1, config, sizeof(config)) || config[0]!=0x40 ||
-      config[1]!=0x04 || config[2]!=0x64 || config[4]!=0x00 || config[6]!=0x03) {
+      config[1]!=0x04 || config[2]!=0x64 || config[4]!=0x00 || config[6]!=0x83) {
     qmiAddr=0; return false;
   }
   imu.ok = 1;
@@ -112,6 +142,13 @@ static bool updateImu() {
     return false;
   }
 
+  uint8_t status = 0;
+  if (!qmiRead(QMI8658C_REG_STATUSINT, &status, 1) || !(status & 0x01)) {
+    imu.ok = 0;
+    return false;
+  }
+  // At ODR code 4 the lock completes within 12 us. GZ_H releases it.
+  if (!(status & 0x02)) delayMicroseconds(12);
   uint8_t data[12] = {0};
   if (!qmiRead(QMI8658C_REG_ACC_X_L, data, 12)) {
     imu.ok = 0;
@@ -127,9 +164,9 @@ static bool updateImu() {
 
   int16_t accx = az_raw;
   int16_t accy = ax_raw;
-  int16_t accz = (int16_t)(-ay_raw);
-  int16_t gyrox = (int16_t)(-gz_raw);
-  int16_t gyroy = (int16_t)(-gx_raw);
+  int16_t accz = qmiNegateRaw(ay_raw);
+  int16_t gyrox = qmiNegateRaw(gz_raw);
+  int16_t gyroy = qmiNegateRaw(gx_raw);
   int16_t gyroz = gy_raw;
 
   imu.ok = 1;

@@ -8,8 +8,8 @@ import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../pc');
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 const sha='a'.repeat(64);
-function harness(file,{trained=false,standOnly=false,sourceTransform=value=>value}={}){
- const nodes=new Map(),events={},intervals=[],calls=[],messages=[];let clock=0,failStatus=false,delayRead=false,delayedRead=null,delayCommand=false,delayedCommand=null;
+function harness(file,{trained=false,standOnly=false,basic=false,sourceTransform=value=>value}={}){
+ const nodes=new Map(),events={},intervals=[],calls=[],messages=[];let clock=0,failStatus=false,delayRead=false,delayedRead=null,delayCommand=false,delayedCommand=null,delayMode=false,delayedMode=null;
  class Element{
   constructor(tag='DIV'){this.tagName=tag.toUpperCase();this.children=[];this.dataset={};this.attributes=new Map();this.value='';this.options=[];this.textContent='';this.hidden=false;this.disabled=false;this.open=false;this.classList={add(){},remove(){},toggle(){}};this.contentWindow={postMessage:(...args)=>messages.push(args)};}
   set innerHTML(value){this._html=value;for(const match of value.matchAll(/<([a-z]+)[^>]*\bid="([^"]+)"[^>]*>/g)){const node=$(match[2]);node.tagName=match[1].toUpperCase();}
@@ -18,10 +18,12 @@ function harness(file,{trained=false,standOnly=false,sourceTransform=value=>valu
   append(...items){this.children.push(...items);}before(){}after(){}remove(){this.removed=true;}
   querySelector(selector){this.parts??=new Map();if(!this.parts.has(selector))this.parts.set(selector,new Element(selector));return this.parts.get(selector);}setAttribute(name,value){this.attributes.set(name,value);}removeAttribute(name){this.attributes.delete(name);}hasAttribute(name){return this.attributes.has(name);}
   show(){this.open=true;}showModal(){this.open=true;}close(){this.open=false;}click(){return this.onclick?.();}
+  getContext(){return null;}
  }
  const $=id=>{if(!nodes.has(id))nodes.set(id,new Element());return nodes.get(id);};
+ const tabs=['numbering','install','imu','models'].map(page=>{const node=new Element('button');node.dataset.page=page;return node;});
  const state={connected:true,runtime_basis_matches:true,revision:'offline-test',baseline:{reference:'9dc36787bc61',files_checked:28,local_sources_verified:true,
-  walk_policy:{active:false},fast_policy:{active:trained,sha256:sha,run_id:trained?'fast-forward-specialist':null},navigation_policy:{active:trained},manual_pick:{active:trained}},test:null,
+  walk_policy:{active:basic,sha256:basic?'57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db':undefined},basic_keyboard_policy:{active:basic,sha256:'57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db'},fast_policy:{active:trained,sha256:sha,run_id:trained?'fast-forward-specialist':null},navigation_policy:{active:trained},manual_pick:{active:trained}},test:null,
   runtime:{mode:'off',enabled:false,uptime_s:1,pc_host_epoch:1,full_robot_ready:true,servo_ids:Array(15).fill(10),imu_ok:true,feedback_hz:100,
    feedback_age_ms:1,mcu_command_age_us:1000,raw_pos:Array(15).fill(2048),zero_pos:Array(15).fill(2048),recovery:{phase:'walk',angle_deg:0},pick:{active:false},roulade:{active:false},
    manual_pick:{active:false,depth:0,target_depth:0,phase:0,max_phase:.18,returning:false,yaw_deferred:false},
@@ -29,15 +31,16 @@ function harness(file,{trained=false,standOnly=false,sourceTransform=value=>valu
    navigation_specialist:{available:trained,requested:false,active:false,braking:false,brake_remaining_s:0,head_deferred:false},
    fast_forward:{available:trained,requested:false,active:false,braking:false,brake_remaining_s:0,speed:.3,model:'fast-forward-specialist'}}};
  const document={body:new Element('body'),hidden:false,getElementById:$,createElement:tag=>new Element(tag),
-  querySelectorAll:selector=>selector==='#model-list button'?$('model-list').children:[],
+  querySelectorAll:selector=>selector==='#workflow-tabs button'?tabs:selector==='#model-list button'?$('model-list').children:[],
   addEventListener:(name,fn)=>{events['document:'+name]=fn;}};
- const window={COMMISSION_TOKEN:'offline',XGO_RELEASE_PROFILE:standOnly?{schema:'xgoduck-stand-getup-publication-profile-v1'}:undefined,parent:{postMessage:(...args)=>messages.push(args)},addEventListener:(name,fn)=>{(events[name]??=[]).push(fn);},dispatchEvent(){}};
+ const window={COMMISSION_TOKEN:'offline',XGO_RELEASE_PROFILE:basic?{schema:'xgoduck-basic-keyboard-publication-v2'}:standOnly?{schema:'xgoduck-stand-getup-publication-profile-v1'}:undefined,parent:{postMessage:(...args)=>messages.push(args)},addEventListener:(name,fn)=>{(events[name]??=[]).push(fn);},dispatchEvent(){}};
  const context={console,document,window,location:{origin:'http://offline'},navigator:{sendBeacon(){throw Error('Unexpected unload write');}},
-  Date,Number,Math,Map,Set,JSON,Error,Blob,URL,AbortSignal,performance:{now:()=>clock},CustomEvent:class{constructor(name,value){this.name=name;this.detail=value?.detail;}},
-  setInterval:(fn,delay)=>{intervals.push({fn,delay});},fetch:async(url,options={})=>{const body=options.body?JSON.parse(options.body):undefined;calls.push({url,body});
+  Date,Number,Math,Map,Set,JSON,Error,Blob,URL,AbortSignal,AbortController,performance:{now:()=>clock},CustomEvent:class{constructor(name,value){this.name=name;this.detail=value?.detail;}},
+  setTimeout:()=>0,clearTimeout(){},setInterval:(fn,delay)=>{intervals.push({fn,delay});},fetch:async(url,options={})=>{const body=options.body?JSON.parse(options.body):undefined;calls.push({url,body,headers:options.headers,keepalive:options.keepalive});
    if(!body&&failStatus)throw Error('offline status failed');
    if(!body){state.runtime.uptime_s+=.05;if(delayRead){delayRead=false;const snapshot=structuredClone(state);return new Promise((resolve,reject)=>{delayedRead={resolve,reject,snapshot};});}}
    if(body&&url==='/api/mode'){state.runtime.mode=body.mode;state.runtime.enabled=body.mode==='policy'||body.mode==='hold';}
+   if(body&&url==='/api/mode'&&delayMode){delayMode=false;return new Promise((resolve,reject)=>{delayedMode={resolve,reject};});}
    if(body&&url==='/api/command'&&delayCommand){delayCommand=false;return new Promise((resolve,reject)=>{delayedCommand={resolve,reject};});}
    return {ok:true,json:async()=>body?{}:structuredClone(state)};}};
  if(file==='official-workbench.js')vm.runInNewContext(fs.readFileSync(path.join(root,'assets/duck-keyboard.js'),'utf8'),context,{filename:'duck-keyboard.js'});
@@ -45,8 +48,9 @@ function harness(file,{trained=false,standOnly=false,sourceTransform=value=>valu
  const fire=async(name,event)=>{for(const fn of events[name]||[])await fn(event);await settle();};
  const key=async(type,key,repeat=false)=>fire(type,{key,repeat,code:key===' '?'Space':'Key'+key.toUpperCase(),target:{tagName:'BODY'},preventDefault(){}});
  const poll=async()=>{intervals.at(-1).fn();await settle();await settle();};
- return {$,state,calls,intervals,events,fire,key,messages,poll,keyboardFactory:window.DuckKeyboard,advance:ms=>clock+=ms,failStatus:value=>failStatus=value,
+ return {$,tabs,state,calls,intervals,events,fire,key,messages,poll,hide:async value=>{document.hidden=value;events['document:visibilitychange']?.();await settle();},keyboardFactory:window.DuckKeyboard,advance:ms=>clock+=ms,failStatus:value=>failStatus=value,
   deferStatus:()=>{delayRead=true;},releaseStatus:async(error=false)=>{const item=delayedRead;assert.ok(item,'a deferred status request exists');delayedRead=null;if(error)item.reject(Error('old status failure'));else item.resolve({ok:true,json:async()=>item.snapshot});await settle();await settle();},
+  deferMode:()=>{delayMode=true;},releaseMode:async()=>{const item=delayedMode;assert.ok(item,'a deferred mode request exists');delayedMode=null;item.resolve({ok:true,json:async()=>({ok:true})});await settle();await settle();},
   deferCommand:()=>{delayCommand=true;},releaseCommand:async(error=false)=>{const item=delayedCommand;assert.ok(item,'a deferred command exists');delayedCommand=null;if(error)item.reject(Error('old command failure'));else item.resolve({ok:true,json:async()=>({ok:true})});await settle();await settle();}};
 }
 
@@ -60,6 +64,63 @@ async function tap(h,key){await h.key('keydown',key);await h.key('keyup',key);}
 
 const idle=harness('official-workbench.js');await settle();
 check(posts(idle).length===0,'page load is read-only');
+const staleCache=harness('official-workbench.js',{trained:true});await settle();
+staleCache.state.runtime.feedback_age_ms=258;
+await staleCache.poll();
+check(staleCache.$('wl-home').disabled&&staleCache.$('bench-policy').disabled,'258ms cached feedback cannot start motion');
+same(staleCache.$('simple-imu').querySelector('label').textContent,'IMU回报','hardware card describes the last report, not current freshness');
+same(staleCache.$('feedback-timing').dataset.freshness,'stale','late data remains explicitly stale while hardware reports stay readable');
+same(staleCache.$('feedback-age').textContent,'250 ms','actual age remains visible without hiding delayed data');
+const agesWhilePending=harness('official-workbench.js',{trained:true});await settle();
+agesWhilePending.$('bench-policy').onclick();
+agesWhilePending.deferStatus();await agesWhilePending.poll();
+agesWhilePending.advance(250);await agesWhilePending.poll();
+check(agesWhilePending.$('wl-home').disabled,'browser elapsed time expires controls while status request is pending');
+await agesWhilePending.$('bench-confirm').onclick();
+check(posts(agesWhilePending).length===0,'confirmation rechecks age and cannot submit an old prepared start');
+await agesWhilePending.releaseStatus();
+check(agesWhilePending.$('wl-home').disabled,'a delayed old reply cannot renew the feedback age');
+same(agesWhilePending.$('feedback-timing').dataset.freshness,'stale','delayed reply remains stale in status bar');
+const queuedOldReply=harness('official-workbench.js',{trained:true});await settle();
+Object.assign(queuedOldReply.state.runtime,{feedback_age_ms:8,native_feedback_age_ms:8,pc_cache_age_ms:0,pc_observed_unix_s:Date.now()/1000-.5});
+await queuedOldReply.poll();
+check(queuedOldReply.$('wl-home').disabled&&queuedOldReply.$('bench-policy').disabled,'existing observation clock includes time spent in a queued reply');
+const queuedBacklog=harness('official-workbench.js',{trained:true});await settle();
+Object.assign(queuedBacklog.state.runtime,{feedback_age_ms:103,native_feedback_age_ms:3,
+ pc_delivery_age_lower_bound_ms:100,pc_cache_age_ms:0,pc_observed_unix_s:Date.now()/1000-.1});
+await queuedBacklog.poll();
+check(queuedBacklog.$('wl-home').disabled&&queuedBacklog.$('bench-policy').disabled,'delivery backlog remains counted while a reply waits in the browser queue');
+same(queuedBacklog.$('feedback-timing').dataset.freshness,'stale','queued delayed state cannot be labeled as current IMU');
+const stableReports=harness('official-workbench.js',{trained:true});await settle();
+stableReports.state.wireless_transport_alive=true;
+stableReports.state.runtime.servo_ids=[10,11,12,13,14,20,21,22,23,24,30,31,32,33,34];
+await stableReports.poll();
+const reportCards=()=>['simple-link','simple-servos','simple-imu','simple-motion'].map(id=>[stableReports.$(id).querySelector('strong').textContent,stableReports.$(id).dataset.state]);
+const originalCards=reportCards();
+stableReports.deferStatus();await stableReports.poll();stableReports.advance(2300);await stableReports.poll();
+same(reportCards(),originalCards,'a browser scheduling pause is not misreported as a Wi-Fi disconnect');
+check(stableReports.$('wl-home').disabled,'a browser scheduling pause still withdraws control permission');
+await stableReports.releaseStatus();
+for(const age of [149,151,80,180,99,150,70]){
+ stableReports.state.runtime.feedback_age_ms=age;stableReports.state.runtime.feedback_hz=99.9;await stableReports.poll();
+ same(reportCards(),originalCards,'short delivery jitter and fractional Hz variation do not invent hardware changes');
+ same(stableReports.$('wl-home').disabled,age>=150,'every delayed frame still expires motion permission immediately');
+}
+stableReports.state.runtime.servo_ids.pop();stableReports.state.runtime.imu_ok=false;await stableReports.poll();
+same(stableReports.$('simple-servos').querySelector('strong').textContent,'14 / 15','actual missing servo is shown immediately');
+same(stableReports.$('simple-imu').querySelector('strong').textContent,'异常','actual IMU fault is shown immediately');
+stableReports.state.runtime.joint_feedback_age_ms=Array(15).fill(201);
+stableReports.state.runtime.pc_delivery_age_lower_bound_ms=100;stableReports.state.runtime.pc_cache_age_ms=90;await stableReports.poll();
+same(stableReports.$('simple-servos').querySelector('strong').textContent,'15 / 15','one missed bus read with 11ms native joint age is not a lost servo; PC delivery age does not invent faults');
+stableReports.state.runtime.joint_feedback_age_ms[14]=350;await stableReports.poll();
+same(stableReports.$('simple-servos').querySelector('strong').textContent,'14 / 15','a genuinely 160ms missing joint is immediately reported');
+stableReports.state.runtime.servo_current={available:false,supported:true,full_sample_age_ms:12,last_sum_abs_a:.312};await stableReports.poll();
+same(stableReports.$('simple-current').querySelector('strong').textContent,'0.312 A','one skipped current slot retains the actual complete recent measurement');
+stableReports.state.runtime.servo_current.full_sample_age_ms=180;await stableReports.poll();
+same(stableReports.$('simple-current').querySelector('strong').textContent,'暂无完整采样','missing complete current samples do not silently remain current');
+stableReports.state.connected=false;stableReports.state.status_stream={last_received_age_ms:2200};await stableReports.poll();
+same(stableReports.$('simple-link').querySelector('strong').textContent,'反馈中断','a stalled transport is shown even while the SSH process is alive');
+same(stableReports.$('feedback-timing').dataset.state,'interrupted','real interruption has one clear warning');
 same(idle.$('bench-forward-speed').options.map(option=>option.value),['0.2'],'forward selector exposes only fixed 0.2');
 idle.$('bench-forward-speed').value='0.4';idle.$('bench-forward-speed').onchange();
 check(idle.$('bench-forward-speed').value==='0.2','tampered selector never changes ordinary speed');
@@ -251,9 +312,9 @@ check(actionGate.calls.filter(call=>call.url==='/api/roulade').length===actionGa
 const lost=harness('official-workbench.js',{trained:true});await start(lost);await tap(lost,'k');await tap(lost,'u');await lost.key('keydown','w');
 lost.failStatus(true);await lost.poll();
 check(/待读取/.test(lost.$('simple-link').querySelector('strong').textContent),'poll failure clears link proof');
-check(/当前反馈未确认/.test(lost.$('simple-servos').querySelector('small').textContent),'poll failure clears old servo proof');
-check(/未知/.test(lost.$('simple-imu').querySelector('strong').textContent),'poll failure clears old IMU proof');
-check(/未知/.test(lost.$('simple-motion').querySelector('strong').textContent)&&lost.$('diag-torque').textContent==='未知','poll failure clears old torque proof');
+check(/最近一次主控回报/.test(lost.$('simple-servos').querySelector('small').textContent),'poll failure retains only explicitly historical servo report');
+check(lost.$('feedback-timing').dataset.state==='interrupted','poll failure clearly marks the retained report as interrupted');
+check(lost.$('simple-motion').querySelector('label').textContent==='扭矩回报'&&lost.$('diag-torque').textContent==='未知','cached torque report is not current torque proof');
 check(lost.$('bench-policy').disabled,'poll failure disables motion start');
 const lostPosts=posts(lost).length;lost.failStatus(false);await lost.poll();await lost.intervals.find(item=>item.delay===50).fn();await tap(lost,'w');await tap(lost,'u');
 check(posts(lost).length===lostPosts,'reconnect never restores old movement, phase, or mouth');
@@ -272,16 +333,16 @@ same(packet(recovery).twist,[0,0,0],'return to walk never restores old direction
 await recovery.key('keydown','w',true);await recovery.intervals.find(item=>item.delay===50).fn();same(packet(recovery).twist,[0,0,0],'OS autorepeat cannot restore discarded key intent');
 await recovery.key('keyup','w');await recovery.key('keydown','w');same(packet(recovery).twist,[.2,0,0],'fresh press after recovery is accepted');
 const supply=harness('official-workbench.js');await settle();supply.state.runtime.servo_power={available:true,voltage_v:7.4,raw:74,servo_id:10,age_ms:100};await supply.poll();
-check(supply.$('battery-percent').textContent==='7.4 V'&&supply.$('simple-battery').dataset.state==='ok','fresh servo supply displays volts without inventing capacity');
+check(supply.$('battery-percent').textContent==='7.4 V'&&supply.$('simple-battery').dataset.state==='reported','fresh servo supply displays volts without inventing capacity');
 supply.state.runtime.servo_power.age_ms=7000;supply.state.runtime.servo_power.available=false;await supply.poll();
 check(supply.$('battery-percent').textContent==='7.4 V · 上次'&&supply.$('simple-battery').dataset.state==='pending','old voltage is visibly historical');
 supply.state.runtime.servo_power=null;await supply.poll();check(supply.$('battery-percent').textContent==='待读取','missing voltage stays unknown');
-check(posts(supply).length===0&&supply.calls.every(call=>call.url==='/api/bench/status'),'voltage tile reuses telemetry without a new read API or write');
+check(posts(supply).length===0&&supply.calls.every(call=>call.url.split('?')[0]==='/api/bench/status'),'voltage tile reuses telemetry without a new read API or write');
 
 // Reproduce the old ownership decision with a request-time OFF snapshot. This
 // mutation restores only the old two poll decisions; it is not a historical file.
 const legacy=harness('official-workbench.js',{trained:true,sourceTransform:source=>source
- .replace("const snapshot=await api('/api/bench/status'+cursor);if(generation!==actionGeneration)return;","const snapshot=await api('/api/bench/status'+cursor);")
+ .replace("const requestStarted=performance.now(),snapshot=await api('/api/bench/status'+cursor);if(generation!==actionGeneration)return;","const requestStarted=performance.now(),snapshot=await api('/api/bench/status'+cursor);")
  .replace("!sessionPending&&(s?.mode==='off'||s?.mode==='shadow')","(s?.mode==='off'||s?.mode==='shadow')")});
 await settle();legacy.deferStatus();await legacy.poll();await start(legacy);await legacy.releaseStatus();
 let beforeHeartbeat=posts(legacy).length;await legacy.intervals.find(item=>item.delay===50).fn();
@@ -325,7 +386,7 @@ const deadline=harness('official-workbench.js',{trained:true});await settle();
 deadline.$('bench-policy').onclick();await deadline.$('bench-confirm').onclick();
 deadline.state.runtime.mode='off';deadline.state.runtime.enabled=false;await deadline.poll();
 deadline.advance(3501);await deadline.poll();
-check(deadline.calls.some(call=>call.url==='/api/mode'&&call.body?.mode==='off'),'unconfirmed startup has a bounded explicit OFF');
+check(!deadline.calls.some(call=>call.url==='/api/mode'&&call.body?.mode==='off'),'unconfirmed policy startup relinquishes ownership without unloading');
 beforeHeartbeat=posts(deadline).length;deadline.state.runtime.mode='policy';deadline.state.runtime.enabled=true;await deadline.poll();
 await deadline.key('keydown','w');await deadline.intervals.find(item=>item.delay===50).fn();
 same(posts(deadline).length,beforeHeartbeat,'late matching mode after timeout never restores ownership');
@@ -429,14 +490,90 @@ same(packet(startupGap).twist,[0,0,0],'transport gap keeps zero velocity');
 startupGap.state.connected=true;await startupGap.poll();
 check(/反馈已恢复/.test(startupGap.$('wl-result').textContent),'fresh feedback recovers with explicit release of pressed keys');
 startupGap.state.connected=false;await startupGap.poll();startupGap.advance(801);await startupGap.poll();
-check(startupGap.calls.some(row=>row.url==='/api/mode'&&row.body?.mode==='off'),'persistent feedback gap explicitly disarms once');
+check(!startupGap.calls.some(row=>row.url==='/api/mode'&&row.body?.mode==='off'),'persistent policy feedback gap never sends automatic OFF');
+beforeGapPosts=posts(startupGap).length;startupGap.state.connected=true;await startupGap.poll();await tap(startupGap,'w');await startupGap.intervals.find(item=>item.delay===50).fn();
+same(posts(startupGap).length,beforeGapPosts,'returning status never reacquires policy ownership after a gap');
 const neverConfirmed=harness('official-workbench.js',{trained:true});await settle();neverConfirmed.$('bench-policy').onclick();await neverConfirmed.$('bench-confirm').onclick();
 neverConfirmed.state.connected=false;neverConfirmed.advance(3600);await neverConfirmed.poll();
-check(neverConfirmed.calls.some(row=>row.url==='/api/mode'&&row.body?.mode==='off'),'startup deadline also expires with no fresh snapshots');
+check(!neverConfirmed.calls.some(row=>row.url==='/api/mode'&&row.body?.mode==='off'),'startup deadline without snapshots keeps local policy independent');
+for(const event of ['hidden','pagehide']){
+ const h=harness('official-workbench.js',{basic:true});await start(h);await h.key('keydown','w');const at=h.calls.length;
+ if(event==='hidden')await h.hide(true);else await h.fire('pagehide');
+ const out=h.calls.slice(at);check(out.some(row=>row.url==='/api/command'&&row.body?.twist.every(v=>v===0)),event+' sends a neutral intent');
+ check(!out.some(row=>row.url==='/api/mode'),event+' never unloads policy');
+ await h.hide(false);await h.poll();await tap(h,'w');await h.intervals.find(item=>item.delay===50).fn();
+ same(h.calls.filter(row=>row.url==='/api/command').length,h.calls.slice(0,at).filter(row=>row.url==='/api/command').length+1,event+' requires explicitly reacquiring control');
+ const reading=harness('official-workbench.js',{basic:true});await settle();await reading.hide(true);await reading.fire('pagehide');same(posts(reading).length,0,event+' remains read-only without ownership');
+}
 const spaceFocus=harness('official-workbench.js',{standOnly:true});await settle();spaceFocus.$('bench-test-panel').hidden=true;spaceFocus.$('bench-tests-toggle').onclick();
 let downPrevented=false,upPrevented=false;
 await spaceFocus.fire('keydown',{key:' ',code:'Space',target:{tagName:'BUTTON'},preventDefault(){downPrevented=true;}});
 await spaceFocus.fire('keyup',{key:' ',code:'Space',target:{tagName:'BUTTON'},preventDefault(){upPrevented=true;}});
 check(downPrevented&&upPrevented,'Space cannot activate the focused close button');
 check(spaceFocus.$('bench-test-panel').open&&posts(spaceFocus).length===0,'inactive Space neither closes controls nor starts motion');
+// A modal or another workflow cannot retain an old physical walking command.
+const contexts={
+ models:h=>h.tabs.find(tab=>tab.dataset.page==='models').click(),
+ calibration:h=>{h.$('sequence-panel').hidden=true;h.$('sequence-toggle').click();},
+ diagnostics:h=>h.$('diagnostics-open').click(),
+ current:h=>h.$('simple-current').click(),
+ tray:h=>h.$('calibration-tray-open').onclick({preventDefault(){}}),
+};
+for(const [name,open] of Object.entries(contexts)){
+ const h=harness('official-workbench.js',{basic:true,trained:true});await start(h);await h.key('keydown','w');
+ same(packet(h).twist,[.2,0,0],name+' begins with the admitted live command');
+ const at=h.calls.length;open(h);await settle();await settle();
+ await h.intervals.find(item=>item.delay===50).fn();
+ check(h.calls.slice(at).some(call=>call.url==='/api/mode'&&call.body?.mode==='off'),name+' ends the physical control session');
+ check(!h.calls.slice(at).some(call=>call.url==='/api/command'&&call.body.twist.some(v=>v!==0)),name+' cannot continue an old walking packet');
+}
+// The robot may accept a start before its HTTP response reaches this page.
+const delayedLoss=harness('official-workbench.js',{basic:true});
+// Do not await the unresolved start promise until its response is released.
+await settle();delayedLoss.deferMode();await delayedLoss.$('bench-policy').onclick();const lossStart=delayedLoss.$('bench-confirm').onclick();await settle();
+delayedLoss.failStatus(true);await delayedLoss.poll();delayedLoss.failStatus(false);await delayedLoss.releaseMode();await lossStart;
+same(delayedLoss.calls.filter(row=>row.url==='/api/mode').map(row=>row.body.mode),['policy'],'a late start ACK after GET failure cannot automatically unload policy');
+await delayedLoss.poll();const lossAt=delayedLoss.calls.length;await tap(delayedLoss,'w');await delayedLoss.intervals.find(item=>item.delay===50).fn();
+check(!delayedLoss.calls.slice(lossAt).some(row=>row.url==='/api/command'),'a late ACK after GET failure cannot reacquire control');
+const abandoned={hidden:h=>h.hide(true),pagehide:h=>h.fire('pagehide'),...contexts};
+for(const [name,leave] of Object.entries(abandoned)){
+ const h=harness('official-workbench.js',{basic:true});await settle();h.deferMode();await h.$('bench-policy').onclick();const result=h.$('bench-confirm').onclick();await settle();
+ await leave(h);await h.releaseMode();await result;
+ check(!h.calls.some(row=>row.url==='/api/mode'&&row.body?.mode==='off'),name+' abandons an unacknowledged policy start without automatic OFF');
+ await h.hide(false);h.tabs.find(tab=>tab.dataset.page==='imu').click();
+ for(const id of ['diagnostics-dialog','current-curve-dialog','calibration-tray-dialog','calibration-flow-dialog'])h.$(id).close();
+ await h.poll();const at=h.calls.length;await tap(h,'w');await h.intervals.find(item=>item.delay===50).fn();
+ check(!h.calls.slice(at).some(row=>row.url==='/api/command'),name+' late ACK cannot reacquire ownership after returning to live view');
+ if(name==='hidden'||name==='pagehide'){
+  const neutral=h.calls.find(row=>row.url==='/api/command'&&row.keepalive);
+  check(neutral?.headers['X-Token']==='offline'&&neutral.body.twist.every(v=>v===0),name+' neutral keepalive is authenticated');
+ }
+}
+for(const method of ['button','Escape']){
+ const h=harness('official-workbench.js',{basic:true});await settle();h.deferMode();await h.$('bench-policy').onclick();const result=h.$('bench-confirm').onclick();await settle();
+ if(method==='button')await h.$('wl-stop').onclick();else await h.key('keydown','Escape');
+ await h.$('bench-policy').onclick();await h.$('bench-confirm').onclick();
+ same(h.calls.filter(row=>row.url==='/api/mode'&&row.body?.mode==='policy').length,1,method+' cannot queue a second start before the first reply');
+ await h.releaseMode();await result;
+ same(h.calls.filter(row=>row.url==='/api/mode').at(-1).body.mode,'off',method+' still wins after a late policy ACK');
+ await h.poll();const at=h.calls.length;await tap(h,'w');await h.intervals.find(item=>item.delay===50).fn();
+ check(!h.calls.slice(at).some(row=>row.url==='/api/command'),method+' late ACK never restores movement');
+}
+for(const context of ['hidden','models']){
+ const h=harness('official-workbench.js');await settle();h.deferMode();await h.$('wl-home').onclick();const result=h.$('bench-confirm').onclick();await settle();
+ if(context==='hidden')await h.hide(true);else h.tabs.find(tab=>tab.dataset.page==='models').click();
+ await h.releaseMode();await result;
+ same(h.calls.filter(row=>row.url==='/api/mode').at(-1).body.mode,'off',context+' abandoned hold still ends OFF after its late acknowledgement');
+}
+const torquePending=harness('official-workbench.js');await settle();
+torquePending.state.runtime.mode='off';torquePending.state.runtime.enabled=true;await torquePending.poll();
+same(torquePending.$('simple-motion').querySelector('strong').textContent,'卸力中','OFF intent is not disabled feedback');
+torquePending.state.runtime.enabled=false;await torquePending.poll();
+same(torquePending.$('simple-motion').querySelector('strong').textContent,'已卸力','fresh disabled feedback confirms torque release');
+same(torquePending.$('wl-home').textContent,'校准回中','executed JS preserves the calibration-only button name');
+torquePending.state.runtime.mode='servo_debug';torquePending.state.runtime.enabled=false;
+torquePending.state.runtime.factory_calibration={active:true,held_mask:1};await torquePending.poll();
+same(torquePending.$('simple-motion').querySelector('strong').textContent,'校准 / 维护','normal-loop disabled flag cannot prove individual calibration axes are unloaded');
+same(torquePending.$('diag-torque').textContent,'校准 / 维护','diagnostics retain the same individual-axis maintenance state');
+same(torquePending.$('simple-motion').querySelector('small').textContent,'逐轴状态见校准','maintenance detail never claims all axes are released');
 console.log(JSON.stringify({result:'PASS',checks,hardware_connected:false,browser_started:false,scope:'original 186 publication and legacy behavior checks plus simplified panel and read-only tray modal; portable published clone files'}));

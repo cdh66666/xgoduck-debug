@@ -96,5 +96,42 @@
     "Same source hashes do not guarantee a byte-identical fresh toolchain build.",
     "Native fake-platform tests do not establish ARM timing, RF continuity or physical standing.",
     "RouterBridge/RPClite are modified frozen source snapshots, not pristine upstream versions; exact clean-upstream patch ancestry is not asserted."
-  ]
+  ],
+  "imu_sync_update_20261023": {
+    "receipt": "validation/imu-sync-install-20261023.json",
+    "receipt_sha256": "499080ddd1893183925b2966dce606fc17546ebf8c050ed58f27ddd2e00ae403",
+    "qmi8658_h_sha256": "f0a2f1fb0a70a68968c9b1afaec4f2a4c7f98d78e211808d6bd19342a65a1ecc",
+    "elf_sha256": "bf30103b507a6fa693414fc83420c3cf60cb3c915c6008ba0fb170feecce6217",
+    "historical_build_fields_retained": true,
+    "motion_acceptance": "NOT_TESTED"
+  },
+  "stationary_review_update_20261023": {
+    "receipt": "validation/review-fix-static-20261023.json",
+    "receipt_sha256": "3c2fef2852da40b35aa70668c60e6cdf5f4deed437f679cb3e8d7797b456d6b4",
+    "firmware_unchanged": true,
+    "wireless_root_cause_acceptance": "OPEN"
+  },
+  "control_update_20261023": {
+    "receipt": "validation/control-comparison-20261023.json",
+    "receipt_sha256": "a262db850825f84ed0f7709b2f8996cd990eaf3715dae32557d95486b7c37e0c",
+    "elf_sha256": "c87f891a8955c3f167fa6d2c1ee585401d23e0d58633ed6af9e803939e597c86",
+    "joint_limits_h_sha256": "ab30178d228f635d8b664af3a326d6a06d35fdb5f80f95a9364a9577df8f6368",
+    "scs_bus_h_sha256": "538ae49ca7c670d41aab0a96fc83c4ccc0d936489dacd0876c4f5278cc3ecf5a",
+    "full_motion_acceptance": "PENDING"
+  },
+  "motion_history_update_20261023": {
+    "receipt": "validation/motion-history-20261023.json",
+    "receipt_sha256": "67b5b91f51012f40f3994e941cdeb5311b9b06a1b5c0d96cd18eebcd8595f5e5",
+    "elf_changed": false,
+    "new_motion_validation": "NOT_RUN_IN_TRAY"
+  },
+  "standing_offline_candidate_20261023": {
+    "receipt": "validation/standing-offline-20261023.json",
+    "receipt_sha256": "73218de9dd3236deee176d8556e8418895f5d096b15770469d48cba7f81f87f8",
+    "qmi8658_h_sha256": "a4fb9e985adf4a6c57ff906f8f8bd5c3c6b13dc9b3460fd880f8a34073c014cc",
+    "arm_build": false,
+    "installed": false,
+    "historical_install_fields_retained": true,
+    "physical_motion_acceptance": "OPEN"
+  }
 }

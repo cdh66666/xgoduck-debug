@@ -51,7 +51,7 @@ class ReceiverTests(unittest.TestCase):
         sim=module.Simulation();bound=resolve_model(ROOT,'official-getup');sim.load('official-getup',bound['sha256']);sim.set_policy(True);sim.step(400)
         self.assertEqual(sim.active_model,'walk');self.assertGreater(sim.inference_counts['getup'],0);self.assertGreater(sim.inference_counts['walk'],0)
 
-    def test_only_filter_sampling_regions_changed(self):
+    def test_only_filter_sampling_home_binding_and_pause_neutral_changed(self):
         before=ast.parse((HERE/'fixtures/worker-pre-receiver.py').read_text('utf-8'));after=ast.parse(TEST_SOURCE.read_text('utf-8'))
         for tree in (before,after):
             cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='Simulation')
@@ -60,9 +60,22 @@ class ReceiverTests(unittest.TestCase):
                 if not isinstance(method,ast.FunctionDef):continue
                 if method.name=='__init__':
                     method.body=[n for n in method.body if not (isinstance(n,ast.Assign) and len(n.targets)==1 and isinstance(n.targets[0],ast.Attribute) and n.targets[0].attr=='feedback_filter_samples')]
+                # Official roles now explicitly share runtime HOME. Assert the
+                # exact constructor change before normalizing the old fixture.
+                if method.name=='load':
+                    for call in (n for n in ast.walk(method) if isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id=='Policy'):
+                        for keyword in call.keywords:
+                            self.assertEqual(keyword.arg,'reference_home')
+                            self.assertIsInstance(keyword.value,ast.Constant)
+                            self.assertIs(keyword.value.value,True)
+                        call.keywords=[]
                 if method.name=='state':
                     output=next(n for n in method.body if isinstance(n,ast.Return) and isinstance(n.value,ast.Call))
                     output.value.keywords=[k for k in output.value.keywords if k.arg not in ('feedbackFilterSteps','receiverDt')]
+                if tree is after and method.name=='command':
+                    paused=next(n for n in ast.walk(method) if isinstance(n,ast.If) and ast.unparse(n.test)=='self.paused')
+                    self.assertEqual(ast.unparse(paused.body[0]),'self.twist.fill(0)')
+                    paused.body.pop(0)  # Explicit pause clears intent; physics remains frozen.
         self.assertEqual(ast.dump(before,include_attributes=False),ast.dump(after,include_attributes=False))
 
 

@@ -102,7 +102,8 @@ class CopyTests(unittest.TestCase):
         import factory_workbench
         self.recorder.accept(self.packet())
         class Tunnel:port=None;official=False;error='not_configured'
-        with patch.object(subprocess,'Popen',side_effect=AssertionError('No SSH or worker in offline curve test')):
+        with (patch.object(factory_workbench,'CurrentRecorder',return_value=self.recorder),
+              patch.object(subprocess,'Popen',side_effect=AssertionError('No SSH or worker in offline curve test'))):
             server=factory_workbench.FactoryWorkbenchServer(('127.0.0.1',0),Tunnel())
             thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
             try:

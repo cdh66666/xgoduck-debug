@@ -1,2 +1,0 @@
-# No additional Python packages. Arduino App Lab supplies AppUtils and WebUI.
-# This receive-only app does not import NumPy, ONNX Runtime, or policy modules.

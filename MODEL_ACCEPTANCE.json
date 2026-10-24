@@ -6,11 +6,11 @@
   "hardware_acceptance": "NOT_PASSED",
   "portable_adapter_hardware_verified": false,
   "current_findings": {
-    "standing": "NOT_PASSED: previous physical getup followed by backward steps; no new complete passing trial",
+    "standing": "OPEN: user reports backward falls after start; historical finite 17-19s walk windows remain evidence only",
     "interactive_push_recovery": "NOT_PASSED",
-    "walking_and_release_stop": "NOT_PASSED",
+    "walking_and_release_stop": "BOUNDED_COMMAND_CHAIN_OBSERVED: .2 forward command, neutral hold and normal OFF; six-point gait speed/displacement not qualified",
     "battery_roll_power_loss": "unresolved; no root cause fix claimed",
-    "wireless": "Receive stalls remain; NIC-specific root cause unproven"
+    "wireless": "OPEN: source-clock buffering repairs presentation; PC delivery-age label fix verified offline, backend reload pending; lower-layer delivery bursts remain"
   },
   "default_enabled": [
     "basic_keyboard_six_points",
@@ -44,17 +44,32 @@
   },
   "snapshot_date": "2026-10-22",
   "wireless_acceptance": "NOT_PASSED",
-  "latest_motion_attempt": "unconfirmed; request marker and later heartbeat-disarmed state only, not a completed pose trace",
-  "new_computer_tested": false,
+  "latest_motion_attempt": "Completed bounded real-hardware records; see firmware-support/validation/control-comparison-20261023.json",
+  "new_computer_tested": true,
   "current_features": {
-    "basic_actor_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+    "basic_actor_sha256": "57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db",
     "local_model_not_driven_by_pc_pose_stream": true,
-    "command_watchdog_s": 1.0,
     "local_feedback_watchdog_s": 0.15,
-    "weights_included_by_user_request": true
+    "weights_included_by_user_request": true,
+    "home_contract": "Official shared 22-degree HOME; head alpha .2",
+    "automatic_motion_recordings": true,
+    "history_replay_read_only": true,
+    "display_source_clock": "robot uptime",
+    "display_buffer_ms": 350,
+    "pc_delivery_freshness": "OFFLINE_VERIFIED_BACKEND_ACTIVATION_PENDING",
+    "remote_intent_timeout_s": 1.0,
+    "policy_disconnect_behavior": "continue_local_zero_speed_policy",
+    "reconnect_automatically_resumes_walking": false,
+    "exact_last_policy_step_recorded": true,
+    "imu_signed_negation_fix": "OFFLINE_CHECKED_NOT_ARM_BUILT_OR_INSTALLED",
+    "current_local_source_deployed": false
   },
   "connection_profile_mode": "plain_device_instance",
   "plaintext_connection_configuration_included": true,
   "encrypted_connection_configuration_included": false,
-  "raw_robot_traces_included": false
+  "raw_robot_traces_included": false,
+  "control_comparison_date": "2026-10-23",
+  "current_operating_constraint": "Battery depleted; no device access or motion; existing tray inhibit unchanged. Offline software candidate only.",
+  "motion_history_receipt": "firmware-support/validation/motion-history-20261023.json",
+  "standing_offline_candidate_receipt": "firmware-support/validation/standing-offline-20261023.json"
 }

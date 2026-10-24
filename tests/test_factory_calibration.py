@@ -6,7 +6,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from factory_calibration import FactoryCalibration, FactoryMaintenance, IDS
+from bench_calibration import FactoryCalibration, FactoryMaintenance, IDS
 
 
 class FactoryCalibrationTests(unittest.TestCase):

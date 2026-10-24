@@ -1,0 +1,152 @@
+{
+  "schema": "xgoduck-bounded-official-control-comparison-v1",
+  "date": "2026-10-23",
+  "official_commit": "466512e9426f61fb07d9be9b3f20df0171692150",
+  "previous_walk_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+  "current_walk_sha256": "57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db",
+  "runtime_source_sha256": {
+    "controller.py": "4db3edd12a5486a11afc401aec6b88ebbbc3d3932de9c2c07cb18776daf989c6",
+    "policy.py": "bd2497f1e7ee39caea7445f1965afd396cd4b55fe6f3f06f7e66794c1df64bd8",
+    "rl_core.py": "0ab3f52a82e2f7513ceb0322b3eb838896eada0708b99e6545c5bfcc01a13a95",
+    "keyboard_runtime.py": "302800087ccca64c9e4c88c28caf2f9612872bce8177665b310fd3fb60149792",
+    "release_profile.py": "61820ce920d8b456a1f35eeaf46464c3c6bad6356aed28af7a18bb66dcf2544e"
+  },
+  "elf_sha256": "c87f891a8955c3f167fa6d2c1ee585401d23e0d58633ed6af9e803939e597c86",
+  "mechanical_calibration_unchanged": true,
+  "head_limit_deg": 90,
+  "feedback_loss_timeout_s": 0.15,
+  "feedback_restoration_auto_arm": false,
+  "policy_parity": {
+    "official_commit": "466512e9426f61fb07d9be9b3f20df0171692150",
+    "max_absolute_difference": {
+      "walk": {
+        "observation": 0.0,
+        "target": 0.0,
+        "states": 44
+      },
+      "getup": {
+        "observation": 0.0,
+        "target": 0.0,
+        "states": 44
+      }
+    }
+  },
+  "cases": {
+    "official-compare-20261023/official-zero-18s.json": {
+      "raw_sha256": "f196957863255262e8f2144d45f5ece2433b2460c49439ee5b9368dbc9268006",
+      "requested_seconds": 18.0,
+      "pc_error": null,
+      "enabled_samples": 297,
+      "all_axes_valid_samples": 297,
+      "walk_samples": 36,
+      "longest_walk_below_15_s": 0.573773218999122,
+      "longest_walk_below_20_s": 0.7209217089985032,
+      "max_head_yaw_feedback_deg": 72.61538696289062,
+      "normal_off_confirmed": true,
+      "reason": "pc_stop_confirmed",
+      "forward_started": false
+    },
+    "official-compare-20261023/official-getup-to-hold.json": {
+      "raw_sha256": "23f6a386605ec23c6e3e2b6f495faf07de9e99f9f42dc67ddb5952f28924e070",
+      "requested_seconds": 20.0,
+      "pc_error": null,
+      "enabled_samples": 341,
+      "all_axes_valid_samples": 341,
+      "walk_samples": 302,
+      "longest_walk_below_15_s": 0.972514384000533,
+      "longest_walk_below_20_s": 17.26891597500071,
+      "max_head_yaw_feedback_deg": 27.956043243408203,
+      "normal_off_confirmed": true,
+      "reason": "pc_stop_confirmed",
+      "forward_started": false
+    },
+    "workbench-official-walk-20261023/zero-20s.json": {
+      "raw_sha256": "5dd3e19e7f14c4d95647ec7a93d9d4de4cc244e9b924193fe398a3359a549d58",
+      "requested_seconds": 20.0,
+      "pc_error": null,
+      "enabled_samples": 232,
+      "all_axes_valid_samples": 232,
+      "walk_samples": 194,
+      "longest_walk_below_15_s": 15.649601069002529,
+      "longest_walk_below_20_s": 16.880448705000163,
+      "max_head_yaw_feedback_deg": 76.83516693115234,
+      "normal_off_confirmed": true,
+      "reason": "pc_stop_confirmed",
+      "forward_started": false
+    },
+    "workbench-official-walk-20261023/official-adapter-zero-20s.json": {
+      "raw_sha256": "4794dc8eeef388c2d8aa3229a974dfce06ba49b4ccaa35d9ce9081a52aa02151",
+      "requested_seconds": 20.0,
+      "pc_error": null,
+      "enabled_samples": 234,
+      "all_axes_valid_samples": 234,
+      "walk_samples": 217,
+      "longest_walk_below_15_s": 18.699233318999177,
+      "longest_walk_below_20_s": 18.777512714001205,
+      "max_head_yaw_feedback_deg": 11.428571701049805,
+      "normal_off_confirmed": true,
+      "reason": "pc_stop_confirmed",
+      "forward_started": false
+    },
+    "workbench-official-walk-20261023/forward-release.json": {
+      "raw_sha256": "48813c860ba95da0885bc8007bc1e7cf6a782063468d9808f7b6c4c449853acf",
+      "requested_seconds": 12.0,
+      "pc_error": null,
+      "enabled_samples": 128,
+      "all_axes_valid_samples": 128,
+      "walk_samples": 44,
+      "longest_walk_below_15_s": 2.808402368998941,
+      "longest_walk_below_20_s": 2.808402368998941,
+      "max_head_yaw_feedback_deg": 78.68132019042969,
+      "normal_off_confirmed": true,
+      "reason": "pc_stop_confirmed",
+      "forward_started": true
+    }
+  },
+  "full_hardware_acceptance": "PENDING",
+  "wireless_root_cause": "OPEN_REOPENED_BY_USER_NO_MOTION",
+  "limits": [
+    "Different initial poses; finite trials do not isolate a unique physical cause.",
+    "Changing the ONNX file also changed model HOME under the old metadata adapter.",
+    "The original-stack official-Walk trial already sustained walk before the later parameter alignment.",
+    "Filtered gravity and joint feedback do not independently measure foot contact, displacement or standing height.",
+    "IMU correction, direct getup and project firmware remain; this is not a byte-identical whole official stack."
+  ],
+  "bounded_control": {
+    "forward_samples": 5,
+    "forward_observed_interval_s": [
+      7.229107319999457,
+      7.480502731999877
+    ],
+    "zero_after_samples": 19,
+    "zero_after_duration_s": 1.141329827998561,
+    "zero_after_tilt_range_deg": [
+      5.109456950169122,
+      13.532348476266545
+    ],
+    "zero_after_phases": [
+      "walk"
+    ],
+    "forward_tilt_range_deg": [
+      5.904569755068614,
+      7.8973061395768225
+    ],
+    "all_enabled_full_axes": true,
+    "head_feedback_max_deg": 78.68132019042969,
+    "final": {
+      "mode": "off",
+      "enabled": false,
+      "last_error": "",
+      "mcu_watchdog": false
+    },
+    "forward_command": [
+      0.2,
+      0.0,
+      0.0
+    ],
+    "independent_displacement_or_speed_measurement": false,
+    "zero_after_definition": "enabled policy/walk and zero twist; OFF transition excluded"
+  },
+  "latest_user_report": "Standing still falls backward after ordinary start; prior 17-19s windows do not qualify robustness.",
+  "latest_stationary_update_receipt": "firmware-support/validation/motion-history-20261023.json"
+}

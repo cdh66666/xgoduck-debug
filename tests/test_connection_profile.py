@@ -1,4 +1,4 @@
-import importlib.util,json,tempfile,unittest
+import importlib.util,json,os,shutil,subprocess,tempfile,unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('plain_import',ROOT/'pc/tools/import_connection.py')
@@ -42,4 +42,17 @@ class ProfileTests(unittest.TestCase):
    p,data=fixture(folder);out=Path(folder)/'pc';out.mkdir();(out/'device.local.json').write_bytes(b'other')
    module.install_profile(p,out,replace=True,permissions=False)
    self.assertEqual((out/'device.local.json').read_bytes(),data['device.json'])
+ @unittest.skipUnless(os.name=='nt' and shutil.which('ssh-keygen'),'Windows OpenSSH required')
+ def test_windows_openssh_accepts_key_after_owner_rights_removed(self):
+  with tempfile.TemporaryDirectory() as folder:
+   key=Path(folder)/'id_ed25519'
+   subprocess.run(['ssh-keygen','-q','-t','ed25519','-N','','-f',str(key)],check=True,capture_output=True)
+   subprocess.run(['icacls',str(key),'/grant','*S-1-3-4:F'],check=True,capture_output=True)
+   before=subprocess.run(['ssh-keygen','-y','-P','','-f',str(key)],capture_output=True)
+   self.assertNotEqual(before.returncode,0)
+   self.assertIn(b'permissions',before.stderr.lower())
+   module._restrict_private_files([key])
+   after=subprocess.run(['ssh-keygen','-y','-P','','-f',str(key)],capture_output=True)
+   self.assertEqual(after.returncode,0,after.stderr.decode('utf-8',errors='replace'))
+   self.assertTrue(after.stdout.startswith(b'ssh-ed25519 '))
 if __name__=='__main__':unittest.main()

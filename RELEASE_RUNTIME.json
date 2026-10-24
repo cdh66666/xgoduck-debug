@@ -1,6 +1,6 @@
 {
   "schema": "xgoduck-portable-release-runtime-v1",
-  "snapshot_source_count": 39,
+  "snapshot_source_count": 40,
   "runtime_sources": {
     "app.yaml": {
       "path": "robot-app/app.yaml",
@@ -8,19 +8,19 @@
     },
     "python/gyro_bias_control.py": {
       "path": "robot-app/python/gyro_bias_control.py",
-      "sha256": "565b450d37d5b25eff8bd00bc1402129b309abe2fa28047eef04f1e3914e26d3"
+      "sha256": "5d9902b7a06d6398d49c4cc49048415523527cd099c4c84bd007c1dd986e4322"
     },
     "python/display_telemetry.py": {
       "path": "robot-app/python/display_telemetry.py",
-      "sha256": "a8c59e8dfbe655a9bf1d417690e7a73a3e8bb94494ef9c3535e74c576ab6d7b3"
+      "sha256": "ae5cae3d75984d4f5f0d35e61c4b11fe982ad164ad383de50958d62a9bac8bf3"
     },
     "python/keyboard_runtime.py": {
       "path": "robot-app/python/keyboard_runtime.py",
-      "sha256": "4834ee543f3a4c52a5c783ec16085445fcfc4e991bf4abfd393d4d75078319dc"
+      "sha256": "302800087ccca64c9e4c88c28caf2f9612872bce8177665b310fd3fb60149792"
     },
     "python/main.py": {
       "path": "robot-app/python/main.py",
-      "sha256": "702045380734619107b7282f4ce58f18ec5a4b4800c370b23812d2b6630a9a8e"
+      "sha256": "96f8d4c7dee6d1b0e0078baa0d4b147104b66c56a47cd5d72fa0641aa3c1a710"
     },
     "python/requirements.txt": {
       "path": "robot-app/python/requirements.txt",
@@ -28,23 +28,23 @@
     },
     "python/controller.py": {
       "path": "robot-app/python/controller.py",
-      "sha256": "5c798b211b3ef05deeef6802316c8307d5f7c0655e54c346652be10b7fd2afe5"
+      "sha256": "a8d02835ed3b2c9a1f40f9b483f16b25cb628b3108dac0027aa9da529883a844"
     },
     "python/rl_core.py": {
       "path": "robot-app/python/rl_core.py",
-      "sha256": "d257aa5ddd8cb7c0094cb29195c19ef2d280fb72724bebb00f79d8aa4a9458ba"
+      "sha256": "0ab3f52a82e2f7513ceb0322b3eb838896eada0708b99e6545c5bfcc01a13a95"
     },
     "python/wire.py": {
       "path": "robot-app/python/wire.py",
-      "sha256": "0083ef513f97dedac7cd075fcc0842bb80afb4ad64e5e9f6fcae46387c2d4fdb"
+      "sha256": "21f8acfe61e220edf40f18a53f69ffca93fa8d4bebb19fb63abdf1a666a4d36f"
     },
     "python/policy.py": {
       "path": "robot-app/python/policy.py",
-      "sha256": "2029e370328ae7e55f43e70a98a86030c63508439cc607e6d202b1c1f207c017"
+      "sha256": "04c0303f976446c97b4bf6b148f729ca721b58ce4c1f8110a0a8579df17572da"
     },
     "python/current_telemetry.py": {
       "path": "robot-app/python/current_telemetry.py",
-      "sha256": "3df40ebec339739a8d979026b3fe32420cd926a04d45e4c90da33f6c2eb9d7de"
+      "sha256": "9e31be319f54f2b52a0e5cdbaeb6ab6af49cd7d0a57e49ca0136cca0a74fef5a"
     },
     "python/factory_calibration.py": {
       "path": "robot-app/python/factory_calibration.py",
@@ -60,7 +60,7 @@
     },
     "python/release_profile.py": {
       "path": "robot-app/python/release_profile.py",
-      "sha256": "6c3d3786697e3b6472796c8a4ac0151584f7481e47a484f7925a7a6e858467df"
+      "sha256": "61820ce920d8b456a1f35eeaf46464c3c6bad6356aed28af7a18bb66dcf2544e"
     },
     "sketch/sketch.yaml": {
       "path": "robot-app/sketch/sketch.yaml",
@@ -96,11 +96,11 @@
     },
     "sketch/qmi8658.h": {
       "path": "robot-app/sketch/qmi8658.h",
-      "sha256": "3d6b501dba41e76e6fc63cbd81d35eb5d5cd34ff80f18e0bb44ec3cc9772f4b1"
+      "sha256": "a4fb9e985adf4a6c57ff906f8f8bd5c3c6b13dc9b3460fd880f8a34073c014cc"
     },
     "sketch/scs_bus.h": {
       "path": "robot-app/sketch/scs_bus.h",
-      "sha256": "9a0596c102a11f41d661ff2c48779120e4b90b9b7bb93d34ace8c70b1aabcec5"
+      "sha256": "538ae49ca7c670d41aab0a96fc83c4ccc0d936489dacd0876c4f5278cc3ecf5a"
     },
     "sketch/display_telemetry.h": {
       "path": "robot-app/sketch/display_telemetry.h",
@@ -116,7 +116,7 @@
     },
     "assets/app.js": {
       "path": "robot-app/assets/app.js",
-      "sha256": "273ea703f6dc8c5ad2b53d9d89b5e877a2e3bb303a680ba043079eea0362dd60"
+      "sha256": "fe530384a6dab1c2f91069166a3d1d9ed20e66965d22fcf85cc2b10b0306be2f"
     },
     "assets/style.css": {
       "path": "robot-app/assets/style.css",
@@ -137,6 +137,14 @@
     "assets/servo.js": {
       "path": "robot-app/assets/servo.js",
       "sha256": "128961199c01e31057be3ddb61d82ba5a0d412a8cb25c3bc8f5c247a654cb1b2"
+    },
+    "sketch/joint_limits.h": {
+      "path": "robot-app/sketch/joint_limits.h",
+      "sha256": "ab30178d228f635d8b664af3a326d6a06d35fdb5f80f95a9364a9577df8f6368"
+    },
+    "python/motion_recording.py": {
+      "path": "robot-app/python/motion_recording.py",
+      "sha256": "2f3c4c479e23929861effead3e1d2e09dd790f725736954d9ff3ce2022e87e7a"
     }
   },
   "external_models": {
@@ -163,10 +171,10 @@
     },
     "python/xgoduck_walk.onnx": {
       "path": "robot-app/python/xgoduck_walk.onnx",
-      "sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+      "sha256": "57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db",
       "included": true,
       "acquisition": "Bundled current snapshot; optional exact-SHA read-only refresh from the robot.",
-      "bytes": 918165
+      "bytes": 793706
     }
   },
   "excluded_models": [
@@ -179,7 +187,7 @@
   "publication_date": "2026-10-22",
   "release_profile": {
     "schema": "xgoduck-basic-keyboard-publication-v2",
-    "model_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+    "model_sha256": "57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db",
     "ordinary_head_mouth": false,
     "walking": true,
     "fast_forward": true,
@@ -190,10 +198,10 @@
     "current_monitor": true,
     "calibration_and_numbering": true,
     "single_actor": true,
-    "native_basic_offline_qualified": true,
+    "native_basic_offline_qualified": false,
     "portable_profile_hardware_verified": false,
     "physical_acceptance": "pending",
-    "recovery_source": "retained official getup; new-actor handoff unverified",
+    "recovery_source": "official walk/getup; direct getup retained; bounded standing observed",
     "head_mouth_scope": "zero only; mixed motion not qualified",
     "command_points": [
       [
@@ -228,5 +236,73 @@
       ]
     ]
   },
-  "hardware_validation": false
+  "hardware_validation": false,
+  "static_sensor_update_20261023": {
+    "receipt": "firmware-support/validation/imu-sync-install-20261023.json",
+    "motion_acceptance": "NOT_TESTED"
+  },
+  "stationary_review_update_20261023": {
+    "receipt": "firmware-support/validation/review-fix-static-20261023.json",
+    "motion_acceptance": "NOT_TESTED",
+    "wireless_root_cause_acceptance": "OPEN"
+  },
+  "official_control_update_20261023": {
+    "receipt": "firmware-support/validation/control-comparison-20261023.json",
+    "bounded_standing_observed": true,
+    "full_acceptance": "PENDING"
+  },
+  "motion_history_update_20261023": {
+    "automatic_robot_capture_hz": 25,
+    "pre_roll_s": 1,
+    "post_roll_s": 1,
+    "robot_cache_bytes": 16777216,
+    "pc_archive": "pc/motion-recordings",
+    "replay_read_only": true,
+    "standing_robustness": "OPEN_USER_REPORTS_BACKWARD_FALL",
+    "receipt": "firmware-support/validation/motion-history-20261023.json",
+    "display_source_clock": "robot uptime",
+    "display_buffer_ms": 350,
+    "stationary_motion_inhibit": true,
+    "wireless_link_root_cause": "OPEN",
+    "pc_delivery_freshness": "OFFLINE_VERIFIED_BACKEND_ACTIVATION_PENDING"
+  },
+  "standing_offline_candidate_20261023": {
+    "receipt": "firmware-support/validation/standing-offline-20261023.json",
+    "receipt_sha256": "73218de9dd3236deee176d8556e8418895f5d096b15770469d48cba7f81f87f8",
+    "deployed": false,
+    "new_arm_build": false,
+    "policy_disconnect_behavior": "zero remote intent, continue local policy; neutral/new movement acknowledgement",
+    "physical_acceptance": "OPEN"
+  },
+  "latency_update_20261024": {
+    "receipt": "firmware-support/validation/latency-20261024.json",
+    "details": "docs/LATENCY_FIX_20261024.md",
+    "router_version": "0.7.0",
+    "router_binary_sha256": "237059d6dd9ffa0e39cabca1e3723503123e282c1626afe50f73711a7ec3eef4",
+    "display_buffer_ms": 0,
+    "display_mode": "latest observed endpoint; no prediction; explicit stale indication",
+    "motion_inhibited": true,
+    "motion_tested": false,
+    "remaining_spikes": "browser known endpoint age P99 402.1 ms; max 714 ms, stationary 60 s capture"
+  },
+  "status_stability_update_20261024": {
+    "details": "docs/STATUS_STABILITY_20261024.md",
+    "receipt": "firmware-support/validation/status-stability-20261024.json",
+    "added_display_buffer_ms": 0,
+    "control_freshness_limit_ms": 150,
+    "hardware_state_semantics": "last reported values plus separate visible age",
+    "motion_tested": false
+  },
+  "model_banner_update_20261024": {
+    "details": "docs/STATUS_STABILITY_20261024.md",
+    "receipt": "firmware-support/validation/status-banner-20261024.json",
+    "scope": "workbench duplicate reception overlay only",
+    "added_buffer_ms": 0
+  },
+  "keyboard_simulation_update_20261024": {
+    "details": "docs/KEYBOARD_SIMULATION_20261024.md",
+    "receipt": "firmware-support/validation/keyboard-simulation-20261024.json",
+    "scope": "local keyboard simulation and model library",
+    "hardware_motion": false
+  }
 }

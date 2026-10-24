@@ -1,0 +1,216 @@
+{
+  "schema": "xgoduck-keyboard-simulation-ui-v1",
+  "date": "2026-10-24",
+  "scope": "Actual browser, current Walk ONNX and local MuJoCo; no physical motion or model qualification.",
+  "browser": {
+    "errors": [],
+    "hardwareWrites": [],
+    "safety": {
+      "mode": "off",
+      "enabled": false,
+      "motion_inhibited": true
+    },
+    "modelSha": "57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db",
+    "cases": [
+      {
+        "key": "ArrowUp",
+        "actual": [
+          0.20000000298023224,
+          0,
+          0
+        ],
+        "released": [
+          0,
+          0,
+          0
+        ],
+        "physicsSteps": 150,
+        "policySteps": 38,
+        "tilt": 0.9792493136873103,
+        "phase": "walk",
+        "rootBefore": [
+          7.147909062152948e-05,
+          -7.543668732130879e-06,
+          0.13775514021088212
+        ],
+        "rootAfter": [
+          0.05328314567152383,
+          -0.001700931679372525,
+          0.13920459820106743
+        ],
+        "simulation_seconds": 0.7499999999999994,
+        "root_delta_m": [
+          0.053211666580902296,
+          -0.001693388010640394,
+          0.00144945799018531
+        ],
+        "yaw_delta_deg": 0.7898582421665978
+      },
+      {
+        "key": "ArrowDown",
+        "actual": [
+          -0.30000001192092896,
+          0,
+          0
+        ],
+        "released": [
+          0,
+          0,
+          0
+        ],
+        "physicsSteps": 150,
+        "policySteps": 37,
+        "tilt": 1.8380404150536809,
+        "phase": "walk",
+        "rootBefore": [
+          0.00010432803049790053,
+          -1.0014983697566506e-05,
+          0.13773924844945099
+        ],
+        "rootAfter": [
+          -0.11020696159002148,
+          0.005731689147266307,
+          0.1400929842249623
+        ],
+        "simulation_seconds": 0.7499999999999992,
+        "root_delta_m": [
+          -0.11031128962051938,
+          0.005741704130963873,
+          0.0023537357755113175
+        ],
+        "yaw_delta_deg": -2.5242068223347784
+      },
+      {
+        "key": "ArrowLeft",
+        "actual": [
+          0,
+          0,
+          1
+        ],
+        "released": [
+          0,
+          0,
+          0
+        ],
+        "physicsSteps": 151,
+        "policySteps": 38,
+        "tilt": 0.4242540036024616,
+        "phase": "walk",
+        "rootBefore": [
+          6.407512626112349e-05,
+          -8.137913804827516e-06,
+          0.13775533127258793
+        ],
+        "rootAfter": [
+          0.01177239343308338,
+          -0.005333090323853673,
+          0.13883821332548887
+        ],
+        "simulation_seconds": 0.7549999999999999,
+        "root_delta_m": [
+          0.011708318306822257,
+          -0.005324952410048845,
+          0.0010828820529009409
+        ],
+        "yaw_delta_deg": 37.12382102025031
+      },
+      {
+        "key": "ArrowRight",
+        "actual": [
+          0,
+          0,
+          -1
+        ],
+        "released": [
+          0,
+          0,
+          0
+        ],
+        "physicsSteps": 150,
+        "policySteps": 38,
+        "tilt": 0.6085570357085068,
+        "phase": "walk",
+        "rootBefore": [
+          7.14715814803463e-05,
+          -7.54497049563955e-06,
+          0.13775513988631186
+        ],
+        "rootAfter": [
+          0.0075473253481768195,
+          0.010402784939818308,
+          0.13950697015867322
+        ],
+        "simulation_seconds": 0.7499999999999994,
+        "root_delta_m": [
+          0.007475853766696473,
+          0.010410329910313949,
+          0.0017518302723613655
+        ],
+        "yaw_delta_deg": -34.09764764583742
+      },
+      {
+        "key": "Shift+ArrowUp",
+        "actual": [
+          0.30000001192092896,
+          0,
+          0
+        ],
+        "released": [
+          0,
+          0,
+          0
+        ],
+        "physicsSteps": 150,
+        "policySteps": 38,
+        "tilt": 0.4802488666597599,
+        "phase": "walk",
+        "rootBefore": [
+          7.894124368692326e-05,
+          -8.467901583691173e-06,
+          0.1377520556951542
+        ],
+        "rootAfter": [
+          0.10128807879856803,
+          0.029728081248512075,
+          0.13840277378881502
+        ],
+        "simulation_seconds": 0.7499999999999996,
+        "root_delta_m": [
+          0.10120913755488112,
+          0.029736549150095767,
+          0.0006507180936608237
+        ],
+        "yaw_delta_deg": 2.9738247978013987
+      }
+    ],
+    "simulationRequests": 62
+  },
+  "javascript_tests_passed": 34,
+  "workbench_assertions": 331,
+  "python_tests_passed": 154,
+  "training_contract_tests_passed": 9,
+  "firmware_locked_files_verified": 239,
+  "checks": [
+    "outer run focuses keyboard",
+    "five arrow/Shift commands and release to zero",
+    "W/Esc",
+    "Space pause/resume",
+    "reset neutral",
+    "blur neutral",
+    "switch Get-up and back",
+    "hidden page pauses; return stays paused",
+    "desktop 1440x1000 and compact 1000x820 visual inspection"
+  ],
+  "raw_local_evidence": "pc/qa/keyboard-simulation-20261024/browser.json",
+  "sources": {
+    "pc/assets/official-models.js": "acba36b0cd8ba8dffad2758c4496f71ba4440f2fce371f8e85a28ff89386a4dd",
+    "pc/assets/models.css": "458fd364d394bcb155fe358510be90cee4f130bc5d9ca57783f43e73a0a3a770",
+    "pc/assets/bench-models.html": "dc82c1ab0c05bfe634fc6e8d22eccfa1f37d98e5573e6e28e3cba0750f1f20aa",
+    "pc/assets/model-training.html": "22a1c602ab17352f657b41141b5f70031e1a1cc666d820c146e93b62d240564a",
+    "pc/assets/model-training.js": "301ad5b5a98dfd7103e917eadd8ae526d9e24da5b1226a23cc77426be6c3833e",
+    "pc/simulation/worker.py": "b6b7170a5297c409eb225a9421a94d77228c43a7bcde53030ce8f9a9d9f5cd45",
+    "tests/test_simulation_keyboard.mjs": "8b3f5238006906fdc263a35520e8539169bbc4997dab94a5a8d736089ea31a5c",
+    "tests/test_recovery_dispatch.py": "f41f9aa79fb1230fc91924ae857b5b46c6555498d1a65310efd8312b108b48ae",
+    "tests/test_receiver_sampling.py": "4851ef256d77b41a7989df5b02736c7818c20122f5269fdc0704fb161cc676ff"
+  }
+}

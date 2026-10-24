@@ -62,7 +62,7 @@ class Simulation:
         from recovery import Recovery
         self.policies = {}
         for name in {bound['selected'], 'walk', 'getup'}:
-            policy = Policy()
+            policy = Policy(reference_home=True)
             ok, message = policy.load(bound['models'][name]['path'])
             if not ok:
                 raise ValueError(message)
@@ -303,6 +303,7 @@ class Simulation:
         elif op == 'pause':
             self.paused = bool(cmd.get('paused', True))
             if self.paused:
+                self.twist.fill(0)
                 self.force_until = 0
                 self.grab_position = None
         elif op == 'push':

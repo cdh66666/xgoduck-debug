@@ -6,6 +6,7 @@ import http.client
 import json
 import threading
 import time
+from status_age import aged_snapshot
 
 
 class OfficialReader:
@@ -48,7 +49,7 @@ class OfficialReader:
                 self._failure = None
             now = self._monotonic()
             if self.value is not None and now-self.read_at < self.cache_ttl:
-                return copy.deepcopy(self.value)
+                return aged_snapshot(self.value, self.read_at, now)
             if self._failure is not None and now-self._failed_at < self.failure_ttl:
                 raise copy.copy(self._failure)
             try:
@@ -84,7 +85,7 @@ class OfficialReader:
                 self.tunnel.official=True
                 if response.will_close:
                     self._disconnect()
-                return copy.deepcopy(state)
+                return aged_snapshot(state, observed, self._monotonic())
             except (OSError, ValueError, http.client.HTTPException) as error:
                 self._disconnect()
                 self.value = None

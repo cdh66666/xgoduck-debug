@@ -9,8 +9,8 @@ const modelId=new URLSearchParams(location.search).get('model');
 const externalControls=new URLSearchParams(location.search).get('controls')==='external';
 let renderer,scene,camera,controls,session,token,events,state,resizeObserver,initDone;
 let visible=true,disposed=false,drag=null,lastGrabAt=0,grabPending=false,grabTimer=null,errorMessage='',requestChain=Promise.resolve();
-const virtualMotion=modelId==='official-fast'||modelId==='official-navigation',heldKeys=new Set();
-let demo=null,lastTwist='';
+const virtualMotion=modelId==='official-walk',heldInputs=new Map(),keyboard=window.DuckKeyboard.create();
+let lastTwist='',desiredTwist=null,motionSending=null,functionBusy=false,followPosition=null;
 const objects=[],pickables=[],raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
 const arrow=new THREE.ArrowHelper(new THREE.Vector3(1,0,0),new THREE.Vector3(),1,0x60d9f0,16,9);
 arrow.visible=false;
@@ -51,69 +51,75 @@ function selectedSimulationControl(message,expectedModel,current){
   return message.command;
 }
 async function runLocalModel(){
-  if(demo)await stopDemo();
   if(virtualMotion){clearHeld();await sendTwist([0,0,0]);}
-  await command('policy',{enabled:true});await command('pause',{paused:false});
+  if(!state?.policyEnabled)await command('policy',{enabled:true});
+  await command('pause',{paused:false});
 }
 async function pauseLocalModel(){
-  if(demo){await stopDemo();return;}
   if(virtualMotion){clearHeld();await sendTwist([0,0,0]);}
   await command('pause',{paused:true});
 }
 function virtualTwist(keys){
-  if(modelId==='official-fast')return keys.has('w')?[keys.has('shift')?.3:.2,0,0]:[0,0,0];
-  const turn=Number(keys.has('a'))-Number(keys.has('d'));
-  return turn?[0,0,turn]:keys.has('s')?[-.3,0,0]:[0,0,0];
+  keyboard.reset();
+  for(const key of keys)keyboard.keydown({key},{allowHead:false});
+  return keyboard.packet({fastAllowed:true,navAllowed:true}).twist;
 }
-function sendTwist(twist){lastTwist=JSON.stringify(twist);return command('command',{twist});}
-function clearHeld(){heldKeys.clear();lastTwist='';}
+function sendTwist(twist){
+  desiredTwist=twist.slice();
+  if(!motionSending)motionSending=(async()=>{
+    await Promise.resolve();
+    try{
+      while(desiredTwist){const next=desiredTwist;desiredTwist=null;const key=JSON.stringify(next);
+        if(key!==lastTwist){await command('command',{twist:next});lastTwist=key;}}
+    }finally{motionSending=null;}
+  })();
+  return motionSending;
+}
+function paintKeys(){const keys=new Set(heldInputs.values());for(const b of document.querySelectorAll('[data-motion]')){const pressed=keys.has(b.dataset.motion);b.dataset.pressed=String(pressed);b.setAttribute('aria-pressed',String(pressed));}}
+function clearHeld(){heldInputs.clear();lastTwist='';paintKeys();}
 function manualMotion(){
-  if(!virtualMotion||demo||!state?.policyEnabled||state.paused)return;
-  const twist=virtualTwist(heldKeys);if(JSON.stringify(twist)!==lastTwist)sendTwist(twist).catch(failure);
+  paintKeys();
+  if(!virtualMotion||functionBusy||disposed||!visible||document.hidden||!state?.policyEnabled||state.paused)return;
+  sendTwist(virtualTwist(new Set(heldInputs.values()))).catch(error=>{clearHeld();failure(error);});
 }
-function demoPoint(snapshot){const p=snapshot.body_poses.find(p=>p.name==='trunk_base');return {t:snapshot.simTime,position:p?.position?.slice(),tilt:snapshot.tiltDeg,recovery:snapshot.recovery};}
-function distance(a,b){return a?.position&&b?.position?Math.hypot(b.position[0]-a.position[0],b.position[1]-a.position[1]):null;}
-async function stopDemo(reason='已取消'){
-  const current=demo;demo=null;clearHeld();$('demo-cancel').hidden=true;
-  if(virtualMotion)await sendTwist([0,0,0]);await command('pause',{paused:true});
-  if(current){document.body.dataset.demoPhase='cancelled';$('demo-report').textContent=`虚拟演示 ${reason}，已零指令并暂停。不会自动恢复。`;}
+async function resetLocalModel(){
+  clearHeld();if(virtualMotion)await sendTwist([0,0,0]);
+  await command('reset');frameView();
 }
-async function startDemo(){
-  if(demo||modelId!=='official-fast')return;
-  clearHeld();const current={phase:'starting',busy:true,points:[],maxTilt:0};demo=current;$('demo-cancel').hidden=false;delete document.body.dataset.demoResult;
-  $('demo-report').textContent='虚拟演示 / 非实机：开始时重置一次；零速1秒 → 前进0.2两秒 → 零指令4秒。';
-  try{
-    await command('pause',{paused:true});if(demo!==current)return;
-    await command('reset');if(demo!==current)return;
-    await sendTwist([0,0,0]);if(demo!==current)return;
-    await command('policy',{enabled:true});if(demo!==current)return;
-    await command('pause',{paused:false});if(demo!==current)return;
-    current.phase='warmup';current.started=Number(state.simTime);current.busy=false;
-  }catch(error){if(demo===current)await stopDemo('请求失败').catch(()=>{});failure(error);}
+async function performAction(action){
+  if(functionBusy||disposed||!session)return;
+  functionBusy=true;
+  try{await action();}catch(error){failure(error);}finally{functionBusy=false;}
 }
-function advanceDemo(snapshot){
-  const current=demo;if(!current||current.busy)return;
-  const point=demoPoint(snapshot);current.points.push(point);current.maxTilt=Math.max(current.maxTilt,Number(point.tilt)||0);
-  const elapsed=Number(snapshot.simTime)-current.started;
-  const labels={warmup:'零速准备',forward:'前进指令0.2',stop:'已松开，零指令观察'};
-  $('demo-report').textContent=`虚拟演示 / 非实机 · ${labels[current.phase]} ${elapsed.toFixed(2)}秒\n最大倾角 ${current.maxTilt.toFixed(1)}° · 单模型测试，不含实机Controller切换链`;
-  document.body.dataset.demoPhase=current.phase;
-  const duration=current.phase==='warmup'?1:current.phase==='forward'?2:4;
-  if(elapsed<duration)return;
-  current.busy=true;
-  (async()=>{
-    if(current.phase==='warmup'){
-      current.forwardStart=point;await sendTwist([.2,0,0]);if(demo!==current)return;current.phase='forward';
-    }else if(current.phase==='forward'){
-      current.stopStart=point;await sendTwist([0,0,0]);if(demo!==current)return;current.phase='stop';
-    }else{
-      await command('pause',{paused:true});if(demo!==current)return;
-      const result={kind:'single_model_virtual_demo',modelId,modelSha:snapshot.modelSha,maxTiltDeg:current.maxTilt,forwardDisplacementM:distance(current.forwardStart,current.stopStart),zeroCommandDriftM:distance(current.stopStart,point),samples:current.points};
-      document.body.dataset.demoResult=JSON.stringify(result);document.body.dataset.demoPhase='complete';demo=null;$('demo-cancel').hidden=true;
-      $('demo-report').textContent=`虚拟演示已完成并暂停 / 非实机\n前进位移 ${(result.forwardDisplacementM*1000).toFixed(1)} mm · 零指令4秒漂移 ${(result.zeroCommandDriftM*1000).toFixed(1)} mm · 最大倾角 ${result.maxTiltDeg.toFixed(1)}°\n单模型观测，非完整Controller切换链；跌倒/Recovery均保留，不代表实物验收。`;return;
+function bindKeyboard(){
+  const toggle=()=>performAction(()=>state?.policyEnabled&&!state.paused?pauseLocalModel():runLocalModel());
+  const stopMotion=()=>{clearHeld();if(virtualMotion)sendTwist([0,0,0]).catch(failure);};
+  $('play').onclick=toggle;
+  $('reset').onclick=()=>performAction(resetLocalModel);
+  $('drop').onclick=()=>performAction(async()=>{clearHeld();if(virtualMotion)await sendTwist([0,0,0]);await command('drop');});
+  $('motion-stop').onclick=stopMotion;
+  $('virtual-controls').hidden=$('motion-stop').hidden=!virtualMotion;
+  const motionKey=e=>({arrowup:'w',arrowdown:'s',arrowleft:'a',arrowright:'d'})[e.key.toLowerCase()]||e.key.toLowerCase();
+  const eligible=e=>!disposed&&visible&&!document.hidden&&document.hasFocus()&&!e.isComposing&&!e.target?.isContentEditable&&!['INPUT','TEXTAREA','SELECT'].includes(e.target?.tagName);
+  document.addEventListener('keydown',e=>{
+    if(!eligible(e))return;
+    const key=motionKey(e),source='key:'+(e.code||e.key);
+    if([' ','space','r','escape'].includes(key)){
+      e.preventDefault();if(e.repeat)return;
+      if(key==='r')performAction(resetLocalModel);else if(key==='escape')stopMotion();else toggle();
+    }else if(virtualMotion&&['w','s','a','d','shift'].includes(key)){
+      e.preventDefault();
+      if(e.repeat||functionBusy||!state?.policyEnabled||state.paused)return;
+      heldInputs.set(source,key);manualMotion();
     }
-    current.started=Number(state.simTime);current.busy=false;
-  })().catch(error=>{stopDemo('请求失败').catch(()=>{});failure(error);});
+  });
+  document.addEventListener('keyup',e=>{const source='key:'+(e.code||e.key);if(heldInputs.delete(source)){e.preventDefault();manualMotion();}});
+  for(const b of document.querySelectorAll('[data-motion]')){
+    b.onpointerdown=e=>{if(e.button!==0||b.disabled)return;e.preventDefault();b.focus();b.setPointerCapture(e.pointerId);heldInputs.set('pointer:'+e.pointerId,b.dataset.motion);manualMotion();};
+    const release=e=>{if(heldInputs.delete('pointer:'+e.pointerId))manualMotion();};
+    b.onpointerup=release;b.onpointercancel=release;b.onlostpointercapture=release;
+  }
+  window.addEventListener('blur',()=>{if(!disposed&&session)stopMotion();});
 }
 function applyState(snapshot){
   if(!snapshot||!Array.isArray(snapshot.body_poses))return;
@@ -124,9 +130,10 @@ function applyState(snapshot){
     entry.object.matrix.copy(poseMatrix(pose.position,pose.quaternion)).multiply(entry.geometryMatrix);entry.object.matrixWorldNeedsUpdate=true;
   }
   const magnitude=Math.hypot(...(snapshot.force?.worldN||[0,0,0]));
-  const activeLabel={walk:'官方站立',getup:'官方起身',pick:'官方 Pick',roulade:'官方翻滚',fast:'前进策略',navigation:'原版导航'}[snapshot.activeModel]||'策略未启动';
-  $('status').textContent=`仿真 · ${snapshot.paused?'暂停':'运行'}　${activeLabel} / ${snapshot.recovery?.phase||'—'}　倾角 ${Number(snapshot.tiltDeg||0).toFixed(1)}°　施力 ${magnitude.toFixed(1)} N`;
-  $('play').textContent=snapshot.policyEnabled&&!snapshot.paused?'暂停模型':'运行模型';
+  const activeLabel={walk:'键盘行走',getup:'跌倒起身',pick:'空载 Pick',roulade:'翻滚'}[snapshot.activeModel]||'策略未启动';
+  $('status').textContent=`仅仿真 · ${snapshot.paused?'已暂停':activeLabel}`;
+  $('status').title=`倾角 ${Number(snapshot.tiltDeg||0).toFixed(1)}° · 施力 ${magnitude.toFixed(1)} N · ${snapshot.recovery?.phase||'—'}`;
+  $('play-label').textContent=snapshot.policyEnabled&&!snapshot.paused?'暂停':'运行';
   document.body.dataset.paused=String(snapshot.paused);document.body.dataset.policyEnabled=String(snapshot.policyEnabled);
   document.body.dataset.simTime=String(snapshot.simTime);document.body.dataset.policySteps=String(snapshot.policySteps||0);
   document.body.dataset.modelSha=snapshot.modelSha||'';
@@ -135,8 +142,19 @@ function applyState(snapshot){
   document.body.dataset.recoveryPhase=snapshot.recovery?.phase||'';
   if(externalControls&&window.parent!==window)parent.postMessage({type:'duck-simulation-preview-state',version:1,
     model_id:modelId,model_sha:snapshot.modelSha,paused:snapshot.paused,policy_enabled:snapshot.policyEnabled},location.origin);
-  if(virtualMotion){$('command-status').textContent=`虚拟指令 [${(snapshot.command||[0,0,0]).map(v=>Number(v).toFixed(1)).join(', ')}] · ${snapshot.activeModel||''} / ${snapshot.recovery?.phase||snapshot.recovery?.state||'策略'}`;for(const b of document.querySelectorAll('[data-motion]'))b.disabled=Boolean(demo)||snapshot.paused||!snapshot.policyEnabled;}
-  advanceDemo(snapshot);draw();
+  if(virtualMotion){
+    const [forward,,yaw]=snapshot.command||[0,0,0],ready=snapshot.policyEnabled&&!snapshot.paused;
+    $('command-status').textContent=!ready?'先运行模型':yaw>0?'左转':yaw<0?'右转':forward>0?`前进 ${forward.toFixed(1)} m/s`:forward<0?'后退 0.3 m/s':'零指令 · 停步';
+    document.body.dataset.command=JSON.stringify(snapshot.command||[0,0,0]);
+    for(const b of document.querySelectorAll('[data-motion]'))b.disabled=!ready;
+    $('motion-stop').disabled=!ready;
+    if(!ready)clearHeld();
+    const root=poses.get('trunk_base');
+    if(root&&camera&&controls){const point=new THREE.Vector3(root.position[0]*1000,root.position[1]*1000,0);
+      if(followPosition){const delta=point.clone().sub(followPosition);camera.position.add(delta);controls.target.add(delta);}
+      followPosition=point;}
+  }
+  draw();
 }
 function frameView(){
   scene.updateMatrixWorld(true);const bounds=new THREE.Box3();for(const entry of objects)bounds.expandByObject(entry.object);
@@ -182,7 +200,7 @@ function pointerUp(event,cancelled=false){
     if(force.length()>0)command('push',{force:force.toArray(),duration:.2,body:'trunk_base',point:current.start.clone().multiplyScalar(.001).toArray()}).catch(failure);
   }draw();
 }
-async function suspend(){visible=false;drag=null;clearTimeout(grabTimer);grabTimer=null;arrow.visible=false;document.body.dataset.dragging='false';if(session){if(virtualMotion)await stopDemo('页面隐藏').catch(failure);else await command('pause',{paused:true}).catch(failure);}}
+async function suspend(){visible=false;clearHeld();drag=null;clearTimeout(grabTimer);grabTimer=null;arrow.visible=false;document.body.dataset.dragging='false';if(session)await pauseLocalModel().catch(failure);}
 async function closeSession(){const current=session;session=null;if(current){const response=await fetch('/api/simulation',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json','X-Token':token},body:JSON.stringify({session:current,op:'close'})});if(!response.ok)throw Error('虚拟仿真关闭未确认');}}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)suspend();else{visible=true;draw();}});
 window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='duck-model-preview-visibility')return;if(event.data.visible===false)suspend();else if(event.data.visible===true){visible=true;draw();}});
@@ -205,7 +223,7 @@ window.addEventListener('message',async event=>{
 });
 window.addEventListener('pagehide',()=>{events?.close();closeSession().catch(()=>{});disposed=true;resizeObserver?.disconnect();controls?.dispose();renderer?.dispose();});
 async function init(){
-  $('hint').textContent='左键施力 · 右键抓起 · 中键旋转 · 滚轮缩放；交互仿真含头腿落地碰撞扩展，训练环境有差异';
+  $('hint').textContent='本地仿真 · 左键施力 / 右键抓起 / 中键旋转 / 滚轮缩放';
   if(!/^[a-zA-Z0-9_-]{1,80}$/.test(modelId||''))throw new Error('未选择模型');
   const [geometry,local]=await Promise.all([json(`/api/models/${encodeURIComponent(modelId)}/geometry`),json('/api/local-session')]);
   token=local.token;if(!token)throw new Error('本地仿真会话不可用');
@@ -231,26 +249,9 @@ async function init(){
   if(!Array.isArray(created.state?.body_poses))throw new Error('仿真未返回有效物理姿态');applyState(created.state);frameView();
   events=new EventSource(`/api/simulation/events?session=${encodeURIComponent(session)}`);
   events.addEventListener('state',event=>{try{applyState(JSON.parse(event.data));if(!errorMessage)message('');}catch(error){failure(error);}});
-  events.addEventListener('error',()=>{if(virtualMotion)stopDemo('连接中断').catch(failure);if(!errorMessage)message('仿真连接中断，重连后保持暂停，需手动启动。');});
+  events.addEventListener('error',()=>{clearHeld();pauseLocalModel().catch(failure);if(!errorMessage)message('仿真连接中断，重连后保持暂停，需手动启动。');});
   for(const id of ['play','drop','reset'])$(id).disabled=false;
-  $('play').hidden=externalControls;
-  $('play').onclick=async()=>{try{if(state?.policyEnabled&&!state.paused)await pauseLocalModel();else await runLocalModel();}catch(error){failure(error);}};
-  $('drop').onclick=async()=>{try{if(demo)await stopDemo('手动随机落地');await command('drop');}catch(error){failure(error);}};$('reset').onclick=async()=>{try{if(demo)await stopDemo('手动重置');clearHeld();await command('reset');if(virtualMotion)await sendTwist([0,0,0]);frameView();}catch(error){failure(error);}};
-  if(virtualMotion){
-    $('virtual-controls').hidden=false;$('command-status').hidden=false;$('demo').hidden=modelId!=='official-fast';$('demo').disabled=false;
-    $('demo').onclick=startDemo;$('demo-cancel').onclick=()=>stopDemo().catch(failure);
-    for(const b of document.querySelectorAll('[data-motion]')){
-      const key=b.dataset.motion;b.hidden=modelId==='official-fast'?!['w','fast'].includes(key):['w','fast'].includes(key);
-      b.onpointerdown=e=>{e.preventDefault();b.setPointerCapture(e.pointerId);clearHeld();heldKeys.add(key==='fast'?'w':key);if(key==='fast')heldKeys.add('shift');manualMotion();};
-      const release=()=>{clearHeld();manualMotion();};b.onpointerup=release;b.onpointercancel=release;b.onlostpointercapture=release;
-    }
-    $('motion-stop').onclick=()=>{if(demo)stopDemo().catch(failure);else{clearHeld();sendTwist([0,0,0]).catch(failure);}};
-    document.addEventListener('keydown',e=>{const key=e.key.toLowerCase();if(!document.hasFocus()||!['w','s','a','d','shift'].includes(key)||e.repeat)return;e.preventDefault();heldKeys.add(key);manualMotion();});
-    document.addEventListener('keyup',e=>{const key=e.key.toLowerCase();if(!['w','s','a','d','shift'].includes(key))return;e.preventDefault();heldKeys.delete(key);manualMotion();});
-    window.addEventListener('blur',()=>{clearHeld();if(!demo)sendTwist([0,0,0]).catch(failure);});
-    $('hint').textContent+='；虚拟控制仅此画面焦点内：先运行，再按住方向，松开零指令；非实机';
-    await sendTwist([0,0,0]);
-  }
+  bindKeyboard();
   renderer.domElement.addEventListener('contextmenu',event=>event.preventDefault());
   renderer.domElement.addEventListener('pointerdown',pointerDown);renderer.domElement.addEventListener('pointermove',pointerMove);
   renderer.domElement.addEventListener('pointerup',event=>pointerUp(event));renderer.domElement.addEventListener('pointercancel',event=>pointerUp(event,true));

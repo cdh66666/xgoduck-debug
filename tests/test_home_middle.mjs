@@ -15,6 +15,7 @@ function harness(file,{trained=false,standOnly=false,sourceTransform=value=>valu
   set innerHTML(value){this._html=value;for(const match of value.matchAll(/<([a-z]+)[^>]*\bid="([^"]+)"[^>]*>/g)){const node=$(match[2]);node.tagName=match[1].toUpperCase();}
    if(value.includes('id="bench-forward-speed"')){$('bench-forward-speed').value='0.2';$('bench-forward-speed').options=[...value.matchAll(/<option value="([^"]+)"[^>]*>/g)].map(match=>({value:match[1],disabled:false}));}}
   get innerHTML(){return this._html||'';}
+  set id(value){this._id=value;nodes.set(value,this);}get id(){return this._id;}
   append(...items){this.children.push(...items);}before(){}after(){}remove(){this.removed=true;}
   querySelector(selector){this.parts??=new Map();if(!this.parts.has(selector))this.parts.set(selector,new Element(selector));return this.parts.get(selector);}setAttribute(name,value){this.attributes.set(name,value);}removeAttribute(name){this.attributes.delete(name);}hasAttribute(name){return this.attributes.has(name);}
   showModal(){this.open=true;}close(){this.open=false;}click(){return this.onclick?.();}
@@ -65,14 +66,14 @@ check(!idle.$('wl-home').disabled,'successful maintenance hold does not disable 
 idle.$('wl-home').onclick();check(posts(idle).length===0,'HOME at middle never exits maintenance');
 for(const invalid of [Array(14).fill(0),[null,...Array(14).fill(0)],['0',...Array(14).fill(0)],[NaN,...Array(14).fill(0)]]){
  idle.state.runtime.angles=invalid;await idle.poll();idle.$('bench-motion-description').textContent='';idle.$('wl-home').onclick();
- check(idle.$('bench-motion-description').textContent==='回到已保存的校准中位并保持。','missing or nonnumeric angles never become a zero no-op');idle.$('bench-cancel').onclick();
+ check(idle.$('bench-motion-dialog').open&&idle.$('bench-motion-description').textContent.includes('回到校准中位并保持'),'missing or nonnumeric angles require confirmation instead of becoming a zero no-op');idle.$('bench-cancel').onclick();
 }
 idle.$('bench-motion-description').textContent='';idle.state.runtime.angles=Array(15).fill(0);idle.state.runtime.feedback_age_ms=150;await idle.poll();idle.$('wl-home').onclick();
 check(idle.$('bench-motion-description').textContent===''&&posts(idle).length===0,'150ms feedback never qualifies for fresh HOME');
 const offset=harness('official-workbench.js',{standOnly:true});await settle();offset.state.runtime.angles=[.3501,...Array(14).fill(0)];offset.setCalibration(maintained());await offset.poll();
 offset.$('wl-home').onclick();
 check(posts(offset).length===0&&offset.$('bench-motion-description').textContent.length>0,'deviation opens only confirmation');
-check(offset.$('bench-motion-description').textContent==='回到已保存的校准中位并保持。','HOME never promises the old standing pose');
+check(offset.$('bench-motion-description').textContent.includes('回到校准中位并保持'),'HOME never promises the old standing pose');
 await offset.$('bench-confirm').onclick();
 check(offset.calls.filter(call=>call.url==='/api/bench/calibration/action'&&call.body.action==='restore').length===1,'one explicit restore after confirmation');
 const restoreIndex=offset.calls.findIndex(call=>call.url==='/api/bench/calibration/action'),readIndex=offset.calls.findIndex(call=>call.url==='/api/bench/calibration'),holdIndex=offset.calls.findIndex(call=>call.url==='/api/mode'&&call.body.mode==='hold');

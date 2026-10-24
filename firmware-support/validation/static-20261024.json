@@ -1,0 +1,28 @@
+{
+  "scope": "stationary OFF/inhibited hardware update; no movement acceptance",
+  "date": "2026-10-24",
+  "arm_compile_passed": true,
+  "elf_check_passed": true,
+  "openocd_upload_confirmed": true,
+  "new_boot_marker_confirmed": true,
+  "elf_sha256": "3ebc523e713fd4398807e7a19b8934ba96c30b7c6611a5c8b066ed7dec7ec9ad",
+  "installed_sha256": {
+    "python/controller.py": "a8d02835ed3b2c9a1f40f9b483f16b25cb628b3108dac0027aa9da529883a844",
+    "python/policy.py": "04c0303f976446c97b4bf6b148f729ca721b58ce4c1f8110a0a8579df17572da",
+    "python/motion_recording.py": "791fa1f4f941117cadc46060241cf390ae527778b306cbd4c81b4e17fc3e8fbc",
+    "assets/app.js": "fe530384a6dab1c2f91069166a3d1d9ed20e66965d22fcf85cc2b10b0306be2f",
+    "sketch/qmi8658.h": "a4fb9e985adf4a6c57ff906f8f8bd5c3c6b13dc9b3460fd880f8a34073c014cc"
+  },
+  "models_calibration_inhibit_unchanged": true,
+  "motion_requests_sent": 0,
+  "arming_requests_sent": 0,
+  "stationary_samples": 300,
+  "off_disabled_inhibited_all": true,
+  "imu_and_15_axes_all": true,
+  "max_joint_spread_deg": 0.0,
+  "stationary_qualified_count": 274,
+  "feedback_jitter_resolved": false,
+  "wireless_jitter_resolved": false,
+  "standing_or_walking_verified": false,
+  "details": "docs/STATIC_DEBUG_20261024.md"
+}

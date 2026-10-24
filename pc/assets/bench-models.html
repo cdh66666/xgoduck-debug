@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="XGO Duck 模型库：在本地仿真中运行所选模型。">
   <title>模型库 · XGO Duck</title>
-  <link rel="stylesheet" href="/assets/models.css?v=2">
+  <link rel="stylesheet" href="/assets/models.css?v=keyboard20261024">
 </head>
 <body>
   <header class="page-header"><a class="brand" href="/">🦆 <strong>XGO Duck</strong></a><a href="/">返回调试台</a></header>
   <main>
-    <div class="page-heading"><h1>模型库</h1><button id="import-open" type="button">导入模型</button></div>
+    <div class="page-heading"><h1>模型库</h1></div>
     <p id="page-message" class="page-message" role="status" aria-live="polite">正在读取模型库</p>
     <div class="workspace">
       <aside class="library" aria-label="已保存的模型">
@@ -30,18 +30,7 @@
       </section>
     </div>
   </main>
-  <dialog id="import-dialog" aria-labelledby="import-title">
-    <form id="import-form">
-      <div class="dialog-heading"><h2 id="import-title">导入模型</h2><button id="import-close" class="icon-button" type="button" aria-label="关闭">×</button></div>
-      <label>模型名称<input id="import-name" name="name" maxlength="100" placeholder="例如：平地行走 v2" required></label>
-      <label>ONNX 模型<input id="import-model" name="model" type="file" accept=".onnx" required><small>模型会保存在本机；部署时检查是否适配小鸭子。</small></label>
-      <label>训练成果动态图或视频 <span class="optional">可选</span><input id="import-preview" name="preview" type="file" accept=".gif,.webp,.mp4,.webm,image/gif,image/webp,video/mp4,video/webm"><small>GIF、WebP、MP4 或 WebM，与这个模型一起保存。</small></label>
-      <label>说明 <span class="optional">可选</span><textarea id="import-description" name="description" rows="2" maxlength="1000" placeholder="记录版本和训练结果"></textarea></label>
-      <p id="import-message" class="form-message" role="status" aria-live="polite"></p>
-      <div class="dialog-actions"><button id="import-cancel" type="button" class="quiet">取消</button><button id="import-submit" type="submit">保存模型</button></div>
-    </form>
-  </dialog>
   <script>window.COMMISSION_TOKEN='__TOKEN__';</script>
-  <script src="/assets/official-models.js?v=local-selected-model2"></script>
+  <script src="/assets/official-models.js?v=keyboard20261024"></script>
 </body>
 </html>

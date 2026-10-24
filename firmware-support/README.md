@@ -1,6 +1,8 @@
 # 当前固件的依赖源码交接
 
-此目录补齐39份应用源之外的实际构建依赖，全部是源码、许可证、哈希与离线测试；不含固件二进制、编译缓存、模型、设备身份、密钥、校准数据或上传器。源码来源是10月22日已验证安装对应的ARM构建输入，不是用最新库版本重新猜配。
+此目录补齐应用源之外的实际构建依赖，全部是源码、许可证、哈希与离线测试；不含固件二进制、编译缓存、模型、设备身份、密钥、校准数据或上传器。依赖沿用已安装的冻结输入；各次修改与安装记录分开保留。
+
+**2026-10-24 已完成静止安装：** QMI 机身轴取反在 `int16=-32768` 时饱和至 `32767`，避免满量程符号翻转。此前全部65,536值通过桌面 C++ 测试；本次完成实际 ARM 编译、ELF 检查、OpenOCD 上传和新启动核对，安装 ELF 为 `3ebc523e713fd4398807e7a19b8934ba96c30b7c6611a5c8b066ed7dec7ec9ad`。托盘禁动保持，未验证运动效果。历史记录不改写；本轮见 `validation/static-20261024.json` 和 [实际结果](../docs/STATIC_DEBUG_20261024.md)。
 
 ## 绑定对象
 
@@ -12,7 +14,7 @@
 - 官方运行链来源commit：`9dc36787bc61b102c2da0f97c9c758e639e90ab8`。
 - FTServo来源commit：`64922cda46e56b21b8c1d9e830d936a1941645ae`，当前 `Read` 已修改，不能称未改厂家SDK。
 
-`BUILD_BINDING.json`保留安装pointer、ARM审查及安装receipt的SHA指纹、库版本、实际编译sketch哈希和证据边界；原始带设备信息的receipt没有复制。`SOURCE_LOCK.json`逐文件锁定本目录输入；全部路径相对本目录。
+`BUILD_BINDING.json`保留历史安装pointer、ARM审查及安装receipt的SHA指纹、库版本、历史编译sketch哈希和证据边界；原始带设备信息的receipt没有复制。`SOURCE_LOCK.json`逐文件锁定当前目录输入；全部路径相对本目录。
 
 | 冻结库 | library.properties版本 | 交接方式 |
 |---|---|---|
@@ -48,7 +50,7 @@ python -B firmware-support/verify_sources.py
 arduino-cli compile --profile default --build-path firmware-support/.build-unoq firmware-support/sketch
 ```
 
-这是编译命令，没有上传或设备操作。此次交接没有重新运行ARM编译，也不保证另一套安装路径、编译器或板支持包产生逐字节相同ELF；新构建应自行记录完整工具链和新artifact指纹。
+这是编译命令，没有上传或设备操作。另一套安装路径、编译器或板支持包不保证产生逐字节相同ELF；新构建应自行记录完整工具链和新artifact指纹。10月23日实际ARM编译与静止安装记录见 `validation/imu-sync-install-20261023.json`。
 
 重要区别：应用清单中原 `sketch/sketch.yaml` SHA是 `89cec193…`，实际编译profile为相对冻结依赖后的 `58f2d25c…`，完整哈希在BUILD_BINDING。其余实际编译C++/头文件按该文件逐项绑定。此目录单独保留实际构建输入，不自动替换 `robot-app/` 或修改其根清单。
 
@@ -69,14 +71,21 @@ FTServo遵循随库MIT许可证；RouterBridge/RPClite遵循随库MPL-2.0，其�
 python -B firmware-support/run_native.py
 ```
 
-脚本先核对源码与“实际函数逐字提取”绑定，再把五组原生程序编译到系统临时目录、运行并回收，结果存 `validation/native-result.json`。不执行Arduino CLI、串口、SSH、网络或舵机命令。已有便携包原生回归：
+脚本先核对源码与“实际函数逐字提取”绑定，再把六组原生程序编译到系统临时目录、运行并回收，结果存 `validation/native-result.json`。不执行Arduino CLI、串口、SSH、网络或舵机命令。已有便携包原生回归：
 
 - 自定义实际解析函数：3672998断言、1845313次普通流前后一致比较，人工三FF恢复15轴。
 - 实际FTServo `SCS.cpp`/`SCSerial.cpp` 原版与修复版：各716079断言；修改版额外FF预算为10。
 - 实际RouteStartup头：526断言；RouteRefresh头：13组检查。
+- 实际QMI驱动：复现未锁定读取的跨样本字节混合，验证同步锁定、无新数据、短读恢复和有界命令握手。
 
 SDK测试的HLSCL构造/EnableTorque两段从真实HLSCL源码逐字提取，厂家校准头用于Fake UART断言；这是数字夹具，不会对真实电机发送上力或卸力。原生结果中的 `deployed=false` 是该测试自身不部署的声明，历史安装状态另见BUILD_BINDING，不应混读。
 
 本次首次运行时本机编译器诊断文本遇到默认编码解码警告，编译与五组测试均exit 0；runner现显式解码并容忍诊断编码差异。测试算法和源码未因此修改，未重复ARM构建。
 
 这些检查证明源码、解析与启动状态机边界，不证明ARM时序、无线连续性或实物站立稳定。后两项仍未通过，不能因为源码交接完整就标为稳定版。
+
+## 2026-10-23 IMU同步读取修复
+
+按QST QMI8658C Rev B第13节，I²C初始化关闭内部AHB时钟门控，启用六轴同步锁定；读取STATUSINT锁住当前样本，必要时等待12μs，再连续读完12字节并释放锁。命令完成/ACK等待各最多20ms。量程、ODR、轴映射、滤波阈值及机械零位未改。
+
+新旧固件指纹分别保留；旧指纹与 `compiled_sketch_sha256` 是历史记录。新固件经过ARM编译、外部短跳转重定位检查及真实OFF状态验证，不包含运动验收。

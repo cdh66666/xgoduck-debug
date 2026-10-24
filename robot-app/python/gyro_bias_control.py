@@ -16,6 +16,9 @@ class FrozenGyroBias:
     MAX_GYRO_STD_DPS = .35
     MAX_GYRO_MEAN_DPS = 20.
     GRAVITY_DOT_MIN = math.cos(math.radians(2.))
+    MAX_JOINT_SPEED_DPS = 2.
+    MAX_JOINT_SPAN_DEG = .35
+    ALL_JOINTS_MASK = 0x7fff
 
     def __init__(self):
         self.reset()
@@ -30,13 +33,35 @@ class FrozenGyroBias:
         self.mean = self.std = None
         self.duration_s = 0.
         self.application = None
+        self._clear_window(reason)
 
     def _clear_window(self, reason):
         self.samples.clear()
+        self._gyro_sum = [0.] * 3
+        self._gyro_sum_sq = [0.] * 3
+        self._joint_index = 0
+        self._joint_min = [collections.deque() for _ in range(15)]
+        self._joint_max = [collections.deque() for _ in range(15)]
         self.ready = False
         self.reason = reason
         self.mean = self.std = None
         self.duration_s = 0.
+
+    def _track_joint_window(self, angles):
+        # Amortized O(15): rescanning 15*256 angles at 100 Hz stalls the receiver
+        # on the board. Monotonic queues retain the exact rolling extrema.
+        index=self._joint_index;self._joint_index+=1
+        cutoff=index-self.samples.maxlen+1
+        quiet=True
+        for i,value in enumerate(angles):
+            lo,hi=self._joint_min[i],self._joint_max[i]
+            while lo and lo[0][0]<cutoff:lo.popleft()
+            while hi and hi[0][0]<cutoff:hi.popleft()
+            while lo and lo[-1][1]>=value:lo.pop()
+            while hi and hi[-1][1]<=value:hi.pop()
+            lo.append((index,value));hi.append((index,value))
+            if hi[0][1]-lo[0][1]>self.MAX_JOINT_SPAN_DEG:quiet=False
+        return quiet
 
     def observe(self, *, acc, gyro, angles, velocities, seq, sample_us,
                 mask, imu_ok, eligible, epoch, now):
@@ -70,6 +95,13 @@ class FrozenGyroBias:
         if not raw_valid:
             self._clear_window('invalid_imu_feedback')
             return 'rejected'
+        if (mask != self.ALL_JOINTS_MASK or len(angles) != 15 or len(velocities) != 15
+                or not all(math.isfinite(v) for v in [*angles, *velocities])):
+            self._clear_window('incomplete_joint_feedback')
+            return 'rejected'
+        if max(abs(v) for v in velocities) > self.MAX_JOINT_SPEED_DPS:
+            self._clear_window('joints_moving')
+            return 'rejected'
         norm = math.sqrt(sum(v*v for v in acc))
         if abs(norm/9.8-1) > .1 or norm < 1e-6:
             self._clear_window('acceleration_not_stationary')
@@ -82,14 +114,28 @@ class FrozenGyroBias:
             first = self.samples[0]
             if sum(a*b for a,b in zip(gravity,first[2])) < self.GRAVITY_DOT_MIN:
                 self._clear_window('pose_changed')
-        self.samples.append((sample_us, tuple(gyro), gravity, tuple(angles[:14])))
+        if not self._track_joint_window(angles):
+            self._clear_window('joint_pose_changed')
+            self._track_joint_window(angles)
+        # Keep the exact same finite window without rescanning 3*256 samples
+        # twice on every 100 Hz callback while holding the controller lock.
+        # Raw DQS1 gyro units are 1/32 dps; these bounded sums are exact doubles.
+        if len(self.samples) == self.samples.maxlen:
+            expired = self.samples[0][1]
+            for i, value in enumerate(expired):
+                self._gyro_sum[i] -= value
+                self._gyro_sum_sq[i] -= value*value
+        for i, value in enumerate(gyro):
+            self._gyro_sum[i] += value
+            self._gyro_sum_sq[i] += value*value
+        self.samples.append((sample_us, tuple(gyro), gravity, tuple(angles)))
         self.duration_s = ((sample_us-self.samples[0][0]) & 0xffffffff)/1e6
         if len(self.samples) < self.MIN_SAMPLES or self.duration_s < self.MIN_SECONDS:
             self.reason = 'collecting_off_stationary_window'
             return 'collecting'
         n = len(self.samples)
-        mean = tuple(sum(row[1][i] for row in self.samples)/n for i in range(3))
-        std = tuple(math.sqrt(sum((row[1][i]-mean[i])**2 for row in self.samples)/(n-1)) for i in range(3))
+        mean = tuple(value/n for value in self._gyro_sum)
+        std = tuple(math.sqrt(max(0., self._gyro_sum_sq[i]-self._gyro_sum[i]*mean[i])/(n-1)) for i in range(3))
         self.mean, self.std = mean, std
         self.ready = max(std) <= self.MAX_GYRO_STD_DPS
         self.reason = 'qualified_pending_explicit_start' if self.ready else 'gyro_variance_too_high'

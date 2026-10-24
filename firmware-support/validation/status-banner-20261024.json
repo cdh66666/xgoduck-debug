@@ -1,0 +1,49 @@
+{
+  "schema": "xgoduck-model-banner-ui-v1",
+  "date": "2026-10-24",
+  "before": {
+    "durationMs": 19990.19999998808,
+    "samples": 739,
+    "bannerVisibilityChanges": 81,
+    "bannerTextChanges": 90,
+    "captionChanges": 0,
+    "recorderChanges": 0,
+    "visibleTexts": [
+      "反馈延迟 · 保留姿态",
+      "接收间断 · 保留姿态"
+    ],
+    "lateSamples": 90,
+    "errors": [],
+    "writes": [],
+    "motionLocked": true
+  },
+  "after": {
+    "durationMs": 19973,
+    "samples": 747,
+    "bannerVisibilityChanges": 0,
+    "bannerTextChanges": 74,
+    "captionChanges": 0,
+    "recorderChanges": 0,
+    "visibleTexts": [],
+    "lateSamples": 69,
+    "errors": [],
+    "writes": [],
+    "motionLocked": true,
+    "cssCasesPassed": 10
+  },
+  "hardware_state": {
+    "mode": "off",
+    "enabled": false,
+    "motion_inhibited": true
+  },
+  "hardware_writes": 0,
+  "javascript_tests_passed": 9,
+  "workbench_assertions": 331,
+  "raw_local_evidence": "pc/qa/status-stability-20261024/*-banner.json",
+  "scope": "Workbench owns reception age; only its duplicate model overlay is suppressed. Loading/model/graphics errors, paused/replay and standalone warnings remain. No telemetry, buffering or control freshness changes.",
+  "sources": {
+    "pc/index.html": "1dda1a105d877cbfdcd2e996f78f6dd795cbfd9c96943df6ddd21ce1e81143d9",
+    "pc/assets/imu-model.html": "f8cf6118faa2439137d0de12e143a4ed492106d293fd6d05710d24ed19f452ca",
+    "pc/assets/imu-model.css": "2bdbe0b5199d3a4d59180395a9ee756f9dea5c1a4c896c1b80e328fba48a0a10"
+  }
+}

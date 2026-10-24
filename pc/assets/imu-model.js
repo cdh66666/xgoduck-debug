@@ -16,8 +16,9 @@ export function deriveAttitude(acc, previousRoll = 0) {
 // Gravity keeps its original attitude baseline. Optional MCU power-on heading
 // is presented separately on the same delayed PC observation timeline.
 export function officialWorkbenchPose(s) {
+  const age=s?.native_feedback_age_ms??s?.feedback_age_ms;
   if(!s||s.imu_ok!==true||!vector(s.gravity)||!Number.isInteger(s.mcu_seq)||
-    !Number.isFinite(s.feedback_age_ms)||s.feedback_age_ms<0||s.feedback_age_ms>=150||
+    !Number.isFinite(age)||age<0||age>=150||
     !Number.isFinite(s.pc_observed_monotonic_s))return null;
   const attitude=deriveAttitude(s.gravity);
   if(!attitude)return null;
@@ -523,12 +524,13 @@ async function boot(){
   const get=id=>document.getElementById(id),tracker=new ImuPoseTracker(),angleHistory=new PoseAngleHistory(),displayHistory=new DisplayPoseHistory();
   let playback=null,officialPlayback=null,shownPose=null;
   let officialMode=false,pendingOfficial=null,officialGapSince=null,officialCalibration='waiting';
-  // The operator chose a fixed 0.2 s display delay; stored older choices are ignored.
+  let replayFrame=null,replayIdentity=null;
+  // Present the newest real observation. Do not queue a Wi-Fi burst for replay.
   // Chart shares the 40 FPS render clock; a 33 ms gate would still draw every other frame.
-  const displayDelayMs=100,displayFps=40,chartFrameMs=1000/displayFps;
+  const displayDelayMs=0,displayFps=40,chartFrameMs=1000/displayFps;
   let pending=null,pendingNative=null,nativeTracker=null,kinematics=null,modelShift=null,heading=null,headingState=null;
   let model=null,loaded=false,scene,camera,renderer,controls,center,size,THREE,graphics=null;
-  let highlightedIds=[],currentTracker=null,pendingCurrent=null,currentRows=[],currentPaintKey='',heatFromCurrent=null;
+  let highlightedIds=[],currentTracker=null,pendingCurrent=null,currentRows=[],currentPaintKey='',heatFromCurrent=null,numberingProgress=null;
   const currentScale=2000;
   let renderCount=0,renderStart=null,lastMetricsAt=0,lastReadingsAt=0;
   const receiveRecoveryMs=5000;
@@ -544,6 +546,12 @@ async function boot(){
       mesh.material.color.setHex(mesh.userData.baseColor);
       mesh.material.color.lerp(new THREE.Color(0xed452e),heat);
       mesh.material.emissive.setHex(0xff2015);mesh.material.emissiveIntensity=heat*.35;
+      if(numberingProgress){
+        const id=mesh.userData.motorId,next=id===numberingProgress.target;
+        if(numberingProgress.confirmed.includes(id))mesh.material.color.setHex(0x77d1ac);
+        if(next)mesh.material.color.setHex(0xe9b96d);
+        mesh.material.emissive.setHex(next?0xe9b96d:0);mesh.material.emissiveIntensity=next ? .15 : 0;
+      }
       if(mesh.userData.selectionOutline)mesh.userData.selectionOutline.visible=selected;
       if(mesh.userData.holdMarker)mesh.userData.holdMarker.visible=current?.held===true;
     }
@@ -567,8 +575,12 @@ async function boot(){
   const text=(id,value)=>{const element=get(id);if(element&&element.textContent!==value)element.textContent=value;};
   get('imu-current-curve-open').addEventListener('click',()=>window.parent.postMessage({type:'imu-current-curve-open'},location.origin));
   const paintOfficialReception=now=>{
+    if(replayFrame)return;
     const paused=tracker.mode==='paused',fresh=tracker.mode==='live';
-    document.body.dataset.live=String(fresh);document.body.dataset.mode=tracker.mode;
+    const presentation=document.body.dataset.playbackState;
+    document.body.dataset.live=String(fresh);document.body.dataset.receiveMode=tracker.mode;
+    document.body.dataset.mode=!paused&&['gap','underflow','buffering'].includes(presentation)?presentation:tracker.mode;
+    text('imu-model-state',paused?'画面已暂停':!loaded?'模型未加载':presentation==='gap'?'源数据缺帧 · 保留姿态':presentation==='underflow'?'反馈延迟 · 保留姿态':presentation==='buffering'?'等待首帧姿态':fresh?'最新实测姿态 · 无附加缓冲':'接收间断 · 保留姿态');
     text('imu-receive-state',paused?'当前接收已暂停':!hasReceivedLive?'等待当前接收':
       !fresh&&officialGapSince!==null&&now-officialGapSince>=receiveRecoveryMs?'当前接收已中断 · 保留历史姿态':
       now-lastReceiveGapAt<receiveRecoveryMs?'近5秒接收有间断 · 保留最近姿态':
@@ -578,7 +590,7 @@ async function boot(){
   const showBufferChoice=()=>{
     document.body.dataset.playbackDelayMs=String(displayDelayMs);
     const history=get('imu-angle-history');
-    if(history)history.title='模型、读数和曲线共用接收时轴，延后'+(displayDelayMs/1000).toFixed(1)+'秒显示历史姿态，目标'+displayFps+'FPS。当前接收状态单独显示，传输到达时间不能证明实物姿态仍新鲜。只在已收到的真实端点间插值，真实源缺口超过300ms断线。';
+    if(history)history.title='模型、读数和曲线直接显示最新实测姿态，不积攒历史帧、不外推。当前接收状态单独显示，真实源缺口超过300ms断线。';
   };
   showBufferChoice();
   const applyNative=result=>{
@@ -662,6 +674,7 @@ async function boot(){
       document.body.dataset.poseHistorical=String(!!shownPose);requestRender();return;
     }
     document.body.dataset.mode=result.mode;
+    text('imu-model-state',result.mode==='paused'?'画面已暂停':result.mode==='live'?'实时姿态':result.reason==='模型未加载'?'模型未加载':'画面已冻结');
     document.body.dataset.fusion=result.pose?.boardAttitude?result.pose.boardAlgorithm:result.pose?.fused?'gravity-ekf-v1':'acceleration-only';
     document.body.dataset.gyroBias=result.pose?.gyroBiasCorrected?'confirmed-stationary':'none';
     // Keep control freshness immediate, but latch the *display* warning so
@@ -679,7 +692,7 @@ async function boot(){
       text('imu-sample-quality',(rate===null?'—':rate.toFixed(0))+' 采样/秒 · '+result.sourceAgeMs.toFixed(0)+' ms');
       document.body.dataset.sampleRate=rate===null?'':rate.toFixed(1);
     }
-    text('imu-history-state',officialMode?'曲线 · 电脑实际观测时间':'曲线 · 相对接收延后0.1秒');
+    text('imu-history-state',officialMode?'曲线 · 鸭子源时轴':'曲线 · 最新实测');
     if(get('imu-receive-state'))get('imu-receive-state').title=result.reason;
     document.body.dataset.poseHistorical=String(!!shownPose);
     if(get('imu-model-yaw-zero'))get('imu-model-yaw-zero').disabled=result.mode!=='live'||!headingState?.projectionObservable||nearVerticalProjection(result.pose);
@@ -705,12 +718,13 @@ async function boot(){
     document.body.dataset.headingContinuous='true';document.body.dataset.headingDiscontinuity='';lastReadingsAt=-Infinity;
   };
   const applyOfficial=message=>{
+    if(replayFrame)return;
     officialMode=true;
     const legend=document.querySelector('.current-legend');if(legend)legend.textContent='青色描边=选中关节 · 舵机反馈电流见调试台顶部记录';
-    text('imu-history-state','曲线 · 电脑观测延后0.1秒');
-    get('imu-angle-history').setAttribute('aria-label','最近10秒电脑观测延后0.1秒的官方重力姿态和MCU上电相对航向');
-    get('imu-angle-history').title='模型、15轴、读数和曲线共用电脑实际观测时间，延后0.1秒；仅在已收到端点间插值，超过300ms缺口保留，不外推。航向采用MCU上电姿态为0°，刷新不置零；陀螺积分会漂移，未提供时显示—。';
-    document.querySelector('.readings')?.setAttribute('aria-label','官方主控电脑观测延后0.1秒历史姿态与MCU上电相对航向');
+    text('imu-history-state','曲线 · 鸭子源时轴 · 最新实测');
+    get('imu-angle-history').setAttribute('aria-label','最近10秒鸭子端状态时轴的官方重力姿态和MCU上电相对航向');
+    get('imu-angle-history').title='模型、15轴、读数和曲线直接使用最新实测端点，不积攒历史帧、不外推。真实源缺口超过300ms断线。航向采用MCU上电姿态为0°，刷新不置零；陀螺积分会漂移。';
+    document.querySelector('.readings')?.setAttribute('aria-label','官方主控最新实测姿态');
     if(document.hidden||message.mode==='paused'){
       pendingOfficial=null;officialPlayback?.setPaused(true);officialPlayback?.discard(message.status);
       apply(tracker.hold('paused','页面已暂停'));return;
@@ -735,7 +749,7 @@ async function boot(){
     officialGapSince=null;
     tracker.pose=pose;tracker.mode='live';tracker.lastNew=now-s.feedback_age_ms;tracker.reason='官方主控重力估计';
     hasReceivedLive=true;
-    document.body.dataset.poseClock='pc-observation';
+    document.body.dataset.poseClock='robot-uptime';
     document.body.dataset.nativeMode='official-encoder';
     get('imu-model-yaw-zero').disabled=true;
     text('imu-sample-quality','主控反馈 '+Number(s.feedback_hz||0).toFixed(1)+' Hz · 电脑观测另计');
@@ -743,11 +757,36 @@ async function boot(){
   };
   window.addEventListener('message',event=>{
     if(event.origin!==location.origin||event.source!==window.parent)return;
+    if(event.data?.type==='numbering-progress'&&document.body.dataset.presentation==='numbering'){
+      const value=event.data,ids=[10,11,12,13,14,20,21,22,23,24,30,31,32,33,34];
+      if(value.version!==1||!Array.isArray(value.confirmed)||value.confirmed.length>15||value.confirmed.some(id=>!ids.includes(id))||value.target!==null&&!ids.includes(value.target))return;
+      numberingProgress={confirmed:value.confirmed.slice(),target:value.target};
+      highlightedIds=value.target===null?[]:[value.target];highlightSelection();return;
+    }
+    if(event.data?.type==='motion-replay-frame'&&event.data.version===1){
+      const message=event.data;
+      if(typeof message.id!=='string'||!Number.isFinite(message.time)||!message.status||typeof message.status!=='object')return;
+      if(replayIdentity!==message.id||replayFrame&&message.time<replayFrame.time){displayHistory.reset();shownPose=null;lastStableProjection={roll:null,yaw:null};chartDirty=true;}
+      replayFrame=message;replayIdentity=message.id;officialMode=true;pendingOfficial=null;
+      tracker.mode='replay';document.body.dataset.live='false';document.body.dataset.mode='replay';
+      document.body.dataset.replayId=message.id;document.body.dataset.replayIndex=String(message.index);
+      if(currentTracker)applyCurrent(currentTracker.consume({type:'official-servo-current-state',version:1,mode:'stale'},performance.now()));
+      get('imu-chart-toggle').disabled=true;get('imu-current-curve-open').disabled=true;
+      playback?.setPaused(true);graphics?.fresh();requestRender();return;
+    }
+    if(event.data?.type==='motion-replay-end'&&event.data.version===1){
+      replayFrame=null;replayIdentity=null;officialPlayback?.reset('replay-ended');
+      if(officialPlayback){officialPlayback.acceptedEpoch=null;officialPlayback.acceptedSequence=null;officialPlayback.acceptedObservedMs=null;}
+      displayHistory.reset();shownPose=null;chartDirty=true;document.body.dataset.replayId='';document.body.dataset.replayIndex='';
+      get('imu-chart-toggle').disabled=false;get('imu-current-curve-open').disabled=false;
+      apply(tracker.hold('waiting','等待实时反馈'));requestRender();return;
+    }
     if(event.data?.type==='official-pose-state'&&event.data.version===1){applyOfficial(event.data);return;}
     if(event.data?.type==='imu-model-highlight'){
       const ids=calibrationHighlightIds(event.data);if(ids!==null){highlightedIds=ids;highlightSelection();}return;
     }
     if(event.data?.type==='motor-current-state'||event.data?.type==='official-servo-current-state'){
+      if(replayFrame)return;
       if(!currentTracker){pendingCurrent=event.data;return;}applyCurrent(currentTracker.consume(event.data,performance.now()));return;
     }
     if(event.data?.type==='imu-model-heading-zero'&&event.data.version===1){zeroHeading();return;}
@@ -763,7 +802,7 @@ async function boot(){
     apply(tracker.consume(event.data,performance.now()),event.data.status);
   });
   document.addEventListener('visibilitychange',()=>{if(document.hidden){pending=null;pendingNative=null;pendingOfficial=null;playback?.setPaused(true);apply(tracker.hold('paused','页面已暂停'));if(nativeTracker)applyNative(nativeTracker.hold('paused','页面已暂停'));}else{playback?.setPaused(false);if(officialMode)apply(tracker.hold('waiting','等待反馈'));requestRender();}});
-  setInterval(()=>{const now=performance.now();apply(tracker.tick(now));if(officialMode&&!document.hidden)paintOfficialReception(now);if(!officialMode&&nativeTracker)applyNative(nativeTracker.tick(now));if(currentTracker)applyCurrent(currentTracker.read(now));},100);
+  setInterval(()=>{if(replayFrame)return;const now=performance.now();apply(tracker.tick(now));if(officialMode&&!document.hidden)paintOfficialReception(now);if(!officialMode&&nativeTracker)applyNative(nativeTracker.tick(now));if(currentTracker)applyCurrent(currentTracker.read(now));},100);
   try{
     const modules=await Promise.all([import('../model-assets/vendor/build/three.module.js'),
       import('../model-assets/vendor/examples/jsm/controls/OrbitControls.js'),import('../model-assets/vendor/examples/jsm/loaders/STLLoader.js'),import('./native-pose.js'),import('./relative-heading.js'),import('./pose-playback.js'),import('./motor-current.js'),import('./official-pose-playback.js')]);
@@ -773,10 +812,6 @@ async function boot(){
     heading=new modules[4].RelativeHeading();
     playback=new modules[5].DelayedPosePlayback({fps:displayFps,delayMs:displayDelayMs,maxGapMs:300});
     officialPlayback=new modules[7].OfficialPosePlayback({fps:displayFps,delayMs:displayDelayMs,maxGapMs:300});
-    try{
-      const reference=await fetch('./imu-display-bias.json',{cache:'no-store'});
-      if(reference.ok)tracker.setGyroReference(await reference.json());
-    }catch{ /* Missing/invalid reference leaves the original fusion behavior. */ }
     const viewport=get('imu-model-viewport');scene=new THREE.Scene();
     scene.add(new THREE.HemisphereLight(0xc9f2ff,0x16212c,2.6));
     const key=new THREE.DirectionalLight(0xdff8ff,3.1);key.position.set(.35,-.45,.45);scene.add(key);
@@ -881,6 +916,46 @@ async function boot(){
       let continuePlayback=false,cameraChanged=false;
       inRender=true;
       try{
+        if(replayFrame){
+          if(document.hidden||!graphics.canDraw()||!viewportVisible)return;
+          const s=replayFrame.status,estimated=replayFrame.source==='legacy-mcu'&&s.body_attitude_estimate?.basis==='raw_acceleration_only';
+          const attitude=deriveAttitude(estimated?s.body_attitude_estimate.gravity:s.gravity),joints=s.angles;
+          document.body.dataset.replayPoseBasis=estimated?'estimated-raw-acc':'recorded-filtered-gravity';
+          const valid=attitude&&s.imu_ok!==false&&(!Number.isFinite(s.feedback_age_ms)||s.feedback_age_ms<150)&&!replayFrame.gap;
+          if(currentTracker){
+            const current=s.servo_current;
+            const rows=currentTracker.consume({type:'official-servo-current-state',version:1,current,mode:current?'live':'stale',observedAtMs:Date.now()},now);
+            applyCurrent(rows||currentTracker.consume({type:'official-servo-current-state',version:1,mode:'stale'},now));
+            document.body.dataset.currentHistorical='true';
+          }
+          if(valid){
+            shownPose={...attitude,quaternion:ObservedPoseTween.tilt(attitude)};
+            const h=s.display_heading;
+            const heading=h?.available===true&&Number.isFinite(h.deg)?h.deg:null;
+            if(heading!==null){const angle=heading*Math.PI/180;shownPose.quaternion=ObservedPoseTween.multiply([0,0,Math.sin(angle/2),Math.cos(angle/2)],shownPose.quaternion);}
+            model.quaternion.fromArray(shownPose.quaternion);
+            const jointsValid=Array.isArray(joints)&&joints.length===15&&joints.every(Number.isFinite)&&s.servo_ids?.length===15;
+            if(jointsValid){
+              const matrices=kinematics.solve(joints.map(value=>value*Math.PI/180));
+              for(const mesh of model.children){mesh.matrix.set(...matrices[mesh.name].flat());mesh.matrix.premultiply(modelShift);mesh.matrixWorldNeedsUpdate=true;}
+              document.body.dataset.replayJoints=JSON.stringify(joints);
+            }
+            document.body.dataset.replayPoseValid=String(!!jointsValid);
+            document.body.dataset.pitch=attitude.pitch.toFixed(3);document.body.dataset.roll=attitude.roll.toFixed(3);
+            document.body.dataset.yaw=heading===null?'':heading.toFixed(3);
+            text('imu-model-pitch',attitude.pitch.toFixed(1)+'°');text('imu-model-roll',attitude.roll.toFixed(1)+'°');
+            text('imu-model-yaw',heading===null?'—':heading.toFixed(1)+'°');
+            text('imu-model-mouth',jointsValid?joints[14].toFixed(1)+'°':'—');
+            text('imu-projection-note',replayFrame.source==='legacy-mcu'?'旧原始包 · 加速度估算姿态，动态时有误差':'历史实机 IMU 与编码器 · 相对航向会漂移');
+            text('imu-model-state',jointsValid?'历史回放 · '+replayFrame.time.toFixed(2)+' s':'历史回放 · 关节缺测');
+          }else{document.body.dataset.replayPoseValid='false';text('imu-model-state','历史缺测 · 保留最近姿态');}
+          document.body.dataset.live='false';document.body.dataset.mode='replay';document.body.dataset.poseHistorical='true';
+          text('imu-receive-state','历史记录 · 不代表当前鸭子姿态');text('imu-sample-quality','只读回放');
+          text('imu-history-state','整次动作倾角见下方时间轴');get('imu-model-yaw-zero').disabled=true;
+          const chart=get('imu-angle-history');chart.hidden=true;get('imu-chart-toggle').setAttribute('aria-expanded','false');
+          cameraChanged=controls.update();renderer.render(scene,camera);nextDrawAt=now+1000/displayFps;
+          return;
+        }
         apply(tracker.tick(now));
         if(document.hidden||!graphics.canDraw()||tracker.mode==='paused'||!viewportVisible){renderCount=0;renderStart=null;return;}
         const frame=playback.step(now),draw=drawRequested||!!frame;drawRequested=false;
@@ -905,10 +980,11 @@ async function boot(){
               text('imu-model-mouth',frame.jointAnglesDegrees[14].toFixed(1)+'°');
               document.body.dataset.mouthAngleDeg=frame.jointAnglesDegrees[14].toFixed(2);
               document.body.dataset.mouthLive='false';document.body.dataset.jointSourceMs=String(frame.sourceTimeMs??'');
-              const scope=document.querySelector('.scope');if(scope){scope.textContent='编码器姿态 · 延后0.1秒';scope.hidden=true;}
+              const scope=document.querySelector('.scope');if(scope){scope.textContent='编码器姿态 · 最新实测';scope.hidden=true;}
             }
             document.body.dataset.poseHistorical='true';
             document.body.dataset.modelSourceMs=String(frame.sourceTimeMs??'');
+            if(frame.sourceGap)displayHistory.markGap();
             if(displayHistory.append(shownPose,frame)){
               chartDirty=true;document.body.dataset.chartSamples=String(displayHistory.rows.length);
               document.body.dataset.chartSourceMs=String(displayHistory.elapsed);
@@ -920,9 +996,10 @@ async function boot(){
           }
           continuePlayback=playback.rows.length>0&&frame.state!=='underflow';
         }
-        text('imu-model-state',officialMode?(shownPose?'官方模型与读数 · 延后0.1秒历史姿态':'等待官方主控'):(shownPose?'模型与读数 · 延后0.1秒历史姿态':'准备模型数据'));
-        get('imu-model-state').title=officialMode?'官方重力、15轴编码器、读数和曲线共用延后0.1秒电脑实际观测时轴；只在真实端点间插值，缺帧保留历史画面。航向以MCU上电姿态为0°，刷新不置零，陀螺积分会漂移。':'模型、读数和曲线共用延后0.1秒的历史时间轴，只在已接收端点之间插值，不外推；'+
-          (frame?.state==='underflow'?'历史缓冲已用完，保持最后显示姿态；':frame?.state==='gap'?'真实源缺口超过插值范围，保持姿态；':'')+
+        if(officialMode)paintOfficialReception(now);
+        else text('imu-model-state',tracker.mode==='paused'?'画面已暂停':tracker.mode==='live'?'实时姿态':loaded?'画面已冻结':'加载模型');
+        get('imu-model-state').title=officialMode?'官方重力、15轴编码器、读数和曲线直接显示最新实测端点；不积攒历史帧、不外推。接收年龄与动作资格独立判断。':'模型、读数和曲线只使用已接收的真实姿态，不外推；'+
+          (frame?.state==='underflow'?'反馈已失鲜，保持最后实测姿态；':frame?.state==='gap'?'真实源缺口超过插值范围，保持姿态；':'')+
           (tracker.mode==='live'?'当前接收状态独立判定为新鲜，画面仍是历史姿态':'当前接收已失鲜，历史显示不代表实物当前姿态');
         if(shownPose&&now-lastReadingsAt>=1000/displayFps){
           const visual=shownPose,nearVertical=nearVerticalProjection(visual);
@@ -944,17 +1021,17 @@ async function boot(){
             (nearVertical?(officialMode?' · 横滚近竖直，投影可能不稳定':' · 近竖直：≈为不稳定投影，“上次”为历史值'):''));
           get('imu-model-roll').dataset.quality=roll.quality;get('imu-model-yaw').dataset.quality=yaw.quality;
           get('imu-model-roll').title=roll.quality==='historical'?'接近竖直，显示上次可靠投影，不代表当前角度':
-            roll.quality==='unstable'?'接近竖直，显示投影对小扰动敏感':'横滚角度与延后0.1秒的模型历史姿态一致';
+            roll.quality==='unstable'?'接近竖直，显示投影对小扰动敏感':'横滚角度与模型使用同一最新实测姿态';
           get('imu-model-yaw').title=officialMode?(headingUnavailable?'尚未收到有效MCU上电相对航向；不在网页估算或积分':
             yaw.quality==='historical'?'上次有效MCU上电相对航向；仅保留历史，不补转；陀螺积分会漂移':
-            'MCU上电姿态为0°，刷新页面不置零；同0.2秒历史时轴，陀螺积分会漂移'):headingUnavailable?'官方接口未提供航向；不估算或积分':yaw.quality==='historical'?'接近竖直，显示上次可靠相对航向，不代表当前角度':
-            yaw.quality==='unstable'?'接近竖直，相对航向投影不稳定且陀螺积分会漂移':'延后0.1秒模型历史姿态的相对航向；陀螺积分仍会漂移';
+            'MCU上电姿态为0°，刷新页面不置零；与模型使用同一实测端点，陀螺积分会漂移'):headingUnavailable?'官方接口未提供航向；不估算或积分':yaw.quality==='historical'?'接近竖直，显示上次可靠相对航向，不代表当前角度':
+            yaw.quality==='unstable'?'接近竖直，相对航向投影不稳定且陀螺积分会漂移':'最新实测姿态的相对航向；陀螺积分仍会漂移';
           document.body.dataset.headingMode=yaw.quality==='current'?'delayed-relative':yaw.quality==='unstable'?'unstable-relative':
             yaw.quality==='historical'?'last-observed-relative':'unavailable';
           document.body.dataset.yaw=yaw.quality==='current'||yaw.quality==='unstable'?yaw.value.toFixed(3):'';
           if(officialMode){document.body.dataset.headingReference='mcu-power-on-full-pose';document.body.dataset.headingIdentity=frame?.headingIdentity||'';}
           get('imu-model-yaw-zero').disabled=officialMode||tracker.mode!=='live'||!headingState?.projectionObservable||nearVerticalProjection(tracker.pose);
-          get('imu-model-yaw-zero').title=officialMode?'MCU上电自动设为相对0°，网页刷新不重置参考':'仅将当前新鲜观测朝向设为模型与曲线的显示零度；历史曲线重新填充0.2秒';
+          get('imu-model-yaw-zero').title=officialMode?'MCU上电自动设为相对0°，网页刷新不重置参考':'仅将当前新鲜观测朝向设为模型与曲线的显示零度；历史曲线从该观测重新开始';
           document.body.dataset.roll=roll.quality==='current'||roll.quality==='unstable'?roll.value.toFixed(3):'';
           document.body.dataset.pitch=visual.pitch.toFixed(3);lastReadingsAt=now;
         }
@@ -988,6 +1065,6 @@ async function boot(){
     controls.addEventListener('change',requestRender);requestRender();
     get('imu-model-yaw-zero').addEventListener('click',event=>{if(event.isTrusted===true)zeroHeading();});
     if(window.parent!==window)window.parent.postMessage({type:'imu-model-ready',version:1,meshes:model.children.length,modelVersion:data.version,nativePoseVersion:1},location.origin);
-  }catch(error){document.body.dataset.loaded='false';apply(tracker.hold('stale','模型未加载'));get('imu-model-state').title=String(error.message);}
+  }catch(error){document.body.dataset.loaded='false';document.body.dataset.modelError='true';apply(tracker.hold('stale','模型未加载'));get('imu-model-state').title=String(error.message);}
 }
 if(typeof document!=='undefined'&&typeof window!=='undefined')boot();

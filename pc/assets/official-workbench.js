@@ -2,12 +2,20 @@
 (() => {
   'use strict';
   const $=id=>document.getElementById(id), IDS=[10,11,12,13,14,20,21,22,23,24,30,31,32,33,34];
-  let last=null,page='imu',owned=false,busy=false,commandBusy=false,selected=10,stoppedAt=null,actionGeneration=0,ownedForwardSpeed=.2,controlledMode=null,rollPending=false,rollSeen=false,statusErrorMessage=null,sessionPending=null,feedbackGapAt=null,lastCommandAckAt=null;
+  let last=null,lastReceivedAt=0,page='imu',owned=false,busy=false,commandBusy=false,selected=10,stoppedAt=null,actionGeneration=0,ownedForwardSpeed=.2,controlledMode=null,rollPending=false,rollSeen=false,statusErrorMessage=null,sessionPending=null,startRequest=null,feedbackGapAt=null,lastCommandAckAt=null;
   const keyboard=window.DuckKeyboard.create();
+  let history=null;
   const STAND_ONLY=window.XGO_RELEASE_PROFILE?.schema==='xgoduck-stand-getup-publication-profile-v1';
   const BASIC=window.XGO_RELEASE_PROFILE?.schema==='xgoduck-basic-keyboard-publication-v2';
-  const BASIC_MODEL_SHA='8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f';
+  const BASIC_MODEL_SHA='57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db';
   const labels={off:'已卸力',shadow:'只推理',hold:'校准中位保持',policy:'策略遥控',servo_debug:'舵机维护'};
+  function maintenanceActive(s){return s?.mode==='servo_debug'||s?.mode==='calibrate'||s?.factory_calibration?.active;}
+  function motionLabel(s){
+    if(maintenanceActive(s))return '校准 / 维护';
+    if(s?.enabled===true&&(s.mode==='off'||s.mode==='shadow'))return '卸力中';
+    if(s?.enabled===false&&(s.mode==='hold'||s.mode==='policy'))return '上力中';
+    return s?.enabled===false?'已卸力':labels[s?.mode]||s?.mode||'待读取';
+  }
   const text=(id,value)=>{if($(id)&&$(id).textContent!==value)$(id).textContent=value;};
   function statusItem(id,label,value,detail,state='unknown'){
     const item=$(id);if(!item)return;
@@ -29,12 +37,16 @@
     }
   };
   function sendPose(state){
-    $('imu-duck-frame')?.contentWindow?.postMessage({type:'official-pose-state',version:1,status:state,frames:last?.runtime_frames,mode:document.hidden||page!=='imu'?'paused':state?'live':'stale',observedAtMs:Date.now()},location.origin);
-    $('imu-duck-frame')?.contentWindow?.postMessage({type:'official-servo-current-state',version:1,current:state?.servo_current,mode:document.hidden||page!=='imu'?'paused':state?'live':'stale',observedAtMs:state?.pc_observed_unix_s*1000},location.origin);
+    const current=state?{...state,feedback_age_ms:feedbackAge(state)}:null;
+    if(!history?.active){
+      $('imu-duck-frame')?.contentWindow?.postMessage({type:'official-pose-state',version:1,status:current,frames:last?.runtime_frames,mode:document.hidden||page!=='imu'?'paused':current&&current.feedback_age_ms<150?'live':'stale',observedAtMs:Date.now()},location.origin);
+      $('imu-duck-frame')?.contentWindow?.postMessage({type:'official-servo-current-state',version:1,current:state?.servo_current,mode:document.hidden||page!=='imu'?'paused':state?'live':'stale',observedAtMs:state?.pc_observed_unix_s*1000},location.origin);
+    }
     if(page==='models')$('models-frame')?.contentWindow?.postMessage({type:'bench-models-status',status:state,baseline:last?.baseline,connected:!!state&&!!last?.connected,mode:document.hidden?'paused':state&&last?.connected?'live':'stale'},location.origin);
   }
   function showPage(name){
-    if(page!==name){setCalibrationVisible(false);setTestsVisible(false);}
+    if(page!==name)history?.pause();
+    if(page!==name){leaveControlContext();setCalibrationVisible(false);setTestsVisible(false);}
     page=name;
     document.body.dataset.page=name;
     for(const p of ['imu','install','numbering','models'])$('workflow-'+p).hidden=p!==name;
@@ -48,7 +60,7 @@
     sendPose(last?.runtime);
   }
   document.querySelectorAll('#workflow-tabs button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
-  $('diagnostics-open').onclick=()=>$('diagnostics-dialog').showModal();
+  $('diagnostics-open').onclick=()=>{leaveControlContext();$('diagnostics-dialog').showModal();};
   $('diagnostics-close').onclick=()=>$('diagnostics-dialog').close();
   $('diag-refresh').onclick=()=>poll();
   $('diag-export').disabled=false;
@@ -125,7 +137,7 @@
     text('current-curve-state',currentSeries?'正在更新 · 当前显示历史曲线':'读取电流记录中');
     currentDialog.dataset.state='history';pollCurrentCurve(currentGeneration);
   }
-  function openCurrentCurve(){if(currentDialog.open)return;currentDialog.showModal();drawCurrentCurve();resumeCurrentCurve();}
+  function openCurrentCurve(){if(currentDialog.open)return;leaveControlContext();currentDialog.showModal();drawCurrentCurve();resumeCurrentCurve();}
   $('simple-current').onclick=openCurrentCurve;
   $('current-curve-open').onclick=openCurrentCurve;
   $('simple-current').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();openCurrentCurve();}};
@@ -136,13 +148,14 @@
   window.addEventListener('resize',()=>{if(currentDialog.open)drawCurrentCurve();});
   const trayDialog=$('calibration-tray-dialog'),trayFrame=$('calibration-tray-frame');
   function closeTrayPreview(){trayDialog.close();trayFrame.removeAttribute('src');}
-  $('calibration-tray-open').onclick=e=>{e.preventDefault();if(trayDialog.open)return;trayFrame.setAttribute('src','/assets/calibration-tray.html');trayDialog.showModal();};
+  $('calibration-tray-open').onclick=e=>{e.preventDefault();if(trayDialog.open)return;leaveControlContext();trayFrame.setAttribute('src','/assets/calibration-tray.html');trayDialog.showModal();};
   $('calibration-tray-close').onclick=closeTrayPreview;
   trayDialog.onclose=()=>trayFrame.removeAttribute('src');
   window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===trayFrame.contentWindow&&e.data?.type==='duck-tray-escape'&&trayDialog.open){closeTrayPreview();stop();}});
   const calibrationDialog=$('calibration-flow-dialog');
   function setCalibrationVisible(visible){
     if(!visible&&window.DuckCalibration?.isBusy())return;
+    if(visible)leaveControlContext();
     $('sequence-panel').hidden=!visible;$('pose-calibration-layout').dataset.calibrating='false';$('sequence-toggle').setAttribute('aria-expanded',String(visible));
     if(visible){if(!calibrationDialog.open){calibrationDialog.showModal();window.DuckCalibration?.openFlow();}}
     else{if(calibrationDialog.open)calibrationDialog.close();window.DuckCalibration?.closeFlow();}
@@ -164,8 +177,62 @@
   function selectJoint(id){selected=id;window.dispatchEvent(new CustomEvent('duck-restored-joint',{detail:id}));highlight([id]);window.DuckCalibration?.select(id);paintJoint();}
   function paintJoint(){const i=IDS.indexOf(selected),s=last?.runtime;const position=s?.raw_pos?.[i],zero=s?.zero_pos?.[i];text('sequence-selected',`当前 ID ${selected}`);text('sequence-selected-detail',`ID ${selected} · 编码 ${position??'—'} · 零位 ${zero??'—'}`);window.DuckCalibration?.paint();}
   window.addEventListener('duck-calibration-select',e=>selectJoint(e.detail));
-  $('wl-home').textContent='回正';
-  function homeFeedbackFresh(){const s=last?.runtime;return last?.connected&&s?.full_robot_ready===true&&Number.isFinite(s.feedback_age_ms)&&s.feedback_age_ms>=0&&s.feedback_age_ms<150;}
+  $('wl-home').textContent='校准回中';
+  function feedbackAge(s=last?.runtime){return Number.isFinite(s?.feedback_age_ms)&&s.feedback_age_ms>=0?s.feedback_age_ms+Math.max(0,performance.now()-lastReceivedAt):Infinity;}
+  function ageAtReceipt(s,requestMs){
+    if(!Number.isFinite(s?.feedback_age_ms)||s.feedback_age_ms<0)return Infinity;
+    const cache=Number.isFinite(s.pc_cache_age_ms)?s.pc_cache_age_ms:0;
+    const native=Number.isFinite(s.native_feedback_age_ms)?s.native_feedback_age_ms:Math.max(0,s.feedback_age_ms-cache);
+    const delivery=Number.isFinite(s.pc_delivery_age_lower_bound_ms)?s.pc_delivery_age_lower_bound_ms:0;
+    const sinceObservation=Date.now()-s.pc_observed_unix_s*1000;
+    // Browser and local server share the PC wall clock. Account for time in
+    // the response queue too; receiving an old reply does not renew its age.
+    return Number.isFinite(sinceObservation)&&sinceObservation>=0?
+      Math.max(s.feedback_age_ms,native+delivery+sinceObservation):s.feedback_age_ms+requestMs;
+  }
+  function homeFeedbackFresh(){return last?.connected&&last?.runtime?.full_robot_ready===true&&feedbackAge()<150;}
+  let reported=null,reportedAt=0;
+  function reportedAge(){return reported?reported.feedback_age_ms+Math.max(0,performance.now()-reportedAt):Infinity;}
+  function paintReportedState(){
+    // Transport liveness, last reported hardware state, and control freshness
+    // are different facts. A late packet must not invent four hardware faults.
+    const age=reportedAge();
+    const transport=!!(last?.wireless_transport_alive||last?.connected);
+    // Only the server can observe this link. A browser/render scheduling pause
+    // ages the visible report, but is not evidence that Wi-Fi disconnected.
+    const receiptAge=last?.status_stream?.last_received_age_ms??0;
+    const interrupted=!transport||receiptAge>=2000;
+    statusItem('simple-link','无线',statusErrorMessage?'待读取':!transport?'未连接':interrupted?'反馈中断':'已连接','连接状态与单帧时效分开判断',statusErrorMessage||!transport?'error':interrupted?'pending':'ok');
+    // Reuse the controller's per-joint 150 ms health window: one missed bus
+    // read is not a lost servo. Remove only PC delivery/cache ageing here;
+    // the separate feedback age still governs all control permission.
+    const jointAges=reported?.joint_feedback_age_ms;
+    const pcAge=(reported?.pc_delivery_age_lower_bound_ms||0)+(reported?.pc_cache_age_ms||0);
+    const count=Array.isArray(jointAges)&&jointAges.length===IDS.length?
+      jointAges.filter(age=>Number.isFinite(age)&&age>=0&&Math.max(0,age-pcAge)<150).length:
+      new Set((reported?.servo_ids||[]).filter(id=>IDS.includes(id))).size;
+    statusItem('simple-servos','舵机回报',reported?count+' / 15':'— / 15','最近一次主控回报；时效见反馈年龄',!reported?'unknown':count===15?'reported':'error');
+    statusItem('simple-imu','IMU回报',reported?(reported.imu_ok?'正常':'异常'):'待读取','最近一次主控回报；时效见反馈年龄',!reported?'unknown':reported.imu_ok?'reported':'error');
+    const torqueKnown=typeof reported?.enabled==='boolean';
+    statusItem('simple-motion','扭矩回报',torqueKnown?motionLabel(reported):'待读取',maintenanceActive(reported)?'逐轴状态见校准':'最近一次主控回报；时效见反馈年龄',!torqueKnown?'unknown':reported.enabled?'active':'reported');
+    const ageText=Number.isFinite(age)?age<1000?Math.floor(age/10)*10+' ms':(age/1000).toFixed(1)+' s':'—';
+    text('feedback-age',ageText);
+    text('feedback-caption',statusErrorMessage?'服务中断 · 最近回报':interrupted?'反馈中断 · 最近回报':'最近反馈');
+    $('feedback-timing').dataset.state=statusErrorMessage||interrupted?'interrupted':'receiving';
+    $('feedback-timing').dataset.freshness=last?.connected&&age<150?'fresh':'stale';
+    $('feedback-timing').title='顶部设备数值是最近主控回报。反馈满150毫秒即暂停新的控制输入；短时晚到不代表设备掉线。';
+  }
+  function paintFreshness(){
+    const s=last?.runtime,fresh=last?.connected&&feedbackAge()<150;
+    paintReportedState();
+    $('wl-home').disabled=!!s?.motion_inhibited||!!history?.active||!homeFeedbackFresh()||!last?.runtime_basis_matches||!!window.DuckCalibration?.snapshot()?.calibration?.active;
+    $('bench-policy').disabled=$('wl-home').disabled||!keyboardCapabilitiesReady();
+    $('sequence-toggle').disabled=!!s?.motion_inhibited||!!history?.active;
+    $('bench-policy').textContent=s?.motion_inhibited?'托盘静止 · 动作锁定':'站立 / 起身';
+    history?.update();
+    $('bench-pick').disabled=$('bench-roulade').disabled=!fresh||!automaticReady();
+    return homeFeedbackFresh();
+  }
   $('wl-home').onclick=()=>{
     if(!homeFeedbackFresh()||window.DuckCalibration?.snapshot()?.calibration?.active){note('反馈未确认或校准进行中，请等待当前状态。');return;}
     const target=last.runtime.policy_targets;
@@ -181,6 +248,10 @@
   const actions=document.createElement('div');actions.className='bench-actions';
   actions.innerHTML='<button id="bench-policy">站立 / 起身</button><button id="bench-control-stop" class="danger">停止 / 卸力</button>';
   $('bench-test-panel').querySelector('p').after(actions);
+  // Ground operation starts the model; calibration middle belongs with the tray.
+  $('wl-home').before($('bench-policy'));
+  $('wl-home').className='quiet';
+  $('calibration-single-details').before($('wl-home'));
   const extraActions=document.createElement('div');extraActions.className='bench-actions';
   extraActions.innerHTML='<button id="bench-pick" class="quiet">空载 Pick</button><button id="bench-roulade" class="quiet">翻滚模型</button><label class="bench-forward-speed">W 前进<select id="bench-forward-speed" aria-label="W 前进速度"><option value="0.2" selected>0.2 m/s</option></select></label>';
   $('bench-more-tests-content').querySelector('p').after(extraActions);
@@ -197,7 +268,7 @@
   $('bench-tests-toggle').onclick=()=>{const visible=$('bench-test-panel').hidden;setCalibrationVisible(false);setTestsVisible(visible);};
   const dialog=document.createElement('dialog');dialog.id='bench-motion-dialog';dialog.innerHTML='<h2>动作预告</h2><p id="bench-motion-description"></p><p>放好机身、留出动作空间，手离开后启动。停止按钮随时卸力。</p><div class="bench-actions"><button id="bench-cancel" class="quiet">取消</button><button id="bench-confirm">已准备好，启动本次动作</button></div>';
   document.body.append(dialog);let pending=null;
-  $('bench-cancel').onclick=()=>dialog.close();
+  $('bench-cancel').onclick=()=>{pending=null;dialog.close();};
   function forwardSpeed(){return .2;}
   function keyboardCapabilitiesReady(){if(STAND_ONLY)return true;const basis=last?.baseline;if(BASIC)return basis?.basic_keyboard_policy?.active===true&&basis.basic_keyboard_policy.sha256===BASIC_MODEL_SHA&&basis?.walk_policy?.sha256===BASIC_MODEL_SHA;return basis?.fast_policy?.active===true&&basis?.navigation_policy?.active===true&&basis?.manual_pick?.active===true;}
   function paintSpeed(){
@@ -209,7 +280,7 @@
     selector.disabled=owned;selector.title=available?'纯 W 使用前进模型 0.2 m/s，Shift+W 同模型 0.3 m/s；S/A/D使用已准入导航模型，转向优先。':'键盘控制升级待部署，当前不启动键盘遥控。';
   }
   $('bench-forward-speed').onchange=()=>{if(!owned){$('bench-forward-speed').value=String(forwardSpeed());}else{$('bench-forward-speed').value=String(ownedForwardSpeed);}};
-  function manualReady(){const s=last?.runtime;return keyboardCapabilitiesReady()&&owned&&!sessionPending&&controlledMode==='policy'&&last?.connected&&s?.full_robot_ready===true&&s?.mode==='policy'&&s?.recovery?.phase==='walk'&&!s?.pick?.active&&!s?.roulade?.active&&!rollPending;}
+  function manualReady(){const s=last?.runtime;return page==='imu'&&!document.hidden&&keyboardCapabilitiesReady()&&owned&&!sessionPending&&controlledMode==='policy'&&homeFeedbackFresh()&&s?.mode==='policy'&&s?.recovery?.phase==='walk'&&!s?.pick?.active&&!s?.roulade?.active&&!rollPending;}
   const recovering=()=>controlledMode==='policy'&&last?.runtime?.mode==='policy'&&!!last.runtime.recovery?.phase&&last.runtime.recovery.phase!=='walk';
   function clearRecoveryIntent(){if(recovering()){keyboard.clearMotion();keyboard.centerHead();}}
   function automaticReady(){if(STAND_ONLY||BASIC)return false;const s=last?.runtime,forward=s?.forward_specialist||s?.fast_forward,navigation=s?.navigation_specialist,motionHeld=keyboard.snapshot().held.some(key=>['w','s','a','d'].includes(key));return manualReady()&&!motionHeld&&!forward?.active&&!forward?.braking&&!navigation?.active&&!navigation?.braking&&keyboard.snapshot().manualPickDepth===0&&!s?.manual_pick?.active&&!(s?.manual_pick?.target_depth>0);}
@@ -224,7 +295,12 @@
     text('bench-keyboard-state',!keyboardCapabilitiesReady()?'键盘控制升级待部署；回正、校准与停止入口保留。':!owned?'尚未启动，键盘不会动作。':sessionPending?'启动确认中 · 保持零指令心跳，主控确认后才开放按键。':last?.runtime?.pick?.active?'官方 Pick 进行中，头嘴由模型控制。':last?.runtime?.roulade?.active||rollPending?'翻滚请求 / 动作中；历史实物翻滚未通过。':navigation?.braking?`导航退出：主控零速刹停中，剩余 ${Number(navigation.brake_remaining_s||0).toFixed(1)} s；松键后不续走。`:forward?.braking?`前进退出：主控零速度刹停中，剩余 ${Number(forward.brake_remaining_s||0).toFixed(1)} s；行走松键后目标为零，不自动续走。`:STAND_ONLY?'站立保持中 · 头嘴松键保持。':'本页已启动 · W 0.2 / Shift+W 0.3 · S/A/D导航纯点、转向优先（实物待验收）；K低头 / I抬回，松键保持。');
     if(BASIC&&owned&&!sessionPending)text('bench-keyboard-state',recovering()?'原版起身中，保持零指令；站稳后重新按键。新版行走与起身交接尚待实物验收。':'同一actor基础控制 · W .2 / Shift+W .3 / S −.3 / A/D ±1；松键零速。头嘴/翻滚本轮停用，实物效果待验收。');
   }
-  function loseOwnership(){++actionGeneration;owned=false;controlledMode=null;sessionPending=null;feedbackGapAt=null;lastCommandAckAt=null;keyboard.reset();rollPending=false;rollSeen=false;paintSpeed();paintKeyboard();}
+  function loseOwnership(){if(startRequest)startRequest.cancelled=true;++actionGeneration;owned=false;controlledMode=null;sessionPending=null;feedbackGapAt=null;lastCommandAckAt=null;keyboard.reset();rollPending=false;rollSeen=false;paintSpeed();paintKeyboard();}
+  function leaveControlContext(){
+    pending=null;dialog.close();
+    if(owned||sessionPending)stop();
+    else if(startRequest)loseOwnership();
+  }
   $('bench-head-center').onclick=()=>{if(BASIC||!manualReady())return;keyboard.centerHead();paintKeyboard();command();};
   async function triggerRoulade(){
     if(!automaticReady()){note('先松开走动键，停稳后再按空格。');return false;}
@@ -232,11 +308,16 @@
     try{await api('/api/roulade',{});note('已请求一次官方翻滚；历史实物翻滚未通过，等待本次实际结果。');return true;}
     catch(e){loseOwnership();note('翻滚请求未确认，遥控已取消：'+e.message);return false;}
   }
-  function prepare(action){
+  async function prepare(action){
+    if(startRequest){note('正在等待上次启动请求返回，请稍候。');return;}
+    if(document.hidden||page!=='imu')return;
+    if(last?.runtime?.motion_inhibited){note('托盘内静止排查，动作已锁定。');return;}
+    if(history?.active){note('先返回实时姿态，再启动动作。');return;}
+    if((action==='hold'||action==='policy')&&(owned||sessionPending))await stop();
     if(action==='policy'&&!keyboardCapabilitiesReady()){pending=null;note('键盘控制升级待部署；当前不会启动策略或发送新协议。');paintKeyboard();return;}
     if((action==='pick'||action==='roulade')&&!automaticReady()){pending=null;note('先松开走动键，停稳后再启动动作。');return;}
     pending={action,forwardSpeed:forwardSpeed()};
-    text('bench-motion-description',{hold:'回到已保存的校准中位并保持。',policy:'将进入站立 / 跌倒起身策略并启用本页键盘，起步零速度。W用前进策略0.2 m/s，Shift+W同策略0.3；S用原模型后退指令0.3（仿真实测约0.18–0.22 m/s），A/D用原模型原地左右转1 rad/s。有净AD优先转向，无净转向再按净WS前后，相反键抵消，走动松键停止。专用模型互换先当前零速刹停3秒、原站立一帧，再执行仍按住的最新方向；头部先累计，回原站立后应用，嘴即时。K/I按档低头抬回、松键保持，腿配合；J/L左右看（低头时延后），U/O张闭嘴；走动前先抬回。Space请求一次官方翻滚（历史实物未通过），Esc停止卸力。所有运动实物待验收。',pick:'将执行一次空载低头开合嘴动作，结束后回到站立策略。',roulade:'将执行一次官方翻滚模型。历史实物翻滚未通过，不预设本次成功。'}[action]);
+    text('bench-motion-description',{hold:'托稳或放入校准托盘后，回到校准中位并保持。地面站立请使用“站立 / 起身”。',policy:'将进入站立 / 跌倒起身策略并启用本页键盘，起步零速度。W用前进策略0.2 m/s，Shift+W同策略0.3；S用原模型后退指令0.3（仿真实测约0.18–0.22 m/s），A/D用原模型原地左右转1 rad/s。有净AD优先转向，无净转向再按净WS前后，相反键抵消，走动松键停止。专用模型互换先当前零速刹停3秒、原站立一帧，再执行仍按住的最新方向；头部先累计，回原站立后应用，嘴即时。K/I按档低头抬回、松键保持，腿配合；J/L左右看（低头时延后），U/O张闭嘴；走动前先抬回。Space请求一次官方翻滚（历史实物未通过），Esc停止卸力。所有运动实物待验收。',pick:'将执行一次空载低头开合嘴动作，结束后回到站立策略。',roulade:'将执行一次官方翻滚模型。历史实物翻滚未通过，不预设本次成功。'}[action]);
     if(STAND_ONLY&&action==='policy')text('bench-motion-description','将启动原版零速站立/必要起身并保持。普通抬头、左右看与嘴部原接口保留；行走/快跑/深度Pick/翻滚默认停用，翻滚断电原因尚未修复。');
     if(BASIC&&action==='policy')text('bench-motion-description','将启用新版基础键盘模型与原版必要起身，初始零速度。W前进0.2、Shift+W前进0.3、S后退−0.3 m/s，A/D原地左右转±1 rad/s；净转向优先，相反键抵消，松键立即发送零速。同一actor连续运行，没有旧版3秒刹车。JKLUIO、Space、Pick和头部回中本轮停用。实物行走/停稳及起身交接尚待验收。');
     dialog.showModal();
@@ -255,19 +336,33 @@
     throw Error(generation!==actionGeneration?'回正已取消':'5秒内未确认退出校准，未启动回正');
   }
   $('bench-confirm').onclick=async()=>{
+    if(startRequest){note('正在等待上次启动请求返回，请稍候。');return;}
     const action=pending?.action,speed=pending?.forwardSpeed,generation=++actionGeneration;dialog.close();keyboard.releaseAll();
+    pending=null;
     const priorUptime=last?.runtime?.uptime_s,priorEpoch=last?.runtime?.pc_host_epoch;
     if(!action)return;
+    if(document.hidden||page!=='imu')return;
+    if(last?.runtime?.motion_inhibited){pending=null;note('托盘内静止排查，动作已锁定。');return;}
+    if(history?.active){pending=null;note('先返回实时姿态，再启动动作。');return;}
     if(action==='policy'&&!keyboardCapabilitiesReady()){pending=null;note('键盘控制升级待部署；未发送策略启动请求。');paintKeyboard();return;}
+    let attempt=null;
     try{
       if(action==='hold'||action==='policy'){
+        attempt=startRequest={generation,mode:action,cancelled:false,stopRequested:false};
         if(action==='hold'&&window.DuckCalibration?.snapshot()?.maintenance?.active){
           owned=false;controlledMode=null;sessionPending=null;
           note('正在退出校准，确认后回到校准中位。');await leaveCalibrationForHome(generation);
           if(generation!==actionGeneration)return;
         }
+        if(!homeFeedbackFresh())throw Error('反馈过期，请等待当前状态后重新启动。');
         await api('/api/mode',{mode:action});
-        if(generation!==actionGeneration){await api('/api/mode',{mode:'off'});return;}
+        if(generation!==actionGeneration||attempt.cancelled||document.hidden||page!=='imu'){
+          // A late acknowledgement after connection/context loss cannot acquire
+          // control or switch off a policy. Explicit stop still wins, and hold
+          // never retains torque after its initiating context was abandoned.
+          if(attempt.stopRequested||action==='hold')await api('/api/mode',{mode:'off'});
+          return;
+        }
         keyboard.reset();rollPending=false;rollSeen=false;ownedForwardSpeed=.2;owned=true;controlledMode=action;
         // Status streaming can still contain OFF from before the accepted POST.
         // Keep only zero heartbeats until a newer matching snapshot confirms it.
@@ -278,23 +373,25 @@
       if(generation!==actionGeneration)return;
       stoppedAt=null;note(action==='hold'||action==='policy'?(sessionPending?'启动请求已接收，保持零指令并等待主控确认。':action==='hold'?'主控已确认回正，正在保持校准中位。':'主控已确认启动，键盘控制已就绪。'):'动作请求已发出，等待主控状态确认。');
     }catch(e){if(generation!==actionGeneration)return;loseOwnership();note(e.message);}
+    finally{if(attempt&&startRequest===attempt)startRequest=null;}
   };
   async function stop(){
+    if(startRequest)startRequest.stopRequested=true;
     loseOwnership();stoppedAt=Date.now();note('停止请求中，等待 OFF 与 MCU 卸力回执。');
     if(window.DuckCalibration?.isMaintenance()){await window.DuckCalibration.stop();return;}
     try{await api('/api/mode',{mode:'off'});await poll();}catch(e){note('停止结果未确认：'+e.message);}
   }
   async function command(){
-    if(!owned||commandBusy||document.hidden)return;
+    if(history?.active||!owned||commandBusy||document.hidden||page!=='imu')return;
     if(controlledMode==='policy'&&!keyboardCapabilitiesReady()){loseOwnership();note('键盘控制升级待部署；新协议发送已暂停。');return;}
     clearRecoveryIntent();
     commandBusy=true;const generation=actionGeneration;
     // Same manual command units and endpoint as the official browser. The policy creates joint targets.
-    const packet=controlledMode==='hold'?{twist:[0,0,0],head:[0,0,0,0],mouth:0}:sessionPending||feedbackGapAt!==null?{twist:[0,0,0],head:[0,0,0,0],mouth:0,manual_pick_depth:0,forward_specialist:false,fast_forward:false,navigation_specialist:false}:keyboard.packet({fastAllowed:last?.baseline?.fast_policy?.active===true,navAllowed:last?.baseline?.navigation_policy?.active===true,pickActive:!!last?.runtime?.pick?.active,pickMouth:last?.runtime?.mouth});
+    const packet=controlledMode==='hold'?{twist:[0,0,0],head:[0,0,0,0],mouth:0}:sessionPending||feedbackGapAt!==null||!homeFeedbackFresh()?{twist:[0,0,0],head:[0,0,0,0],mouth:0,manual_pick_depth:0,forward_specialist:false,fast_forward:false,navigation_specialist:false}:keyboard.packet({fastAllowed:last?.baseline?.fast_policy?.active===true,navAllowed:last?.baseline?.navigation_policy?.active===true,pickActive:!!last?.runtime?.pick?.active,pickMouth:last?.runtime?.mouth});
     if(STAND_ONLY){packet.twist=[0,0,0];packet.manual_pick_depth=0;packet.forward_specialist=false;packet.navigation_specialist=false;packet.fast_forward=false;}
     if(BASIC){packet.head=[0,0,0,0];packet.mouth=0;packet.manual_pick_depth=0;}
     try{await api('/api/command',packet);if(generation===actionGeneration&&owned)lastCommandAckAt=performance.now();}
-    catch(e){if(generation!==actionGeneration)return;loseOwnership();note('控制通信中断；不重发、不恢复：'+e.message);}finally{commandBusy=false;}
+    catch(e){if(generation!==actionGeneration)return;const policy=controlledMode==='policy';loseOwnership();note((policy?'控制通信中断，主控将清零走动并继续本地站立；当前状态待确认：':'控制通信中断，回正保持将超时卸力；当前状态待确认：')+e.message);}finally{commandBusy=false;}
   }
   window.addEventListener('keydown',e=>{
     if(window.DuckKeyboard.keyName(e)==='space'&&$('bench-test-panel').open&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)&&!e.target.isContentEditable&&!dialog.open&&!calibrationDialog.open){
@@ -302,7 +399,7 @@
       if(!owned||sessionPending||controlledMode!=='policy'){note('尚未启动，空格不会动作。');return;}
     }
     if(e.key==='Escape'){e.preventDefault();if(e.repeat)return;if(currentDialog.open){pauseCurrentCurve();currentDialog.close();}if(trayDialog.open)closeTrayPreview();if(calibrationDialog.open&&!window.DuckCalibration?.isBusy())setCalibrationVisible(false);if($('bench-test-panel').open)setTestsVisible(false);dialog.close();stop();return;}
-    if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)||e.target.isContentEditable||dialog.open||currentDialog.open||trayDialog.open||calibrationDialog.open||!owned||sessionPending||controlledMode!=='policy')return;
+    if(page!=='imu'||document.hidden||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)||e.target.isContentEditable||dialog.open||currentDialog.open||trayDialog.open||calibrationDialog.open||!owned||sessionPending||controlledMode!=='policy')return;
     if(recovering()){e.preventDefault();clearRecoveryIntent();paintKeyboard();note('正在起身，保持零指令；站稳后需重新按键。');return;}
     const publicationKey=window.DuckKeyboard.keyName(e);
     if(BASIC&&['j','k','l','u','i','o','space'].includes(publicationKey)){e.preventDefault();note('本轮只测基础行走与停止；头嘴、深低头和翻滚尚未验收，暂时停用。');return;}
@@ -314,8 +411,18 @@
   });
   window.addEventListener('keyup',e=>{if(window.DuckKeyboard.keyName(e)==='space'&&$('bench-test-panel').open&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)&&!e.target.isContentEditable)e.preventDefault();if(keyboard.keyup(e)){paintKeyboard();if(['w','s','a','d','shift'].includes(window.DuckKeyboard.keyName(e)))command();}});
   window.addEventListener('blur',()=>{keyboard.releaseAll();paintKeyboard();command();});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden&&owned)stop();sendPose(document.hidden?null:last?.runtime);if(document.hidden){pauseCurrentCurve();if(currentDialog.open){text('current-curve-state','页面已隐藏 · 保留历史曲线');currentDialog.dataset.state='history';}}else if(currentDialog.open)resumeCurrentCurve();});
-  window.addEventListener('pagehide',()=>{if(owned)navigator.sendBeacon('/api/mode',new Blob([JSON.stringify({mode:'off'})],{type:'application/json'}));});
+  function detachRemoteControl(){
+    pending=null;dialog.close();
+    if(!owned&&!startRequest)return;
+    const policy=(controlledMode||startRequest?.mode)==='policy';
+    const path=policy?'/api/command':'/api/mode';
+    const packet=policy?{twist:[0,0,0],head:[0,0,0,0],mouth:0,manual_pick_depth:0,forward_specialist:false,fast_forward:false,navigation_specialist:false}:{mode:'off'};
+    fetch(path,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json','X-Token':window.COMMISSION_TOKEN},body:JSON.stringify(packet)}).catch(()=>{});
+    loseOwnership();
+    note(policy?'遥控已暂停，鸭子继续本地零速站立。':'回正保持已请求卸力，当前状态待确认。');
+  }
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)detachRemoteControl();sendPose(document.hidden?null:last?.runtime);if(document.hidden){pauseCurrentCurve();if(currentDialog.open){text('current-curve-state','页面已隐藏 · 保留历史曲线');currentDialog.dataset.state='history';}}else if(currentDialog.open)resumeCurrentCurve();});
+  window.addEventListener('pagehide',detachRemoteControl);
   setInterval(command,50);
   $('bench-test-start').onclick=async()=>{try{await api('/api/bench/tests/start',{profile:$('bench-test-profile').value,duration_s:Number($('bench-test-duration').value)});await poll();}catch(e){text('bench-test-result',e.message);}};
   $('bench-test-stop').onclick=async()=>{try{await api('/api/bench/tests/stop',{});await poll();}catch(e){text('bench-test-result',e.message);}};
@@ -335,34 +442,39 @@
       keyboard.releaseAll();
       // Display receipt and command acknowledgement are separate channels.
       // Continue zero heartbeats when commands are still acknowledged; the
-      // controller retains its own 1s command watchdog and local sensor guard.
+      // controller expires remote intent after 1s and retains local balance.
       const commandsAcknowledged=lastCommandAckAt!==null&&now-lastCommandAckAt<750;
       note(commandsAcknowledged?'姿态显示延迟，控制回执正常；暂发零速度，等待新姿态。':'正在核对控制回执，暂时保持零速度。');
-      if(!commandsAcknowledged&&now-feedbackGapAt>=500){await stop();note('控制与姿态回执均中断，已请求停止卸力。');return true;}
+      if(!commandsAcknowledged&&now-feedbackGapAt>=500){
+        if(controlledMode==='policy'){loseOwnership();note('控制与姿态回执均中断，遥控已暂停；主控清零走动并继续本地站立，当前状态待确认。');}
+        else{await stop();note('回正保持的控制与姿态回执均中断，已请求卸力。');}
+        return true;
+      }
     }else if(fresh&&feedbackGapAt!==null){feedbackGapAt=null;keyboard.releaseAll();note('主控反馈已恢复，请重新按键。');}
     return false;
   }
   async function poll(){
     if(busy)return;busy=true;const generation=actionGeneration;
     try{
-      const observation=last?.runtime?.pc_observation_id;
-      const cursor=Number.isSafeInteger(observation)?'?after_observation='+encodeURIComponent(observation):'';
-      const snapshot=await api('/api/bench/status'+cursor);if(generation!==actionGeneration)return;
-      last=snapshot;window.dispatchEvent(new CustomEvent('duck-restored-status',{detail:last}));const s=last.runtime;
+      const cursor='?latest=1';
+      const requestStarted=performance.now(),snapshot=await api('/api/bench/status'+cursor);if(generation!==actionGeneration)return;
+      lastReceivedAt=performance.now();last=snapshot;
+      if(last.runtime)last.runtime={...last.runtime,feedback_age_ms:ageAtReceipt(last.runtime,lastReceivedAt-requestStarted)};
+      if(last.runtime){reported=last.runtime;reportedAt=lastReceivedAt;}
+      window.dispatchEvent(new CustomEvent('duck-restored-status',{detail:last}));const s=last.runtime;
       if(statusErrorMessage&&$('wl-result').textContent===statusErrorMessage)note('');statusErrorMessage=null;
-      const fresh=last.connected&&s?.full_robot_ready===true;
+      const fresh=paintFreshness();
       if(owned&&sessionPending&&(controlledMode!=='policy'||keyboardCapabilitiesReady())){
         const newer=(!Number.isFinite(sessionPending.priorUptime)||Number.isFinite(s?.uptime_s)&&s.uptime_s>sessionPending.priorUptime)&&
           (sessionPending.priorEpoch===undefined||s?.pc_host_epoch===sessionPending.priorEpoch);
         if(fresh&&s?.mode===sessionPending.mode&&s.enabled===true&&newer){sessionPending=null;keyboard.reset();note('主控已确认启动，键盘控制已就绪。');}
-        else if(performance.now()>=sessionPending.deadline){await stop();note('启动状态未在3.5秒内确认，已请求停止卸力；请核对当前状态。');return;}
+        else if(performance.now()>=sessionPending.deadline){
+          if(controlledMode==='policy'){loseOwnership();note('启动状态未在3.5秒内确认，遥控已暂停；若主控已启动，将继续本地零速站立。');}
+          else{await stop();note('回正状态未在3.5秒内确认，已请求卸力；请核对当前状态。');}
+          return;
+        }
       }
-      statusItem('simple-link','无线',last.connected?'已连接':last.wireless_transport_alive?'状态延迟':'未连接','官方运行链',last.connected?'ok':last.wireless_transport_alive?'pending':'error');
-      const servoCount=new Set((s?.servo_ids||[]).filter(id=>IDS.includes(id))).size;
-      statusItem('simple-servos','主控舵机',s?servoCount+' / 15':'— / 15','真实反馈',!last.connected?'unknown':servoCount===15?'ok':'error');
-      statusItem('simple-imu','IMU',s?.imu_ok?'在线':'待连接','主控官方重力估计',!last.connected?'unknown':s?.imu_ok?'ok':'error');
       const torqueKnown=typeof s?.enabled==='boolean';
-      statusItem('simple-motion','主控运动',torqueKnown?labels[s.mode]||s.mode:'待读取',torqueKnown?(s.enabled?'上力反馈':'卸力反馈'):'未收到主控反馈',!last.connected||!torqueKnown?'unknown':s.enabled?'active':s.mode==='off'?'ok':'pending');
       const maintenanceView=window.DuckCalibration?.snapshot();
       if(maintenanceView?.maintenance?.active&&!maintenanceView.maintenance.integrated){
         const calibration=maintenanceView.calibration,phase=maintenanceView.maintenance.phase;
@@ -371,39 +483,59 @@
         statusItem('simple-imu','IMU','维护暂停','未显示实时姿态','unknown');
         statusItem('simple-motion','维护状态',phase==='maintenance'?'当前状态待读回':phase==='unknown'?'结果待核对':'切换中','上次校准回执不代表当前扭矩','pending');
       }
-      const power=s?.servo_power,voltage=power?.voltage_v,known=Number.isFinite(voltage)&&voltage>0&&Number.isFinite(power?.age_ms)&&power.age_ms>=0;
-      const powerFresh=last.connected&&power?.available===true&&known&&power.age_ms<5000;
+      const power=reported?.servo_power,voltage=power?.voltage_v,known=Number.isFinite(voltage)&&voltage>0&&Number.isFinite(power?.age_ms)&&power.age_ms>=0;
+      const powerFresh=power?.available===true&&known&&power.age_ms<5000;
       text('battery-percent',known?voltage.toFixed(1)+' V'+(powerFresh?'':' · 上次'):'待读取');
       text('battery-voltage',known?`ID ${power.servo_id} · ${(power.age_ms/1000).toFixed(1)} 秒前 · 舵机总线`:'等待舵机电压反馈');
-      $('simple-battery').dataset.state=powerFresh?'ok':known?'pending':'unknown';
+      $('simple-battery').dataset.state=powerFresh?'reported':known?'pending':'unknown';
       $('simple-battery').title=known?`舵机 ID ${power.servo_id} 的总线电压；${(power.age_ms/1000).toFixed(1)} 秒前采集，低频读取，不代表电池电量百分比。`:'等待低频舵机电压采集';
-      const current=s?.servo_current,currentKnown=last.connected&&current?.available===true&&Number.isFinite(current?.sum_abs_a),recording=last.current_recording;
-      statusItem('simple-current','舵机电流合计',currentKnown?current.sum_abs_a.toFixed(3)+' A':current?.supported?'本帧未齐':'待读取',
+      const current=reported?.servo_current,recording=last.current_recording;
+      // Voltage reads intentionally omit one current sample. Use the actual
+      // latest complete measurement and its age, never a partial sum or zero.
+      const fullCurrentAge=current?.full_sample_age_ms+(reported?.telemetry_cache_age_ms||0);
+      const currentValue=current?.available===true?current.sum_abs_a:fullCurrentAge<150?current?.last_sum_abs_a:null;
+      const currentKnown=Number.isFinite(currentValue);
+      statusItem('simple-current','舵机电流合计',currentKnown?currentValue.toFixed(3)+' A':current?.supported?'暂无完整采样':'待读取',
         `${Number.isFinite(current?.source_hz)?current.source_hz.toFixed(1)+' Hz':'频率待确认'} · ${recording?.recording?'电脑记录中':current?.logging?'主控记录中':'等待记录'}`,
-        currentKnown?'ok':current?.supported?'pending':'unknown');
+        currentKnown?'reported':current?.supported?'pending':'unknown');
       text('wl-home-state',s?`${labels[s.mode]||s.mode} · ${s.recovery?.phase||'—'} · 倾角 ${Number.isFinite(s.recovery?.angle_deg)?s.recovery.angle_deg.toFixed(1)+'°':'—'} · 反馈 ${s.feedback_hz?.toFixed(1)??'—'} Hz`:'主控无线未连接；页面保留，连接后只读恢复。');
       if(maintenanceView?.maintenance?.active&&!maintenanceView.maintenance.integrated)text('wl-home-state','厂家校准维护中，正式模型与实时姿态显示暂停。当前扭矩状态需要重新读回。');
-      $('wl-home').disabled=!homeFeedbackFresh()||!last.runtime_basis_matches||!!maintenanceView?.calibration?.active;
+      $('wl-home').disabled=!!s?.motion_inhibited||!!history?.active||!homeFeedbackFresh()||!last.runtime_basis_matches||!!maintenanceView?.calibration?.active;
       $('bench-policy').disabled=$('wl-home').disabled||!keyboardCapabilitiesReady();
+      $('sequence-toggle').disabled=!!s?.motion_inhibited||!!history?.active;
+      $('bench-policy').textContent=s?.motion_inhibited?'托盘静止 · 动作锁定':'站立 / 起身';history?.update();
       $('bench-pick').disabled=$('bench-roulade').disabled=!fresh||!automaticReady();
       if(await handleFeedbackGap(fresh))return;
       if(owned&&(fresh&&!sessionPending&&(s?.mode==='off'||s?.mode==='shadow')||controlledMode==='policy'&&!keyboardCapabilitiesReady())){
         const reason=s?.last_error;loseOwnership();
-        note(reason?(reason==='web heartbeat lost; disarmed'?'网页控制心跳中断，主控已保护卸力；需要重新明确启动。':'主控已暂停控制：'+reason):!fresh?'主控反馈未确认，键盘控制已暂停。':'主控已退出上力控制，键盘已暂停；需要重新明确启动。');
+        const missing=/^servo feedback lost: ([0-9,]+); disarmed$/.exec(reason||'');
+        note(missing?'舵机 '+missing[1].replaceAll(',','、')+' 反馈中断，主控已卸力。':reason?(reason==='web heartbeat lost; disarmed'?'网页控制心跳中断，主控已保护卸力；需要重新明确启动。':'主控已暂停控制：'+reason):!fresh?'主控反馈未确认，键盘控制已暂停。':'主控已退出上力控制，键盘已暂停；需要重新明确启动。');
       }
       clearRecoveryIntent();
       if(rollPending&&s?.roulade?.active)rollSeen=true;
       if(rollPending&&rollSeen&&!s?.roulade?.active){rollPending=false;rollSeen=false;}
-      if(stoppedAt&&s?.mode==='off'&&s.enabled===false&&s.feedback_age_ms<150&&s.mcu_command_age_us<150000){note('停止已确认：OFF、disabled、MCU 新鲜卸力回执。');stoppedAt=null;}
+      if(stoppedAt&&fresh&&s?.mode==='off'&&s.enabled===false&&s.mcu_command_age_us<150000){note('停止已确认：OFF、disabled、MCU 新鲜卸力回执。');stoppedAt=null;}
       paintSpeed();text('simple-pending',keyboardCapabilitiesReady()?'基线：前进0.2/0.3 + 导航纯后退/原地转向 + 手动Pick；净转向优先，实物待验收。':'键盘控制升级待部署；原回正、校准与停止入口保留。');
       if(BASIC&&keyboardCapabilitiesReady())text('simple-pending','新版基础模型：前后左右与松键零速均为同一actor；头嘴、Pick、翻滚本轮停用，实物验收待进行。');
-      text('diag-service','工作台 '+last.revision);text('diag-controller',last.connected?'已连接':'未连接');text('diag-torque',torqueKnown?(s.enabled?'上力':'卸力'):'未知');
+      text('diag-service','工作台 '+last.revision);text('diag-controller',last.connected?'已连接':'未连接');text('diag-torque',torqueKnown?motionLabel(s):'未知');
       text('diag-identity',last.runtime_basis_matches?'新零位 / 直接起身参数匹配':'当前主控基线待读取或不匹配');text('diag-model',s?.active_model||'模型尚未运行');text('diag-refresh-note',last.error||`本地源文件 ${last.baseline.files_checked} 项核对：${last.baseline.local_sources_verified?'通过':'失败'}；主控源哈希另行验收。`);
       text('comm-version','基于 '+last.baseline.reference.slice(0,12));text('comm-result','安装 / 更新继续使用已验证的专项流程。');
       for(const id of ['comm-usb','comm-update','comm-discover'])$(id).disabled=true;
       paintJoint();paintTest(last.test);paintKeyboard();sendPose(s);
-    }catch(e){if(generation!==actionGeneration)return;loseOwnership();sendPose(null);statusItem('simple-link','无线','待读取','当前连接未确认','error');statusItem('simple-servos','主控舵机','— / 15','当前反馈未确认');statusItem('simple-imu','IMU','未知','当前反馈未确认');statusItem('simple-motion','主控运动','未知','当前扭矩未确认');text('battery-percent','待读取');$('simple-battery').dataset.state='unknown';text('diag-controller','待读取');text('diag-torque','未知');for(const id of ['wl-home','bench-policy','bench-pick','bench-roulade'])$(id).disabled=true;statusErrorMessage='电脑服务读取失败：'+e.message;note(statusErrorMessage);}finally{busy=false;}
+    }catch(e){
+      if(generation!==actionGeneration)return;
+      loseOwnership();if(last)last.connected=false;sendPose(null);
+      statusErrorMessage='电脑服务读取失败：'+e.message;
+      paintReportedState();text('diag-controller','待读取');text('diag-torque','未知');
+      for(const id of ['wl-home','bench-policy','bench-pick','bench-roulade'])$(id).disabled=true;
+      note(statusErrorMessage);
+    }finally{busy=false;}
   }
-  window.addEventListener('message',e=>{if(e.origin!==location.origin)return;if(e.source===$('imu-duck-frame')?.contentWindow){if(e.data?.type==='imu-model-ready')sendPose(last?.runtime);if(e.data?.type==='imu-current-curve-open')openCurrentCurve();if(e.data?.type==='imu-model-joint-selected')selectJoint(e.data.id);}if(e.source===$('models-frame')?.contentWindow){if(e.data?.type==='bench-models-ready')sendPose(last?.runtime);if(e.data?.type==='bench-stop-request')stop();if(e.data?.type==='bench-model-test'){showPage('imu');if([...$('bench-test-profile').options].some(o=>o.value===e.data.profile))$('bench-test-profile').value=e.data.profile;setCalibrationVisible(false);setTestsVisible(true);}}});
-  showPage('imu');poll();setInterval(()=>{if(!document.hidden)poll();},50);
+  window.addEventListener('message',e=>{if(e.origin!==location.origin)return;if(e.source===$('imu-duck-frame')?.contentWindow){if(e.data?.type==='imu-model-ready'){if(history?.active)history.redraw();else sendPose(last?.runtime);}if(e.data?.type==='imu-current-curve-open')openCurrentCurve();if(e.data?.type==='imu-model-joint-selected')selectJoint(e.data.id);}if(e.source===$('models-frame')?.contentWindow){if(e.data?.type==='bench-models-ready')sendPose(last?.runtime);if(e.data?.type==='bench-stop-request')stop();if(e.data?.type==='bench-model-test'){showPage('imu');if([...$('bench-test-profile').options].some(o=>o.value===e.data.profile))$('bench-test-profile').value=e.data.profile;setCalibrationVisible(false);setTestsVisible(true);}}});
+  if(window.DuckMotionHistory)history=window.DuckMotionHistory.create({
+    getLive:()=>last?.runtime,canReplay:()=>!owned&&!sessionPending&&!startRequest&&!dialog.open&&!window.DuckCalibration?.isBusy(),note,
+    postPose:message=>$('imu-duck-frame')?.contentWindow?.postMessage(message,location.origin),
+    onMode:replay=>{paintFreshness();if(!replay)sendPose(last?.runtime);}
+  });
+  showPage('imu');poll();setInterval(()=>{if(!document.hidden){if(last&&!homeFeedbackFresh())paintFreshness();poll();}},25);
 })();

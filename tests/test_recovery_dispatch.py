@@ -57,6 +57,14 @@ class RecoveryDispatchTests(unittest.TestCase):
         self.assertEqual(float(abs(sim.data.qfrc_applied).sum()),0)
         self.assertEqual(sim.state()['force']['remainingS'],0)
 
+    def test_pausing_keyboard_simulation_clears_the_command_before_resume(self):
+        sim=self.make('walk')
+        sim.command(dict(op='command',twist=[.3,0,0]))
+        sim.command(dict(op='pause',paused=True))
+        self.assertEqual(sim.state()['command'],[0,0,0])
+        sim.command(dict(op='pause',paused=False))
+        self.assertEqual(sim.state()['command'],[0,0,0])
+
     def test_physics_methods_unchanged_by_dispatch_fix(self):
         old=ast.parse((Path(__file__).resolve().parent/'fixtures/worker-pre-dispatch.py').read_text('utf-8'))
         new=ast.parse((HERE/'worker.py').read_text('utf-8'))
@@ -65,6 +73,11 @@ class RecoveryDispatchTests(unittest.TestCase):
         # The separately approved bodyframe-v2 correction changes exactly
         # these three velocity sampling constants, not integration or contacts.
         for node in frame_updates:node.attr='mjOBJ_BODY'
+        # The official catalog now uses the same fixed HOME as the real runtime.
+        policies=[n for n in ast.walk(new) if isinstance(n,ast.Call) and isinstance(n.func,ast.Name) and n.func.id=='Policy']
+        self.assertEqual(len(policies),1)
+        self.assertEqual([(kw.arg,ast.literal_eval(kw.value)) for kw in policies[0].keywords],[('reference_home',True)])
+        policies[0].keywords=[]
         for tree in (old,new):
             cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='Simulation')
             cls.body=[n for n in cls.body if not isinstance(n,ast.FunctionDef) or n.name not in ('infer','_receive_policy_feedback')]
@@ -85,6 +98,10 @@ class RecoveryDispatchTests(unittest.TestCase):
                 if method.name=='state':
                     output=next(n for n in method.body if isinstance(n,ast.Return) and isinstance(n.value,ast.Call))
                     output.value.keywords=[k for k in output.value.keywords if k.arg not in ('feedbackFilterSteps','receiverDt')]
+                if tree is new and method.name=='command':
+                    paused=next(n for n in ast.walk(method) if isinstance(n,ast.If) and ast.unparse(n.test)=='self.paused')
+                    self.assertEqual(ast.unparse(paused.body[0]),'self.twist.fill(0)')
+                    paused.body.pop(0)  # UI pause now also clears the virtual keyboard intent.
         self.assertEqual(ast.dump(old,include_attributes=False),ast.dump(new,include_attributes=False))
 
 

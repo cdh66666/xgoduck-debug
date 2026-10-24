@@ -5,7 +5,7 @@ from pathlib import Path
 os.environ['CUDA_VISIBLE_DEVICES']=''
 os.environ.setdefault('OMP_NUM_THREADS','1')
 os.environ.setdefault('OPENBLAS_NUM_THREADS','1')
-from train import KIND,config
+from train import KIND,check_contract,config
 
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--checkpoint',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
@@ -18,13 +18,22 @@ def main():
  torch.set_num_threads(1);cfg=config();saved=torch.load(a.checkpoint,map_location='cpu',weights_only=False)
  actor_class=MLPModel
  if saved.get('kind')==KIND:
-  if saved['config']!=cfg:raise ValueError('Scratch checkpoint config mismatch')
+  cfg=check_contract(saved['config'])
   state=saved['algorithm']['actor_state_dict']
+ elif saved.get('kind')=='xgoduck-full-47500-bodyframe-v2':
+  from full_refine import ACTOR_CLASS,Full47500Actor
+  cfg=check_contract(saved['config'],ACTOR_CLASS);state=saved['algorithm']['actor_state_dict'];actor_class=Full47500Actor
+ elif saved.get('kind')=='xgoduck-standstop-47500-bodyframe-v2':
+  from standstop import ACTOR_CLASS,StandstopActor
+  cfg=check_contract(saved['config'],ACTOR_CLASS);state=saved['algorithm']['actor_state_dict'];actor_class=StandstopActor
+ elif saved.get('kind')=='xgoduck-brake-47500-bodyframe-v2':
+  from brake import ACTOR_CLASS,BrakeActor
+  cfg=check_contract(saved['config'],ACTOR_CLASS);state=saved['algorithm']['actor_state_dict'];actor_class=BrakeActor
  elif saved.get('kind')=='xgoduck-backskip-47500-bodyframe-v2':
   from refine import config as refine_config
   from refine_model import BackskipActor
   cfg=refine_config();state=saved['actor_state_dict'];actor_class=BackskipActor
- else:raise ValueError('Expected own scratch or packaged47500 composite checkpoint')
+ else:raise ValueError('Expected own scratch/full47500 or packaged47500 composite checkpoint')
  dummy=TensorDict({'actor':torch.zeros(1,61)},batch_size=[1]);actor_cfg=dict(cfg['ppo']['actor']);actor_cfg.pop('class_name')
  actor=actor_class(dummy,{'actor':['actor']},'actor',14,**actor_cfg);actor.load_state_dict(state);actor.eval()
  cases=[];frozen=manifest()

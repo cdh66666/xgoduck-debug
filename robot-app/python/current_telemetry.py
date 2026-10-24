@@ -40,6 +40,7 @@ class CurrentTelemetry:
         self._lock = threading.Lock()
         self._latest = None
         self._boot = self._seq = None
+        self._receiver_epoch = 0
         self._retired_boots = collections.deque(maxlen=16)
         self._full_clock_us = 0
         self._last_full_start = None
@@ -51,7 +52,7 @@ class CurrentTelemetry:
         self._attempt_times = collections.deque(maxlen=1000)
         self._counts = dict(frames=0, legacy_frames=0, full=0, partial=0, unattempted=0,
                             attempts=0, duplicates=0, out_of_order=0, sequence_gaps=0,
-                            boot_changes=0, disk_errors=0, records_written=0, malformed=0)
+                            boot_changes=0, receiver_resyncs=0, disk_errors=0, records_written=0, malformed=0)
         self._stream = None
         self._bytes = 0
         self._slot = None
@@ -61,10 +62,10 @@ class CurrentTelemetry:
         if start_writer:
             self._thread.start()
 
-    def submit(self, raw, fb, host_time):
+    def submit(self, raw, fb, host_time, *, receiver_epoch=0):
         """No disk, blocking wait or controller lock; accepted Feedback is unchanged."""
         try:
-            self.queue.put_nowait((bytes(raw), fb.seq, host_time, time.time_ns()))
+            self.queue.put_nowait((bytes(raw), fb.seq, host_time, time.time_ns(), receiver_epoch))
         except queue.Full:
             self.queue_drops += 1
         except Exception:
@@ -78,7 +79,7 @@ class CurrentTelemetry:
         return (len(times) - 1) * 1e6 / span if span > 0 else None
 
     def _consume(self, item):
-        raw, seq, host_time, wall_ns = item
+        raw, seq, host_time, wall_ns, receiver_epoch = item
         if len(raw) == STATE.size:
             with self._lock:
                 self._counts['legacy_frames'] += 1
@@ -90,6 +91,15 @@ class CurrentTelemetry:
                 self._counts['malformed'] += 1
             return
         with self._lock:
+            if receiver_epoch < self._receiver_epoch:
+                self._counts['out_of_order'] += 1
+                return
+            if receiver_epoch != self._receiver_epoch:
+                self._receiver_epoch = receiver_epoch
+                self._seq = self._latest = None
+                self._retired_boots.clear()
+                self._reset_rates()
+                self._counts['receiver_resyncs'] += 1
             boot = value['boot']
             if boot != self._boot:
                 if boot in self._retired_boots:
@@ -99,10 +109,7 @@ class CurrentTelemetry:
                     self._retired_boots.append(self._boot)
                     self._counts['boot_changes'] += 1
                 self._boot, self._seq = boot, None
-                self._full_times.clear(); self._attempt_times.clear()
-                self._last_full_start = self._last_attempt_start = None
-                self._last_full_host_time = self._last_full_abs = None
-                self._full_clock_us = self._attempt_clock_us = 0
+                self._reset_rates()
             if self._seq is not None:
                 delta = (seq - self._seq) & 0xffffffff
                 if delta == 0:
@@ -145,6 +152,12 @@ class CurrentTelemetry:
                     self._counts['disk_errors'] += 1
                     self._disk_error = type(exc).__name__ + ': ' + str(exc)
                 self._close_stream()
+
+    def _reset_rates(self):
+        self._full_times.clear(); self._attempt_times.clear()
+        self._last_full_start = self._last_attempt_start = None
+        self._last_full_host_time = self._last_full_abs = None
+        self._full_clock_us = self._attempt_clock_us = 0
 
     def _write(self, data):
         if self._stream is None or self._bytes + len(data) > self.file_bytes:

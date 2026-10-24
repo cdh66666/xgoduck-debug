@@ -1,10 +1,10 @@
-/* Display only. Reuse the bounded player with actual PC observation endpoints. */
+/* Display only. Space real poses on the robot's snapshot clock, not Wi-Fi bursts. */
 import {DelayedPosePlayback} from './pose-playback.js';
 
 const finite=Number.isFinite;
 const uint32=value=>Number.isInteger(value)&&value>=0&&value<=0xffffffff;
 const identity=source=>Number.isInteger(source?.pc_host_epoch)&&source.pc_host_epoch>=0?source.pc_host_epoch:null;
-const angles=source=>source?.full_robot_ready===true&&Array.isArray(source.angles)&&
+const angles=source=>(source?.native_full_robot_ready??source?.full_robot_ready)===true&&Array.isArray(source.angles)&&
   source.angles.length===15&&source.angles.every(finite)?source.angles.slice():null;
 
 export function officialDisplayHeading(source){
@@ -19,19 +19,21 @@ export function officialDisplayHeading(source){
 export class OfficialPosePlayback extends DelayedPosePlayback {
   constructor(options={}){
     super(options);
-    this.acceptedEpoch=null;this.acceptedSequence=null;this.acceptedObservedMs=null;
+    this.clock=options.clock||'robot-uptime';
+    this.acceptedEpoch=null;this.acceptedSequence=null;this.acceptedObservedMs=null;this.acceptedSourceMs=null;
   }
   reset(reason){super.reset(reason);this.headingRows=[];this.headingWatermark=null;}
   endpoint(source){
     const epoch=identity(source),observedMs=source?.pc_observed_monotonic_s*1000;
-    return epoch!==null&&uint32(source?.mcu_seq)&&finite(observedMs)&&observedMs>0?
-      {epoch,observedMs,sequence:source.mcu_seq}:null;
+    const sourceMs=this.clock==='pc-observation'?observedMs:source?.uptime_s*1000;
+    return epoch!==null&&uint32(source?.mcu_seq)&&finite(observedMs)&&observedMs>0&&finite(sourceMs)&&sourceMs>=0?
+      {epoch,observedMs,sourceMs,sequence:source.mcu_seq}:null;
   }
   advances(endpoint){
     if(!endpoint||this.retiredEpochs.has(endpoint.epoch))return false;
     if(this.acceptedEpoch===null||endpoint.epoch!==this.acceptedEpoch)return true;
     const step=(endpoint.sequence-this.acceptedSequence)>>>0;
-    return step>0&&step<0x80000000&&endpoint.observedMs>this.acceptedObservedMs;
+    return step>0&&step<0x80000000&&endpoint.observedMs>this.acceptedObservedMs&&endpoint.sourceMs>this.acceptedSourceMs;
   }
   remember(endpoint){
     if(this.acceptedEpoch!==null&&endpoint.epoch!==this.acceptedEpoch){
@@ -40,6 +42,7 @@ export class OfficialPosePlayback extends DelayedPosePlayback {
     }
     this.acceptedEpoch=endpoint.epoch;this.acceptedSequence=endpoint.sequence;
     this.acceptedObservedMs=endpoint.observedMs;
+    this.acceptedSourceMs=endpoint.sourceMs;
   }
   // While hidden, consume only a watermark. Returning never plays hidden backlog.
   discard(source){const endpoint=this.endpoint(source);if(this.advances(endpoint))this.remember(endpoint);}
@@ -48,6 +51,12 @@ export class OfficialPosePlayback extends DelayedPosePlayback {
     if(wasPaused&&!this.paused)this.awaitingResume=true;
   }
   observeBatch(current,frames,poseOf,receivedAtMs){
+    // Live display has no history queue. A radio burst must not replay its
+    // oldest endpoint or permanently anchor the display to a late first frame.
+    if(this.delayMs===0){
+      const pose=poseOf(current),accepted=!!pose&&this.observe(pose.quaternion,current,receivedAtMs);
+      return {accepted,currentAccepted:accepted};
+    }
     let accepted=false,currentAccepted=false;
     const history=this.epoch===null||this.awaitingResume?[]:Array.isArray(frames)?frames:[];
     for(const source of [...history,current]){
@@ -62,17 +71,21 @@ export class OfficialPosePlayback extends DelayedPosePlayback {
   observe(pose,source,receivedAtMs){
     if(this.paused)return false;
     const endpoint=this.endpoint(source),q=Array.isArray(pose)?pose:pose?.quaternion;
-    const age=source?.feedback_age_ms,norm=Array.isArray(q)?Math.hypot(...q):0;
+    // Endpoint validity belongs to its native observation. Delivery age only
+    // affects current controls/labels; delayed real poses remain in the buffer.
+    const age=source?.native_feedback_age_ms??source?.feedback_age_ms,norm=Array.isArray(q)?Math.hypot(...q):0;
+    const knownAge=source?.native_feedback_age_ms==null?
+      age+(source?.pc_delivery_age_lower_bound_ms??0):source?.feedback_age_ms;
     if(!this.advances(endpoint)||!Array.isArray(q)||q.length!==4||!q.every(finite)||norm<1e-8||
-      !finite(receivedAtMs)||!finite(age)||age<0||age>=150)return false;
+      !finite(receivedAtMs)||!finite(age)||age<0||age>=150||!finite(knownAge)||knownAge<0)return false;
     if(this.lastObservedAtMs!==null&&receivedAtMs<this.lastObservedAtMs)return false;
     if(this.acceptedEpoch!==null&&endpoint.epoch!==this.acceptedEpoch)this.reset('pc-host-epoch-changed');
     if(this.epoch===null){
-      this.epoch=endpoint.epoch;this.hostClockOriginMs=endpoint.observedMs;
-      this.originAtMs=receivedAtMs;this.scheduleClock='pc-observation';
+      this.epoch=endpoint.epoch;this.hostClockOriginMs=endpoint.sourceMs;
+      this.originAtMs=receivedAtMs;this.scheduleClock=this.clock;
     }
-    const row={sourceMs:endpoint.observedMs,timelineMs:endpoint.observedMs-this.hostClockOriginMs,
-      receivedAtMs,ageMs:age,quaternion:q.map(value=>value/norm),sequence:endpoint.sequence,
+    const row={sourceMs:endpoint.sourceMs,observedMs:endpoint.observedMs,timelineMs:endpoint.sourceMs-this.hostClockOriginMs,
+      receivedAtMs,ageMs:knownAge,quaternion:q.map(value=>value/norm),sequence:endpoint.sequence,
       epoch:endpoint.epoch,segment:endpoint.epoch,sourceUs:null,angles:angles(source)};
     this.rows.push(row);this.sourceMs=row.sourceMs;this.timelineMs=row.timelineMs;
     const heading=officialDisplayHeading(source),previous=this.headingWatermark;
@@ -114,7 +127,7 @@ export class OfficialPosePlayback extends DelayedPosePlayback {
         headingSourceSequences=[h.source_seq,next.source_seq];
       }
     }
-    return {...frame,jointAnglesDegrees:joints,endpointObservedMs:held?[left.sourceMs,right.sourceMs]:null,
+    return {...frame,jointAnglesDegrees:joints,endpointObservedMs:held?[left.observedMs,right.observedMs]:null,
       endpointSourceUs:null,headingAvailable:heading!==null,headingDeg:heading,headingQuality,
       headingIdentity,headingSourceSequences};
   }

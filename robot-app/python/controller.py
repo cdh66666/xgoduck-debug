@@ -9,7 +9,7 @@ from policy import Policy
 from gyro_bias_control import FrozenGyroBias
 from recovery import Recovery
 from proc import SignalFilter
-from rl_core import MOTOR_IDS, HOME_DEG, DEFAULT_DEG, GRAVITY_TAU, IMU_BIAS_DEG, MOUTH_INDEX, MOUTH_MAX_DEG
+from rl_core import MOTOR_IDS, HOME_DEG, DEFAULT_DEG, GRAVITY_TAU, IMU_BIAS_DEG, MOUTH_INDEX, MOUTH_MAX_DEG, HEAD_YAW_INDEX, HEAD_YAW_LIMIT_DEG
 from wire import *
 from display_telemetry import DisplayTelemetryCache
 from current_telemetry import CurrentTelemetry
@@ -36,22 +36,22 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         self.lock = threading.RLock()
         self.servo_op_lock = threading.Lock()
         self.policy_lock = threading.Lock()
-        self.policy = Policy()
+        self.policy = Policy(reference_home=True)
         ok, message = self.policy.load()
         if not ok:
             raise RuntimeError(message)
         self.model_message = message
-        self.getup_policy = Policy()
+        self.getup_policy = Policy(reference_home=True)
         ok, message = self.getup_policy.load('xgoduck_getup.onnx')
         if not ok:
             raise RuntimeError(message)
         self.model_message += '; ' + message
-        self.pick_policy = Policy()
+        self.pick_policy = Policy(reference_home=True)
         ok, message = self.pick_policy.load('xgoduck_pick.onnx')
         if not ok:
             raise RuntimeError(message)
         self.model_message += '; ' + message
-        self.roulade_policy = Policy()
+        self.roulade_policy = Policy(reference_home=True)
         ok, message = self.roulade_policy.load('xgoduck_roulade.onnx')
         if not ok:
             raise RuntimeError(message)
@@ -67,12 +67,18 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         self.gyro_bias_control = FrozenGyroBias()
         self._gyro_control_epoch = None
         self.feedback = self.filtered = None
+        self._retired_feedback_boots = collections.deque(maxlen=16)
+        self._feedback_restart_candidate = None
+        self._feedback_receive_epoch = 0
+        self.out_of_order_frames = 0
         self._reset_filter_clock()
         self.rx_time = 0.0
+        self._joint_rx_times = [None]*15
         self.mode = 'shadow'
         self.generation = 0
         self.twist, self.head, self.mouth = [0.0]*3, [0.0]*4, 0.0
         self.web_time = 0.0
+        self.remote_command_timed_out = False
         self.arm_pending = False
         self.seq = self.received = self.inferred = self.sent = self.bad_frames = self.gaps = 0
         self.last_error = ''
@@ -83,6 +89,8 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         self.rx_intervals = collections.deque(maxlen=1000)
         self.loop_missed = 0
         self.last_action = [0.0]*15
+        self.last_policy_step = None
+        self.head_yaw_output = None
         self.started = time.monotonic()
         self.boot_pd = {}
         self.raw_pos = list(FACTORY_ZERO)
@@ -145,7 +153,8 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         self.bridge.notify('duck_cal', encode_cal(CAL_SET_ZEROS, mask=ALL_MASK, raw=self.zero_pos))
 
     def receive_display(self,raw):
-        self.display_telemetry.receive(raw)
+        with self.lock:
+            self.display_telemetry.receive(raw, feedback=self.feedback)
 
     def receive_boot_pd(self, raw):
         if not isinstance(raw, (bytes, bytearray)) or len(raw)!=32: return
@@ -203,24 +212,51 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         now = time.monotonic()
         with self.lock:
             old = self.feedback
+            restarted = False
             if old:
+                new_boot = fb.boot is not None and old.boot is not None and fb.boot != old.boot
                 step = elapsed_us(fb.seq, old.seq)
-                if step == 0: return
-                if step > 0x80000000:
+                if step == 0 and not new_boot: return
+                ambiguous = (new_boot and fb.boot in self._retired_feedback_boots
+                             or not new_boot and step >= 0x80000000 and fb.boot is not None)
+                if ambiguous and not self._restart_progress(fb, now):
+                    self.out_of_order_frames += 1
+                    return
+                # A reused clock marker may restart and catch up past the old
+                # sequence while disconnected. Forward progress after losing
+                # feedback cannot prove continuity either; withdraw old fit/zeros.
+                recovered_after_gap = now-self.rx_time > .15
+                if new_boot or step >= 0x80000000 or recovered_after_gap:
+                    restarted = True
+                    self._feedback_receive_epoch += 1
+                    self.display_telemetry.reset()
+                    # OFF is an explicit no-inference/no-torque choice, including
+                    # after a restart or ambiguous sequence resync. Still reset
+                    # every sensor/zero qualification below before any new start.
+                    keep_off = self.mode == 'off' and not fb.enabled
+                    if new_boot:
+                        if fb.boot in self._retired_feedback_boots:
+                            self._retired_feedback_boots.remove(fb.boot)
+                        self._retired_feedback_boots.append(old.boot)
                     self._factory_reboot()
-                    self.mode = 'shadow'; self.generation += 1
+                    self.mode = 'off' if keep_off else 'shadow'; self.generation += 1
                     self.arm_pending = False; self.filter.reset()
+                    self._joint_rx_times = [None]*15
                     self._reset_filter_clock()
                     self.gyro_bias_control.reset(reason='mcu_sequence_restart')
                     self._gyro_control_epoch = None
                     self.recovery.reset(); self.policy_needs_reset = True
                     self._stop_pick_locked(); self._stop_roulade_locked(); self._keyboard_cancel_locked()
                     self._reset_zero_sync()
+            self._feedback_restart_candidate = None
             sample_time = self._filter_sample_time(fb.sample_us)
             if sample_time is None:
                 return
+            for index in range(15):
+                if fb.mask & (1 << index):
+                    self._joint_rx_times[index] = now
             if old:
-                if step <= 0x80000000:
+                if not restarted:
                     self.gaps += step-1
                 self.rx_intervals.append((now-self.rx_time)*1000)
             epoch = self._gyro_bias_epoch(fb, now)
@@ -243,9 +279,26 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                 timestamp=sample_time, imu_ok=fb.imu_ok)
             self.feedback, self.rx_time = fb, now
             self.received += 1; self.rx_times.append(now)
-        self.current_telemetry.submit(raw, fb, now)
+            receive_epoch = self._feedback_receive_epoch
+        self.current_telemetry.submit(raw, fb, now, receiver_epoch=receive_epoch)
+
+    def _restart_progress(self, fb, now):
+        # The firmware marker uses startup clocks and can repeat. An old batch
+        # cannot take over immediately; recover a reused marker only after the
+        # accepted stream stops and a candidate advances in real and MCU time.
+        c = self._feedback_restart_candidate
+        if (c is None or c['boot'] != fb.boot or elapsed_us(fb.seq, c['seq']) != 1
+                or not 0 < elapsed_us(fb.sample_us, c['us']) <= 20000):
+            c = dict(boot=fb.boot, first_at=now, first_us=fb.sample_us)
+        c.update(seq=fb.seq, us=fb.sample_us)
+        self._feedback_restart_candidate = c
+        return (now-self.rx_time >= .15 and now-c['first_at'] >= .15
+                and 150000 <= elapsed_us(fb.sample_us, c['first_us']) < 0x80000000)
 
     def _gyro_bias_epoch(self, fb, now):
+        if fb.boot is not None:
+            self._gyro_control_epoch = '%016x' % fb.boot
+            return self._gyro_control_epoch
         # Only packet identity is borrowed from DQD1. Heading availability,
         # singularities, continuity and display age never gate control.
         identity = self.display_telemetry.snapshot(fb, now, now).get('display_heading', {})
@@ -267,6 +320,11 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             raise ValueError('MCU zero synchronization pending')
         return fb
 
+    def _stale_joint_ids(self, now):
+        # A live IMU/packet does not refresh joints absent from its servo mask.
+        return [joint for joint, received in zip(MOTOR_IDS, self._joint_rx_times)
+                if received is None or now-received > .15]
+
     def _disarm_now(self):
         self.arm_pending = False
         self.seq = (self.seq + 1) & 0xffffffff
@@ -282,6 +340,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             if mode in ('hold','policy') and self.factory_pending:
                 raise ValueError('calibration outcome unresolved; inspect pending transaction')
             if mode == self.mode:
+                self._expire_remote_intent_locked(time.monotonic())
                 self.web_time = time.monotonic()
                 return {'mode': self.mode}
             if mode in ('hold', 'policy') and self.mode in EXCLUSIVE_MODES:
@@ -290,7 +349,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                 raise ValueError('disarm before calibrate/servo_debug')
             fb = None
             if mode in ('hold', 'policy'):
-                fb = self._require_feedback(0)
+                fb = self._require_feedback(ALL_MASK)
             if mode == 'policy':
                 newly_frozen = self.gyro_bias_control.frozen is None
                 self.gyro_bias_control.freeze(epoch=self._gyro_bias_epoch(fb, time.monotonic()),
@@ -308,6 +367,8 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                         before_gravity=before_gravity, after_gravity=self.filtered['grav'])
             previous = self.mode
             self.generation += 1; self.mode = mode
+            self.last_policy_step = None
+            self.remote_command_timed_out = False
             self.recovery.reset(); self.policy_needs_reset = True
             if mode == 'policy':
                 filt = self.filtered
@@ -411,6 +472,15 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                 self.roulade_policy.warm(2)
         return {'ok': True, 'model': self.roulade_policy.file, 'seconds': ROULADE_S}
 
+    def _expire_remote_intent_locked(self, now):
+        # Only remote intent expires. Local sensor guards and actor history are
+        # independent of the browser/PC connection. A neutral acknowledgement
+        # must precede any subsequent movement after an expired command.
+        if self.mode == 'policy' and not self.remote_command_timed_out and now-self.web_time > 1.0:
+            self._keyboard_cancel_locked()
+            self._keyboard_recovery_latched = True
+            self.remote_command_timed_out = True
+
     def command(self, twist=None, head=None, mouth=None, manual_pick_depth=None, forward_specialist=None, fast_forward=False, navigation_specialist=False):
         def values(seq, limits):
             if len(seq)!=len(limits): raise ValueError('wrong command dimension')
@@ -428,8 +498,11 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         with self.lock:
             if self.mode in EXCLUSIVE_MODES:
                 raise ValueError('motion commands disabled in calibrate/servo_debug')
+            self._expire_remote_intent_locked(time.monotonic())
             if self._keyboard_recovery_command_locked(t, h, manual_pick_depth, forward_specialist, fast_forward, navigation_specialist):
                 if m is not None and not self.pick_active: self.mouth = m
+                if not self._keyboard_recovery_latched:
+                    self.remote_command_timed_out = False
                 self.web_time = time.monotonic()
                 return {'ok': True, 'motion_ignored': True, 'recovering': self.recovery.phase != 'walk'}
             self._keyboard_command_locked(t, manual_pick_depth, fast_forward, forward_specialist, navigation_specialist)
@@ -548,14 +621,18 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
     def step(self):
         with self.lock:
             fb, filt, generation, mode = self.feedback, self.filtered, self.generation, self.mode
+            receiver_epoch = self._feedback_receive_epoch
             age = time.monotonic()-self.rx_time
+            stale_joints = self._stale_joint_ids(time.monotonic())
             if mode in ('hold','policy'):
                 lost = None
                 if not fb or age>.15 or not fb.imu_ok:
                     lost = 'sensor feedback lost; disarmed'
                 elif not self._zero_sync_confirmed():
                     lost = 'MCU zero synchronization lost; disarmed'
-                elif time.monotonic()-self.web_time > 1.0:
+                elif stale_joints:
+                    lost = 'servo feedback lost: '+','.join(map(str, stale_joints))+'; disarmed'
+                elif mode == 'hold' and time.monotonic()-self.web_time > 1.0:
                     lost = 'web heartbeat lost; disarmed'
                 if lost:
                     self.mode = mode = 'shadow'; self.generation += 1
@@ -563,6 +640,8 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                     generation = self.generation
                     self.recovery.reset(); self.policy_needs_reset = True
                     self._stop_pick_locked(); self._stop_roulade_locked(); self._keyboard_cancel_locked()
+                else:
+                    self._expire_remote_intent_locked(time.monotonic())
             elif mode in EXCLUSIVE_MODES:
                 if time.monotonic()-self.web_time > 2.0 and not (mode == 'servo_debug' and self.factory_active):
                     previous = mode
@@ -576,7 +655,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                         self.bridge.notify('duck_servo', encode_servo(SERVO_EXIT, 10))
                     self._disarm_now()
             twist, head, mouth = list(self.twist), list(self.head), self.mouth
-            valid = bool(fb and age < .15 and fb.imu_ok and filt
+            valid = bool(fb and age < .15 and fb.imu_ok and not stale_joints and filt
                          and filt['imu_fusion_ready'] and filt['imu_fusion_updated'])
             now = time.monotonic()
             if self.roulade_until and now >= self.roulade_until:
@@ -622,6 +701,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         if exclusive:
             return
         target = [0.0]*15 if mode == 'hold' else list(DEFAULT_DEG)
+        policy_step = None
         if inferring and phase == 'default_pose':
             # Switch to getup immediately, but force action/history to zero for 1 s.
             with self.policy_lock:
@@ -638,6 +718,10 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                     selected.warm(1)
                 action = selected.infer(filt['grav'], filt['gyro_rad'], filt['angles_deg'], filt['vels_deg'], twist, head)
                 target = selected.action_to_deg(action)
+                if selected.last_inference is not None:
+                    policy_step = dict(selected.last_inference, phase=phase,
+                        source_mcu_seq=fb.seq, source_sample_us=fb.sample_us,
+                        source_receiver_epoch=receiver_epoch, requested_targets=list(target))
             finish = time.monotonic()
             with self.lock:
                 self.inferred += 1; self.infer_times.append(finish)
@@ -658,6 +742,15 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             if mode in ('hold','policy') and not self._zero_sync_confirmed():
                 self._disarm_now()
                 return
+            if mode in ('hold','policy') and self._stale_joint_ids(time.monotonic()):
+                stale = self._stale_joint_ids(time.monotonic())
+                self.mode = 'shadow'; self.generation += 1
+                self.arm_pending = False
+                self.last_error = 'servo feedback lost: '+','.join(map(str, stale))+'; disarmed'
+                self.recovery.reset(); self.policy_needs_reset = True
+                self._stop_pick_locked(); self._stop_roulade_locked(); self._keyboard_cancel_locked()
+                self._disarm_now()
+                return
             command_mode = {'shadow':DISARM,'off':DISARM,'hold':HOLD,'policy':POLICY}[mode]
             if self.arm_pending:
                 command_mode = ARM
@@ -667,11 +760,19 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             else:
                 target = list(target)
                 target[MOUTH_INDEX] = 0.0 if mode == 'hold' else mouth
+            requested_yaw = target[HEAD_YAW_INDEX]
+            target[HEAD_YAW_INDEX] = max(-HEAD_YAW_LIMIT_DEG, min(HEAD_YAW_LIMIT_DEG, requested_yaw))
+            self.head_yaw_output = dict(requested_deg=requested_yaw, sent_deg=target[HEAD_YAW_INDEX],
+                limited=requested_yaw != target[HEAD_YAW_INDEX], command_mode=command_mode)
             if fb is None: return
             self.last_action = list(target)
             self.seq = (self.seq+1)&0xffffffff
             payload = encode_command(self.seq, fb.sample_us, command_mode, target)
             self.bridge.notify('duck_command', payload)
+            if policy_step is not None:
+                self.last_policy_step = dict(policy_step, command_seq=self.seq, command_mode=command_mode,
+                    submitted_uptime_s=time.monotonic()-self.started,
+                    submitted_targets=list(target), submission='Bridge notify returned; match MCU command_seq to confirm acceptance')
             self.sent += 1
 
     def _keep_warm_idle(self):
@@ -734,7 +835,6 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         self.current_telemetry.close()
 
     def status(self):
-        now = time.monotonic()
         def hz(times):
             recent = [t for t in times if now-t < 5]
             if len(recent) < 2:
@@ -745,30 +845,42 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             vals=sorted(samples)
             return {'mean':sum(vals)/len(vals), 'p99':vals[min(len(vals)-1,int(len(vals)*.99))], 'max':vals[-1]} if vals else {}
         with self.lock:
+            now = time.monotonic()
             fb = self.feedback
             zero_confirmed = self._zero_sync_confirmed()
             result = dict(mode=self.mode, model=self.model_message, bridge_baud=2000000,
                 feedback_hz=hz(self.rx_times), inference_hz=hz(self.infer_times),
                 received=self.received, inferred=self.inferred, sent=self.sent,
-                bad_frames=self.bad_frames, sequence_gaps=self.gaps, loop_missed=self.loop_missed,
+                bad_frames=self.bad_frames, sequence_gaps=self.gaps, out_of_order_frames=self.out_of_order_frames,
+                loop_missed=self.loop_missed,
                 inference_ms=summary(self.infer_ms), receive_interval_ms=summary(self.rx_intervals),
                 feedback_age_ms=(now-self.rx_time)*1000 if fb else None,
                 uptime_s=now-self.started, last_error=self.last_error, command=self.twist,
                 head=self.head, mouth=self.mouth, policy_targets=self.last_action, motors=MOTOR_IDS, boot_pd=self.boot_pd,
+                last_policy_step=self.last_policy_step,
+                remote_command=dict(age_ms=max(0.0, now-self.web_time)*1000,
+                    timed_out=self.remote_command_timed_out,
+                    policy_disconnect_action='zero_intent_keep_local_policy'),
                 full_robot_ready=bool(zero_confirmed and fb and fb.imu_ok and fb.mask==ALL_MASK and now-self.rx_time<.15),
                 raw_pos=list(self.raw_pos), zero_pos=list(self.zero_pos),
                 factory_zero_pos=list(FACTORY_ZERO), cal_done=list(self.cal_done),
                 cal_targets=list(self.cal_targets), raw_mask=self.raw_mask)
             result['gyro_bias_control'] = self.gyro_bias_control.status()
-            result['control_ready']=bool(zero_confirmed and fb and fb.imu_ok and now-self.rx_time<.15 and self.mode not in EXCLUSIVE_MODES)
+            result['joint_feedback_age_ms']=[None if t is None else (now-t)*1000 for t in self._joint_rx_times]
+            result['stale_joint_ids']=self._stale_joint_ids(now)
+            result['control_ready']=bool(zero_confirmed and fb and fb.imu_ok and not result['stale_joint_ids'] and now-self.rx_time<.15 and self.mode not in EXCLUSIVE_MODES)
             result['zero_sync']=dict(confirmed=zero_confirmed, expected_zero_pos=list(self.zero_pos),
                 mcu_zero_pos=list(self._mcu_zero_pos) if self._mcu_zero_pos is not None else None,
                 pending_transaction=bool(getattr(self, 'factory_pending', None)),
                 last_push_age_ms=(now-self._zero_push_at)*1000 if self._zero_push_at is not None else None)
             result['servo_scan_version'] = 1
+            result['joint_limits_deg'] = {'32': [-HEAD_YAW_LIMIT_DEG, HEAD_YAW_LIMIT_DEG]}
+            result['head_yaw_output'] = self.head_yaw_output
             result['feedback_timing']=dict(filter_clock='mcu_sample_us',
                 freshness_clock='host_monotonic', sample_clock_s=self._feedback_clock_s,
-                last_sample_us=self._feedback_clock_us)
+                last_sample_us=self._feedback_clock_us, receiver_epoch=self._feedback_receive_epoch,
+                boot_marker='%016x'%fb.boot if fb and fb.boot is not None else None,
+                last_imu_us=fb.imu_us if fb else None)
             result['deployment'] = dict(reference='rl/raspi_deploy', control_hz=50,
                 home_deg=HOME_DEG.tolist(), default_deg=DEFAULT_DEG,
                 action_scale=self.policy.action_scale, action_alpha=self.policy.action_alpha,

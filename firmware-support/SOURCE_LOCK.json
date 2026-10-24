@@ -2,9 +2,9 @@
   "schema": "xgoduck-firmware-support-source-lock-v1",
   "files_sha256": {
     ".gitignore": "27ce5655d3e370af74eea9ac4d3ce5cca6cc590683bb637fd7fd32898b92d424",
-    "BUILD_BINDING.json": "45daed2de538f5a72e18c1c4082404081043cd1592a0d2facd90bbe65a57ebb1",
-    "README.md": "bf97d5fe44724632179595c5f7880e64c97bbc8b91aea2e0d014f8e79d216837",
-    "run_native.py": "06c463a81dfc40c2c6046efe43af2a98769632386b875b2f21f1bdceb4c4b598",
+    "BUILD_BINDING.json": "47583ef5d7df51bf66b4292330e2e9cce631985eeeabebc6942fcf96ac03715c",
+    "README.md": "ece74512738ba47027c807ef9f2b72d195eafeb1f61395b5b16e4f57def6af13",
+    "run_native.py": "fd40c9b55745a50e2e670a6e6ebbc948e1bb7d4763cb279ef35386316b401a9a",
     "verify_sources.py": "77c4cb3edd43c920ac1c0de65fb72ffe1d1f4f1b8c8b0e6f1f1b1ee059ad425f",
     "patches/custom-parser.patch": "8d243deefa787d970f4148421f341de2ddd34d0c668be1815fb87f300c459edf",
     "patches/ftservo-read.patch": "5d4d696c6a6ec783e78acc3ed7fea154f9007cfd1cd5ec6a63e29b0b3a2d9b8b",
@@ -13,9 +13,9 @@
     "sketch/duck_config.h": "d7877465e68aa3da03ff80657d0a42a4e99feb28d44fbd1eb32c904e58f79955",
     "sketch/factory_calibration.h": "22a0d55b4bd1302ee5d24d5d3352ed867695df08d2ccc4548b32541b2cde163a",
     "sketch/protocol.h": "c9c73ea760d8a21d8f6e76d26cb6856e882151825af80c16ee59c386a6aacb1c",
-    "sketch/qmi8658.h": "3d6b501dba41e76e6fc63cbd81d35eb5d5cd34ff80f18e0bb44ec3cc9772f4b1",
+    "sketch/qmi8658.h": "a4fb9e985adf4a6c57ff906f8f8bd5c3c6b13dc9b3460fd880f8a34073c014cc",
     "sketch/route_refresh.h": "07ed36223db35f15c900021f7f305f418a73277ee74269754428548bdc92bb43",
-    "sketch/scs_bus.h": "9a0596c102a11f41d661ff2c48779120e4b90b9b7bb93d34ace8c70b1aabcec5",
+    "sketch/scs_bus.h": "538ae49ca7c670d41aab0a96fc83c4ccc0d936489dacd0876c4f5278cc3ecf5a",
     "sketch/sketch.ino": "09eb23897face7cb89212fefc36c64ed155b0a0d723d7b38a618b52f7ada2599",
     "sketch/sketch.yaml": "58f2d25c791cae6d19e052859f20bed08ea4ad38cb609b5116a68e4ce1c5433d",
     "sketch/uart_fifo.h": "f3dc8d93e2f0c7e8908be3eb071adf60484f009b55964cea0c44655a956ac942",
@@ -230,6 +230,15 @@
     "firmware_dependencies/libraries/Arduino_RouterBridge/.github/workflows/compile-examples.yml": "fc424c29913d21ca134b43c2e62bff7f437199801da252cbbc4ca2b4463402e5",
     "firmware_dependencies/libraries/Arduino_RouterBridge/.github/workflows/report-size-deltas.yml": "38f07df768da1cb3041dc86fdf114ff5156fe3fc38eba050d85a613643c5a127",
     "baseline/sketch/scs_bus.h": "652cd6696cafb087e84d751523f0eed356eb7dabd6cc9662b3276d800e81a1f2",
-    "baseline/FTServo/src/SCS.cpp": "6e0853f27c2b157ae6ac8849f8d6511190852ffab58b9e34b3d67b71db3d4e54"
+    "baseline/FTServo/src/SCS.cpp": "6e0853f27c2b157ae6ac8849f8d6511190852ffab58b9e34b3d67b71db3d4e54",
+    "tests/qmi_sync.cpp": "e9d6fb7b3c62c5d03053e6abbc1b51daabd44545279e13c07b743f819bdadead",
+    "tests/qmi_sync/Wire.h": "795ad0b390f6f1f12fb7b52ea3a3618cea6bc97200ec2edfa249636d8884847f",
+    "validation/imu-sync-install-20261023.json": "499080ddd1893183925b2966dce606fc17546ebf8c050ed58f27ddd2e00ae403",
+    "validation/review-fix-static-20261023.json": "3c2fef2852da40b35aa70668c60e6cdf5f4deed437f679cb3e8d7797b456d6b4",
+    "sketch/joint_limits.h": "ab30178d228f635d8b664af3a326d6a06d35fdb5f80f95a9364a9577df8f6368",
+    "tests/joint_limits.cpp": "4e024f0d63bfaf0697c791eb024770cf267a60c5a63507293994d1c195da7b54",
+    "validation/control-comparison-20261023.json": "a262db850825f84ed0f7709b2f8996cd990eaf3715dae32557d95486b7c37e0c",
+    "validation/motion-history-20261023.json": "67b5b91f51012f40f3994e941cdeb5311b9b06a1b5c0d96cd18eebcd8595f5e5",
+    "validation/standing-offline-20261023.json": "73218de9dd3236deee176d8556e8418895f5d096b15770469d48cba7f81f87f8"
   }
 }

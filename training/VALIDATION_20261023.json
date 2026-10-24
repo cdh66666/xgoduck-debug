@@ -1,0 +1,1881 @@
+{
+  "date": "2026-10-23",
+  "scope": "native stand15s / five motion12s+stop6s, 8 seeds, no reset/recovery",
+  "environment_verified_here": true,
+  "hardware_commands_sent": false,
+  "deployment_allowed": false,
+  "physical_acceptance": "NOT_PASSED",
+  "full_offline_qualification": false,
+  "baseline_result": "PASS_THIS_MATRIX",
+  "candidate_result": "PASS_THIS_MATRIX",
+  "candidate_simulation_matrix_qualified": true,
+  "candidate_outperforms_baseline_demonstrated": false,
+  "runtime_model_replaced": false,
+  "candidate_directory": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\full47500-r2",
+  "known_remaining": [
+    "physical standing backward drift, walk/release stop and wireless remain NOT_PASSED",
+    "126s continuous switches, pushes, getup and extensions not evaluated in this session",
+    "BAM has no identified Feetech D20 map; mass/COM/inertia uncertainty remains"
+  ],
+  "training_updates_total": 6100,
+  "training_transitions_total": 1766400,
+  "training_wall_s_total": 1573.5790000000852,
+  "contract_tests": {
+    "passed": true,
+    "count": 6
+  },
+  "asset_bindings_verified": 42,
+  "asset_manifest_sha256": "4f99b031ca5127bfc799ae71e30119cad11cbba71d7aa2693132dcfad3a80bda",
+  "training_source_sha256": {
+    "train.py": "5a13fcec60d05187446b1ff8bc2a97039871196aead659a8d3432e868550dde0",
+    "evaluate.py": "fe1dd8eadf9f49ed5cc623444945debd77b30ba4221dad9ed0516b8d04b6fe77",
+    "full_refine.py": "3688a3dc3fde5e28eb2e6f695c0f97462dcb277063a66e830b38d681eba8d2ab",
+    "full_refine_model.py": "9c4f75b7faa7990aa5ae40e0b27aa349426bf7a6d5770bee70ca701d4a0c4e71",
+    "refine_model.py": "c53c970129341fb38178cf9fb5506452b2183992cecbe4deb33687f3c90fa8ed",
+    "native_env.py": "dfeadd180fd57da258a509e07905789784be68c4f9b887a041d77dcd3ba54485",
+    "training_adapter.py": "fd40b8d52f6111509852527584494b8248e0e15d4761e549d95c4daf106d0e8b",
+    "config.json": "f9689f6407c24dc5454209c686885c87973c237c692508480da3cd84365ec80d",
+    "tests/test_contract.py": "50e567b15fbff3164a8127ae55f554ce994167837836668ad7f52bcc42271ba9"
+  },
+  "worker_import_regression": [
+    {
+      "pid": 25964,
+      "mujoco": "3.15.0",
+      "envs": 2,
+      "torch_imported": false
+    },
+    {
+      "pid": 23432,
+      "mujoco": "3.15.0",
+      "envs": 2,
+      "torch_imported": false
+    }
+  ],
+  "candidate_after_lazy_import_parity": {
+    "samples": 64,
+    "inputs": [
+      1,
+      61
+    ],
+    "outputs": [
+      1,
+      14
+    ],
+    "max_abs_error": 4.76837158203125e-07
+  },
+  "memory_cleanup": {
+    "BeforeAvailableGB": 1.28,
+    "AfterAvailableGB": 3.85,
+    "ReleasedGB": 2.58,
+    "Stopped": [
+      {
+        "Name": "Doubao.exe",
+        "PID": 20160,
+        "WorkingSetMB": 242.0,
+        "Result": "Stopped"
+      },
+      {
+        "Name": "Doubao.exe",
+        "PID": 20192,
+        "WorkingSetMB": 12.5,
+        "Result": "Stopped"
+      },
+      {
+        "Name": "WorkBuddy.exe",
+        "PID": 24328,
+        "WorkingSetMB": 195.0,
+        "Result": "Stopped"
+      },
+      {
+        "Name": "Feishu.exe",
+        "PID": 12312,
+        "WorkingSetMB": 242.8,
+        "Result": "Stopped"
+      },
+      {
+        "Name": "Feishu.exe",
+        "PID": 8664,
+        "Result": "Cannot find a process with the process identifier 8664."
+      },
+      {
+        "Name": "WorkBuddy.exe",
+        "PID": 23584,
+        "WorkingSetMB": 279.3,
+        "Result": "Stopped"
+      }
+    ]
+  },
+  "memory_cleanup_idle_wsl": {
+    "Result": "Terminated idle Ubuntu-22.04; no training or package jobs",
+    "BeforeAvailableGB": 1.02,
+    "AfterAvailableGB": 1.9,
+    "ReleasedGB": 0.88
+  },
+  "resource_snapshot": {
+    "AvailableRAM_GB": 7.6,
+    "OwnTrainingOrEvaluationProcesses": 0,
+    "ClearedAppsRemaining": 0,
+    "ForegroundBrowser": [
+      "Codex雷达站 codexradar.com - 豆包浏览器"
+    ]
+  },
+  "rounds": [
+    {
+      "kind": "xgoduck-scratch-mlp-bodyframe-v2",
+      "initialization": "random",
+      "parent_checkpoint_required": false,
+      "hardware_commands_sent": false,
+      "deployment_allowed": false,
+      "behavior_qualified": false,
+      "cpu_only": true,
+      "seed": 20261023,
+      "curriculum": "stand",
+      "versions": {
+        "torch": "2.14.1+cpu",
+        "numpy": "2.5.4"
+      },
+      "requested_updates": 2000,
+      "max_wall_seconds": 600.0,
+      "workers": 2,
+      "envs_per_worker": 2,
+      "worker_metadata": [
+        {
+          "pid": 16032,
+          "mujoco": "3.15.0",
+          "envs": 2
+        },
+        {
+          "pid": 27380,
+          "mujoco": "3.15.0",
+          "envs": 2
+        }
+      ],
+      "actor_parameters_changed": true,
+      "completed_updates": 2000,
+      "final_iteration": 2000,
+      "stop_reason": "iteration_budget",
+      "transitions": 192000,
+      "export": {
+        "max_abs_error": 3.814697265625e-06,
+        "inputs": [
+          1,
+          61
+        ],
+        "outputs": [
+          1,
+          14
+        ],
+        "samples": 64,
+        "behavior_qualified": false
+      },
+      "wall_s": 265.2970000000205,
+      "result": "TRAINED_PENDING_INDEPENDENT_EVALUATION",
+      "directory": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\stand-r1",
+      "config": {
+        "interface": "bodyframe-v2",
+        "actor_dim": 61,
+        "critic_dim": 64,
+        "action_dim": 14,
+        "policy_hz": 50,
+        "physics_hz": 200,
+        "feedback_hz": 100,
+        "kp_fw": 6,
+        "kd_fw": 20,
+        "D20_mapping_identified": false,
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "home_rad": [
+          0.0,
+          -0.08726646259971647,
+          -0.4014257279586958,
+          0.0,
+          0.4014257279586958,
+          0.3490658503988659,
+          0.3490658503988659,
+          0.0,
+          0.0,
+          0.0,
+          0.08726646259971647,
+          0.4014257279586958,
+          0.0,
+          -0.4014257279586958
+        ],
+        "ppo": {
+          "algorithm": {
+            "class_name": "rsl_rl.algorithms:PPO",
+            "value_loss_coef": 1.0,
+            "use_clipped_value_loss": true,
+            "clip_param": 0.2,
+            "entropy_coef": 0.01,
+            "num_learning_epochs": 5,
+            "num_mini_batches": 4,
+            "learning_rate": 0.0003,
+            "schedule": "fixed",
+            "gamma": 0.99,
+            "lam": 0.95,
+            "desired_kl": 0.01,
+            "max_grad_norm": 1.0,
+            "rnd_cfg": null,
+            "symmetry_cfg": null
+          },
+          "actor": {
+            "class_name": "rsl_rl.models:MLPModel",
+            "hidden_dims": [
+              512,
+              256,
+              128
+            ],
+            "activation": "elu",
+            "obs_normalization": true,
+            "distribution_cfg": {
+              "class_name": "GaussianDistribution",
+              "init_std": 0.3,
+              "std_type": "scalar"
+            }
+          },
+          "critic": {
+            "class_name": "rsl_rl.models:MLPModel",
+            "hidden_dims": [
+              512,
+              256,
+              128
+            ],
+            "activation": "elu",
+            "obs_normalization": true
+          },
+          "obs_groups": {
+            "actor": [
+              "actor"
+            ],
+            "critic": [
+              "critic"
+            ]
+          },
+          "num_steps_per_env": 24,
+          "multi_gpu": null
+        }
+      },
+      "checkpoint_sha256": "2c03a5d4feaaf46c7734014b1c34d0f9c2e5be0c6c4a7c2657a6b8c9e02b0434",
+      "onnx_sha256": "1f920f82d0622e0e17af582ca782c8b9124fc3a32f23d7a3ab90b09b17111959"
+    },
+    {
+      "kind": "xgoduck-scratch-mlp-bodyframe-v2",
+      "initialization": "random",
+      "parent_checkpoint_required": false,
+      "hardware_commands_sent": false,
+      "deployment_allowed": false,
+      "behavior_qualified": false,
+      "cpu_only": true,
+      "seed": 20261023,
+      "curriculum": "stand",
+      "versions": {
+        "torch": "2.14.1+cpu",
+        "numpy": "2.5.4"
+      },
+      "requested_updates": 1500,
+      "max_wall_seconds": 600.0,
+      "workers": 2,
+      "envs_per_worker": 8,
+      "worker_metadata": [
+        {
+          "pid": 15928,
+          "mujoco": "3.15.0",
+          "envs": 8
+        },
+        {
+          "pid": 30460,
+          "mujoco": "3.15.0",
+          "envs": 8
+        }
+      ],
+      "actor_parameters_changed": true,
+      "completed_updates": 1500,
+      "final_iteration": 1500,
+      "stop_reason": "iteration_budget",
+      "transitions": 576000,
+      "export": {
+        "max_abs_error": 1.2516975402832031e-06,
+        "inputs": [
+          1,
+          61
+        ],
+        "outputs": [
+          1,
+          14
+        ],
+        "samples": 64,
+        "behavior_qualified": false
+      },
+      "wall_s": 480.84399999998277,
+      "result": "TRAINED_PENDING_INDEPENDENT_EVALUATION",
+      "directory": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\stand-r2",
+      "config": {
+        "interface": "bodyframe-v2",
+        "actor_dim": 61,
+        "critic_dim": 64,
+        "action_dim": 14,
+        "policy_hz": 50,
+        "physics_hz": 200,
+        "feedback_hz": 100,
+        "kp_fw": 6,
+        "kd_fw": 20,
+        "D20_mapping_identified": false,
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "home_rad": [
+          0.0,
+          -0.08726646259971647,
+          -0.4014257279586958,
+          0.0,
+          0.4014257279586958,
+          0.3490658503988659,
+          0.3490658503988659,
+          0.0,
+          0.0,
+          0.0,
+          0.08726646259971647,
+          0.4014257279586958,
+          0.0,
+          -0.4014257279586958
+        ],
+        "ppo": {
+          "algorithm": {
+            "class_name": "rsl_rl.algorithms:PPO",
+            "value_loss_coef": 1.0,
+            "use_clipped_value_loss": true,
+            "clip_param": 0.2,
+            "entropy_coef": 0.0,
+            "num_learning_epochs": 5,
+            "num_mini_batches": 4,
+            "learning_rate": 0.0001,
+            "schedule": "adaptive",
+            "gamma": 0.99,
+            "lam": 0.95,
+            "desired_kl": 0.01,
+            "max_grad_norm": 1.0,
+            "rnd_cfg": null,
+            "symmetry_cfg": null
+          },
+          "actor": {
+            "class_name": "rsl_rl.models:MLPModel",
+            "hidden_dims": [
+              512,
+              256,
+              128
+            ],
+            "activation": "elu",
+            "obs_normalization": true,
+            "distribution_cfg": {
+              "class_name": "GaussianDistribution",
+              "init_std": 0.05,
+              "std_type": "log"
+            }
+          },
+          "critic": {
+            "class_name": "rsl_rl.models:MLPModel",
+            "hidden_dims": [
+              512,
+              256,
+              128
+            ],
+            "activation": "elu",
+            "obs_normalization": true
+          },
+          "obs_groups": {
+            "actor": [
+              "actor"
+            ],
+            "critic": [
+              "critic"
+            ]
+          },
+          "num_steps_per_env": 24,
+          "multi_gpu": null
+        }
+      },
+      "checkpoint_sha256": "0caaabd1828292e5f833dfd161d3dd24fb2a54890d250185f27b86b1fa4b2fc9",
+      "onnx_sha256": "0356600410d1cc2a002273626002b3110d5a5850768799eec6ad359a7230320e"
+    },
+    {
+      "kind": "xgoduck-scratch-mlp-bodyframe-v2",
+      "initialization": "resume own scratch checkpoint",
+      "parent_checkpoint_required": false,
+      "hardware_commands_sent": false,
+      "deployment_allowed": false,
+      "behavior_qualified": false,
+      "cpu_only": true,
+      "seed": 20261024,
+      "curriculum": "six",
+      "versions": {
+        "torch": "2.14.1+cpu",
+        "numpy": "2.5.4"
+      },
+      "requested_updates": 2000,
+      "max_wall_seconds": 600.0,
+      "workers": 8,
+      "envs_per_worker": 2,
+      "worker_metadata": [
+        {
+          "pid": 18492,
+          "mujoco": "3.15.0",
+          "envs": 2
+        },
+        {
+          "pid": 20520,
+          "mujoco": "3.15.0",
+          "envs": 2
+        },
+        {
+          "pid": 32732,
+          "mujoco": "3.15.0",
+          "envs": 2
+        },
+        {
+          "pid": 25716,
+          "mujoco": "3.15.0",
+          "envs": 2
+        },
+        {
+          "pid": 21256,
+          "mujoco": "3.15.0",
+          "envs": 2
+        },
+        {
+          "pid": 30180,
+          "mujoco": "3.15.0",
+          "envs": 2
+        },
+        {
+          "pid": 10384,
+          "mujoco": "3.15.0",
+          "envs": 2
+        },
+        {
+          "pid": 12440,
+          "mujoco": "3.15.0",
+          "envs": 2
+        }
+      ],
+      "resume_sha256": "0caaabd1828292e5f833dfd161d3dd24fb2a54890d250185f27b86b1fa4b2fc9",
+      "actor_parameters_changed": true,
+      "completed_updates": 2000,
+      "final_iteration": 3500,
+      "stop_reason": "iteration_budget",
+      "transitions": 768000,
+      "export": {
+        "max_abs_error": 9.5367431640625e-07,
+        "inputs": [
+          1,
+          61
+        ],
+        "outputs": [
+          1,
+          14
+        ],
+        "samples": 64,
+        "behavior_qualified": false
+      },
+      "wall_s": 527.469000000041,
+      "result": "TRAINED_PENDING_INDEPENDENT_EVALUATION",
+      "directory": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\six-r1",
+      "config": {
+        "interface": "bodyframe-v2",
+        "actor_dim": 61,
+        "critic_dim": 64,
+        "action_dim": 14,
+        "policy_hz": 50,
+        "physics_hz": 200,
+        "feedback_hz": 100,
+        "kp_fw": 6,
+        "kd_fw": 20,
+        "D20_mapping_identified": false,
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "home_rad": [
+          0.0,
+          -0.08726646259971647,
+          -0.4014257279586958,
+          0.0,
+          0.4014257279586958,
+          0.3490658503988659,
+          0.3490658503988659,
+          0.0,
+          0.0,
+          0.0,
+          0.08726646259971647,
+          0.4014257279586958,
+          0.0,
+          -0.4014257279586958
+        ],
+        "ppo": {
+          "algorithm": {
+            "class_name": "rsl_rl.algorithms:PPO",
+            "value_loss_coef": 1.0,
+            "use_clipped_value_loss": true,
+            "clip_param": 0.2,
+            "entropy_coef": 0.0,
+            "num_learning_epochs": 5,
+            "num_mini_batches": 4,
+            "learning_rate": 0.0001,
+            "schedule": "adaptive",
+            "gamma": 0.99,
+            "lam": 0.95,
+            "desired_kl": 0.01,
+            "max_grad_norm": 1.0,
+            "rnd_cfg": null,
+            "symmetry_cfg": null
+          },
+          "actor": {
+            "class_name": "rsl_rl.models:MLPModel",
+            "hidden_dims": [
+              512,
+              256,
+              128
+            ],
+            "activation": "elu",
+            "obs_normalization": true,
+            "distribution_cfg": {
+              "class_name": "GaussianDistribution",
+              "init_std": 0.05,
+              "std_type": "log"
+            }
+          },
+          "critic": {
+            "class_name": "rsl_rl.models:MLPModel",
+            "hidden_dims": [
+              512,
+              256,
+              128
+            ],
+            "activation": "elu",
+            "obs_normalization": true
+          },
+          "obs_groups": {
+            "actor": [
+              "actor"
+            ],
+            "critic": [
+              "critic"
+            ]
+          },
+          "num_steps_per_env": 24,
+          "multi_gpu": null
+        }
+      },
+      "checkpoint_sha256": "3aeda946799e9dcc41e3a7ab0031746b98c0f8339bf554c2c25ad0634acf8ca2",
+      "onnx_sha256": "a6e07546a4c09fb05c7f50f226b672438c76a1e80b7a6793bf379a96408aee78"
+    },
+    {
+      "kind": "xgoduck-full-47500-bodyframe-v2",
+      "initialization": "all packaged47500 actor/critic tensors; new full-actor Adam",
+      "parent_checkpoint_required": false,
+      "hardware_commands_sent": false,
+      "deployment_allowed": false,
+      "behavior_qualified": false,
+      "cpu_only": true,
+      "seed": 20261025,
+      "curriculum": "six",
+      "versions": {
+        "torch": "2.14.1+cpu",
+        "numpy": "2.5.4"
+      },
+      "requested_updates": 300,
+      "max_wall_seconds": 300.0,
+      "workers": 4,
+      "envs_per_worker": 4,
+      "worker_metadata": [
+        {
+          "pid": 8092,
+          "mujoco": "3.15.0",
+          "envs": 4
+        },
+        {
+          "pid": 3208,
+          "mujoco": "3.15.0",
+          "envs": 4
+        },
+        {
+          "pid": 9240,
+          "mujoco": "3.15.0",
+          "envs": 4
+        },
+        {
+          "pid": 18792,
+          "mujoco": "3.15.0",
+          "envs": 4
+        }
+      ],
+      "source_checkpoint_sha256": "ff6d88962d0c2703e17e343bfa9e9c17decba3435d896d6e315aab5ec7fe22db",
+      "source_iteration": 47500,
+      "actor_load_exact": true,
+      "critic_load_exact": true,
+      "optimizer_reset_for_new_scope": true,
+      "initial_optimizer_entries": 0,
+      "trainable_actor_parameters": 226702,
+      "trainable_scope": "all base/residual/head/back_skip weights + Critic64; original sigma/normalizer fixed",
+      "initial_onnx_parity": {
+        "samples": 64,
+        "inputs": [
+          1,
+          61
+        ],
+        "outputs": [
+          1,
+          14
+        ],
+        "max_abs_error": 5.960464477539062e-07
+      },
+      "actor_parameters_changed": true,
+      "fixed_sigma_and_normalizer_unchanged": true,
+      "zero_command_base_parameters_changed": true,
+      "completed_updates": 300,
+      "final_iteration": 300,
+      "stop_reason": "iteration_budget",
+      "transitions": 115200,
+      "export": {
+        "max_abs_error": 7.152557373046875e-07,
+        "inputs": [
+          1,
+          61
+        ],
+        "outputs": [
+          1,
+          14
+        ],
+        "samples": 64,
+        "behavior_qualified": false
+      },
+      "wall_s": 94.21900000004098,
+      "result": "TRAINED_PENDING_INDEPENDENT_EVALUATION",
+      "directory": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\full47500-r1",
+      "config": {
+        "interface": "bodyframe-v2",
+        "actor_dim": 61,
+        "critic_dim": 64,
+        "action_dim": 14,
+        "policy_hz": 50,
+        "physics_hz": 200,
+        "feedback_hz": 100,
+        "kp_fw": 6,
+        "kd_fw": 20,
+        "D20_mapping_identified": false,
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "home_rad": [
+          0.0,
+          -0.08726646259971647,
+          -0.4014257279586958,
+          0.0,
+          0.4014257279586958,
+          0.3490658503988659,
+          0.3490658503988659,
+          0.0,
+          0.0,
+          0.0,
+          0.08726646259971647,
+          0.4014257279586958,
+          0.0,
+          -0.4014257279586958
+        ],
+        "ppo": {
+          "algorithm": {
+            "class_name": "rsl_rl.algorithms:PPO",
+            "value_loss_coef": 1.0,
+            "use_clipped_value_loss": true,
+            "clip_param": 0.2,
+            "entropy_coef": 0.0,
+            "num_learning_epochs": 5,
+            "num_mini_batches": 4,
+            "learning_rate": 1e-06,
+            "schedule": "fixed",
+            "gamma": 0.99,
+            "lam": 0.95,
+            "desired_kl": 0.01,
+            "max_grad_norm": 1.0,
+            "rnd_cfg": null,
+            "symmetry_cfg": null
+          },
+          "actor": {
+            "class_name": "full_refine:Full47500Actor",
+            "hidden_dims": [
+              512,
+              256,
+              128
+            ],
+            "activation": "elu",
+            "obs_normalization": true,
+            "distribution_cfg": {
+              "class_name": "GaussianDistribution",
+              "init_std": 0.02,
+              "std_type": "scalar"
+            }
+          },
+          "critic": {
+            "class_name": "rsl_rl.models:MLPModel",
+            "hidden_dims": [
+              512,
+              256,
+              128
+            ],
+            "activation": "elu",
+            "obs_normalization": true
+          },
+          "obs_groups": {
+            "actor": [
+              "actor"
+            ],
+            "critic": [
+              "critic"
+            ]
+          },
+          "num_steps_per_env": 24,
+          "multi_gpu": null
+        }
+      },
+      "checkpoint_sha256": "b328befd0677fd612a3f6be96ab1f5b56e87ef7a9eb814d81d2170e4764e8e83",
+      "onnx_sha256": "198e29b7c07b8dbd888e65aa41835ae1bceed8d23f082722c8c9594c4b723879"
+    },
+    {
+      "kind": "xgoduck-full-47500-bodyframe-v2",
+      "initialization": "all packaged47500 actor/critic tensors; new full-actor Adam",
+      "parent_checkpoint_required": false,
+      "hardware_commands_sent": false,
+      "deployment_allowed": false,
+      "behavior_qualified": false,
+      "cpu_only": true,
+      "seed": 20261025,
+      "curriculum": "six",
+      "versions": {
+        "torch": "2.14.1+cpu",
+        "numpy": "2.5.4"
+      },
+      "requested_updates": 300,
+      "max_wall_seconds": 300.0,
+      "workers": 4,
+      "envs_per_worker": 4,
+      "worker_metadata": [
+        {
+          "pid": 33520,
+          "mujoco": "3.15.0",
+          "envs": 4
+        },
+        {
+          "pid": 30836,
+          "mujoco": "3.15.0",
+          "envs": 4
+        },
+        {
+          "pid": 25012,
+          "mujoco": "3.15.0",
+          "envs": 4
+        },
+        {
+          "pid": 26620,
+          "mujoco": "3.15.0",
+          "envs": 4
+        }
+      ],
+      "source_checkpoint_sha256": "ff6d88962d0c2703e17e343bfa9e9c17decba3435d896d6e315aab5ec7fe22db",
+      "source_iteration": 47500,
+      "actor_load_exact": true,
+      "critic_load_exact": true,
+      "optimizer_reset_for_new_scope": true,
+      "initial_optimizer_entries": 0,
+      "trainable_actor_parameters": 226702,
+      "trainable_scope": "all base/residual/head/back_skip weights + Critic64; original sigma/normalizer fixed",
+      "initial_onnx_parity": {
+        "samples": 64,
+        "inputs": [
+          1,
+          61
+        ],
+        "outputs": [
+          1,
+          14
+        ],
+        "max_abs_error": 5.960464477539062e-07
+      },
+      "actor_parameters_changed": true,
+      "fixed_sigma_and_normalizer_unchanged": true,
+      "zero_command_base_parameters_changed": true,
+      "completed_updates": 300,
+      "final_iteration": 300,
+      "stop_reason": "iteration_budget",
+      "transitions": 115200,
+      "export": {
+        "max_abs_error": 7.152557373046875e-07,
+        "inputs": [
+          1,
+          61
+        ],
+        "outputs": [
+          1,
+          14
+        ],
+        "samples": 64,
+        "behavior_qualified": false
+      },
+      "wall_s": 205.75,
+      "result": "TRAINED_PENDING_INDEPENDENT_EVALUATION",
+      "directory": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\full47500-r2",
+      "config": {
+        "interface": "bodyframe-v2",
+        "actor_dim": 61,
+        "critic_dim": 64,
+        "action_dim": 14,
+        "policy_hz": 50,
+        "physics_hz": 200,
+        "feedback_hz": 100,
+        "kp_fw": 6,
+        "kd_fw": 20,
+        "D20_mapping_identified": false,
+        "joint_names": [
+          "left_hip_yaw",
+          "left_hip_roll",
+          "left_hip_pitch",
+          "left_knee",
+          "left_ankle",
+          "neck_pitch",
+          "head_pitch",
+          "head_yaw",
+          "head_roll",
+          "right_hip_yaw",
+          "right_hip_roll",
+          "right_hip_pitch",
+          "right_knee",
+          "right_ankle"
+        ],
+        "home_rad": [
+          0.0,
+          -0.08726646259971647,
+          -0.4014257279586958,
+          0.0,
+          0.4014257279586958,
+          0.3490658503988659,
+          0.3490658503988659,
+          0.0,
+          0.0,
+          0.0,
+          0.08726646259971647,
+          0.4014257279586958,
+          0.0,
+          -0.4014257279586958
+        ],
+        "ppo": {
+          "algorithm": {
+            "class_name": "rsl_rl.algorithms:PPO",
+            "value_loss_coef": 1.0,
+            "use_clipped_value_loss": true,
+            "clip_param": 0.2,
+            "entropy_coef": 0.0,
+            "num_learning_epochs": 5,
+            "num_mini_batches": 4,
+            "learning_rate": 1e-07,
+            "schedule": "fixed",
+            "gamma": 0.99,
+            "lam": 0.95,
+            "desired_kl": 0.01,
+            "max_grad_norm": 1.0,
+            "rnd_cfg": null,
+            "symmetry_cfg": null
+          },
+          "actor": {
+            "class_name": "full_refine:Full47500Actor",
+            "hidden_dims": [
+              512,
+              256,
+              128
+            ],
+            "activation": "elu",
+            "obs_normalization": true,
+            "distribution_cfg": {
+              "class_name": "GaussianDistribution",
+              "init_std": 0.02,
+              "std_type": "scalar"
+            }
+          },
+          "critic": {
+            "class_name": "rsl_rl.models:MLPModel",
+            "hidden_dims": [
+              512,
+              256,
+              128
+            ],
+            "activation": "elu",
+            "obs_normalization": true
+          },
+          "obs_groups": {
+            "actor": [
+              "actor"
+            ],
+            "critic": [
+              "critic"
+            ]
+          },
+          "num_steps_per_env": 24,
+          "multi_gpu": null
+        }
+      },
+      "checkpoint_sha256": "03bdf1db1282afcfdf6745d4b6cbb6d7cc35e4acd87fbc27f94d8245953d71b2",
+      "onnx_sha256": "1f4e0e49e3aba76e352140e209687a56b423925e562f92fc87d0d641ebbc59b2"
+    }
+  ],
+  "evaluations": [
+    {
+      "name": "baseline47500",
+      "path": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\baseline47500.json",
+      "result": "PASS_THIS_MATRIX",
+      "seeds": 8,
+      "passed": 48,
+      "total": 48,
+      "commands": [
+        {
+          "command": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 0.521503708334534,
+          "max_stop_planar_mps": 0.0037918720055580392,
+          "max_stop_yaw_radps": 0.02650713628248707,
+          "max_yaw_rmse": null,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 4.632407338762031,
+          "max_stop_planar_mps": 0.003639673034088936,
+          "max_stop_yaw_radps": 0.039215271859928284,
+          "max_yaw_rmse": 0.12024167300725089,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 5.3397996397939,
+          "max_stop_planar_mps": 0.003959405916500209,
+          "max_stop_yaw_radps": 0.04371969164420067,
+          "max_yaw_rmse": 0.16176079305536156,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 10.84590131550512,
+          "max_stop_planar_mps": 0.004373346996428085,
+          "max_stop_yaw_radps": 0.044285599263622126,
+          "max_yaw_rmse": 0.19387256739174707,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 7.005108848575951,
+          "max_stop_planar_mps": 0.004932848001859089,
+          "max_stop_yaw_radps": 0.029480578547199893,
+          "max_yaw_rmse": 0.08223354928935744,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 7.544490912501898,
+          "max_stop_planar_mps": 0.0032546125644180796,
+          "max_stop_yaw_radps": 0.03856602001980186,
+          "max_yaw_rmse": 0.14107177441512997,
+          "failure_counts": {}
+        }
+      ],
+      "checkpoint_sha256": "ff6d88962d0c2703e17e343bfa9e9c17decba3435d896d6e315aab5ec7fe22db"
+    },
+    {
+      "name": "stand-r1",
+      "path": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\stand-r1-evaluation.json",
+      "result": "NOT_PASSED",
+      "seeds": 8,
+      "passed": 0,
+      "total": 48,
+      "commands": [
+        {
+          "command": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 33.278964010360944,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "height25mm": 5,
+            "tilt25deg": 4
+          }
+        },
+        {
+          "command": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 19.0846789279666,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "height25mm": 8
+          }
+        },
+        {
+          "command": [
+            0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 24.898316428091853,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "height25mm": 8
+          }
+        },
+        {
+          "command": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 23.93392968818253,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "height25mm": 8
+          }
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 15.613884711604424,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "height25mm": 8
+          }
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 27.530216355699363,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "tilt25deg": 8
+          }
+        }
+      ],
+      "checkpoint_sha256": "2c03a5d4feaaf46c7734014b1c34d0f9c2e5be0c6c4a7c2657a6b8c9e02b0434"
+    },
+    {
+      "name": "stand-r2-500",
+      "path": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\stand-r2-500-evaluation.json",
+      "result": "NOT_PASSED",
+      "seeds": 8,
+      "passed": 8,
+      "total": 48,
+      "commands": [
+        {
+          "command": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 11.943937526972801,
+          "max_stop_planar_mps": 0.004972658961649808,
+          "max_stop_yaw_radps": 0.026178244429365595,
+          "max_yaw_rmse": null,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 27.55564575950946,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "tilt25deg": 8
+          }
+        },
+        {
+          "command": [
+            0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 27.74892115876785,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "height25mm": 8,
+            "tilt25deg": 3
+          }
+        },
+        {
+          "command": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 28.244718210658288,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "tilt25deg": 8
+          }
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 27.96295161667474,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "tilt25deg": 8
+          }
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 29.871277988315192,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "tilt25deg": 8,
+            "height25mm": 8
+          }
+        }
+      ],
+      "checkpoint_sha256": "d5a97a7311cf6a79fa7537bd2034909c0b9a237754a44e5df717ee65f20639ff"
+    },
+    {
+      "name": "stand-r2",
+      "path": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\stand-r2-evaluation.json",
+      "result": "NOT_PASSED",
+      "seeds": 8,
+      "passed": 8,
+      "total": 48,
+      "commands": [
+        {
+          "command": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 0.4962153704958408,
+          "max_stop_planar_mps": 5.043894844205064e-05,
+          "max_stop_yaw_radps": 0.0002576654494185713,
+          "max_yaw_rmse": null,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 31.754474176190946,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "tilt25deg": 8
+          }
+        },
+        {
+          "command": [
+            0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 27.17126892355604,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "tilt25deg": 8
+          }
+        },
+        {
+          "command": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 28.151976663607183,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "tilt25deg": 8
+          }
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 28.374966893813323,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "tilt25deg": 8
+          }
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 28.939264326078103,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": null,
+          "failure_counts": {
+            "tilt25deg": 8
+          }
+        }
+      ],
+      "checkpoint_sha256": "0caaabd1828292e5f833dfd161d3dd24fb2a54890d250185f27b86b1fa4b2fc9"
+    },
+    {
+      "name": "six-r1",
+      "path": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\six-r1-evaluation.json",
+      "result": "NOT_PASSED",
+      "seeds": 8,
+      "passed": 8,
+      "total": 48,
+      "commands": [
+        {
+          "command": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 0.9391965353055891,
+          "max_stop_planar_mps": 4.982327694969162e-05,
+          "max_stop_yaw_radps": 0.00046175687686125257,
+          "max_yaw_rmse": null,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 0.40288438934141696,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": 0.0021854768109519983,
+          "failure_counts": {
+            "motion_stall": 8
+          }
+        },
+        {
+          "command": [
+            0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 0.5164488122813683,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": 0.00657286047312619,
+          "failure_counts": {
+            "motion_stall": 8
+          }
+        },
+        {
+          "command": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 3.5601854915632196,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": 0.0034597169569022122,
+          "failure_counts": {
+            "motion_stall": 8
+          }
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 1.6516827771772775,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": 1.0126239913607367,
+          "failure_counts": {
+            "motion_stall": 8
+          }
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 1.8998393588573883,
+          "max_stop_planar_mps": null,
+          "max_stop_yaw_radps": null,
+          "max_yaw_rmse": 1.0037086522314782,
+          "failure_counts": {
+            "motion_stall": 8
+          }
+        }
+      ],
+      "checkpoint_sha256": "3aeda946799e9dcc41e3a7ab0031746b98c0f8339bf554c2c25ad0634acf8ca2"
+    },
+    {
+      "name": "full47500-r1-100",
+      "path": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\full47500-r1-100-evaluation.json",
+      "result": "NOT_PASSED",
+      "seeds": 8,
+      "passed": 47,
+      "total": 48,
+      "commands": [
+        {
+          "command": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 0.5762092302717836,
+          "max_stop_planar_mps": 0.0041512079789658984,
+          "max_stop_yaw_radps": 0.02194115753772058,
+          "max_yaw_rmse": null,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 4.493517946084468,
+          "max_stop_planar_mps": 0.0031758769956943735,
+          "max_stop_yaw_radps": 0.04319500587905831,
+          "max_yaw_rmse": 0.10739602700512654,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 5.250603125477371,
+          "max_stop_planar_mps": 0.0036705065937584964,
+          "max_stop_yaw_radps": 0.028853021006684097,
+          "max_yaw_rmse": 0.12832838235280114,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 7,
+          "total": 8,
+          "max_tilt_deg": 11.604933431203973,
+          "max_stop_planar_mps": 0.005762491984427069,
+          "max_stop_yaw_radps": 0.03276145947628352,
+          "max_yaw_rmse": 0.2021455660005201,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 6.674721176251974,
+          "max_stop_planar_mps": 0.003862039229311501,
+          "max_stop_yaw_radps": 0.022793517506298752,
+          "max_yaw_rmse": 0.07038686737717274,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 7.55464212719802,
+          "max_stop_planar_mps": 0.0030774948725238774,
+          "max_stop_yaw_radps": 0.03012259618173286,
+          "max_yaw_rmse": 0.12379429863756433,
+          "failure_counts": {}
+        }
+      ],
+      "checkpoint_sha256": "0f8c441dd520facdc41cb4a589f6666c53a405b38c77ed93ed1a9ee9a8a94ba6"
+    },
+    {
+      "name": "full47500-r1-200",
+      "path": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\full47500-r1-200-evaluation.json",
+      "result": "NOT_PASSED",
+      "seeds": 8,
+      "passed": 40,
+      "total": 48,
+      "commands": [
+        {
+          "command": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 0.5219944008967562,
+          "max_stop_planar_mps": 0.0036886648494281146,
+          "max_stop_yaw_radps": 0.02199206189837564,
+          "max_yaw_rmse": null,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 4.66901656832995,
+          "max_stop_planar_mps": 0.0037605539165157763,
+          "max_stop_yaw_radps": 0.04441196500781136,
+          "max_yaw_rmse": 0.12182018964123105,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 5.76786346434226,
+          "max_stop_planar_mps": 0.003523123383476469,
+          "max_stop_yaw_radps": 0.040756328515387824,
+          "max_yaw_rmse": 0.11091142256105334,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 0,
+          "total": 8,
+          "max_tilt_deg": 10.823016150747462,
+          "max_stop_planar_mps": 0.003591209370064766,
+          "max_stop_yaw_radps": 0.021992211265625672,
+          "max_yaw_rmse": 0.25039191284054724,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 7.657374400936183,
+          "max_stop_planar_mps": 0.003407514256172401,
+          "max_stop_yaw_radps": 0.03118678269140642,
+          "max_yaw_rmse": 0.1007422744082908,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 7.720032467528902,
+          "max_stop_planar_mps": 0.0026414515939317223,
+          "max_stop_yaw_radps": 0.03055025129956022,
+          "max_yaw_rmse": 0.1534588334898466,
+          "failure_counts": {}
+        }
+      ],
+      "checkpoint_sha256": "7d7a2db3f768f4268c3ce5d350724b614228153125971f23573673e57dc926c7"
+    },
+    {
+      "name": "full47500-r1",
+      "path": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\full47500-r1-evaluation.json",
+      "result": "NOT_PASSED",
+      "seeds": 8,
+      "passed": 43,
+      "total": 48,
+      "commands": [
+        {
+          "command": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 0.56587841034115,
+          "max_stop_planar_mps": 0.003992162391983016,
+          "max_stop_yaw_radps": 0.022491393093524107,
+          "max_yaw_rmse": null,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 4.931814384266897,
+          "max_stop_planar_mps": 0.003630369087164145,
+          "max_stop_yaw_radps": 0.02916026215666419,
+          "max_yaw_rmse": 0.11195365036943662,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 6.1039861928426715,
+          "max_stop_planar_mps": 0.0037597574937305693,
+          "max_stop_yaw_radps": 0.04306497063480372,
+          "max_yaw_rmse": 0.12521140966594466,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 3,
+          "total": 8,
+          "max_tilt_deg": 10.713691310352953,
+          "max_stop_planar_mps": 0.0036344103194437057,
+          "max_stop_yaw_radps": 0.03426806241228518,
+          "max_yaw_rmse": 0.21544839699655746,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 7.233323635544073,
+          "max_stop_planar_mps": 0.0034028684313892744,
+          "max_stop_yaw_radps": 0.023040882104287227,
+          "max_yaw_rmse": 0.057971821607199,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 7.689253452978861,
+          "max_stop_planar_mps": 0.00765385630163256,
+          "max_stop_yaw_radps": 0.025790487866833012,
+          "max_yaw_rmse": 0.120591784652862,
+          "failure_counts": {}
+        }
+      ],
+      "checkpoint_sha256": "b328befd0677fd612a3f6be96ab1f5b56e87ef7a9eb814d81d2170e4764e8e83"
+    },
+    {
+      "name": "full47500-r2",
+      "path": "D:\\codex\\xgoduck-debug\\training\\outputs\\session-20261023-standstop-01a166fe\\full47500-r2-evaluation.json",
+      "result": "PASS_THIS_MATRIX",
+      "seeds": 8,
+      "passed": 48,
+      "total": 48,
+      "commands": [
+        {
+          "command": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 0.5485246089741681,
+          "max_stop_planar_mps": 0.00411691513131543,
+          "max_stop_yaw_radps": 0.026083325565104034,
+          "max_yaw_rmse": null,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 4.467453359407811,
+          "max_stop_planar_mps": 0.0036465408932772406,
+          "max_stop_yaw_radps": 0.04590617783575648,
+          "max_yaw_rmse": 0.11931231700402033,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 5.46904870771365,
+          "max_stop_planar_mps": 0.003959012999270517,
+          "max_stop_yaw_radps": 0.05171126098896685,
+          "max_yaw_rmse": 0.1337536247722847,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 10.955444417275826,
+          "max_stop_planar_mps": 0.0055484763979740635,
+          "max_stop_yaw_radps": 0.04534589436760172,
+          "max_yaw_rmse": 0.19629414010105517,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 7.039098462835212,
+          "max_stop_planar_mps": 0.004070879727620014,
+          "max_stop_yaw_radps": 0.031375942021613264,
+          "max_yaw_rmse": 0.0779970127916597,
+          "failure_counts": {}
+        },
+        {
+          "command": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "passed": 8,
+          "total": 8,
+          "max_tilt_deg": 7.664426496836242,
+          "max_stop_planar_mps": 0.003564329911640105,
+          "max_stop_yaw_radps": 0.02600649415174953,
+          "max_yaw_rmse": 0.146107965071654,
+          "failure_counts": {}
+        }
+      ],
+      "checkpoint_sha256": "03bdf1db1282afcfdf6745d4b6cbb6d7cc35e4acd87fbc27f94d8245953d71b2"
+    }
+  ]
+}

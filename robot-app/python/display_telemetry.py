@@ -13,13 +13,15 @@ class DisplayTelemetryCache:
     def __init__(self,clock=time.monotonic):
         self.clock=clock
         self.lock=threading.Lock()
-        self.value=None
-        self.received_at=None
-        self.previous=None
-        self.previous_received_at=None
-        self.retired=set()
+        self.reset()
 
-    def receive(self,raw):
+    def reset(self):
+        with self.lock:
+            self.value=self.previous=None
+            self.received_at=self.previous_received_at=None
+            self.retired=set()
+
+    def receive(self,raw,feedback=None):
         if not isinstance(raw,(bytes,bytearray)) or len(raw) not in (DISPLAY.size,DISPLAY_V1.size):return False
         extended=len(raw)==DISPLAY.size
         x=(DISPLAY if extended else DISPLAY_V1).unpack(raw)
@@ -28,6 +30,9 @@ class DisplayTelemetryCache:
         if not all(math.isfinite(v) for v in x[11:23]):return False
         if abs(math.hypot(*x[11:15])-1)>.01 or abs(math.hypot(*x[15:19])-1)>.01:return False
         boot='%08x%08x'%(x[6],x[5])
+        if feedback is not None and feedback.boot is not None:
+            delta=(x[7]-feedback.seq)&0xffffffff
+            if boot!='%016x'%feedback.boot or 32<delta<0x100000000-32:return False
         value=dict(flags=x[2],servo_id=x[3],raw=x[4],boot_epoch=boot,source_seq=x[7],
                    sample_us=x[8],source_imu_us=x[9],segment=x[10],quaternion_xyzw=list(x[11:15]),
                    relative_quaternion_xyzw=list(x[15:19]),gravity=list(x[19:22]),deg=x[22],

@@ -1,8 +1,22 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>小鸭子自动编号</title><link rel="stylesheet" href="/assets/numbering-simple.css?v=3"></head>
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>小鸭子舵机编号</title><link rel="stylesheet" href="/assets/numbering-simple.css?v=4"></head>
 <body class="numbering-page" data-phase="idle"><main>
-<header><div><h1>一颗一颗接好，程序自动编号</h1><p>从头检查编号；已有编号保留，每次只新增一颗出厂 ID 1。</p></div><span id="read-state">还没读取总线</span></header>
-<div class="numbering-actions" aria-label="编号控制"><button id="restart" type="button">重新编号</button><button id="continue" type="button" class="quiet">继续编号</button><button id="stop" type="button" class="danger" disabled>停止</button></div>
-<section class="numbering-workspace" aria-label="自动编号进度"><div class="robot-map"><div class="head-group"><h2>头颈 / 嘴</h2><div id="head-slots" class="joint-slots"></div></div><div class="duck-shape" aria-hidden="true"><svg viewBox="0 0 190 145"><path class="body" d="M57 57h74q16 0 16 16v43q0 14-16 14H67q-15 0-15-15V75q0-18 5-18Z"/><path class="neck" d="M94 62 85 41 107 25"/><path class="head" d="M88 9h61q12 0 12 12v30q0 12-12 12H91q-12 0-12-12V23q0-14 9-14Z"/><path class="beak" d="m161 35 22 8-22 9Z"/><circle cx="140" cy="29" r="7"/><path class="legs" d="m73 126-22 10m68-10 21 10"/></svg></div><div class="leg-groups"><div><h2>左腿</h2><div id="left-slots" class="joint-slots"></div></div><div><h2>右腿</h2><div id="right-slots" class="joint-slots"></div></div></div><p class="map-legend"><i class="confirmed"></i>本轮真实读到 <i class="waiting"></i>下一空位 <i></i>还没读到</p></div>
-<div class="next-panel"><div class="next-id"><span id="target-label">下一颗 ID</span><strong id="target-id">待读取</strong><p><span id="count-label">本轮读到</span><b id="completed-count">— / 15</b></p></div><div class="connect-guide"><svg viewBox="0 0 420 95" role="img" aria-label="Uno Q保留已编号舵机，每次新增一颗ID1"><rect x="8" y="26" width="90" height="44" rx="5"/><text x="53" y="52">Uno Q</text><path d="M98 48h33m125 0h32"/><rect x="131" y="26" width="125" height="44" rx="5"/><text x="193" y="52">已编号，保留</text><rect class="new-servo" x="288" y="14" width="123" height="67" rx="6"/><text x="349" y="43">新增一颗</text><text x="349" y="64" class="id-one">ID 1</text></svg><p id="connection-hint">先读已有编号，再找下一空位。</p></div><ol class="phase-track" aria-label="编号步骤"><li id="phase-connect">读已有ID</li><li id="phase-numbering">写入新ID</li><li id="phase-centering">真实读回</li><li id="phase-release">确认完成</li></ol></div></section>
-<p id="status" role="status" aria-live="polite">还没开始。打开页面不会进入维护或修改编号。</p><p class="numbering-note">上一颗变绿后再接下一颗。只改新增 ID 1，不批量重置、不归中；进入维护会卸力，请支撑好。</p>
-</main><script>window.NUMBERING_TOKEN='__TOKEN__';</script><script src="/assets/numbering-restored.js?v=3"></script></body></html>
+<header><h1>舵机编号</h1><span id="read-state">尚未检查</span></header>
+<section class="numbering-workspace" aria-label="自动编号进度">
+<div class="robot-map">
+<iframe id="numbering-model" src="/assets/imu-model.html?view=numbering" title="真实鸭子结构模型，可旋转查看舵机位置"></iframe>
+<span class="model-caption" id="model-caption">结构模型</span><span class="model-hint">拖动旋转 · 滚轮缩放</span>
+<div class="map-legend"><span><i class="confirmed"></i>已读到</span><span><i class="waiting"></i>下一颗</span></div>
+</div>
+<aside class="next-panel">
+<div class="next-id"><span id="target-label">下一颗 ID</span><strong id="target-id">—</strong></div>
+<p class="progress-label"><span id="count-label">已检查</span><b id="completed-count">— / 15</b></p>
+<progress id="numbering-progress" max="15" value="0" aria-label="编号进度"></progress>
+<p id="connection-hint">每次只接一颗出厂 ID 1。</p>
+<div class="numbering-actions" aria-label="编号控制"><button id="continue" type="button">继续编号</button><button id="restart" type="button" class="quiet">重新检查</button><button id="stop" type="button" class="danger" disabled>停止</button></div>
+<ol class="phase-track" aria-label="编号步骤"><li id="phase-connect">检查</li><li id="phase-numbering">编号</li><li id="phase-centering">读回</li><li id="phase-release">完成</li></ol>
+</aside>
+</section>
+<p id="status" role="status" aria-live="polite">点击继续编号后开始检查。</p>
+<details class="connection-help"><summary>接线与注意事项</summary><p>保留已编号舵机，每次只新增一颗 ID 1；变绿后再接下一颗。只修改新增舵机编号，不归中、不批量重置。进入编号会卸力，请先支撑好。</p></details>
+</main><script>window.NUMBERING_TOKEN='__TOKEN__';</script><script src="/assets/numbering-restored.js?v=4"></script></body></html>

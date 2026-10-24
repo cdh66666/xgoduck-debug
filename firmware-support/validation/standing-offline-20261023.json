@@ -1,0 +1,376 @@
+{
+  "schema": "xgoduck-standing-offline-candidate-v1",
+  "date": "2026-10-23",
+  "software_candidate": "OFFLINE_CHECKED_NOT_DEPLOYED",
+  "hardware_access": false,
+  "controller_restarted": false,
+  "motion_inhibit_changed": false,
+  "new_arm_build": false,
+  "deployed_elf_changed": false,
+  "previous_installed_elf_sha256": "c87f891a8955c3f167fa6d2c1ee585401d23e0d58633ed6af9e803939e597c86",
+  "changed_source_sha256": {
+    "robot-app/python/controller.py": "340a151df136cc902f553b4f7bf970ec014a5ab691bec60a959450df830d901c",
+    "robot-app/python/policy.py": "04c0303f976446c97b4bf6b148f729ca721b58ce4c1f8110a0a8579df17572da",
+    "robot-app/python/motion_recording.py": "791fa1f4f941117cadc46060241cf390ae527778b306cbd4c81b4e17fc3e8fbc",
+    "robot-app/assets/app.js": "fe530384a6dab1c2f91069166a3d1d9ed20e66965d22fcf85cc2b10b0306be2f",
+    "robot-app/sketch/qmi8658.h": "a4fb9e985adf4a6c57ff906f8f8bd5c3c6b13dc9b3460fd880f8a34073c014cc",
+    "pc/assets/official-workbench.js": "ca72fa45100a829d2d99fd18416859bee53c5f32a8628f9a21165bea23e46ecb",
+    "firmware-support/sketch/qmi8658.h": "a4fb9e985adf4a6c57ff906f8f8bd5c3c6b13dc9b3460fd880f8a34073c014cc",
+    "firmware-support/tests/qmi_sync.cpp": "e9d6fb7b3c62c5d03053e6abbc1b51daabd44545279e13c07b743f819bdadead",
+    "firmware-support/tests/qmi_sync/Wire.h": "795ad0b390f6f1f12fb7b52ea3a3618cea6bc97200ec2edfa249636d8884847f",
+    "README.md": "3e5f54946b9c7bca82bf4492282a6f5278faf9fb3b031597ec591f74ceaae541",
+    "tests/test_control_telemetry_gap.mjs": "707cc71830f0a61441050e80292c550478d7f5d9992b942318f2a55b92252f43",
+    "tests/test_workbench.mjs": "1efb2d13e6819168fae86615ca5151565825005e0c94e6e0bccd932897d29b8a",
+    "tests/test_remote_disconnect.py": "7708321254ad7db12b69ef26b4c9ca419271e372f3b24a14318d84b73531a549",
+    "tests/test_policy_recording.py": "acee55507245ca5c4d1220db41cc88067c7eae447c05e60d35d1de704b567c09",
+    "tests/test_native_disconnect.mjs": "700f4b8c5983a6036e11ca87e62ae79f35c1550d8964198b1fd05821c1db0bc6",
+    "tests/test_receiver_sampling.py": "33699a2ee1115345e787345825ae6fbe273e6e122e0163e5054917fa4b998238",
+    "tests/test_release.py": "bc943648d64d156fe4a7db6accdf97af46cdd14c53e1a54f531749f2427a3506",
+    "docs/STANDING_OFFLINE_20261023.md": "46bab13554f599fe959a62f596037b16d7b4ed3dc1e21d797c66f771c90d1a5d"
+  },
+  "model_sha256": {
+    "walk": "57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db",
+    "getup": "c414f2bd84b0a79b89f0ba6997135eb45e4ecd9df9271ea989c237864027b2a3",
+    "pick": "f34e990dda785e9a8c53890bdcd0f7f1d457592691fd3703f3776b48fb2d14b8",
+    "roulade": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97"
+  },
+  "disconnect_contract": {
+    "authorized_by_user": "Continue local zero-speed standing",
+    "policy_intent_timeout_s": 1.0,
+    "actor_history_reset": false,
+    "reconnect_requires_neutral_then_new_intent": true,
+    "explicit_stop_disarms": true,
+    "hold_timeout_disarms": true,
+    "sensor_joint_zero_guards_retained": true,
+    "mcu_command_watchdog_retained": true
+  },
+  "imu_fix": {
+    "mapping": "saturating signed negation on accZ/gyroX/gyroY",
+    "original_ranges_axes_filters_unchanged": true,
+    "desktop_qmi_and_full_int16_domain": "PASS",
+    "recent_two_record_overflow_frames": [
+      28,
+      8
+    ],
+    "all_seven_record_overflow_frames": 43,
+    "sole_cause_of_fall_proven": false
+  },
+  "recording": {
+    "rate_hz": 25,
+    "latest_submitted_policy_step": true,
+    "exact_loaded_model_sha": true,
+    "exact_onnx_observation": 61,
+    "raw_action": 14,
+    "filtered_action": 14,
+    "complete_50hz_step_log": false,
+    "submission_is_not_mcu_acceptance": true,
+    "old_records_modified": false
+  },
+  "records": [
+    {
+      "id": "prior-adapter-19s",
+      "sha256": "f8799c60c6920431d7e9a2d51082a63fda79b401f5f4dba5517577aaa38d1800",
+      "frames": 242,
+      "enabled_frames": 234,
+      "watchdog_frames": 0,
+      "incomplete_joint_frames": 0,
+      "max_accepted_command_age_ms": 20.0,
+      "mapped_acc_z_negation_overflow_frames": 1,
+      "gravity_recorded": true,
+      "policy_observation_recorded": false,
+      "voltage_v": {
+        "min": 7.4,
+        "median": 7.6,
+        "max": 7.7
+      }
+    },
+    {
+      "id": "legacy-20261023T095859Z",
+      "sha256": "09a2995dedc5535cf1ae67727ce2179e1b9090316468aaebc33712bc450bea46",
+      "frames": 1268,
+      "enabled_frames": 1068,
+      "watchdog_frames": 0,
+      "incomplete_joint_frames": 0,
+      "max_accepted_command_age_ms": 40.004,
+      "mapped_acc_z_negation_overflow_frames": 28,
+      "gravity_recorded": false,
+      "policy_observation_recorded": false,
+      "voltage_v": null,
+      "velocity_crosscheck_60ms": {
+        "10": {
+          "samples": 742,
+          "velocity_vs_encoder_slope": 0.9732809615241033,
+          "correlation": 0.9269782821186742
+        },
+        "11": {
+          "samples": 675,
+          "velocity_vs_encoder_slope": 0.9481117840770462,
+          "correlation": 0.8823970090720644
+        },
+        "12": {
+          "samples": 769,
+          "velocity_vs_encoder_slope": 0.9538829468581228,
+          "correlation": 0.8823561701966225
+        },
+        "13": {
+          "samples": 768,
+          "velocity_vs_encoder_slope": 0.96921920957048,
+          "correlation": 0.9435523359570834
+        },
+        "14": {
+          "samples": 817,
+          "velocity_vs_encoder_slope": 0.9565147279738678,
+          "correlation": 0.8977230434707643
+        },
+        "20": {
+          "samples": 719,
+          "velocity_vs_encoder_slope": 0.9555125113104453,
+          "correlation": 0.8745175728283555
+        },
+        "21": {
+          "samples": 668,
+          "velocity_vs_encoder_slope": 0.9635524922768133,
+          "correlation": 0.9103265018919077
+        },
+        "22": {
+          "samples": 789,
+          "velocity_vs_encoder_slope": 0.9664153663986954,
+          "correlation": 0.8807777542480552
+        },
+        "23": {
+          "samples": 762,
+          "velocity_vs_encoder_slope": 0.9521923927699721,
+          "correlation": 0.8812169849383892
+        },
+        "24": {
+          "samples": 795,
+          "velocity_vs_encoder_slope": 0.968300539665303,
+          "correlation": 0.8904514811152381
+        },
+        "30": {
+          "samples": 848,
+          "velocity_vs_encoder_slope": 0.9832259269809436,
+          "correlation": 0.9663683243384502
+        },
+        "31": {
+          "samples": 811,
+          "velocity_vs_encoder_slope": 0.9650594442435256,
+          "correlation": 0.909672773821875
+        },
+        "32": {
+          "samples": 783,
+          "velocity_vs_encoder_slope": 0.9665887574741715,
+          "correlation": 0.9379902166597177
+        },
+        "33": {
+          "samples": 768,
+          "velocity_vs_encoder_slope": 0.9646497551395887,
+          "correlation": 0.9067023232739059
+        }
+      }
+    },
+    {
+      "id": "legacy-20261023T095924Z",
+      "sha256": "330171ca8bd10b33ffaa2ab6d8ce5f0d33cef75f6e20d222ea10ff615599655e",
+      "frames": 952,
+      "enabled_frames": 752,
+      "watchdog_frames": 0,
+      "incomplete_joint_frames": 0,
+      "max_accepted_command_age_ms": 40.004,
+      "mapped_acc_z_negation_overflow_frames": 8,
+      "gravity_recorded": false,
+      "policy_observation_recorded": false,
+      "voltage_v": null,
+      "velocity_crosscheck_60ms": {
+        "10": {
+          "samples": 575,
+          "velocity_vs_encoder_slope": 0.9625767373161673,
+          "correlation": 0.9137360656246925
+        },
+        "11": {
+          "samples": 513,
+          "velocity_vs_encoder_slope": 0.9560056847003355,
+          "correlation": 0.8726918852509506
+        },
+        "12": {
+          "samples": 609,
+          "velocity_vs_encoder_slope": 0.9664245282308879,
+          "correlation": 0.9224795169900482
+        },
+        "13": {
+          "samples": 633,
+          "velocity_vs_encoder_slope": 0.9671605037596607,
+          "correlation": 0.9228571358234137
+        },
+        "14": {
+          "samples": 637,
+          "velocity_vs_encoder_slope": 0.965241814773717,
+          "correlation": 0.9148699779542249
+        },
+        "20": {
+          "samples": 536,
+          "velocity_vs_encoder_slope": 0.9345379483027498,
+          "correlation": 0.8643399025982044
+        },
+        "21": {
+          "samples": 533,
+          "velocity_vs_encoder_slope": 0.9657235008488663,
+          "correlation": 0.9134394787314305
+        },
+        "22": {
+          "samples": 612,
+          "velocity_vs_encoder_slope": 0.9763848056950608,
+          "correlation": 0.9251516826716549
+        },
+        "23": {
+          "samples": 606,
+          "velocity_vs_encoder_slope": 0.9574800265311545,
+          "correlation": 0.9127781340397059
+        },
+        "24": {
+          "samples": 631,
+          "velocity_vs_encoder_slope": 0.9684634983898717,
+          "correlation": 0.8975504485106243
+        },
+        "30": {
+          "samples": 670,
+          "velocity_vs_encoder_slope": 0.9831670781879644,
+          "correlation": 0.968492268056676
+        },
+        "31": {
+          "samples": 668,
+          "velocity_vs_encoder_slope": 0.978862383882144,
+          "correlation": 0.9274867463318456
+        },
+        "32": {
+          "samples": 641,
+          "velocity_vs_encoder_slope": 0.9691850980983359,
+          "correlation": 0.9251752059252739
+        },
+        "33": {
+          "samples": 630,
+          "velocity_vs_encoder_slope": 0.9624592436728907,
+          "correlation": 0.9060817246489306
+        }
+      }
+    },
+    {
+      "id": "prior-official-17s",
+      "sha256": "584dccd1938b0d2574f14876524ff42b10732a2c145ff581a1d7c546a606be3d",
+      "frames": 351,
+      "enabled_frames": 341,
+      "watchdog_frames": 0,
+      "incomplete_joint_frames": 0,
+      "max_accepted_command_age_ms": 20.001,
+      "mapped_acc_z_negation_overflow_frames": 1,
+      "gravity_recorded": true,
+      "policy_observation_recorded": false,
+      "voltage_v": null
+    },
+    {
+      "id": "prior-workbench-17s",
+      "sha256": "6da60fd665b9cfc1bd22e45c6f9dba43d69f03bd60c0f56dd45b9aaeae511bba",
+      "frames": 239,
+      "enabled_frames": 232,
+      "watchdog_frames": 0,
+      "incomplete_joint_frames": 0,
+      "max_accepted_command_age_ms": 20.0,
+      "mapped_acc_z_negation_overflow_frames": 0,
+      "gravity_recorded": true,
+      "policy_observation_recorded": false,
+      "voltage_v": {
+        "min": 6.6,
+        "median": 7.6,
+        "max": 7.7
+      }
+    },
+    {
+      "id": "prior-forward-release",
+      "sha256": "347243edd2123ef04c1b760a4ac9e90152d5e8056c94a79499a215e03e2c51ce",
+      "frames": 142,
+      "enabled_frames": 128,
+      "watchdog_frames": 0,
+      "incomplete_joint_frames": 0,
+      "max_accepted_command_age_ms": 20.027,
+      "mapped_acc_z_negation_overflow_frames": 5,
+      "gravity_recorded": true,
+      "policy_observation_recorded": false,
+      "voltage_v": {
+        "min": 7.0,
+        "median": 7.2,
+        "max": 7.6
+      }
+    },
+    {
+      "id": "prior-custom-recovery",
+      "sha256": "983b203348ad16ba80303cda2d5bbcaf1f3fca2fb0edc6ecd05ad53767c482dc",
+      "frames": 266,
+      "enabled_frames": 258,
+      "watchdog_frames": 0,
+      "incomplete_joint_frames": 0,
+      "max_accepted_command_age_ms": 20.031,
+      "mapped_acc_z_negation_overflow_frames": 0,
+      "gravity_recorded": true,
+      "policy_observation_recorded": false,
+      "voltage_v": {
+        "min": 6.3,
+        "median": 7.4,
+        "max": 7.9
+      }
+    }
+  ],
+  "interpretation": [
+    "MCU command age is time since acceptance, not source-feedback age or PC network latency.",
+    "Legacy gravity is absent. Raw acceleration is only a body-attitude estimate during motion.",
+    "No captured watchdog or missing joint at the sampled enabled endpoints does not prove every intermediate instant.",
+    "Historical finite standing windows are not a continuous-standing acceptance.",
+    "The IMU negation overflow is real; >=2g samples are usually rejected by continuous gravity fusion, so it is not a proven sole fall cause."
+  ],
+  "simulation": {
+    "type": "native physics sensitivity checks, not exact physical replay",
+    "history_handoff_cases": 8,
+    "sensor_sensitivity_cases": 12,
+    "seconds_per_case": 10,
+    "each_bounded_case_stable": true,
+    "root_linear_velocity_assumed_zero": true,
+    "foot_contact_assumed_from_simulation": true,
+    "parameter_patch_justified": false
+  },
+  "verification": {
+    "remote_disconnect_python": 8,
+    "actual_onnx_record_replay_python": 1,
+    "joint_feedback_python": 7,
+    "feedback_order_python": 11,
+    "motion_recorder_python": 13,
+    "motion_inhibit_python": 1,
+    "official_model_home_python": 2,
+    "frozen_bias_python": 5,
+    "workbench_checks": 305,
+    "ui_telemetry_gap_node": 6,
+    "native_browser_disconnect_node": 7,
+    "replay_pose_node": 11,
+    "recovery_dispatch_python": 5,
+    "receiver_sampling_python": 4,
+    "publication_chain_python": 9,
+    "native_fixtures": 7,
+    "native_result_sha256": "ecc62a16b6f2a6066ca5faeb09f5ff7d8ee86b9955b3e6bf72331c537d723536",
+    "new_hardware_motion_tests": 0
+  },
+  "ui_followup": {
+    "inflight_start_ack_after_status_loss": "PASS_NO_AUTOMATIC_POLICY_OFF_OR_OWNERSHIP",
+    "inflight_start_context_exit": "PASS_NO_AUTOMATIC_OWNERSHIP",
+    "explicit_stop_before_start_ack": "PASS_FINAL_OFF",
+    "abandoned_hold_before_ack": "PASS_FINAL_OFF",
+    "native_command_or_status_failure": "PASS_CLEAR_OLD_KEYS_POINTER_AND_PENDING_INTENT",
+    "native_reconnect": "PASS_NEUTRAL_ACK_THEN_NEW_EXPLICIT_INPUT",
+    "tests_execute_complete_scripts": true,
+    "hardware_or_network_access": false
+  },
+  "physical_standing_acceptance": "OPEN",
+  "wireless_root_cause_acceptance": "OPEN",
+  "limitations": [
+    "Battery depleted; no device read, write or deployment in this offline phase.",
+    "Old legacy records lack actual filtered gravity, input intent, model phase and exact model identity.",
+    "Desktop fake I2C and bounded simulation do not establish ARM timing or physical recovery."
+  ]
+}

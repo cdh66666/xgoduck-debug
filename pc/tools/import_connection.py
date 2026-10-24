@@ -27,7 +27,9 @@ def _restrict_private_files(paths):
         sid=row[-1].strip()
         if not sid.startswith('S-1-'):raise RuntimeError('无法读取当前Windows用户SID')
         for path in paths:
-            subprocess.run(['icacls',str(path),'/inheritance:r','/grant:r','*'+sid+':F'],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
+            # OpenSSH rejects an explicit OWNER RIGHTS ACE even for this owner.
+            subprocess.run(['icacls',str(path),'/inheritance:r','/grant:r','*'+sid+':F',
+                            '/remove:g','*S-1-3-4'],check=True,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
     else:
         for path in paths:path.chmod(0o600)
 

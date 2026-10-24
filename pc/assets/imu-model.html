@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>小鸭姿态</title><link rel="stylesheet" href="imu-model.css?v=model-only2"><script type="importmap">{"imports":{"three":"../model-assets/vendor/build/three.module.js"}}</script></head>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>小鸭姿态</title><link rel="stylesheet" href="imu-model.css?v=status-banner2"><script type="importmap">{"imports":{"three":"../model-assets/vendor/build/three.module.js"}}</script></head>
 <body data-mode="waiting" data-loaded="false" data-ui-revision="2026-10-20-wireless-display-r5">
 <main class="instrument" aria-label="鸭子实时姿态，青色描边标出所选校准关节">
   <div class="instrument-heading"><span class="signal"><i aria-hidden="true"></i><span id="imu-model-state" role="status">加载模型</span></span><div class="view-actions"><button id="imu-current-curve-open" type="button" aria-label="舵机电流曲线" title="舵机电流曲线">电流</button><button id="imu-chart-toggle" type="button" aria-controls="imu-angle-history" aria-expanded="false">曲线</button><button id="imu-model-yaw-zero" hidden type="button" title="仅将当前朝向设为显示零度">航向归零</button><button id="imu-model-camera" type="button" title="仅复位观察视角">视角</button></div></div>
@@ -12,4 +12,4 @@
     <canvas id="imu-angle-chart" aria-label="最近10秒历史显示横滚、俯仰和相对航向；短缺样虚线不代表实测轨迹；近竖直时标记不稳定投影或上次值"></canvas>
   </section>
   <p class="scope" hidden></p>
-</main><script type="module" src="imu-model.js?v=model-only2"></script></body></html>
+</main><script>const viewParams=new URLSearchParams(location.search);if(viewParams.get('view')==='numbering')document.body.dataset.presentation='numbering';if(window.parent!==window&&viewParams.get('status')==='parent')document.body.dataset.receptionStatus='parent';</script><script type="module" src="imu-model.js?v=latest20261024"></script></body></html>

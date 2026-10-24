@@ -33,6 +33,8 @@ def load_algorithm(env,checkpoint):
 def parity(actor,onnx_path):
  import numpy as np,torch,onnxruntime as ort
  module=actor.as_onnx(verbose=False).eval().cpu();x=np.random.default_rng(47500).normal(0,.25,(64,61)).astype('float32')
+ from native_env import COMMANDS
+ x[:,48:51]=np.asarray([COMMANDS[i%6] for i in range(len(x))],dtype=np.float32)
  with torch.inference_mode():expected=module(torch.tensor(x)).numpy()
  session=ort.InferenceSession(str(onnx_path),providers=['CPUExecutionProvider'])
  actual=np.concatenate([session.run(None,{'obs':row[None]})[0] for row in x]);error=float(np.max(np.abs(expected-actual)))

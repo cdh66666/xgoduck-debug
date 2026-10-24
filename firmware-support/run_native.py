@@ -29,7 +29,9 @@ def main():
     results = {}
     with tempfile.TemporaryDirectory(prefix='xgoduck-native-') as temporary:
         build = Path(temporary)
-        cases = [('custom_parser', [HERE/'tests/parser/test_parser.cpp'], [], []),
+        cases = [('qmi_sync', [HERE/'tests/qmi_sync.cpp'], [HERE/'tests/qmi_sync'], []),
+                 ('joint_limits', [HERE/'tests/joint_limits.cpp'], [], []),
+                 ('custom_parser', [HERE/'tests/parser/test_parser.cpp'], [], []),
                  ('route_startup', [HERE/'tests/test_startup.cpp'], [], []),
                  ('route_refresh', [HERE/'tests/test_route_refresh.cpp'], [], [])]
         for mode in ('original', 'candidate'):
@@ -59,7 +61,7 @@ def main():
                 result = {'output': checked.stdout.strip()}
             results[name] = {'passed': True, 'result': result}
     value = {'passed': True, 'source_verification': verified, 'native': results,
-             'scope': 'desktop fake UART/clock/route only', 'arm_recompiled': False,
+             'scope': 'desktop fake I2C/UART/clock/route only', 'arm_recompiled': False,
              'hardware_access': False, 'network_access': False}
     validation = HERE/'validation'
     validation.mkdir(exist_ok=True)

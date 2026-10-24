@@ -9,6 +9,7 @@ import math
 import socket
 import threading
 import time
+from status_age import aged_snapshot, delivery_age_lower_bound_ms
 
 
 class _SourceBacklogError(ConnectionError):
@@ -24,6 +25,7 @@ class OfficialStatusStream:
         self.read_at = 0
         self.epoch = 1
         self.last_uptime = None
+        self._feedback_epoch = None
         self._condition = threading.Condition()
         self._stop = threading.Event()
         self._value = None
@@ -36,6 +38,7 @@ class OfficialStatusStream:
         self._socket = None
         self._port = tunnel.port
         self._source_offsets = deque()
+        self._backlog_reference = None
         self._source_window_s = 10.
         self._started_at = time.perf_counter()
         self._connects = self._backlog_drops = self._relay_recoveries = 0
@@ -71,6 +74,7 @@ class OfficialStatusStream:
             return False
         self._port = self.tunnel.port
         self._source_offsets.clear()
+        self._backlog_reference = None
         self._disconnect_locked()
         self._failure = ConnectionError('主控无线端口已变化，等待新状态')
         self._invalidated_generation = self._generation
@@ -90,7 +94,7 @@ class OfficialStatusStream:
                     raise copy.copy(self._failure)
                 if self._value is not None and self._generation > self._invalidated_generation:
                     if time.perf_counter()-self.read_at <= self.freshness:
-                        return copy.deepcopy(self._value)
+                        return aged_snapshot(self._value, self.read_at, time.perf_counter())
                     # Wait within this request's existing deadline for a new
                     # received frame. Never return the stale cached snapshot.
                 remaining = deadline-time.perf_counter()
@@ -138,11 +142,22 @@ class OfficialStatusStream:
                       not isinstance(uptime, bool) and math.isfinite(uptime) and uptime >= 0 else None)
             restarted = (isinstance(uptime, (int, float)) and
                          isinstance(self.last_uptime, (int, float)) and uptime < self.last_uptime)
-            if restarted:
+            receiver_epoch = state.get('feedback_timing', {}).get('receiver_epoch')
+            if not isinstance(receiver_epoch, int) or isinstance(receiver_epoch, bool) or receiver_epoch < 0:
+                receiver_epoch = None
+            receiver_changed = (receiver_epoch is not None and self._feedback_epoch is not None
+                                and receiver_epoch != self._feedback_epoch)
+            if restarted or receiver_changed:
                 self.epoch += 1
                 self._sequence = None
                 self._frames.clear()
+            if restarted:
                 self._source_offsets.clear()
+                self._backlog_reference = None
+            # A confirmed receiver resync may lower the MCU sequence without
+            # restarting Linux. Reset the display epoch, retaining the network
+            # backlog reference because the Linux uptime clock did not reset.
+            self._feedback_epoch = receiver_epoch
             self.last_uptime = uptime
             sequence = ('mcu_seq', state['mcu_seq']) if 'mcu_seq' in state else (
                 ('received', state['received']) if 'received' in state else None)
@@ -161,11 +176,16 @@ class OfficialStatusStream:
                     self._source_offsets.popleft()
                 offset = received_at-uptime
                 reference = min([offset] + [item[1] for item in self._source_offsets])
+                if self._backlog_reference is not None:
+                    reference = min(reference, self._backlog_reference)
                 backlog = max(0., offset-reference)
                 progress = dict(basis='uptime_s relative progress', relative_backlog_lower_bound_s=backlog,
                                 reference_window_s=self._source_window_s,
                                 absolute_network_latency_measured=False)
                 if backlog > self.freshness:
+                    # A rejected stream must catch up to the trusted clock.
+                    # Expiring the sliding window cannot make old data current.
+                    self._backlog_reference = reference
                     error = _SourceBacklogError(f'主控状态来源进展滞后至少{backlog:.3f}秒，等待新状态流')
                     self._failure = error
                     self._invalidated_generation = self._generation
@@ -176,6 +196,7 @@ class OfficialStatusStream:
                     # healthy connection. Reconnecting here adds an SSH/HTTP
                     # handshake delay to a temporary delivery burst.
                     raise error
+                self._backlog_reference = None
                 self._source_offsets.append((received_at, offset))
             self._sequence = sequence
             state['pc_host_epoch'] = self.epoch
@@ -184,6 +205,7 @@ class OfficialStatusStream:
             state['pc_observed_unix_s'] = received_unix
             state['pc_transport'] = getattr(self, 'transport_name', 'official-status-stream')
             state['pc_source_progress'] = progress
+            state['pc_delivery_age_lower_bound_ms'] = delivery_age_lower_bound_ms(state)
             self._value = state
             self._frames.append(state)
             self._trim_frames(received_at)

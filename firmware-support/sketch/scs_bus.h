@@ -2,6 +2,7 @@
 
 #include <string.h>
 #include "duck_config.h"
+#include "joint_limits.h"
 #include "display_telemetry.h"
 static VoltageSampler displayVoltage;
 #include "current_telemetry.h"
@@ -111,7 +112,7 @@ static void setRunKpKd() {
 static void syncWriteGoalsFromDesPos() {
   uint8_t order[NUM_MOTORS * 7];
   for (uint8_t i = 0; i < NUM_MOTORS; i++) {
-    motors[i].desPos = satPos(motors[i].desPos);
+    motors[i].desPos = DuckLimits::position(motors[i].id, motors[i].desPos, motors[i].zeroPos);
     order[i * 7] = motors[i].id;
     packWordLE(order + i * 7 + 1, motors[i].desPos);
     packWordLE(order + i * 7 + 3, 0);
@@ -126,6 +127,7 @@ static void syncWriteGoalsFromDesPos() {
 
 static void sendMotorDesPos() {
   for (uint8_t i = 0; i < NUM_MOTORS; i++) {
+    motors[i].desAngleDeg = DuckLimits::angle(motors[i].id, motors[i].desAngleDeg);
     int32_t pos = (int32_t)motors[i].zeroPos +
                   (int32_t)(motors[i].desAngleDeg / M_A * M_N * motors[i].sign);
     motors[i].desPos = satPos(pos);
@@ -139,6 +141,8 @@ static void sendMotorRawPos() {
 
 static void writeSingleGoalRaw(uint8_t id, uint16_t raw) {
   uint8_t data[7];
+  const int index = motorIndexById(id);
+  if (index >= 0) raw = DuckLimits::position(id, raw, motors[index].zeroPos);
   data[0] = ADDR_GOAL_POS;
   packWordLE(data + 1, satPos(raw));
   packWordLE(data + 3, 0);

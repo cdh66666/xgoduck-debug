@@ -29,6 +29,8 @@ REFERENCE_MANIFEST=R/'ASSET_MANIFEST.json'
 MANIFEST = REFERENCE_MANIFEST
 COMMANDS = [[0., 0., 0.], [.2, 0., 0.], [.3, 0., 0.], [-.3, 0., 0.], [0., 0., 1.], [0., 0., -1.]]
 PROBABILITIES = [.15, .17, .17, .17, .17, .17]
+STABILITY_REWARD = dict(profile='standstop-v3',zero_speed_amplitude=5.,linear_sigma_mps=.025,yaw_sigma_radps=.08,
+                       tilt_amplitude=5.,tilt_width_deg=.6,speed_path_cost_per_m=20.,yaw_path_cost_per_rad=5.,tilt_path_cost_per_deg=1.)
 
 
 def sha(path):
@@ -66,7 +68,7 @@ class RawSession:
 
 
 class NativeEpisode:
-    def __init__(self, frozen, seed, *, curriculum='six', auto_reset=True):
+    def __init__(self, frozen, seed, *, curriculum='six', auto_reset=True, max_episode_steps=1200):
         self.adapter = adapter_module().Adapter(frozen, seed, 'native-training', enable_initial_policy=False)
         self.sim = self.adapter.sim
         self.np = self.adapter.worker.np
@@ -75,6 +77,7 @@ class NativeEpisode:
         self.rng = self.np.random.default_rng(seed + 70001)
         self.curriculum = curriculum
         self.auto_reset = auto_reset
+        self.max_episode_steps = max_episode_steps
         self.sessions = {}
         for name, actor in self.sim.policies.items():
             session = RawSession(self.np)
@@ -109,13 +112,25 @@ class NativeEpisode:
 
     def _resample(self):
         previous_index = self.command_index
-        index = 0 if self.curriculum == 'stand' else int(self.rng.choice(6, p=PROBABILITIES))
+        if self.curriculum in ('stability','stop'):
+            index = 0 if previous_index in (None,1,2,3,4,5) else int(self.rng.integers(1,6))
+            if self.curriculum=='stop' and previous_index is None and self.rng.random()<.8:
+                index=int(self.rng.integers(1,6))
+        else:
+            index = 0 if self.curriculum == 'stand' else int(self.rng.choice(6, p=PROBABILITIES))
         self.command_index = index
         self.command_age_ticks = 0
         self.zero_release = index == 0 and previous_index not in (None, 0)
         self.command = self.np.asarray(COMMANDS[index], dtype=self.np.float32)
-        bounds = (6., 8.) if index == 0 else (4., 6.)
+        bounds = (3., 5.) if self.curriculum == 'stability' else ((6., 8.) if index == 0 else (4., 6.))
+        if self.curriculum=='stop':
+            bounds=((4.,5.) if self.rng.random()<.25 else (1.3,1.8)) if index==0 else (3.,5.)
         self.command_ticks = int(math.ceil(float(self.rng.uniform(*bounds)) / .02))
+        self.push_tick = None
+        if self.curriculum == 'stability' and index == 0 and self.rng.random() < .6:
+            self.push_tick = int(self.rng.integers(75,126))
+        elif self.curriculum=='stop' and index==0 and bounds==(4.,5.):
+            self.push_tick=75
         self.sim.twist[:] = self.command
         self.motion_window.reset(self.command)
 
@@ -224,6 +239,12 @@ class NativeEpisode:
         session.action[:] = action
         before_calls = session.calls
         sim.twist[:] = self.command
+        if self.curriculum in ('stability','stop') and self.push_tick == self.command_age_ticks:
+            direction = self.rng.uniform(-math.pi,math.pi)
+            magnitude = self.rng.uniform(.8,2.)
+            if self.curriculum=='stop':
+                direction=float(self.rng.integers(4))*math.pi/2.;magnitude=2.
+            sim.command(dict(op='push',force=[magnitude*math.cos(direction),magnitude*math.sin(direction),0.],duration=.16,body='trunk_base'))
         try:
             sim.step(4)
         except ValueError as error:
@@ -255,6 +276,12 @@ class NativeEpisode:
         reward_terms = dict(dense=6.*dense, height=3.*height_score,
                             gaussian=(6. if moving else 2.)*gaussian,
                             progress=3.*progress, pose=.35*pose, action_rate=-.05*action_rate)
+        if self.curriculum in ('stability','stop') and not moving:
+            target=STABILITY_REWARD
+            reward_terms['stop_stability'] = target['zero_speed_amplitude']*math.exp(-float((velocity[:2]**2).sum())/target['linear_sigma_mps']**2-float(velocity[2]**2)/target['yaw_sigma_radps']**2)
+            reward_terms['stand_tilt'] = target['tilt_amplitude']*math.exp(-(tilt/target['tilt_width_deg'])**2)
+            reward_terms['stop_path'] = -target['speed_path_cost_per_m']*float(np.linalg.norm(velocity[:2]))-target['yaw_path_cost_per_rad']*abs(float(velocity[2]))
+            reward_terms['tilt_path'] = -target['tilt_path_cost_per_deg']*tilt
         # self.command_age_ticks is still previous tick here. The current
         # post-forward sample is age+1, so the100th sample gates at exactly2s.
         precision_term,precision_info=direct_precision(self.command,velocity,self.command_age_ticks+1)
@@ -274,7 +301,7 @@ class NativeEpisode:
         # command's samples enter this segment. Zero command never stalls.
         motion_progress=self.motion_window.observe(self.command,velocity,self.command_age_ticks)
         motion_stall=motion_progress['triggered']
-        terminated,timeout,event_penalty=event_outcome(physical_terminated,motion_stall,self.episode_steps>=1200)
+        terminated,timeout,event_penalty=event_outcome(physical_terminated,motion_stall,self.episode_steps>=self.max_episode_steps)
         failure_reasons = []
         if max(tilt, sim.max_substep_tilt_deg) >= 25.:
             failure_reasons.append('tilt25deg')
@@ -319,7 +346,7 @@ def _worker(connection, frozen, seeds, curriculum):
         np = envs[0].np
         connection.send(('ready', np.stack([env.observe() for env in envs]),
                          np.stack([env.critic_linear_velocity() for env in envs]),
-                         dict(pid=os.getpid(), mujoco=envs[0].mj.__version__, envs=len(envs))))
+                         dict(pid=os.getpid(), mujoco=envs[0].mj.__version__, envs=len(envs),torch_imported='torch' in sys.modules)))
         while True:
             op, payload = connection.recv()
             if op == 'close':
@@ -414,6 +441,13 @@ class NativeVecEnv:
                         physics_dt=.005, curriculum=kwargs.get('curriculum', 'six'),
                         runtime_interface_version='bodyframe-v2',gyro_frame='root_body_xmat',linear_velocity_frame='root_body_xmat',
                         hardware_commands_sent=False, deployment_allowed=False)
+        if kwargs.get('curriculum') in ('stability','stop'):
+            self.cfg['stability_reward']=STABILITY_REWARD.copy()
+            self.cfg['stability_commands']='alternate zero and random original moving command, each 3-5s'
+            self.cfg['stability_push']='60% of zero segments, 0.8-2.0N random world direction for 0.16s at 1.5-2.5s'
+            if kwargs.get('curriculum')=='stop':
+                self.cfg['stability_commands']='moving 3-5s, zero 1.3-1.8s; 25% zero segments last 4-5s; 80% start moving'
+                self.cfg['stability_push']='each long zero segment: 2.0N random one of four world directions for 0.16s at 1.5s'
         self.common_step_counter = 0
 
     def get_observations(self):

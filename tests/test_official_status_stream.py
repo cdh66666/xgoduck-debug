@@ -115,6 +115,60 @@ class StreamTests(unittest.TestCase):
         with self.assertRaises((TimeoutError, OSError)):
             self.reader.get()
 
+    def test_get_ages_cache_but_preserves_actual_history_endpoint(self):
+        self.publish(1,10)
+        with self.reader._condition:
+            self.reader._value.update(feedback_age_ms=8.,full_robot_ready=True)
+            self.reader.read_at-=.25
+        value=self.reader.get()
+        self.assertGreaterEqual(value['feedback_age_ms'],258.)
+        self.assertEqual(value['native_feedback_age_ms'],8.)
+        self.assertFalse(value['full_robot_ready'])
+        self.assertEqual(self.reader.value['feedback_age_ms'],8.)
+
+    def test_sub_350ms_burst_is_retained_as_history_but_not_current_readiness(self):
+        first=dict(state(1,100),feedback_age_ms=8.,telemetry_cache_age_ms=0.,full_robot_ready=True)
+        self.reader._accept(first,self.tunnel.port,1000,1000)
+        following=dict(state(2,100.05),feedback_age_ms=8.,telemetry_cache_age_ms=0.,full_robot_ready=True)
+        self.reader._accept(following,self.tunnel.port,1000.35,1000.35)
+        from status_age import aged_snapshot
+        raw=self.reader.value
+        current=aged_snapshot(raw,1000.35,1000.35)
+        self.assertAlmostEqual(raw['pc_delivery_age_lower_bound_ms'],300.)
+        self.assertEqual(raw['feedback_age_ms'],8.)
+        self.assertTrue(raw['full_robot_ready'])
+        self.assertAlmostEqual(current['feedback_age_ms'],308.)
+        self.assertFalse(current['full_robot_ready'])
+        self.assertEqual(self.reader._generation,2)
+
+    def test_continuous_backlog_cannot_renew_after_reference_window_expires(self):
+        self.assertTrue(self.reader._accept(state(1,100),self.tunnel.port,1000,1000))
+        with self.assertRaises(ConnectionError):self.reader._accept(state(2,100.05),self.tunnel.port,1001,1001)
+        generation=self.reader._generation
+        with self.assertRaises(ConnectionError):self.reader._accept(state(3,101.1),self.tunnel.port,1010.1,1010.1)
+        self.assertEqual(self.reader._generation,generation)
+        self.assertEqual(self.reader.value['mcu_seq'],1)
+        self.assertTrue(self.reader._accept(state(4,110.11),self.tunnel.port,1010.12,1010.12))
+        self.assertIsNone(self.reader._backlog_reference)
+        self.assertEqual(self.reader.value['mcu_seq'],4)
+
+    def test_receiver_resync_starts_new_display_epoch_without_renewing_network_backlog(self):
+        first = state(275438, 100)
+        first['feedback_timing'] = {'receiver_epoch': 1}
+        self.reader._accept(first, self.tunnel.port, 1000, 1000)
+        epoch = self.reader.value['pc_host_epoch']
+        following = state(275396, 100.05)
+        following['feedback_timing'] = {'receiver_epoch': 2}
+        self.reader._accept(following, self.tunnel.port, 1000.05, 1000.05)
+        self.assertEqual(self.reader.value['pc_host_epoch'], epoch+1)
+        self.assertEqual(self.reader.value['mcu_seq'], 275396)
+        self.assertEqual(len(self.reader._frames), 1)
+        late = state(275397, 100.1)
+        late['feedback_timing'] = {'receiver_epoch': 3}
+        with self.assertRaises(ConnectionError):
+            self.reader._accept(late, self.tunnel.port, 1001.1, 1001.1)
+        self.assertEqual(self.reader.value['mcu_seq'], 275396)
+
     def test_disconnect_fails_immediately_and_retains_history(self):
         self.publish(1)
         self.server.frames.put(None)

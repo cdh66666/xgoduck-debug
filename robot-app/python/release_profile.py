@@ -2,13 +2,13 @@
 import math
 
 PROFILE = {'schema':'xgoduck-basic-keyboard-publication-v2',
- 'model_sha256':'8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f',
+ 'model_sha256':'57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db',
  'ordinary_head_mouth':False, 'walking':True, 'fast_forward':True, 'navigation':True,
  'deep_pick':False, 'automatic_pick':False, 'roulade':False,
  'current_monitor':True, 'calibration_and_numbering':True,
- 'single_actor':True, 'native_basic_offline_qualified':True,
+ 'single_actor':True, 'native_basic_offline_qualified':False,
  'portable_profile_hardware_verified':False, 'physical_acceptance':'pending',
- 'recovery_source':'retained official getup; new-actor handoff unverified',
+ 'recovery_source':'official walk/getup; direct getup retained; bounded standing observed',
  'head_mouth_scope':'zero only; mixed motion not qualified',
  'command_points':[[0.,0.,0.],[.2,0.,0.],[.3,0.,0.],[-.3,0.,0.],[0.,0.,1.],[0.,0.,-1.]]}
 

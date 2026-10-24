@@ -1,0 +1,165 @@
+{
+  "schema": "xgoduck-stationary-review-fix-v1",
+  "date": "2026-10-23",
+  "host_source_sha256": {
+    "controller.py": "dd50f0572545c7814315729b881065a1e6e638a612a4406634260ffd16b8d19e",
+    "gyro_bias_control.py": "5be670a06fd1421a50e4c602ac8cce2d5a9e72330581dffc599b9938b308f238",
+    "current_telemetry.py": "9e31be319f54f2b52a0e5cdbaeb6ab6af49cd7d0a57e49ca0136cca0a74fef5a",
+    "display_telemetry.py": "ae5cae3d75984d4f5f0d35e61c4b11fe982ad164ad383de50958d62a9bac8bf3"
+  },
+  "source_bytes_match_repository": true,
+  "restart_recovery": "markers may repeat; ambiguous old batches need advancing time; feedback loss invalidates old fit and zero sync; explicit disabled OFF remains OFF on forward recovery",
+  "joint_qualification": {
+    "all_15_required": true,
+    "max_speed_dps": 2.0,
+    "max_window_span_deg": 0.35,
+    "window_samples": 256,
+    "rolling_extrema": "monotonic queues",
+    "body_fixed_externally_required": true
+  },
+  "static_performance_validation": {
+    "duration_s": 30.00017557800129,
+    "samples": 300,
+    "errors": [],
+    "enabled_frames": 0,
+    "modes": {
+      "off": 300
+    },
+    "imu_invalid_frames": 0,
+    "qualified_frames": 300,
+    "qualification_reasons": {
+      "qualified_pending_explicit_start": 300
+    },
+    "feedback_hz": {
+      "min": 97.91749304533433,
+      "max": 101.90865115980313,
+      "mean": 99.81329272122254,
+      "std": 0.7099366709213414
+    },
+    "feedback_age_ms": {
+      "min": 2.6900529992417432,
+      "max": 24.998812999911024,
+      "mean": 7.895782383311598,
+      "std": 2.840103259156288
+    },
+    "raw_gyro_dps": [
+      {
+        "min": -0.65625,
+        "max": 0.09375,
+        "mean": -0.2911458333333333,
+        "std": 0.13885059771540526
+      },
+      {
+        "min": -8.71875,
+        "max": -8.1875,
+        "mean": -8.455208333333333,
+        "std": 0.1136356114422252
+      },
+      {
+        "min": -0.625,
+        "max": 0.28125,
+        "mean": -0.28739583333333335,
+        "std": 0.13995738341203737
+      }
+    ],
+    "window_max_std_dps": [
+      0.16021242401698432,
+      0.12581348872486214,
+      0.22109996803033052
+    ],
+    "max_joint_spread_deg": 0.0,
+    "boot_epochs": [
+      "000001ab00068409"
+    ],
+    "motion_requests_sent": 0,
+    "arming_requests_sent": 0,
+    "mechanical_calibration_requests_sent": 0
+  },
+  "latest_live_smoke": {
+    "duration_s": 10.000407780999012,
+    "samples": 100,
+    "unique_mcu_sequences": 100,
+    "enabled_samples": 0,
+    "non_off_samples": 0,
+    "imu_invalid_samples": 0,
+    "qualified_samples": 100,
+    "max_feedback_age_ms": 19.924726000681403,
+    "mean_feedback_hz": 99.5407771492544,
+    "max_joint_span_deg": 0.0,
+    "current_records_start": 7918,
+    "current_records_end": 8895,
+    "current_malformed_end": 0,
+    "current_available_samples": 99,
+    "heading_available_samples": 100,
+    "source_sha256": {
+      "controller.py": "dd50f0572545c7814315729b881065a1e6e638a612a4406634260ffd16b8d19e",
+      "gyro_bias_control.py": "5be670a06fd1421a50e4c602ac8cce2d5a9e72330581dffc599b9938b308f238",
+      "current_telemetry.py": "9e31be319f54f2b52a0e5cdbaeb6ab6af49cd7d0a57e49ca0136cca0a74fef5a",
+      "display_telemetry.py": "ae5cae3d75984d4f5f0d35e61c4b11fe982ad164ad383de50958d62a9bac8bf3"
+    },
+    "arming_requests_sent": 0,
+    "motion_requests_sent": 0
+  },
+  "final_workbench_observation": {
+    "duration_s": 30.190532899985556,
+    "unique_endpoints": 510,
+    "disconnected_health_reads": 21,
+    "http_errors": [],
+    "unconfirmed_observation_longest_span_s": 0.918128399993293,
+    "last_received_endpoint_age_at_finish_ms": 1665.9350999980234,
+    "enabled_frames": 0,
+    "non_off_frames": 0,
+    "imu_invalid_frames": 0,
+    "qualified_frames": 510,
+    "pc_arrival_interval_ms": {
+      "p50": 47.31850000098348,
+      "p95": 174.24369999207556,
+      "p99": 353.7532999762334,
+      "max": 1148.7664000014775
+    },
+    "native_feedback_age_ms": {
+      "p50": 7.891151999501744,
+      "p95": 11.799697000242304,
+      "p99": 13.018046000070171,
+      "max": 14.09275100013474
+    },
+    "native_feedback_hz": {
+      "p50": 99.83964429948968,
+      "p95": 99.94846578834589,
+      "p99": 100.01936093644133,
+      "max": 100.27007755455197
+    },
+    "hardware_writes": 0
+  },
+  "static_performance_scope": "30s r2 algorithm validation; r3 preserves disabled OFF intent; r4 synchronizes existing display/current consumers using the local receive epoch",
+  "offline_validation": {
+    "controller_receive_cases": 11,
+    "gyro_qualification_cases": 5,
+    "stream_cases": 18,
+    "snapshot_age_cases": 1,
+    "ui_assertions": 247
+  },
+  "backlog_recovery": "retain trusted offset while rejecting backlog; a reference-window timeout cannot renew old data",
+  "consumer_recovery": "queued current items carry controller receive epoch; late old epochs rejected; display cache reset and anchored to confirmed feedback",
+  "wireless_final_state": {
+    "route": "original company Wi-Fi",
+    "board_ip": "192.168.10.33",
+    "windows_hotspot": "off",
+    "temporary_connection_removed": true,
+    "full_telemetry_hotspot_trial": "failed; not adopted"
+  },
+  "ui_scenarios": [
+    "250ms cache + 8ms native age rejected",
+    "550ms queued old reply remains stale",
+    "freeze warning remains visible",
+    "numbering model 404 visible",
+    "normal numbering remains concise"
+  ],
+  "mechanical_calibration_unchanged": true,
+  "models_unchanged": true,
+  "mcu_reflashed": false,
+  "arming_requests_sent": 0,
+  "motion_requests_sent": 0,
+  "wireless_root_cause_acceptance": "OPEN",
+  "physical_motion_acceptance": "NOT_TESTED"
+}

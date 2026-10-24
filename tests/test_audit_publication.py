@@ -9,21 +9,12 @@ ROOT=Path(__file__).resolve().parents[1]
 BASE='181d85760c6fb9be9ed89d96b6f77bc4a2017a183a6ebb3b530189dbc1e5ee78'
 
 class AuditPublicationTests(unittest.TestCase):
-    def test_candidates_never_replace_default_controller(self):
+    def test_runtime_sources_bind_the_current_controller(self):
         actual=hashlib.sha256((ROOT/'robot-app/python/controller.py').read_bytes()).hexdigest()
         runtime=json.loads((ROOT/'RELEASE_RUNTIME.json').read_text('utf-8'))
         self.assertEqual(actual,runtime['runtime_sources']['python/controller.py']['sha256'])
         self.assertNotEqual(actual,BASE) # The dated 10/20 controller remains historical.
         self.assertTrue(all(row['path'].startswith('robot-app/') for row in runtime['runtime_sources'].values()))
-        candidate=ROOT/'candidates/host-feedback-20261020'
-        manifest=json.loads((candidate/'MANIFEST.json').read_text('utf-8'))
-        self.assertFalse(manifest['installed'])
-        variants=[row for row in manifest['files'] if row['label']!='offline-test']
-        self.assertEqual(len(variants),3)
-        for row in variants:
-            self.assertFalse(row['installed'])
-            self.assertFalse(row['default_runtime_replaced'])
-            self.assertEqual(hashlib.sha256((candidate/row['path']).read_bytes()).hexdigest(),row['source_sha256'])
 
     def test_anonymous_scope_is_six_diagnostic_cases_not_robot_admission(self):
         report=ROOT/'reports/standing-system-audit-20261020'

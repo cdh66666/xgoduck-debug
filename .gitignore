@@ -8,6 +8,7 @@ __pycache__/
 **/data/
 **/bench-results/
 **/current-recordings/
+**/motion-recordings/
 **/qa/
 *.log
 *.csv

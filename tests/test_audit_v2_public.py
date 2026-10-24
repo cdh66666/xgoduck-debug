@@ -26,12 +26,13 @@ class PublishedAuditV2Tests(unittest.TestCase):
     def test_browser_static_assets_serve_without_device_processes(self):
         sys.path[:0]=[str(PC),str(PC/'tools')]
         import factory_workbench
+        import servo_current_recorder as recorder
         class Disconnected:
             port=None;official=False;error='not_configured'
             def close(self):pass
         names=['assets/standing-system-audit.html','assets/standing-audit-v2.js','assets/standing-audit-v2.css',
                'assets/standing-audit-v2-data.json','model-assets/vendor/d3/d3.min.js']
-        with patch.object(subprocess,'Popen',side_effect=AssertionError('No SSH/device/worker process allowed')):
+        with patch.object(recorder,'_configuration',side_effect=ValueError('offline test has no configured device')),patch.object(subprocess,'Popen',side_effect=AssertionError('No SSH/device/worker process allowed')):
             server=factory_workbench.FactoryWorkbenchServer(('127.0.0.1',0),Disconnected())
             thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
             try:

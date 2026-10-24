@@ -1,6 +1,7 @@
 """Native CPU PPO from random weights, with an explicit output directory."""
 from __future__ import annotations
-import argparse,copy,hashlib,json,os,time
+import argparse,copy,gzip,hashlib,json,os,time
+from collections import Counter
 from pathlib import Path
 os.environ['CUDA_VISIBLE_DEVICES']=''
 os.environ.setdefault('OMP_NUM_THREADS','1')
@@ -9,8 +10,16 @@ os.environ.setdefault('MKL_NUM_THREADS','1')
 ROOT=Path(__file__).resolve().parent
 KIND='xgoduck-scratch-mlp-bodyframe-v2'
 
-def config():
- return json.loads((ROOT/'config.json').read_text('utf-8'))
+def check_contract(cfg,actor_class='rsl_rl.models:MLPModel'):
+ expected=json.loads((ROOT/'config.json').read_text('utf-8'))
+ if {k:v for k,v in cfg.items() if k!='ppo'}!={k:v for k,v in expected.items() if k!='ppo'}:
+  raise ValueError('Training config changed the fixed physical/observation/action contract')
+ if cfg['ppo']['actor']['class_name']!=actor_class or cfg['ppo']['critic']['class_name']!='rsl_rl.models:MLPModel':
+  raise ValueError('Training actor/critic class does not match this entry')
+ return cfg
+
+def config(path=None):
+ return check_contract(json.loads((path or ROOT/'config.json').read_text('utf-8')))
 
 def construct(env,cfg):
  from rsl_rl.algorithms import PPO
@@ -29,59 +38,92 @@ def export_policy(actor,path,cfg,*,architecture=KIND,initialization='random, no 
  for key,value in metadata.items():item=graph.metadata_props.add();item.key=key;item.value=value
  onnx.save(graph,str(path));session=ort.InferenceSession(str(path),providers=['CPUExecutionProvider'])
  samples=np.random.default_rng(17).normal(0,.25,(64,61)).astype('float32')
+ from native_env import COMMANDS
+ samples[:,48:51]=np.asarray([COMMANDS[i%6] for i in range(len(samples))],dtype=np.float32)
  with torch.inference_mode():expected=module(torch.tensor(samples)).numpy()
  actual=np.concatenate([session.run(None,{'obs':row[None]})[0] for row in samples])
  error=float(np.max(np.abs(actual-expected)));assert error<2e-5 and np.isfinite(actual).all()
  return {'max_abs_error':error,'inputs':[1,61],'outputs':[1,14],'samples':64,'behavior_qualified':False}
 
-def main():
- parser=argparse.ArgumentParser(description=__doc__)
+def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,description=__doc__):
+ parser=argparse.ArgumentParser(description=description)
  parser.add_argument('--mode',choices=['smoke','train'],default='smoke')
  parser.add_argument('--output',type=Path,required=True)
  parser.add_argument('--iterations',type=int,default=1)
  parser.add_argument('--workers',type=int,default=1)
  parser.add_argument('--envs-per-worker',type=int,default=2)
- parser.add_argument('--curriculum',choices=['stand','six'],default='stand')
+ parser.add_argument('--curriculum',choices=['stand','six','stability','stop'],default='stand')
  parser.add_argument('--seed',type=int,default=20261022)
- parser.add_argument('--resume',type=Path,help='Only a checkpoint made by this scratch entry; optional')
+ parser.add_argument('--config',type=Path,help='Optional PPO hyperparameters; fixed physical and interface fields must match')
+ parser.add_argument('--max-wall-seconds',type=float,help='Finish the current update and export when this training time is reached')
+ parser.add_argument('--resume',type=Path,help='Only a checkpoint made by this entry with the same config')
+ parser.add_argument('--initial-checkpoint',type=Path,help='Explicit source for this entry initialization; cannot combine with resume')
  args=parser.parse_args()
  if min(args.iterations,args.workers,args.envs_per_worker)<1:parser.error('Positive iteration/worker/env counts required')
+ if args.max_wall_seconds is not None and args.max_wall_seconds<=0:parser.error('Positive wall time required')
+ if args.resume and args.initial_checkpoint:parser.error('Use resume or an initial checkpoint, not both')
+ if args.initial_checkpoint and initialize is None:parser.error('This entry has no pretrained initialization')
  args.output=args.output.resolve();args.output.mkdir(parents=True,exist_ok=False)
  import numpy as np,torch
  from native_env import NativeVecEnv
- torch.set_num_threads(1);torch.manual_seed(args.seed);cfg=config();env=None;started=time.monotonic()
- report={'kind':KIND,'initialization':'random','parent_checkpoint_required':False,'hardware_commands_sent':False,
+ torch.set_num_threads(1);torch.manual_seed(args.seed);cfg=config_loader(args.config);env=None;trace=None;started=time.monotonic()
+ report={'kind':kind,'initialization':'random','parent_checkpoint_required':False,'hardware_commands_sent':False,
   'deployment_allowed':False,'behavior_qualified':False,'cpu_only':True,'seed':args.seed,'curriculum':args.curriculum,
-  'versions':{'torch':torch.__version__,'numpy':np.__version__},'requested_updates':args.iterations}
+  'versions':{'torch':torch.__version__,'numpy':np.__version__},'requested_updates':args.iterations,
+  'max_wall_seconds':args.max_wall_seconds,'workers':args.workers,'envs_per_worker':args.envs_per_worker}
+ (args.output/'config.json').write_text(json.dumps(cfg,indent=2),encoding='utf-8')
  try:
   env=NativeVecEnv(workers=args.workers,envs_per_worker=args.envs_per_worker,seed=args.seed,curriculum=args.curriculum)
   report['worker_metadata']=env.pool.worker_metadata
+  report['training_environment']=env.cfg
   alg=construct(env,cfg);base=0
   if args.resume:
    checkpoint=torch.load(args.resume,map_location='cpu',weights_only=False)
-   if checkpoint.get('kind')!=KIND or checkpoint.get('config')!=cfg:raise ValueError('Checkpoint is not this scratch training contract')
-   alg.load(checkpoint['algorithm'],load_cfg=None,strict=True);base=checkpoint['iteration'];report['initialization']='resume own scratch checkpoint'
+   if checkpoint.get('kind')!=kind or checkpoint.get('config')!=cfg:raise ValueError('Checkpoint is not this entry/config contract')
+   alg.load(checkpoint['algorithm'],load_cfg=None,strict=True);base=checkpoint['iteration'];report['initialization']='resume own '+kind+' checkpoint'
    report['resume_sha256']=hashlib.sha256(args.resume.read_bytes()).hexdigest()
+  elif initialize is not None:
+   report.update(initialize(alg,args.initial_checkpoint))
   obs=env.get_observations();assert obs['actor'].shape[-1]==61 and obs['critic'].shape[-1]==64
-  before={key:value.detach().clone() for key,value in alg.actor.state_dict().items()};metrics=[]
+  before={key:value.detach().clone() for key,value in alg.actor.state_dict().items()};updates=0
+  trace=gzip.open(args.output/'rollout.jsonl.gz','wt',encoding='utf-8')
   for iteration in range(base+1,base+args.iterations+1):
-   alg.train_mode();rewards=[];terminations=0
+   iteration_started=time.monotonic();alg.train_mode();rewards=[];terminations=0;failures=Counter()
    with torch.inference_mode():
-    for _ in range(cfg['ppo']['num_steps_per_env']):
+    for tick in range(cfg['ppo']['num_steps_per_env']):
      actions=alg.act(obs);obs,reward,done,extras=env.step(actions)
      if not torch.isfinite(obs['actor']).all() or not torch.isfinite(actions).all():raise ValueError('Nonfinite training data')
      alg.process_env_step(obs,reward,done,extras);rewards.append(float(reward.mean()));terminations+=int(done.sum())
+     rows=extras['native_rows']
+     for row in rows:failures.update(row['failure_reasons'])
+     fields=('velocity','tilt','height','standing_height','command','command_age_s','zero_release','failure_reasons','resets','steps')
+     trace.write(json.dumps({'iteration':iteration,'tick':tick,'t':env.common_step_counter*.02,
+      'actions':actions.tolist(),'rewards':reward.tolist(),'done':done.tolist(),
+      'envs':[{k:row[k] for k in fields} for row in rows]},allow_nan=False)+'\n')
     alg.compute_returns(obs)
-   losses=alg.update();row={'iteration':iteration,'mean_reward':sum(rewards)/len(rewards),'terminations':terminations,'loss':losses,'behavior_qualified':False}
+   losses=alg.update();updates+=1
+   elapsed=time.monotonic()-started
+   budget_reached=args.max_wall_seconds is not None and elapsed>=args.max_wall_seconds
+   row={'iteration':iteration,'mean_reward':sum(rewards)/len(rewards),'terminations':terminations,'failure_counts':dict(failures),
+    'elapsed_s':elapsed,'update_wall_s':time.monotonic()-iteration_started,
+    'transitions':updates*cfg['ppo']['num_steps_per_env']*env.num_envs,'loss':losses,'behavior_qualified':False}
    with (args.output/'metrics.jsonl').open('a',encoding='utf-8') as f:f.write(json.dumps(row,allow_nan=False)+'\n')
-   if iteration%100==0 or iteration==base+args.iterations:
-    torch.save({'kind':KIND,'iteration':iteration,'algorithm':alg.save(),'config':cfg},args.output/'checkpoint.pt')
-   metrics.append(row);print(json.dumps(row),flush=True)
+   if iteration%100==0 or iteration==base+args.iterations or budget_reached:
+    saved={'kind':kind,'iteration':iteration,'algorithm':alg.save(),'config':cfg,'training_environment':env.cfg}
+    torch.save(saved,args.output/'checkpoint.pt')
+    if iteration%100==0:torch.save(saved,args.output/f'checkpoint_{iteration:06d}.pt')
+    trace.flush()
+   print(json.dumps(row),flush=True)
+   if budget_reached:break
   report['actor_parameters_changed']=any(not torch.equal(value,alg.actor.state_dict()[key]) for key,value in before.items())
-  report['completed_updates']=args.iterations;report['export']=export_policy(alg.actor,args.output/'policy.onnx',cfg)
+  if verify_actor is not None:report.update(verify_actor(before,alg.actor))
+  report['completed_updates']=updates;report['final_iteration']=iteration;report['stop_reason']='wall_budget' if budget_reached else 'iteration_budget'
+  report['transitions']=updates*cfg['ppo']['num_steps_per_env']*env.num_envs
+  report['export']=export_policy(alg.actor,args.output/'policy.onnx',cfg,architecture=kind,initialization=report['initialization'])
   report['wall_s']=time.monotonic()-started;report['result']='SMOKE_PASS_NOT_BEHAVIOR_QUALIFIED' if args.mode=='smoke' else 'TRAINED_PENDING_INDEPENDENT_EVALUATION'
   (args.output/'run.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
  finally:
+  if trace is not None:trace.close()
   if env is not None:env.close()
  print(json.dumps(report),flush=True)
 if __name__=='__main__':main()

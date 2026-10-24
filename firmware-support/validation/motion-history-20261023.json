@@ -1,0 +1,208 @@
+{
+  "schema": "xgoduck-motion-history-stationary-update-v1",
+  "date": "2026-10-23",
+  "owner_constraint": "IN_TRAY_NO_SERVO_MOTION",
+  "standing_robustness": "OPEN_USER_REPORTS_BACKWARD_FALL",
+  "wireless_link_root_cause": "OPEN",
+  "new_motion_end_to_end_validation": "NOT_RUN_NO_MOTION_IN_TRAY",
+  "installed_runtime_sources": 40,
+  "installed_sources_match_with_documented_profile_adaptation": true,
+  "runtime_source_sha256": {
+    "main.py": "b8bf5e8abead00e0112dadc1ab59409aaf3397c53919a17587b8b8f57fff0517",
+    "motion_recording.py": "ad6a8a37b215595ebc7c04c55e62f1321bb3bc4c739041a059c30acd11e1542a",
+    "controller.py": "109794ac1d9012ba519abdcfeed20a93962894a465475bf2fd2c30d5f8c8e1c3",
+    "policy.py": "bd2497f1e7ee39caea7445f1965afd396cd4b55fe6f3f06f7e66794c1df64bd8",
+    "rl_core.py": "0ab3f52a82e2f7513ceb0322b3eb838896eada0708b99e6545c5bfcc01a13a95"
+  },
+  "controller_control_methods_ast_unchanged": true,
+  "controller_status_only_change": [
+    "receiver_epoch",
+    "boot_marker",
+    "last_imu_us"
+  ],
+  "policy_math_and_models_unchanged": true,
+  "elf_sha256": "c87f891a8955c3f167fa6d2c1ee585401d23e0d58633ed6af9e803939e597c86",
+  "mechanical_calibration_unchanged": true,
+  "motion_inhibited": true,
+  "automatic_state_capture_hz": 25,
+  "accepted_mode_events_captured": true,
+  "complete_50hz_onnx_observations_or_dom_clicks_recorded": false,
+  "robot_cache_bytes": 16777216,
+  "pc_archive_pruned_automatically": false,
+  "history": {
+    "sessions": 7,
+    "complete_historical_status_captures": 5,
+    "legacy_feedback_fragments": 2,
+    "legacy_recorded_body_gravity_missing": true,
+    "legacy_estimate_separately_typed": true,
+    "legacy_click_identity": "TIME_ASSOCIATION_ONLY",
+    "raw_source_files_preserved": true
+  },
+  "replay": {
+    "real_meshes": 16,
+    "read_only": true,
+    "browser_errors": [],
+    "browser_hardware_writes": [],
+    "all_captured_start_buttons_disabled": true
+  },
+  "display": {
+    "clock": "robot_uptime_s",
+    "buffer_ms": 350,
+    "real_source_gap_limit_ms": 300,
+    "freshness_or_watchdog_thresholds_relaxed": false,
+    "real_endpoint_interpolation_only": true,
+    "receiver_epoch_resets_display_without_resetting_linux_network_backlog_reference": true,
+    "two_20s_recorded_trace_replays": {
+      "before_old": {
+        "delay_ms": 100,
+        "counts": {
+          "playing": 683,
+          "underflow": 97,
+          "gap": 12
+        },
+        "freeze_fraction": 0.13762626262626262,
+        "max_freeze_ms": 400
+      },
+      "before_source_clock": {
+        "delay_ms": 350,
+        "counts": {
+          "playing": 792
+        },
+        "freeze_fraction": 0,
+        "max_freeze_ms": 0
+      },
+      "after_old": {
+        "delay_ms": 100,
+        "counts": {
+          "playing": 701,
+          "underflow": 85,
+          "gap": 8
+        },
+        "freeze_fraction": 0.11712846347607053,
+        "max_freeze_ms": 400
+      },
+      "after_source_clock": {
+        "delay_ms": 350,
+        "counts": {
+          "playing": 794
+        },
+        "freeze_fraction": 0,
+        "max_freeze_ms": 0
+      }
+    },
+    "network_root_cause_fixed": false
+  },
+  "stationary_live_observation": {
+    "duration_s": 30.000353800016455,
+    "unique_endpoints": 536,
+    "pre_roll_endpoints": 2,
+    "disconnected_health_reads": 0,
+    "http_errors": [],
+    "unconfirmed_observation_longest_span_s": 0.0,
+    "last_received_endpoint_age_at_finish_ms": 128.15589999081567,
+    "enabled_frames": 0,
+    "non_off_frames": 0,
+    "imu_invalid_frames": 0,
+    "qualified_frames": 536,
+    "pc_arrival_interval_ms": {
+      "p50": 53.597799967974424,
+      "p95": 122.0898000174202,
+      "p99": 245.46070001088083,
+      "max": 378.92119999742135
+    },
+    "native_feedback_age_ms": {
+      "p50": 41.34963299657102,
+      "p95": 66.92499999917345,
+      "p99": 77.61470300101792,
+      "max": 114.50003499703598
+    },
+    "native_feedback_hz": {
+      "p50": 99.84549905475419,
+      "p95": 101.5617103739609,
+      "p99": 102.09636616675273,
+      "max": 102.452102509869
+    },
+    "hardware_writes": 0
+  },
+  "verification": {
+    "offline_recording_inhibit_age_tests": 16,
+    "status_stream_tests": 19,
+    "pose_clock_and_control_gap_tests": 13,
+    "existing_workbench_checks": 268,
+    "replay_ui_offline": "PASS",
+    "native_source_verification": "40 with preserved FTServo build-profile adaptation"
+  },
+  "limits": [
+    "25Hz states plus accepted mode events are not every inference/action or original DOM event.",
+    "Replay has no measured root translation, foot contact or externally measured gait speed.",
+    "The two legacy body estimates are not recorded filtered IMU posture.",
+    "Display improvement does not eliminate lower-layer wireless delivery bursts or prove the falling cause."
+  ],
+  "delivery_freshness_followup": {
+    "scope": "PC current freshness and source-valid historical display; no hardware motion or new live trace",
+    "source_revision": "2026-10-23-motion-history-r2",
+    "pc_backend_activation": "PENDING_WIRELESS_DISCONNECTED_NO_FRESH_NATIVE_OFF_CONFIRMATION",
+    "running_pc_revision_at_last_get": "2026-10-23-motion-history-r1",
+    "last_status_get_connected": false,
+    "native_controller_restarted": false,
+    "persistent_motion_inhibit_removed": false,
+    "raw_endpoint_age_readiness_pose_angles_clocks_and_sequence_unchanged": true,
+    "current_age_formula_known_cache": "N + max(0, B-C) + P",
+    "current_age_formula_cache_absent": "max(N,B) + P",
+    "N": "native feedback age already including any native cache C",
+    "B": "relative source backlog, existing 10s monotonic-clock offset reference",
+    "P": "elapsed PC cache age after receipt",
+    "clock_assumption": "continuous monotonic source clock with negligible short-window rate error",
+    "absolute_network_latency_measured": false,
+    "constant_latency_baseline_detected": false,
+    "saved_rows": 763,
+    "previously_ready_now_stale_saved_rows": 97,
+    "distinct_corrected_endpoints": 95,
+    "offline_evidence_sha256": {
+      "pc/qa/wlan-media-comparison-20261023.json": "d633450a7a1e9b09e8b3b87d9b206d51324a13c8d022b99767cfcb117ef5839f",
+      "pc/qa/delivery-freshness-20261023.json": "76aadd07e03a144f49c1d4352a5b3a957757bd82e622a544c1322c578a673b47",
+      "pc/qa/http-reader-offline-20261023.json": "a69602a657172a60fa80dc297708f79c309191302d2d299a53bb52beae54f5ee"
+    },
+    "production_source_sha256": {
+      "pc/status_age.py": "7eb588f173682301d35d7d3f6f3012c15b1b5336c33661f94dde7b8139e3ca9a",
+      "pc/official_status_stream.py": "caa624d818dd345d8148747ddbadd143d43ed3e7eee9eecada62680981514b22",
+      "pc/factory_workbench.py": "49c120b5581aabad1fbe6055240c0954e4236a425d19dd4a29295a886d682fd6",
+      "pc/assets/official-workbench.js": "735bc7fc5e09d3b8d08604e8094a43af01ca18bd0612a7ee30410dcd1f8c61c6",
+      "pc/assets/official-pose-playback.js": "17d93419b58333fe7b6794805e20d8c44c1cb3ee446262902ff62a095e380425",
+      "pc/assets/imu-model.js": "75752d6def0bc3471010d568f4bc956a48a3cc688a6d8d8473a4b731c16c1848"
+    },
+    "tests": {
+      "snapshot_age": 5,
+      "local_http_status_stream": 20,
+      "node_pose_and_control": 15,
+      "workbench_behavior_checks": 270,
+      "result": "PASS",
+      "hardware_connected": false
+    },
+    "writer_audit": {
+      "installed_versions": {
+        "fastapi": "0.119.1",
+        "starlette": "0.48.0",
+        "uvicorn": "0.38.0",
+        "httptools": "0.7.1",
+        "uvloop": "0.22.1",
+        "arduino-app-bricks": "0.5.0"
+      },
+      "intentional_application_batching_found": false,
+      "transport_write_is_proof_of_remote_delivery": false,
+      "complete_line_returned_before_chunk_tail": true,
+      "complete_line_returned_before_rest_of_chunk": true,
+      "missing_newline_positive_control_blocked": true,
+      "normal_20hz_rows": 10,
+      "isolated_native_asgi_fixture": "NOT_EXECUTED_SSH_BANNER_TIMEOUT_THEN_PEER_CLOSE",
+      "network_parameters_changed": false,
+      "root_cause": "OPEN"
+    },
+    "limits": [
+      "Relative backlog does not measure absolute one-way latency or identify which lower transport layer waited.",
+      "The PC backend patch has not been activated in the running service; current hardware state could not be read.",
+      "Native source, policy, ONNX, MCU ELF and calibration were unchanged in this follow-up."
+    ]
+  },
+  "stationary_live_observation_qualification": "native source flags in the earlier 30s trace, not end-to-end PC freshness qualification"
+}

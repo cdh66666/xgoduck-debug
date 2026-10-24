@@ -73,15 +73,21 @@ class WirelessTunnel:
                 self.error='bound_controller_unreachable';return None
             executable,null_config=discovery.ssh_transport(ROOT)
             with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
-            args=[str(executable),'-F',null_config,'-N','-T','-o','BatchMode=yes','-o','IdentitiesOnly=yes',
+            # Repeated JSON fields otherwise span many Wi-Fi/TCP packets per
+            # sample. SSH streaming compression shrinks them before encryption.
+            args=[str(executable),'-F',null_config,'-C','-T','-o','BatchMode=yes','-o','IdentitiesOnly=yes',
                   '-o','IdentityAgent=none','-o','StrictHostKeyChecking=yes','-o','UpdateHostKeys=no',
                   '-o','VerifyHostKeyDNS=no','-o','CheckHostIP=no','-o','PasswordAuthentication=no',
                   '-o','KbdInteractiveAuthentication=no','-o','ConnectTimeout=3','-o','ConnectionAttempts=1',
                   '-o','ExitOnForwardFailure=yes','-o','ServerAliveInterval=2','-o','ServerAliveCountMax=2',
                   '-o','GlobalKnownHostsFile='+null_config,'-o','UserKnownHostsFile='+str(identity['known_hosts_path']),
                   '-o','HostKeyAlias='+identity['host_key_alias'],'-i',str(identity['key_path']),
-                  '-L',f'127.0.0.1:{port}:127.0.0.1:9527','arduino@'+selected[1]]
-            self.process=subprocess.Popen(args,stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
+                  '-L',f'127.0.0.1:{port}:127.0.0.1:9527','arduino@'+selected[1],'exec cat >/dev/null']
+            # OpenSSH 10.0 enables transport TCP_NODELAY in session setup. -N
+            # skips that path and holds small compressed frames for delayed ACKs.
+            # A silent stdin reader opens a session without a PTY or device IO;
+            # it exits on EOF/disconnect. Keep its pipe open for this tunnel only.
+            self.process=subprocess.Popen(args,stdin=subprocess.PIPE,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,
                 creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
             self.port=port;self.error=None
             (ROOT/'qa').mkdir(exist_ok=True)
@@ -94,6 +100,7 @@ class WirelessTunnel:
             process,self.process=self.process,None;self.port=None
         if process is not None:
             try:
+                if getattr(process,'stdin',None) is not None:process.stdin.close()
                 if process.poll() is None:process.terminate()
                 try:process.wait(timeout=3)
                 except subprocess.TimeoutExpired:process.kill();process.wait(timeout=.5)
@@ -109,6 +116,7 @@ class WirelessTunnel:
             if process is None or self.process is not process or self.port != port:
                 return False
             try:
+                if getattr(process,'stdin',None) is not None:process.stdin.close()
                 if process.poll() is None:process.terminate()
             except OSError:
                 if process.poll() is None:return False

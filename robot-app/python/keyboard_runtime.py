@@ -8,7 +8,7 @@ from __future__ import annotations
 import math
 
 WALK_FILE = 'xgoduck_walk.onnx'
-WALK_SHA256 = '8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f'
+WALK_SHA256 = '57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db'
 KEYBOARD_POINTS = ((0., 0., 0.), (.2, 0., 0.), (.3, 0., 0.),
                    (-.3, 0., 0.), (0., 0., 1.), (0., 0., -1.))
 
