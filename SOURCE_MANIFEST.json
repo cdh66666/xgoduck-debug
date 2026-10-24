@@ -68,9 +68,10 @@
     "robot-app/python/main.py": {
       "source": "verified-runtime/python/main.py",
       "source_sha256": "702045380734619107b7282f4ce58f18ec5a4b4800c370b23812d2b6630a9a8e",
-      "published_sha256": "96f8d4c7dee6d1b0e0078baa0d4b147104b66c56a47cd5d72fa0641aa3c1a710",
+      "published_sha256": "107b999509a856833c420c6df5b601c2e437d60698d418894997213e6cb8abdd",
       "changes": [
-        "2026-10-24 measured ordering/queue/latest-display repair; see docs/LATENCY_FIX_20261024.md"
+        "2026-10-24 measured ordering/queue/latest-display repair; see docs/LATENCY_FIX_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "robot-app/python/requirements.txt": {
@@ -82,12 +83,13 @@
     "robot-app/python/controller.py": {
       "source": "verified-runtime/python/controller.py",
       "source_sha256": "5c798b211b3ef05deeef6802316c8307d5f7c0655e54c346652be10b7fd2afe5",
-      "published_sha256": "a8d02835ed3b2c9a1f40f9b483f16b25cb628b3108dac0027aa9da529883a844",
+      "published_sha256": "745933986afc721fec5d94cd59ab31713aa5bc0ccaab010b6ac4d7fcac10363f",
       "changes": [
         "Reject same-boot old endpoints without false restart; snapshot receive age under the controller lock.",
         "Reject reordered batches and conservatively recover repeated startup markers or source loss; withdraw old fit/zero sync and preserve explicit disabled OFF intent.",
         "Use official policy HOME, preserve head limit and latch sustained per-axis feedback loss before/after inference.",
-        "2026-10-24 static debugging: mDNS fallback, preserve explicit disabled OFF on receiver reset, personal page mark; see docs/STATIC_DEBUG_20261024.md"
+        "2026-10-24 static debugging: mDNS fallback, preserve explicit disabled OFF on receiver reset, personal page mark; see docs/STATIC_DEBUG_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "robot-app/python/rl_core.py": {
@@ -421,18 +423,20 @@
     "pc/assets/bench-models.html": {
       "source": "pc/assets/bench-models.html",
       "source_sha256": "6a41affb9ca02959cb16a52cb2d15beb61d78d21336f63c3e410b1d35fe4f8e1",
-      "published_sha256": "dc82c1ab0c05bfe634fc6e8d22eccfa1f37d98e5573e6e28e3cba0750f1f20aa",
+      "published_sha256": "1ebf59b89a948f1a66b625b45426a1a3d149761a9b410f1d3213ad7aeda51b46",
       "changes": [
         "2026-10-24 remove unused hidden legacy upload dialog",
-        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md"
+        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "pc/assets/bench-workbench.css": {
       "source": "pc/assets/bench-workbench.css",
       "source_sha256": "ac4f67da2c918fe6102c6bb9f6b5d188f4f8ac50914d190aad6f89a929486dd5",
-      "published_sha256": "13374f476f8de040913a299595bed4fb4f234e81fc9302a8e8edb502d95e07e2",
+      "published_sha256": "9141fe6cba0099ea2463cdc8f20dbf16508355cf1c173f886f546571e9afc062",
       "changes": [
-        "2026-10-24 status semantics separated from frame freshness; see docs/STATUS_STABILITY_20261024.md"
+        "2026-10-24 status semantics separated from frame freshness; see docs/STATUS_STABILITY_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "pc/assets/calibration-tray.html": {
@@ -505,17 +509,19 @@
     "pc/assets/model-training.html": {
       "source": "assets/model-training.html",
       "source_sha256": "d298fa5b5c03d6d93e855682dc4c6ea4290a5858aa7fcfd0397dcc06020b452f",
-      "published_sha256": "22a1c602ab17352f657b41141b5f70031e1a1cc666d820c146e93b62d240564a",
+      "published_sha256": "2013d2ea64b29caf513b4a3b4ca79542afe002f09ddad155531ba9a7a0210373",
       "changes": [
-        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md"
+        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "pc/assets/model-training.js": {
       "source": "assets/model-training.js",
       "source_sha256": "f3ead4f8ec6e28b51459adb8ea43e88a8248824948955c3a46b51ca12c9818aa",
-      "published_sha256": "301ad5b5a98dfd7103e917eadd8ae526d9e24da5b1226a23cc77426be6c3833e",
+      "published_sha256": "4d33729f8af9c785b289d57f975eed7dc823d94f8aba54d1a19bd37494d4c3d7",
       "changes": [
-        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md"
+        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "pc/assets/models.css": {
@@ -563,11 +569,12 @@
     "pc/assets/official-models.js": {
       "source": "pc/assets/official-models.js",
       "source_sha256": "fadcc9b554fa9e8620012a967f2365d6f2d7ebddeada026e63c7a8b1b63ee493",
-      "published_sha256": "acba36b0cd8ba8dffad2758c4496f71ba4440f2fce371f8e85a28ff89386a4dd",
+      "published_sha256": "0674e7b0c63740ae4618aef800bfd62a8caa4dd31515e2653b17fdce38db8041",
       "changes": [
         "2026-10-22 portable relative paths / current interpreter / model labels / migration startup adaptation; no physical acceptance claim",
         "2026-10-24 retain four official roles and current preview lifecycle; remove unused import and inactive specialist UI",
-        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md"
+        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "pc/assets/official-pose-playback.js": {
@@ -581,11 +588,12 @@
     "pc/assets/official-workbench.js": {
       "source": "pc/assets/official-workbench.js",
       "source_sha256": "3c5b64ff84367df530fcf7734b118798fc1e64321e43f34c80c13ed302e60456",
-      "published_sha256": "3d2899d945c208d88c2dd37be674632be4f6ce0559dc5a2f0727bc0365887759",
+      "published_sha256": "9a0dcfb40f4180363934ef99114cc4ff7ae17f389c3db00bd4838be9da131b61",
       "changes": [
         "Expire status and motion eligibility together, including browser wait and queued old responses.",
         "2026-10-24 measured ordering/queue/latest-display repair; see docs/LATENCY_FIX_20261024.md",
-        "2026-10-24 status semantics separated from frame freshness; see docs/STATUS_STABILITY_20261024.md"
+        "2026-10-24 status semantics separated from frame freshness; see docs/STATUS_STABILITY_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "pc/assets/pose-playback.js": {
@@ -774,13 +782,14 @@
     "pc/index.html": {
       "source": "pc/index.html",
       "source_sha256": "83f01d2104a29e6065207da21c04a050289dd729475519dedcb83d24d36ff5aa",
-      "published_sha256": "1dda1a105d877cbfdcd2e996f78f6dd795cbfd9c96943df6ddd21ce1e81143d9",
+      "published_sha256": "893315bcaa013c5956e2803e91aedd516afeff4ed780a5c4391c0a7e661802dd",
       "changes": [
         "Remove the duplicated numbering heading and connection instruction around the real-model view.",
         "2026-10-24 static debugging: mDNS fallback, preserve explicit disabled OFF on receiver reset, personal page mark; see docs/STATIC_DEBUG_20261024.md",
         "2026-10-24 measured ordering/queue/latest-display repair; see docs/LATENCY_FIX_20261024.md",
         "2026-10-24 status semantics separated from frame freshness; see docs/STATUS_STABILITY_20261024.md",
-        "2026-10-24 delegate duplicate model reception overlay to workbench status; see docs/STATUS_STABILITY_20261024.md"
+        "2026-10-24 delegate duplicate model reception overlay to workbench status; see docs/STATUS_STABILITY_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "pc/model-assets/model-data.json": {
@@ -802,12 +811,13 @@
     "pc/simulation/worker.py": {
       "source": "pc/simulation/worker.py",
       "source_sha256": "82e507146f05d32e8e65b7c0e030ad9b62f065fb20da46b8e4fe9cb9a04f39f2",
-      "published_sha256": "b6b7170a5297c409eb225a9421a94d77228c43a7bcde53030ce8f9a9d9f5cd45",
+      "published_sha256": "5ff67a0d5f3e89fabe6578691b090ec2503cf8b89d0b9af54ef3f69a43104ddf",
       "changes": [
         "package-local BAM; preserve current body-frame implementation",
         "2026-10-22 portable relative paths / current interpreter / model labels / migration startup adaptation; no physical acceptance claim",
         "Use the same explicit official HOME contract as the hardware catalog.",
-        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md"
+        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "tests/fixtures/worker-pre-dispatch.py": {
@@ -829,20 +839,22 @@
     "tests/test_recovery_dispatch.py": {
       "source": "simulation/test_recovery_dispatch.py",
       "source_sha256": "ba55fd6a5fb0b6059505145382f5a3d1710d0007bd2454a3e136bd9c18958a48",
-      "published_sha256": "f41f9aa79fb1230fc91924ae857b5b46c6555498d1a65310efd8312b108b48ae",
+      "published_sha256": "2b6154669cc09dbe5cc27e6d75fed4523506277909b30b82e9234dcce0e72a45",
       "changes": [
         "relative portable imports and fixture paths only; no numeric changes",
         "portable migration update; package-relative inputs and actual current contract",
-        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md"
+        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "tests/test_receiver_sampling.py": {
       "source": "qa/standing-system-audit-20261020/simulation/test_receiver_candidate.py",
       "source_sha256": "b4a782f2e16c52d7a5b1ed181caeee0ef470a459202ffcd4666a81b00654fb6d",
-      "published_sha256": "4851ef256d77b41a7989df5b02736c7818c20122f5269fdc0704fb161cc676ff",
+      "published_sha256": "36faaae83e5ace4c893b2afd79fe5ee1c1cc50dc5b24fe49572c7e99ecfa6425",
       "changes": [
         "relative portable imports and fixture paths only; no numeric changes",
-        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md"
+        "2026-10-24 current Walk keyboard simulation, neutral release/pause and compact controls; see docs/KEYBOARD_SIMULATION_20261024.md",
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
       ]
     },
     "reports/standing-system-audit-20261020/scope-summary.json": {
@@ -1720,19 +1732,19 @@
       "role": "current stationary motion recording/replay, source-clock display, diagnostics or regression; physical standing and wireless root cause OPEN"
     },
     "MODEL_ACCEPTANCE.json": {
-      "sha256": "be6dc9323dfff036f7952649c3205d31c4dd9cb1317b54d11169ae6354320619",
-      "role": "offline standing/disconnect/IMU repair candidate; hardware standing and wireless root cause OPEN"
+      "sha256": "ba96312b076d9f532a4929d4dfa9bff1a3a589a725448016b5060f692c6142a8",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
     },
     "README.md": {
-      "sha256": "41294acd2c9857f7bd9d36ae2a7f749449cec3a4a17aedf01f48aae4a28ed9ce",
-      "role": "local keyboard simulation UI, regression or evidence; not physical acceptance"
+      "sha256": "05cc8d3e4d625bab33533e87ef06cf2fad7c3abe7a007ebf684961b34548eda9",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
     },
     "RELEASE_PROFILE.json": {
       "sha256": "2fc534417e7d3a6f621eaabe9bcc91f31821f01dcd1e0f8d6142a037d8344972",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "RELEASE_RUNTIME.json": {
-      "sha256": "cfce4a95fbdb1f9275fd62b5f77d12cf7caf5d35b9a6516da0c230ea9e15d44e",
+      "sha256": "d1db9c73b5d45b0d59c5750e9ee5ff005e182a419ffb12541fe34ac13a44e1b3",
       "role": "2026-10-24 stationary debug update or documentation; motion and wireless stability remain unverified"
     },
     "SNAPSHOT_VERIFICATION.json": {
@@ -2816,16 +2828,16 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "tests/test_release.py": {
-      "sha256": "0234d5c2ead2ffefb69d98c440cac7ba6f92f50eda69cf1859434f0573f0ba4e",
-      "role": "stationary latency repair, measurement or regression; motion not tested"
+      "sha256": "7efb2f8271044561ea13f63d99d4595f13ea15ec09815fdba580a40f5e697556",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
     },
     "tests/test_wireless_stall_recovery.py": {
       "sha256": "cd47e0712bd2e4df691140248c8335e9e5e49ab96731daac5c91d777de0bee0d",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "tests/test_workbench.mjs": {
-      "sha256": "22fa5762c0125f784b39e5174f41dac4aed7de29300f21555fa4d53153bbee17",
-      "role": "status stability UI, stationary comparison or regression"
+      "sha256": "67159598ef88c9e7182054d1b82bbf849ac0f8dcde4c20f9cd763a6fe31b1671",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
     },
     "training/.gitignore": {
       "sha256": "798bb7c6321a1cbc82ffe8f83009612189c14925d3cf328d4536c6167f0a070a",
@@ -3176,12 +3188,12 @@
       "role": "current stationary motion recording/replay, source-clock display, diagnostics or regression; physical standing and wireless root cause OPEN"
     },
     "robot-app/python/motion_recording.py": {
-      "sha256": "2f3c4c479e23929861effead3e1d2e09dd790f725736954d9ff3ce2022e87e7a",
-      "role": "stationary latency repair, measurement or regression; motion not tested"
+      "sha256": "78af2daf1f4fb76dd719e463ecd51d5682463fc0d2848d3700fcfb5cdfaf396d",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
     },
     "tests/test_motion_recording.py": {
-      "sha256": "d7188ba4f86f6ecb46edde31e27876287454f522fd96eb0e8005113ad0964118",
-      "role": "stationary latency repair, measurement or regression; motion not tested"
+      "sha256": "af21a70934325db89636beadfe6f34c90055feb00b5ef124aab9c022c17e6fbe",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
     },
     "tests/test_motion_inhibit.py": {
       "sha256": "1d074764b5bd395676c5f77d84d843ee79321b3c802901876824933261caf77c",
@@ -3208,8 +3220,8 @@
       "role": "offline standing/disconnect/IMU repair candidate; hardware standing and wireless root cause OPEN"
     },
     "tests/test_policy_recording.py": {
-      "sha256": "acee55507245ca5c4d1220db41cc88067c7eae447c05e60d35d1de704b567c09",
-      "role": "offline standing/disconnect/IMU repair candidate; hardware standing and wireless root cause OPEN"
+      "sha256": "bee768987b2fee500f55877ba7642f2769b935445c16771586673e4eebc33d9f",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
     },
     "tests/test_native_disconnect.mjs": {
       "sha256": "700f4b8c5983a6036e11ca87e62ae79f35c1550d8964198b1fd05821c1db0bc6",
@@ -3272,12 +3284,32 @@
       "role": "local keyboard simulation UI, regression or evidence; not physical acceptance"
     },
     "docs/KEYBOARD_SIMULATION_20261024.md": {
-      "sha256": "20511cb9d59f54eb47216023a9203bbf55f84902d4489cca30021b873411fc81",
-      "role": "local keyboard simulation UI, regression or evidence; not physical acceptance"
+      "sha256": "de5941656ec0e6eb1880e5861d70a672141c1b5634079a70cc4a09193d39acdc",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
     },
     "firmware-support/validation/keyboard-simulation-20261024.json": {
       "sha256": "dbb04e7a5afcf02b41097f36a30db399dcdbbcc35f9e6bec35963dfe5420abfc",
       "role": "local keyboard simulation UI, regression or evidence; not physical acceptance"
+    },
+    "tests/test_simulation_mouth.py": {
+      "sha256": "15c1ca553e30971447c1693b382c8b04c670478a40c6e09549793274a875a06c",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
+    },
+    "tests/test_control_schedule.py": {
+      "sha256": "e156e6aed1364e9f54ffa35ec780187e85383019c7f9b5ba534868a79c7bb996",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
+    },
+    "tests/test_control_mailbox.py": {
+      "sha256": "f78c77c412fee3e54bbf7f828ee71d601093203aedb6de0ac98caf979b234a00",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
+    },
+    "tests/test_model_library_shortcuts.mjs": {
+      "sha256": "ca7fa0e0d45d8c002c03d874871120a0e2eeb1ac476143567f423819343458b4",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
+    },
+    "docs/CONTROL_CYCLE_20261024.md": {
+      "sha256": "ef4aa8d30e079eb48ee43a7e0cdfddcc77367242cf2f6524423e1d94164032f3",
+      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
     }
   },
   "audit_visualization_v2": {

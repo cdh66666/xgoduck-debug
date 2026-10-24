@@ -13,7 +13,7 @@ body.visual-debug.duck-dark .status-item[data-state="unknown"] strong{color:#869
 body.visual-debug.duck-dark .status-item[data-state="reported"] strong{color:#c2d9e3}
 body.visual-debug.duck-dark .status-item strong{font-variant-numeric:tabular-nums;white-space:nowrap}
 #feedback-timing{font-size:12px;color:#8ea9b6;white-space:nowrap;margin-left:16px}
-#feedback-age{display:inline-block;min-width:6ch;text-align:right;font-variant-numeric:tabular-nums}
+#feedback-rate{display:inline-block;min-width:6ch;text-align:right;font-variant-numeric:tabular-nums}
 #feedback-timing[data-state="interrupted"]{color:#f0ad72}
 @media(max-width:800px){#feedback-timing{margin-left:0;font-size:11px}}
 .fixture-calibration{margin:16px 0;padding:14px;border:1px solid #365b60;background:#102b2d;border-radius:9px}.fixture-calibration p{font-size:13px;line-height:1.6}.fixture-calibration progress{display:block;width:100%;margin-top:12px;accent-color:#59d4b4}#calibration-receipts{white-space:pre-line;font-size:12px;line-height:1.8;columns:3;margin-top:14px;color:#a7c4c8}#calibration-confirm-dialog{max-width:520px;background:#15232c;color:#e3edf4;border:1px solid #36505f;border-radius:14px;padding:26px}#calibration-confirm-dialog p{line-height:1.8}#calibration-confirm-dialog::backdrop{background:#0009}#sequence-panel{overflow:auto}#calibration-mode,#sequence-result{line-height:1.7;overflow-wrap:anywhere}#sequence-panel [disabled]{opacity:.45}

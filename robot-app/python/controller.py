@@ -85,9 +85,15 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         self.stop_event = threading.Event()
         self.rx_times = collections.deque(maxlen=1000)
         self.infer_times = collections.deque(maxlen=500)
+        self.infer_start_times = collections.deque(maxlen=500)
         self.infer_ms = collections.deque(maxlen=500)
         self.rx_intervals = collections.deque(maxlen=1000)
         self.loop_missed = 0
+        self.intent_lock = threading.Lock()
+        self.pending_intent = None
+        self.intent_sequence = self.intent_overwritten = 0
+        self.intent_result = None
+        self.active_intent_seq = 0
         self.last_action = [0.0]*15
         self.last_policy_step = None
         self.head_yaw_output = None
@@ -367,6 +373,11 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                         before_gravity=before_gravity, after_gravity=self.filtered['grav'])
             previous = self.mode
             self.generation += 1; self.mode = mode
+            with self.intent_lock:
+                if self.pending_intent is not None:
+                    self.intent_result = dict(sequence=self.pending_intent[0], applied=False, error='mode_changed')
+                self.pending_intent = None
+            self.active_intent_seq = 0
             self.last_policy_step = None
             self.remote_command_timed_out = False
             self.recovery.reset(); self.policy_needs_reset = True
@@ -387,7 +398,9 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                 self.factory_held = 0
                 self.factory_reads = {}
                 self.bridge.notify('duck_servo', encode_servo(SERVO_EXIT, 10))
-            if mode == 'calibrate':
+            if mode == 'off':
+                self._disarm_now()
+            elif mode == 'calibrate':
                 self._disarm_now()
                 self.cal_targets = [2047]*15
                 self.cal_done = [False]*15
@@ -512,6 +525,49 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             self.web_time = time.monotonic()
         return {'ok': True}
 
+    def submit_command(self, twist=None, head=None, mouth=None, manual_pick_depth=None,
+                       forward_specialist=None, fast_forward=False, navigation_specialist=False):
+        """Admit one latest desired state; the HTTP thread never executes it."""
+        from release_profile import constrain_command
+        values = dict(twist=twist, head=head, mouth=mouth, manual_pick_depth=manual_pick_depth,
+            forward_specialist=forward_specialist, fast_forward=fast_forward,
+            navigation_specialist=navigation_specialist)
+        values = constrain_command({k:v for k,v in values.items() if v is not None})
+        received = time.monotonic()
+        generation = self.generation
+        with self.intent_lock:
+            self.intent_sequence += 1
+            if self.pending_intent is not None:
+                self.intent_overwritten += 1
+            self.pending_intent = (self.intent_sequence, generation, received, values)
+            sequence = self.intent_sequence
+        return dict(ok=True, accepted_seq=sequence, applied=False, apply_on='next_local_50hz_tick')
+
+    def _consume_command(self):
+        with self.intent_lock:
+            pending, self.pending_intent = self.pending_intent, None
+        if pending is None:
+            return
+        sequence, generation, received, values = pending
+        with self.lock:
+            now = time.monotonic()
+            result = dict(sequence=sequence, received_uptime_s=received-self.started,
+                consumed_uptime_s=now-self.started, wait_ms=(now-received)*1000, applied=False)
+            if generation != self.generation:
+                result['error'] = 'mode_changed'
+            elif now-received > 1.0:
+                result['error'] = 'intent_expired'
+            else:
+                try:
+                    reply = self.command(**values)
+                    # Freshness belongs to receipt, not delayed consumption.
+                    self.web_time = received
+                    result.update(reply, applied=not reply.get('motion_ignored',False))
+                    self.active_intent_seq = sequence
+                except (TypeError,ValueError) as exc:
+                    result['error'] = str(exc)
+            self.intent_result = result
+
     def cal_targets_set(self, targets):
         values = [int(v) for v in targets]
         if len(values) != 15 or any(not 0 <= v <= 4095 for v in values):
@@ -619,7 +675,10 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         return reply
 
     def step(self):
+        cycle_begin = time.monotonic()
+        self._consume_command()
         with self.lock:
+            lock_acquired = time.monotonic()
             fb, filt, generation, mode = self.feedback, self.filtered, self.generation, self.mode
             receiver_epoch = self._feedback_receive_epoch
             age = time.monotonic()-self.rx_time
@@ -725,6 +784,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             finish = time.monotonic()
             with self.lock:
                 self.inferred += 1; self.infer_times.append(finish)
+                self.infer_start_times.append(begin)
                 self.infer_ms.append((finish-begin)*1000)
                 if picking:
                     self.pick_phi += CONTROL_PERIOD / PICK_PERIOD_S
@@ -768,10 +828,15 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             self.last_action = list(target)
             self.seq = (self.seq+1)&0xffffffff
             payload = encode_command(self.seq, fb.sample_us, command_mode, target)
+            send_begin = time.monotonic()
             self.bridge.notify('duck_command', payload)
             if policy_step is not None:
                 self.last_policy_step = dict(policy_step, command_seq=self.seq, command_mode=command_mode,
+                    control_intent_seq=self.active_intent_seq,
                     submitted_uptime_s=time.monotonic()-self.started,
+                    timing_ms=dict(lock_wait=(lock_acquired-cycle_begin)*1000,
+                        prepare=(begin-lock_acquired)*1000, inference=(finish-begin)*1000,
+                        submit_wait=(send_begin-finish)*1000, send=(time.monotonic()-send_begin)*1000),
                     submitted_targets=list(target), submission='Bridge notify returned; match MCU command_seq to confirm acceptance')
             self.sent += 1
 
@@ -811,9 +876,12 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                     self._stop_pick_locked(); self._stop_roulade_locked(); self._keyboard_cancel_locked()
             deadline += CONTROL_PERIOD
             now = time.monotonic()
-            if deadline <= now:
-                missed = int((now-deadline)/CONTROL_PERIOD)+1
-                self.loop_missed += missed; deadline += missed*CONTROL_PERIOD
+            if now-deadline >= CONTROL_PERIOD:
+                # Keep the fixed 20 ms clock through a small overrun: the next
+                # step reads fresh feedback once, then returns to that clock.
+                # Rebase only after a whole missed period; never run a backlog.
+                self.loop_missed += int((now-deadline)/CONTROL_PERIOD)
+                deadline = now
             self.stop_event.wait(max(0.0,deadline-time.monotonic()))
 
     def stop(self):
@@ -835,6 +903,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         self.current_telemetry.close()
 
     def status(self):
+        snapshot_begin = time.monotonic()
         def hz(times):
             recent = [t for t in times if now-t < 5]
             if len(recent) < 2:
@@ -848,12 +917,15 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             now = time.monotonic()
             fb = self.feedback
             zero_confirmed = self._zero_sync_confirmed()
+            # Copy bounded histories while locked; sorting and rate scans are
+            # display work and must not hold up receive or policy50.
+            rx_times, infer_times = list(self.rx_times), list(self.infer_times)
+            infer_starts = list(self.infer_start_times)
+            infer_ms, rx_intervals = list(self.infer_ms), list(self.rx_intervals)
             result = dict(mode=self.mode, model=self.model_message, bridge_baud=2000000,
-                feedback_hz=hz(self.rx_times), inference_hz=hz(self.infer_times),
                 received=self.received, inferred=self.inferred, sent=self.sent,
                 bad_frames=self.bad_frames, sequence_gaps=self.gaps, out_of_order_frames=self.out_of_order_frames,
                 loop_missed=self.loop_missed,
-                inference_ms=summary(self.infer_ms), receive_interval_ms=summary(self.rx_intervals),
                 feedback_age_ms=(now-self.rx_time)*1000 if fb else None,
                 uptime_s=now-self.started, last_error=self.last_error, command=self.twist,
                 head=self.head, mouth=self.mouth, policy_targets=self.last_action, motors=MOTOR_IDS, boot_pd=self.boot_pd,
@@ -882,6 +954,8 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                 boot_marker='%016x'%fb.boot if fb and fb.boot is not None else None,
                 last_imu_us=fb.imu_us if fb else None)
             result['deployment'] = dict(reference='rl/raspi_deploy', control_hz=50,
+                models_preloaded=True, command_dispatch='latest_intent_at_control_tick',
+                command_receipt='accepted_seq; control_intent.result; last_policy_step.control_intent_seq; mcu_command_seq',
                 home_deg=HOME_DEG.tolist(), default_deg=DEFAULT_DEG,
                 action_scale=self.policy.action_scale, action_alpha=self.policy.action_alpha,
                 action_alpha_head=self.policy.action_alpha_head,
@@ -921,5 +995,18 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                     missing_joint_ids=[i for j,i in enumerate(MOTOR_IDS) if not fb.mask&(1<<j)])
             result.update(self.display_telemetry.snapshot(fb,self.rx_time,now))
             result['factory_calibration']=self.factory_status()
+            with self.intent_lock:
+                result['control_intent'] = dict(accepted_seq=self.intent_sequence,
+                    pending_seq=self.pending_intent[0] if self.pending_intent else None,
+                    superseded=self.intent_overwritten, result=dict(self.intent_result) if self.intent_result else None)
+        unlocked = time.monotonic()
+        starts = [t for t in infer_starts if now-t < 5]
+        intervals = [(b-a)*1000 for a,b in zip(starts, starts[1:])]
+        result.update(feedback_hz=hz(rx_times), inference_hz=hz(infer_times),
+            inference_ms=summary(infer_ms), receive_interval_ms=summary(rx_intervals),
+            inference_interval_ms=dict(summary(intervals), count=len(intervals),
+                over_30ms=sum(v>30 for v in intervals)))
         result['servo_current']=self.current_telemetry.snapshot(now)
+        result['status_compute_ms'] = dict(lock_wait=(now-snapshot_begin)*1000,
+            locked=(unlocked-now)*1000, outside_lock=(time.monotonic()-unlocked)*1000)
         return result

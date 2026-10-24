@@ -7,7 +7,7 @@ import { OBJLoader } from '/model-replay-assets/vendor/examples/jsm/loaders/OBJL
 const $=id=>document.getElementById(id),host=$('viewport');
 const modelId=new URLSearchParams(location.search).get('model');
 const externalControls=new URLSearchParams(location.search).get('controls')==='external';
-let renderer,scene,camera,controls,session,token,events,state,resizeObserver,initDone;
+let renderer,scene,camera,controls,session,token,events,state,resizeObserver,initDone,jawPivot,jawAxis;
 let visible=true,disposed=false,drag=null,lastGrabAt=0,grabPending=false,grabTimer=null,errorMessage='',requestChain=Promise.resolve();
 const virtualMotion=modelId==='official-walk',heldInputs=new Map(),keyboard=window.DuckKeyboard.create();
 let lastTwist='',desiredTwist=null,motionSending=null,functionBusy=false,followPosition=null;
@@ -24,6 +24,10 @@ function modelColor(record){
 }
 function poseMatrix(position,rotation){
   return new THREE.Matrix4().compose(new THREE.Vector3(...position).multiplyScalar(1000),new THREE.Quaternion(rotation[1],rotation[2],rotation[3],rotation[0]),new THREE.Vector3(1,1,1));
+}
+function jawTransform(degrees){
+  return new THREE.Matrix4().makeTranslation(...jawPivot).multiply(new THREE.Matrix4().makeRotationAxis(jawAxis,THREE.MathUtils.degToRad(degrees)))
+    .multiply(new THREE.Matrix4().makeTranslation(...jawPivot.map(v=>-v)));
 }
 function forceFromDrag(start,end){
   const delta=end.clone().sub(start),length=delta.length();
@@ -47,7 +51,7 @@ function command(op,extra={}){
 function selectedSimulationControl(message,expectedModel,current){
   if(message?.version!==1||message.model_id!==expectedModel||
      !/^[a-f0-9]{64}$/i.test(message.expected_sha||'')||message.expected_sha!==current?.modelSha||
-     !['run','pause'].includes(message.command))throw Error('所选仿真模型或 SHA 已变化，请重新选择模型');
+     !['run','pause','reset','stop'].includes(message.command))throw Error('所选仿真模型或 SHA 已变化，请重新选择模型');
   return message.command;
 }
 async function runLocalModel(){
@@ -127,12 +131,15 @@ function applyState(snapshot){
   state=snapshot;const poses=new Map(snapshot.body_poses.map(p=>[p.name,p]));
   for(const entry of objects){
     const pose=poses.get(entry.body);if(!pose)throw new Error(`仿真缺少部件：${entry.body}`);
-    entry.object.matrix.copy(poseMatrix(pose.position,pose.quaternion)).multiply(entry.geometryMatrix);entry.object.matrixWorldNeedsUpdate=true;
+    entry.object.matrix.copy(poseMatrix(pose.position,pose.quaternion)).multiply(entry.geometryMatrix);
+    if(entry.jaw)entry.object.matrix.multiply(jawTransform(snapshot.mouthCommandDeg||0));
+    entry.object.matrixWorldNeedsUpdate=true;
   }
   const magnitude=Math.hypot(...(snapshot.force?.worldN||[0,0,0]));
   const activeLabel={walk:'键盘行走',getup:'跌倒起身',pick:'空载 Pick',roulade:'翻滚'}[snapshot.activeModel]||'策略未启动';
   $('status').textContent=`仅仿真 · ${snapshot.paused?'已暂停':activeLabel}`;
-  $('status').title=`倾角 ${Number(snapshot.tiltDeg||0).toFixed(1)}° · 施力 ${magnitude.toFixed(1)} N · ${snapshot.recovery?.phase||'—'}`;
+  $('status').title=`倾角 ${Number(snapshot.tiltDeg||0).toFixed(1)}° · 施力 ${magnitude.toFixed(1)} N · ${snapshot.recovery?.phase||'—'} · 嘴部指令 ${snapshot.mouthCommandDeg||0}°`;
+  document.body.dataset.mouthCommandDeg=String(snapshot.mouthCommandDeg||0);
   $('play-label').textContent=snapshot.policyEnabled&&!snapshot.paused?'暂停':'运行';
   document.body.dataset.paused=String(snapshot.paused);document.body.dataset.policyEnabled=String(snapshot.policyEnabled);
   document.body.dataset.simTime=String(snapshot.simTime);document.body.dataset.policySteps=String(snapshot.policySteps||0);
@@ -211,7 +218,11 @@ window.addEventListener('message',async event=>{
     try{
       await initDone;if(disposed||!session)throw Error('仿真会话已关闭，请重新选择模型');
       const operation=selectedSimulationControl(event.data,modelId,state);
-      if(operation==='run')await runLocalModel();else await pauseLocalModel();
+      if(operation!=='pause'&&(!visible||document.hidden))throw Error('模型页已隐藏');
+      if(operation==='run')await runLocalModel();
+      else if(operation==='pause')await pauseLocalModel();
+      else if(operation==='reset')await resetLocalModel();
+      else{clearHeld();if(virtualMotion)await sendTwist([0,0,0]);}
       parent.postMessage({type:'duck-simulation-control-result',model_id:modelId,ok:true},location.origin);
     }catch(error){parent.postMessage({type:'duck-simulation-control-result',model_id:modelId,ok:false,error:error.message},location.origin);failure(error);}
   }
@@ -225,9 +236,14 @@ window.addEventListener('pagehide',()=>{events?.close();closeSession().catch(()=
 async function init(){
   $('hint').textContent='本地仿真 · 左键施力 / 右键抓起 / 中键旋转 / 滚轮缩放';
   if(!/^[a-zA-Z0-9_-]{1,80}$/.test(modelId||''))throw new Error('未选择模型');
-  const [geometry,local]=await Promise.all([json(`/api/models/${encodeURIComponent(modelId)}/geometry`),json('/api/local-session')]);
+  const [geometry,local,mouthModel]=await Promise.all([json(`/api/models/${encodeURIComponent(modelId)}/geometry`),json('/api/local-session'),json('/model-assets/model-data-mouth.json')]);
   token=local.token;if(!token)throw new Error('本地仿真会话不可用');
   if(!Array.isArray(geometry.records)||!geometry.records.length)throw new Error('模型几何不可用');
+  const mouth=mouthModel.mouth_visualization,head=geometry.records.find(r=>r.id===mouth.parent);
+  if(!head)throw new Error('模型缺少嘴部所属头部');
+  jawPivot=mouth.pivot_head_local_m.map(v=>v*1000);jawAxis=new THREE.Vector3(...mouth.axis_head_local).normalize();
+  head.file='/model-assets/'+mouth.head_mesh;
+  geometry.records.push({...head,id:'mouth_jaw',file:'/model-assets/'+mouth.jaw_mesh});
   scene=new THREE.Scene();scene.background=new THREE.Color('#0b1722');scene.add(arrow);scene.add(new THREE.HemisphereLight(0xc9f2ff,0x16212c,2.6));
   for(const [color,intensity,position] of [[0xdff8ff,3.1,[350,-450,450]],[0x46c8e0,2.0,[-300,250,250]],[0xeab177,.65,[250,400,150]]]){const light=new THREE.DirectionalLight(color,intensity);light.position.set(...position);scene.add(light);}
   camera=new THREE.PerspectiveCamera(38,1,.1,10000);camera.up.set(0,0,1);
@@ -239,7 +255,7 @@ async function init(){
     if(record.file.endsWith('.obj')){content=await obj.loadAsync(record.file);content.traverse(child=>{if(child.isMesh){child.geometry.scale(...record.mesh_scale.map(v=>v*1000));child.material=material;pickables.push(child);}});}
     else{const mesh=await stl.loadAsync(record.file);mesh.scale(...record.mesh_scale.map(v=>v*1000));mesh.computeVertexNormals();content=new THREE.Mesh(mesh,material);pickables.push(content);}
     const holder=new THREE.Group();holder.matrixAutoUpdate=false;holder.add(content);scene.add(holder);
-    objects.push({body:record.body,object:holder,geometryMatrix:poseMatrix(record.geom_position_m,record.geom_quaternion_wxyz)});
+    objects.push({body:record.body,object:holder,geometryMatrix:poseMatrix(record.geom_position_m,record.geom_quaternion_wxyz),jaw:record.id==='mouth_jaw'});
   }));
   const grid=new THREE.GridHelper(2000,50,0x315269,0x1b3345);grid.rotation.x=Math.PI/2;scene.add(grid);
   const ground=new THREE.Mesh(new THREE.PlaneGeometry(2000,2000),new THREE.MeshStandardMaterial({color:0x0c1c29,roughness:1,transparent:true,opacity:.65}));ground.position.z=-.5;scene.add(ground);

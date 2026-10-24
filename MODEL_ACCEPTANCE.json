@@ -6,11 +6,11 @@
   "hardware_acceptance": "NOT_PASSED",
   "portable_adapter_hardware_verified": false,
   "current_findings": {
-    "standing": "OPEN: user reports backward falls after start; historical finite 17-19s walk windows remain evidence only",
+    "standing": "NOT_PASSED: authorized 2026-10-24 floor test still fell after briefly upright; remained in getup and never handed off to walk; see docs/CONTROL_CYCLE_20261024.md",
     "interactive_push_recovery": "NOT_PASSED",
     "walking_and_release_stop": "BOUNDED_COMMAND_CHAIN_OBSERVED: .2 forward command, neutral hold and normal OFF; six-point gait speed/displacement not qualified",
     "battery_roll_power_loss": "unresolved; no root cause fix claimed",
-    "wireless": "OPEN: source-clock buffering repairs presentation; PC delivery-age label fix verified offline, backend reload pending; lower-layer delivery bursts remain"
+    "wireless": "IMPROVED_NOT_WORST_CASE_QUALIFIED: zero display buffer, ordering and contention fixes deployed; measured feedback near 100 Hz and policy near 50 Hz; OS/network long tails remain"
   },
   "default_enabled": [
     "basic_keyboard_six_points",
@@ -44,7 +44,7 @@
   },
   "snapshot_date": "2026-10-22",
   "wireless_acceptance": "NOT_PASSED",
-  "latest_motion_attempt": "Completed bounded real-hardware records; see firmware-support/validation/control-comparison-20261023.json",
+  "latest_motion_attempt": "2026-10-24 authorized floor test: fell_after_upright at approximately 2.15 s, then OFF / disabled / motion inhibited; see docs/CONTROL_CYCLE_20261024.md",
   "new_computer_tested": true,
   "current_features": {
     "basic_actor_sha256": "57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db",
@@ -55,8 +55,8 @@
     "automatic_motion_recordings": true,
     "history_replay_read_only": true,
     "display_source_clock": "robot uptime",
-    "display_buffer_ms": 350,
-    "pc_delivery_freshness": "OFFLINE_VERIFIED_BACKEND_ACTIVATION_PENDING",
+    "display_buffer_ms": 0,
+    "pc_delivery_freshness": "DEPLOYED; rounded frequency badge every 2 s, precise feedback age and control freshness preserved",
     "remote_intent_timeout_s": 1.0,
     "policy_disconnect_behavior": "continue_local_zero_speed_policy",
     "reconnect_automatically_resumes_walking": false,
@@ -69,7 +69,16 @@
   "encrypted_connection_configuration_included": false,
   "raw_robot_traces_included": false,
   "control_comparison_date": "2026-10-23",
-  "current_operating_constraint": "Battery depleted; no device access or motion; existing tray inhibit unchanged. Offline software candidate only.",
+  "current_operating_constraint": "User placed robot on open floor and authorized tests. Following a failed standing trial, robot returned to OFF / disabled / motion inhibited; floor placement is not the earlier tray restriction.",
+  "control_cycle_update_20261024": {
+    "report": "docs/CONTROL_CYCLE_20261024.md",
+    "board_modules_deployed": ["controller.py", "main.py", "motion_recording.py"],
+    "mailbox_shadow_inference_hz": 50.00473834415239,
+    "intent_consume_wait_p99_ms": 19.71332999983133,
+    "intent_consume_wait_max_ms": 20.484949999627133,
+    "every_cycle_within_20ms_guaranteed": false,
+    "physical_standing_passed": false
+  },
   "motion_history_receipt": "firmware-support/validation/motion-history-20261023.json",
   "standing_offline_candidate_receipt": "firmware-support/validation/standing-offline-20261023.json"
 }

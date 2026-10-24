@@ -80,7 +80,7 @@ class RecoveryDispatchTests(unittest.TestCase):
         policies[0].keywords=[]
         for tree in (old,new):
             cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='Simulation')
-            cls.body=[n for n in cls.body if not isinstance(n,ast.FunctionDef) or n.name not in ('infer','_receive_policy_feedback')]
+            cls.body=[n for n in cls.body if not isinstance(n,ast.FunctionDef) or n.name not in ('infer','_receive_policy_feedback','mouth_command_deg')]
             # The later approved receiver-rate fix adds only a filter clock,
             # actual sample counter and one 100 Hz hook before the original
             # physics body. Remove those precise additions for this comparison;
@@ -97,7 +97,7 @@ class RecoveryDispatchTests(unittest.TestCase):
                         loop.body.pop(0)
                 if method.name=='state':
                     output=next(n for n in method.body if isinstance(n,ast.Return) and isinstance(n.value,ast.Call))
-                    output.value.keywords=[k for k in output.value.keywords if k.arg not in ('feedbackFilterSteps','receiverDt')]
+                    output.value.keywords=[k for k in output.value.keywords if k.arg not in ('feedbackFilterSteps','receiverDt','mouthCommandDeg')]
                 if tree is new and method.name=='command':
                     paused=next(n for n in ast.walk(method) if isinstance(n,ast.If) and ast.unparse(n.test)=='self.paused')
                     self.assertEqual(ast.unparse(paused.body[0]),'self.twist.fill(0)')

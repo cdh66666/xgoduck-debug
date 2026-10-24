@@ -108,9 +108,13 @@ class MotionRecordingTests(unittest.TestCase):
             recorder.status = lambda: value
             with patch('motion_recording.time.monotonic', return_value=10):
                 recorder.capture()
+            value['angles'][0]=99
+            value['recovery']['phase']='getup'
             with patch('motion_recording.time.monotonic', return_value=10.2):
                 cached = recorder.latest()
             self.assertEqual(cached['uptime_s'], 1)
+            self.assertEqual(cached['angles'][0],0)
+            self.assertEqual(cached['recovery']['phase'],'walk')
             self.assertAlmostEqual(cached['feedback_age_ms'], 202)
             self.assertFalse(cached['full_robot_ready'])
             self.assertFalse(cached['control_ready'])

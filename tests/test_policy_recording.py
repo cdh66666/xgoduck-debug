@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'robot-app/python'))
 import controller
 from motion_recording import compact
-from wire import ARM, COMMAND, POLICY
+from wire import ARM, COMMAND, POLICY, DISARM
 from test_remote_disconnect import frame
 
 
@@ -93,7 +93,8 @@ class PolicyRecordingTests(unittest.TestCase):
             import threading
             c.policy_lock = threading.RLock()
             c.step()
-        self.assertEqual(self.bridge.notify.call_count, before)
+        self.assertEqual(self.bridge.notify.call_count, before+1)
+        self.assertEqual(COMMAND.unpack(self.bridge.notify.call_args.args[1])[4], DISARM)
         self.assertIsNone(c.last_policy_step)
 
 

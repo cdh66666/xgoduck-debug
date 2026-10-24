@@ -10,6 +10,7 @@ import gzip
 import hashlib
 import json
 import math
+import marshal
 from pathlib import Path
 import queue
 import re
@@ -26,10 +27,10 @@ FIELDS = ('uptime_s', 'mode', 'enabled', 'command', 'head', 'mouth', 'active_mod
           'full_robot_ready', 'feedback_age_ms', 'feedback_timing', 'mcu_seq',
           'mcu_command_seq', 'mcu_command_age_us', 'mcu_watchdog',
           'mcu_invalid_commands', 'mcu_overruns', 'mcu_report_drops',
-          'sent', 'inferred', 'feedback_hz', 'inference_hz', 'last_error',
+          'sent', 'inferred', 'feedback_hz', 'inference_hz', 'inference_interval_ms', 'last_error',
           'gyro_bias_control', 'zero_sync', 'head_yaw_output', 'display_heading',
           'servo_power', 'servo_current', 'factory_calibration', 'raw_pos', 'zero_pos',
-          'deployment', 'mcu_period_us', 'mcu_work_us', 'control_event')
+          'deployment', 'mcu_period_us', 'mcu_work_us', 'control_event', 'control_intent')
 
 
 def actuating(state):
@@ -156,7 +157,10 @@ class MotionRecorder:
             state = self.status()
             if event is not None:
                 state['control_event'] = dict(event, id=uuid.uuid4().hex, accepted=True)
-            state = copy.deepcopy(state)
+            # This snapshot is a tree of Python builtins. Clone it in C rather
+            # than spending policy-thread GIL time recursively copying in Python.
+            # The temporary bytes stay in-process; on-disk recordings remain JSON.
+            state = marshal.loads(marshal.dumps(state))
             with self.latest_lock:
                 self._latest = state
                 self._latest_at = observed_at

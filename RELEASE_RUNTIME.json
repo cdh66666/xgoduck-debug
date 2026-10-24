@@ -20,7 +20,7 @@
     },
     "python/main.py": {
       "path": "robot-app/python/main.py",
-      "sha256": "96f8d4c7dee6d1b0e0078baa0d4b147104b66c56a47cd5d72fa0641aa3c1a710"
+      "sha256": "107b999509a856833c420c6df5b601c2e437d60698d418894997213e6cb8abdd"
     },
     "python/requirements.txt": {
       "path": "robot-app/python/requirements.txt",
@@ -28,7 +28,7 @@
     },
     "python/controller.py": {
       "path": "robot-app/python/controller.py",
-      "sha256": "a8d02835ed3b2c9a1f40f9b483f16b25cb628b3108dac0027aa9da529883a844"
+      "sha256": "745933986afc721fec5d94cd59ab31713aa5bc0ccaab010b6ac4d7fcac10363f"
     },
     "python/rl_core.py": {
       "path": "robot-app/python/rl_core.py",
@@ -144,7 +144,7 @@
     },
     "python/motion_recording.py": {
       "path": "robot-app/python/motion_recording.py",
-      "sha256": "2f3c4c479e23929861effead3e1d2e09dd790f725736954d9ff3ce2022e87e7a"
+      "sha256": "78af2daf1f4fb76dd719e463ecd51d5682463fc0d2848d3700fcfb5cdfaf396d"
     }
   },
   "external_models": {

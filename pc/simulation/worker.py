@@ -352,6 +352,15 @@ class Simulation:
         else:
             raise ValueError('unknown_simulation_operation')
 
+    def mouth_command_deg(self):
+        # ID34 is not one of the actor's 14 outputs. The real controller opens
+        # it for the first 40% of the four-second Pick cycle, then closes it.
+        # This is a visual command channel; the frozen physics has no jaw DOF.
+        from rl_core import MOUTH_MAX_DEG
+        picking = (self.policy_enabled and self.task == 'pick' and
+                   self.special_active and self.active_model == 'pick')
+        return MOUTH_MAX_DEG if picking and self.data.time - self.policy_started < 4. * .4 else 0.
+
     def state(self):
         self.seq += 1
         if self.model is None:
@@ -365,6 +374,7 @@ class Simulation:
                     modelSha=self.model_sha, xmlSha=self.xml_sha, physicsDt=.005, policyDt=.02,
                     activeModel=self.active_model,activeModelSha=self.binding['models'][self.active_model]['sha256'],
                     recovery=self.recovery.status(),command=self.twist.tolist(),inferenceCounts=self.inference_counts,
+                    mouthCommandDeg=self.mouth_command_deg(),
                     actionAlpha=.45,rawPreviousAction=self.previous_action.tolist(),actuator='HLS1910 BAM m6 CPU, firmware P6, 7.4V, fixed20ms lag',
                     policySourceSha=self.binding['sources']['policy.py']['sha256'],bamSha=self.binding['bam_sha256'],
                     extraGroundContacts=self.extra_contacts,

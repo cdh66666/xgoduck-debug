@@ -55,7 +55,7 @@ class ReceiverTests(unittest.TestCase):
         before=ast.parse((HERE/'fixtures/worker-pre-receiver.py').read_text('utf-8'));after=ast.parse(TEST_SOURCE.read_text('utf-8'))
         for tree in (before,after):
             cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='Simulation')
-            cls.body=[n for n in cls.body if not isinstance(n,ast.FunctionDef) or n.name not in ('reset','step','infer','_receive_policy_feedback')]
+            cls.body=[n for n in cls.body if not isinstance(n,ast.FunctionDef) or n.name not in ('reset','step','infer','_receive_policy_feedback','mouth_command_deg')]
             for method in cls.body:
                 if not isinstance(method,ast.FunctionDef):continue
                 if method.name=='__init__':
@@ -71,7 +71,7 @@ class ReceiverTests(unittest.TestCase):
                         call.keywords=[]
                 if method.name=='state':
                     output=next(n for n in method.body if isinstance(n,ast.Return) and isinstance(n.value,ast.Call))
-                    output.value.keywords=[k for k in output.value.keywords if k.arg not in ('feedbackFilterSteps','receiverDt')]
+                    output.value.keywords=[k for k in output.value.keywords if k.arg not in ('feedbackFilterSteps','receiverDt','mouthCommandDeg')]
                 if tree is after and method.name=='command':
                     paused=next(n for n in ast.walk(method) if isinstance(n,ast.If) and ast.unparse(n.test)=='self.paused')
                     self.assertEqual(ast.unparse(paused.body[0]),'self.twist.fill(0)')

@@ -191,7 +191,7 @@
       Math.max(s.feedback_age_ms,native+delivery+sinceObservation):s.feedback_age_ms+requestMs;
   }
   function homeFeedbackFresh(){return last?.connected&&last?.runtime?.full_robot_ready===true&&feedbackAge()<150;}
-  let reported=null,reportedAt=0;
+  let reported=null,reportedAt=0,feedbackRateAt=-Infinity;
   function reportedAge(){return reported?reported.feedback_age_ms+Math.max(0,performance.now()-reportedAt):Infinity;}
   function paintReportedState(){
     // Transport liveness, last reported hardware state, and control freshness
@@ -216,11 +216,19 @@
     const torqueKnown=typeof reported?.enabled==='boolean';
     statusItem('simple-motion','扭矩回报',torqueKnown?motionLabel(reported):'待读取',maintenanceActive(reported)?'逐轴状态见校准':'最近一次主控回报；时效见反馈年龄',!torqueKnown?'unknown':reported.enabled?'active':'reported');
     const ageText=Number.isFinite(age)?age<1000?Math.floor(age/10)*10+' ms':(age/1000).toFixed(1)+' s':'—';
-    text('feedback-age',ageText);
-    text('feedback-caption',statusErrorMessage?'服务中断 · 最近回报':interrupted?'反馈中断 · 最近回报':'最近反馈');
+    // This badge is a human-readable board frequency, not a frame-age ticker.
+    // Keep exact freshness in diagnostics and control admission below.
+    if(statusErrorMessage||interrupted){text('feedback-rate','— Hz');feedbackRateAt=-Infinity;}
+    else if(performance.now()-feedbackRateAt>=2000){
+      const hz=reported?.feedback_hz;
+      text('feedback-rate',Number.isFinite(hz)&&hz>=0?Math.round(hz)+' Hz':'— Hz');
+      feedbackRateAt=performance.now();
+    }
+    text('diag-feedback-age',ageText);
+    text('feedback-caption',statusErrorMessage?'服务中断':interrupted?'反馈中断':'反馈频率');
     $('feedback-timing').dataset.state=statusErrorMessage||interrupted?'interrupted':'receiving';
     $('feedback-timing').dataset.freshness=last?.connected&&age<150?'fresh':'stale';
-    $('feedback-timing').title='顶部设备数值是最近主控回报。反馈满150毫秒即暂停新的控制输入；短时晚到不代表设备掉线。';
+    $('feedback-timing').title='板端实际接收频率，取整显示，每两秒更新一次。精确反馈年龄见诊断；控制仍按150毫秒时效判断。';
   }
   function paintFreshness(){
     const s=last?.runtime,fresh=last?.connected&&feedbackAge()<150;
@@ -394,6 +402,13 @@
     catch(e){if(generation!==actionGeneration)return;const policy=controlledMode==='policy';loseOwnership();note((policy?'控制通信中断，主控将清零走动并继续本地站立；当前状态待确认：':'控制通信中断，回正保持将超时卸力；当前状态待确认：')+e.message);}finally{commandBusy=false;}
   }
   window.addEventListener('keydown',e=>{
+    if(page==='models'){
+      const key=window.DuckKeyboard.keyName(e);
+      if(!document.hidden&&!e.isComposing&&!e.ctrlKey&&!e.altKey&&!e.metaKey&&!/^(INPUT|SELECT|TEXTAREA|A)$/.test(e.target.tagName)&&!e.target.isContentEditable&&!dialog.open&&!currentDialog.open&&!trayDialog.open&&!calibrationDialog.open&&['space','r','escape'].includes(key)){
+        e.preventDefault();if(!e.repeat)$('models-frame')?.contentWindow?.postMessage({type:'bench-models-shortcut',version:1,key},location.origin);
+      }
+      return;
+    }
     if(window.DuckKeyboard.keyName(e)==='space'&&$('bench-test-panel').open&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)&&!e.target.isContentEditable&&!dialog.open&&!calibrationDialog.open){
       e.preventDefault();
       if(!owned||sessionPending||controlledMode!=='policy'){note('尚未启动，空格不会动作。');return;}

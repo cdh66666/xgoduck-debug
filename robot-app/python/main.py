@@ -18,7 +18,7 @@ from controller import Controller
 from motion_recording import MotionRecorder
 
 # Bound GIL handoff latency between the 100 Hz receiver, policy and WebUI.
-sys.setswitchinterval(0.001)
+sys.setswitchinterval(0.00025)
 controller = Controller(Bridge)
 motion_recorder = MotionRecorder(controller.status)
 ui = WebUI(port=9527)
@@ -39,9 +39,15 @@ def require_motion_permission():
 
 
 def status():
-    value = controller.status()
+    # Reuse the same 25 Hz observation as the stream. Its age fields are
+    # advanced by latest(); motion admission still checks the controller live.
+    value = motion_recorder.latest()
+    if value is None:
+        value = controller.status()
     value['motion_inhibited'] = motion_inhibit_file.exists()
-    return value
+    # Values already are JSON primitives. Avoid FastAPI walking the entire
+    # 15-axis snapshot again on every poll, competing with policy50 for the GIL.
+    return JSONResponse(value)
 
 @ui.app.middleware('http')
 async def wireless_access(request, call_next):
@@ -67,7 +73,9 @@ def mode(body: dict):
 
 def command(body: dict):
     require_motion_permission()
-    try: return controller.command(**constrain_command(body))
+    try:
+        result = controller.submit_command(**constrain_command(body))
+        return JSONResponse(result, status_code=202)
     except (TypeError, ValueError) as exc: raise HTTPException(400, str(exc))
 
 def filtering(body: dict):

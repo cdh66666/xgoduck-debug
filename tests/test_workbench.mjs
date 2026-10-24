@@ -64,13 +64,20 @@ async function tap(h,key){await h.key('keydown',key);await h.key('keyup',key);}
 
 const idle=harness('official-workbench.js');await settle();
 check(posts(idle).length===0,'page load is read-only');
+const modelKeys=harness('official-workbench.js');await settle();
+modelKeys.tabs.find(tab=>tab.dataset.page==='models').click();
+for(const key of [' ','r','Escape'])await modelKeys.key('keydown',key);
+same(modelKeys.messages.filter(([m])=>m.type==='bench-models-shortcut').map(([m])=>m.key),['space','r','escape'],'initial model-page shortcuts reach the virtual model without a Run click');
+same(posts(modelKeys).length,0,'model-page Space/R/Esc never address physical hardware');
+await modelKeys.key('keydown',' ',true);
+same(modelKeys.messages.filter(([m])=>m.type==='bench-models-shortcut').length,3,'key repeat cannot toggle the simulation repeatedly');
 const staleCache=harness('official-workbench.js',{trained:true});await settle();
 staleCache.state.runtime.feedback_age_ms=258;
 await staleCache.poll();
 check(staleCache.$('wl-home').disabled&&staleCache.$('bench-policy').disabled,'258ms cached feedback cannot start motion');
 same(staleCache.$('simple-imu').querySelector('label').textContent,'IMU回报','hardware card describes the last report, not current freshness');
 same(staleCache.$('feedback-timing').dataset.freshness,'stale','late data remains explicitly stale while hardware reports stay readable');
-same(staleCache.$('feedback-age').textContent,'250 ms','actual age remains visible without hiding delayed data');
+same(staleCache.$('diag-feedback-age').textContent,'250 ms','exact age is retained in diagnostics without a flashing badge');
 const agesWhilePending=harness('official-workbench.js',{trained:true});await settle();
 agesWhilePending.$('bench-policy').onclick();
 agesWhilePending.deferStatus();await agesWhilePending.poll();
@@ -106,6 +113,12 @@ for(const age of [149,151,80,180,99,150,70]){
  same(reportCards(),originalCards,'short delivery jitter and fractional Hz variation do not invent hardware changes');
  same(stableReports.$('wl-home').disabled,age>=150,'every delayed frame still expires motion permission immediately');
 }
+stableReports.advance(2000);await stableReports.poll();
+same(stableReports.$('feedback-rate').textContent,'100 Hz','99.9 Hz is a stable whole-Hz display');
+stableReports.state.runtime.feedback_hz=97.1;await stableReports.poll();
+same(stableReports.$('feedback-rate').textContent,'100 Hz','one sample does not repaint the frequency badge');
+stableReports.advance(2000);await stableReports.poll();
+same(stableReports.$('feedback-rate').textContent,'97 Hz','a sustained frequency change is shown at the next display update');
 stableReports.state.runtime.servo_ids.pop();stableReports.state.runtime.imu_ok=false;await stableReports.poll();
 same(stableReports.$('simple-servos').querySelector('strong').textContent,'14 / 15','actual missing servo is shown immediately');
 same(stableReports.$('simple-imu').querySelector('strong').textContent,'异常','actual IMU fault is shown immediately');

@@ -4,7 +4,7 @@
  const models=[
   {id:'walk',profile:'policy',name:'键盘控制',file:'xgoduck_walk.onnx',tag:'当前实机模型',note:'方向键 / WASD 行走，Shift 快走；与调试台使用同一份 Walk 权重。仿真可独立运行，实机稳定性仍待验收。'},
   {id:'getup',profile:'getup',name:'跌倒起身',file:'xgoduck_getup.onnx',note:'官方起身权重；直立后交还站立，任意跌姿恢复尚未通过。'},
-  {id:'pick',profile:'pick',name:'空载 Pick',file:'xgoduck_pick.onnx',note:'历史空载低头、开合嘴正常；本轮未复测，叼取物体未验证。'},
+  {id:'pick',profile:'pick',name:'空载 Pick',file:'xgoduck_pick.onnx',note:'运行后张嘴、低头，1.6 秒闭嘴，4 秒完成。嘴部按控制时序显示；未模拟夹持受力。'},
   {id:'roulade',profile:'roulade',name:'翻滚模型',file:'xgoduck_roulade.onnx',note:'官方翻滚权重；交互仿真恢复不稳定，实机翻滚未通过。'}
  ];let selected=models[0],visible=true,basisKey='';
  $('model-count').textContent='4';
@@ -22,12 +22,23 @@
  function controlPreview(command){
   if(previewControlPending||previewState?.model_id!=='official-'+selected.id||!/^[a-f0-9]{64}$/i.test(previewState?.model_sha||''))return;
   previewControlPending=true;paintPreviewControls();
-  if(command==='run')$('official-model-preview').focus();
+  $('official-model-preview').focus();
   $('official-model-preview').contentWindow.postMessage({type:'duck-simulation-control',version:1,command,
    model_id:'official-'+selected.id,expected_sha:previewState.model_sha},location.origin);
  }
  $('stop').onclick=()=>controlPreview('pause');
  $('deploy').onclick=()=>controlPreview('run');
+ function shortcut(key){
+  if(!visible||document.hidden||!['space','r','escape'].includes(key))return;
+  const running=previewState?.policy_enabled&&!previewState.paused;
+  controlPreview(key==='space'?(running?'pause':'run'):key==='r'?'reset':'stop');
+ }
+ document.addEventListener('keydown',e=>{
+  if(e.isComposing||e.ctrlKey||e.altKey||e.metaKey||e.target?.isContentEditable||/^(INPUT|SELECT|TEXTAREA|A)$/.test(e.target?.tagName)||document.querySelector('dialog[open]'))return;
+  const key=e.code==='Space'?'space':String(e.key||'').toLowerCase();
+  if(!['space','r','escape'].includes(key))return;
+  e.preventDefault();if(!e.repeat)shortcut(key);
+ });
  let previewRequest=0,closeSerial=0,previewTask=Promise.resolve();const closures=new Map();
  function closePreview(){return new Promise((resolve,reject)=>{const requestId=++closeSerial,timer=setTimeout(()=>{closures.delete(requestId);reject(Error('旧仿真尚未关闭，请重新选择模型'));},20000);closures.set(requestId,()=>{clearTimeout(timer);resolve();});$('official-model-preview').contentWindow.postMessage({type:'duck-simulation-close',requestId},location.origin);});}
  function preview(model){
@@ -57,6 +68,7 @@
  window.addEventListener('message',e=>{
   if(e.origin!==location.origin)return;
   if(e.source===window.parent){
+   if(e.data?.type==='bench-models-shortcut'&&e.data.version===1)shortcut(e.data.key);
    if(e.data?.type==='bench-models-visibility'){visible=e.data.visible===true;sendVisibility();if(visible&&latest)consume(latest);}
    if(e.data?.type==='bench-models-status')consume(e.data);
   }

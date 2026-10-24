@@ -120,13 +120,15 @@ class ReleaseTests(unittest.TestCase):
         functions=[node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name in ('command','pick','roulade')]
         for node in functions:node.decorator_list=[]
         class HTTPError(Exception):pass
-        controller=Mock();namespace={'controller':controller,'HTTPException':HTTPError,'constrain_command':release_profile.constrain_command,'validate_release_action':release_profile.validate_release_action,'require_motion_permission':lambda:None}
+        controller=Mock();namespace={'controller':controller,'HTTPException':HTTPError,'constrain_command':release_profile.constrain_command,'validate_release_action':release_profile.validate_release_action,'require_motion_permission':lambda:None,'JSONResponse':lambda body,status_code:(status_code,body)}
         exec(compile(ast.fix_missing_locations(ast.Module(body=functions,type_ignores=[])),'published-host-endpoints','exec'),namespace)
         for endpoint,body in [('command',{'twist':[.2,0,1]}),('command',{'head':[0,0,.1,0]}),('pick',{}),('roulade',{})]:
             with self.assertRaises(HTTPError):namespace[endpoint](body)
         self.assertEqual(controller.mock_calls,[])
-        namespace['command']({'twist':[0,0,1]});controller.command.assert_called_once()
-        self.assertEqual(controller.command.call_args.kwargs['twist'],[0,0,1])
+        response=namespace['command']({'twist':[0,0,1]});controller.submit_command.assert_called_once()
+        controller.command.assert_not_called()
+        self.assertEqual(response[0],202)
+        self.assertEqual(controller.submit_command.call_args.kwargs['twist'],[0,0,1])
 
     def test_passive_current_recorder_uses_own_pinned_serial(self):
         import servo_current_recorder as recorder
