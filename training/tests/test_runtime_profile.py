@@ -7,6 +7,20 @@ from runtime_profile import HOME_DEG, POLICY_INDEX, CALIBRATED
 from train import config
 
 class RuntimeProfileTests(unittest.TestCase):
+    def test_target_rate_cost_changes_reward_not_physics_or_clock(self):
+        with patch.dict(os.environ, {'XGODUCK_RUNTIME_PROFILE': CALIBRATED,'XGODUCK_TARGET_RATE_COST':'0'}):
+            baseline=NativeEpisode(manifest(),91,curriculum='stand',auto_reset=False)
+        with patch.dict(os.environ, {'XGODUCK_RUNTIME_PROFILE': CALIBRATED,'XGODUCK_TARGET_RATE_COST':'1'}):
+            smooth=NativeEpisode(manifest(),91,curriculum='stand',auto_reset=False)
+        try:
+            action=np.full(14,.05,dtype=np.float32)
+            _,r0,_,_,i0=baseline.step(action);_,r1,_,_,i1=smooth.step(action)
+            np.testing.assert_array_equal(baseline.sim.data.qpos,smooth.sim.data.qpos)
+            self.assertEqual(baseline.sim.data.time,smooth.sim.data.time)
+            self.assertLess(i1['reward_terms']['filtered_target_rate'],0)
+            self.assertAlmostEqual(r1-r0,.02*i1['reward_terms']['filtered_target_rate'])
+        finally:baseline.close();smooth.close()
+
     def test_deployed_home_obs_filter_and_50hz_are_the_same_contract(self):
         with patch.dict(os.environ, {'XGODUCK_RUNTIME_PROFILE': CALIBRATED}):
             frozen = manifest()

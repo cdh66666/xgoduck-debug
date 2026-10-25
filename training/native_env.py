@@ -104,6 +104,7 @@ class NativeEpisode:
         self.command_counts = self.np.zeros(6, dtype=self.np.int64)
         self.reward_sum = 0.
         self.motion_window=MotionWindow()
+        self.target_rate_cost=float(os.environ.get('XGODUCK_TARGET_RATE_COST','0'))
         self._enable_without_infer()
         self._resample()
 
@@ -253,6 +254,7 @@ class NativeEpisode:
         if action.shape != (14,) or not np.isfinite(action).all():
             raise ValueError('invalid_raw_action')
         previous = sim.previous_action.copy()
+        previous_targets = sim.last_targets.copy()
         session = self.sessions[sim.task]
         session.action[:] = action
         before_calls = session.calls
@@ -294,6 +296,8 @@ class NativeEpisode:
         reward_terms = dict(dense=6.*dense, height=3.*height_score,
                             gaussian=(6. if moving else 2.)*gaussian,
                             progress=3.*progress, pose=.35*pose, action_rate=-.05*action_rate)
+        target_step=sim.last_targets-previous_targets
+        reward_terms['filtered_target_rate']=-self.target_rate_cost*float(np.mean((target_step/.1)**2))
         if self.curriculum in ('stability','stop') and not moving:
             target=STABILITY_REWARD
             reward_terms['stop_stability'] = target['zero_speed_amplitude']*math.exp(-float((velocity[:2]**2).sum())/target['linear_sigma_mps']**2-float(velocity[2]**2)/target['yaw_sigma_radps']**2)
@@ -466,6 +470,7 @@ class NativeVecEnv:
                         hardware_commands_sent=False, deployment_allowed=False)
         self.cfg['physical_model']=self.pool.physical_model
         self.cfg['runtime_profile']=self.pool.runtime_profile
+        self.cfg['target_rate_cost']=float(os.environ.get('XGODUCK_TARGET_RATE_COST','0'))
         if self.pool.randomize_physics:
             from physics_variation import ENVELOPE
             self.cfg['physics_randomization']=ENVELOPE.copy()

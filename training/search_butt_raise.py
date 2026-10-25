@@ -27,15 +27,18 @@ def raise_teacher(obs,start,parameters,t):
     target[9]=np.clip(target[9]-correction,-85,85)
     return np.deg2rad(target[INDEX]-HOME).astype(np.float32)
 
-def rollout(plant,parameters,seed=1000,variant=False):
+def rollout(plant,parameters,seed=1000,variant=False,predict=None,record_training=False):
     rng=np.random.default_rng(seed+7000)
     plant.sim.bam.actuator.vin=float(rng.uniform(7.2,8.1)) if variant else 7.4
     plant.sim.model.geom_friction[:,0]=float(rng.uniform(.55,1.)) if variant else .8
     plant.reset(seed);trace=[];targets=[];failed=None
     for tick in range(round((3+parameters[5]+2)*50)):
         t=tick*.02;obs,_=plant.observation(min(1,t) if t<3 else min(1,(t-3)/parameters[5]),1 if t<3 else -1)
-        raw=sit_teacher(obs,plant.start) if t<3 else raise_teacher(obs,plant.start,parameters,t-3)
+        label=sit_teacher(obs,plant.start) if t<3 else raise_teacher(obs,plant.start,parameters,t-3)
+        raw=label if predict is None else predict(obs)
         plant.advance(raw);row=plant.measure();row['stage']='sit' if t<3 else 'raise'
+        if record_training:
+            row['observation']=obs.tolist();row['teacher_action']=label.tolist()
         trace.append(row)
         # Smoothness concerns the actual filtered setpoints during the rise,
         # including its handoff from the supported seated target.
@@ -52,7 +55,11 @@ def rollout(plant,parameters,seed=1000,variant=False):
            butt_force_n=mean(lambda r:r['forces_n']['butt']),
            feet_force_n=mean(lambda r:r['forces_n']['feet']),
            unwanted_contact_n=max(r['forces_n']['head']+r['forces_n']['other'] for r in trace),
-           target_step_deg=float(np.max(np.abs(np.diff(np.array(targets),axis=0)))*180/np.pi))
+           target_step_deg=float(np.max(np.abs(np.diff(np.array(targets),axis=0)))*180/np.pi) if len(targets)>1 else 0.)
+    seat=[r for r in trace if 2<=r['t']<=3]
+    m['seated_butt_contact_fraction']=float(np.mean([r['forces_n']['butt']>.5 for r in seat])) if seat else 0.
+    m['seated_butt_force_n']=float(np.mean([r['forces_n']['butt'] for r in seat])) if seat else 0.
+    m['seated_feet_force_n']=float(np.mean([r['forces_n']['feet'] for r in seat])) if seat else 0.
     failures=[]
     if failed:failures.append(failed)
     if not 120<m['height_mm']<155:failures.append('standing_height')
@@ -62,6 +69,8 @@ def rollout(plant,parameters,seed=1000,variant=False):
     if m['unwanted_contact_n']>.1:failures.append('unwanted_contact')
     if m['head_clearance_mm']<60:failures.append('head_clearance')
     if m['target_step_deg']>6:failures.append('target_step')
+    if m['seated_butt_contact_fraction']<.98 or m['seated_butt_force_n']<1 or m['seated_feet_force_n']<1:
+        failures.append('did_not_sit_supported_before_rising')
     m.update(passed=not failures,failures=failures)
     score=(abs(m['height_mm']-140)/3+abs(m['pitch_deg'])+m['roll_deg']*2+
            m['velocity_mps']*300+m['rotation_radps']*20+m['butt_force_n']*10+
