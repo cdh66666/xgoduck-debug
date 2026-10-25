@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 244066,
-      "sha256": "3a0de334793d1cf9bb74fb62541c2ba998db0e5fdc3902e7bde811297586f01e"
+      "bytes": 248063,
+      "sha256": "11a7aaf8dea6070f4e795dac1b7f63c3db79db551f07c262b584fc669be5b24a"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2406,8 +2406,8 @@
       "sha256": "9ae4e0f7a3877c0a9ab9e5373da8e9fd70b46e7d02b93bb42ade1f93ef68570f"
     },
     "training/full_refine.py": {
-      "bytes": 3255,
-      "sha256": "bed6b9106a3be72c478e1fff4d74030c2b950d8ee58300ef13f14b2ab9fd3e8c"
+      "bytes": 4441,
+      "sha256": "e2991e271d030f3f12f992598184c7530ecbd7aef81e23aca97f0b41041f4c9a"
     },
     "training/full_refine_model.py": {
       "bytes": 342,
@@ -2542,8 +2542,8 @@
       "sha256": "0dee9fcc5362fade0568cff31b39e9a5cb39b9e2c925b3c82b9648a260be0c6f"
     },
     "training/stability_protocol.py": {
-      "bytes": 5373,
-      "sha256": "c1ffb782b592fa4a2be07b74762b0a5bd7ef3c0fc69949596c9ee7c09627ad5e"
+      "bytes": 5526,
+      "sha256": "20a012e2710e14debfd4b04c257984c2456b7d151d47b5cc9efe54fd91c09a60"
     },
     "training/standstop.py": {
       "bytes": 3200,
@@ -2554,8 +2554,8 @@
       "sha256": "160feb496cfb9cb335bdcdef8a92ba20a5bf10b3ac6621b88fa00433aa4e83c3"
     },
     "training/tests/test_contract.py": {
-      "bytes": 7560,
-      "sha256": "a45f57c073902bac493b4d86f8121d2b913f56f8fa4d0f57183017fd82584efc"
+      "bytes": 8592,
+      "sha256": "d02172695108f12cfbc335e118e7426879e4e3d7488155a838026a87bfc1a469"
     },
     "training/tools/check_assets.py": {
       "bytes": 1176,
@@ -2582,8 +2582,8 @@
       "sha256": "e24377af122da31d35d2dc64a1cb16d6568fedffaee9ce108f1a41a04d09394d"
     },
     "training/tools/render_native_video.py": {
-      "bytes": 6269,
-      "sha256": "eb7c543e14daccf7d73eec93160e35fdda5d965369d4250a2e6f58aa7b23ca41"
+      "bytes": 7502,
+      "sha256": "7541fb20ea982916147cc13789b12e138620ca4b16f06eec5e8832431cb92d4b"
     },
     "training/tools/render_stable_baseline.py": {
       "bytes": 4800,
@@ -2742,8 +2742,8 @@
       "sha256": "fd2cd62e70a15934d30e59d1aa5ed2a13edbded6d0a0085fca1495f0b16110a5"
     },
     "training/sit_training.py": {
-      "bytes": 12546,
-      "sha256": "3e26c75ecc77d9702a7c412c24130b2e3f4f53f353e6b40d46a3063cf49ee7ed"
+      "bytes": 13096,
+      "sha256": "a8afaa1aaa3934787386bd014621cc4f6f8acf7911243985bd0f9b48f8903bc6"
     },
     "robot-app/python/sit_runtime.py": {
       "bytes": 6248,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 10668,
-      "sha256": "a7b4a0ae0b8da074f89eeee65c837b9af5717e93e93c3f7ae544581318016e99"
+      "bytes": 13686,
+      "sha256": "c583343afe25fe8cd7ad36b2d2f0ea69846ca7ae718804251b4dc6232595fe39"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -2858,36 +2858,76 @@
       "sha256": "bf5ea6efbdb972cd7611fb2fa0ac109ac0ace8cd2f4e68218e2b5d163740a228"
     },
     "reports/overnight-20261025/sit-rise-native.mp4": {
-      "bytes": 1574021,
-      "sha256": "a090ba839151e83c481d1e0364043ab847acf3dd020eb46d6c1a2ff920450fde"
+      "bytes": 1583225,
+      "sha256": "26561fb6579f1be80428f6d213a5fa878c0b875f066dc90004cf1a3698180d86"
     },
     "training/evaluate_skill_chain.py": {
-      "bytes": 6927,
-      "sha256": "a1155def4d8c7787a2307e351752e9299a3b8ad1c7950e552f280436b1a8a341"
+      "bytes": 7083,
+      "sha256": "8c65db4c5629f39454e78de6ecc424d0779f57f747c63877d2b814b3ca51b03d"
     },
     "reports/overnight-20261025/sit-rise-review.json": {
-      "bytes": 24525,
-      "sha256": "d9c859c60d32bbc7ecda4710ba9b2487606033d52089fcb2697b49961cc84a83"
+      "bytes": 24807,
+      "sha256": "bc5c36d0d96a80b5b97017b9d13abb05613baa2519abe2681047722ab298b5a4"
     },
     "training/train_sit_cycle.py": {
-      "bytes": 5835,
-      "sha256": "6665b0e2e1066f6c136ef75b68a512a5e336642f930b4c249f17b65040176331"
+      "bytes": 6080,
+      "sha256": "79f00ae17ee6065d49c35177e690901e53162f6f156cb121242f9aea86b2505e"
     },
     "training/render_sit_cycle.py": {
-      "bytes": 4198,
-      "sha256": "18be5644193f42c9e5277104f4fcd8b1360dd830895bb936dea8f491121636da"
+      "bytes": 4633,
+      "sha256": "d3e1e76711cf260d8638e78face2bdc50c21305392721bd422135f6de2e0e4ef"
     },
     "reports/overnight-20261025/sit-rise-five-frames.png": {
-      "bytes": 458911,
-      "sha256": "1783fb7651f9116a2e1e43b52e616b3c8434d22184ccb8eab4cc76ecb48173bf"
+      "bytes": 459272,
+      "sha256": "1e57f63c0d390eb01c8d379756dea478ee80c9217dc8c1acc0293036f0d57fee"
     },
     "reports/overnight-20261025/butt-rise-teacher.json": {
       "bytes": 9086,
       "sha256": "7305dd70bac274fbd73f77c888cffc7fefa06d3efcca558d09cb8f9902b83d7b"
     },
     "training/tests/test_sit_cycle.py": {
-      "bytes": 2621,
-      "sha256": "4585641c92c45743bd951ee2f2e754dce814068ab302ba1a7640ea7db49822ac"
+      "bytes": 3230,
+      "sha256": "1f1f2cfc2df737bb206ee7e1a2383b02adcda9b85a0d36d53ba583a6d5d4ba63"
+    },
+    "reports/overnight-20261025/backward-comparison.json": {
+      "bytes": 2620,
+      "sha256": "75630fb6584392ad608ed0ef8196075410999db4e0a34587cc3e671c070ccaa9"
+    },
+    "training/evaluate_sit_cycle.py": {
+      "bytes": 1679,
+      "sha256": "80ce266414bcbf04a81879a483525837dc417de8b66edac10002eb27b1fb7df1"
+    },
+    "training/search_single_support.py": {
+      "bytes": 5902,
+      "sha256": "59198e5db6c846dd252cec80d2f460f522c43957061348a702588e9ab46b9619"
+    },
+    "reports/overnight-20261025/supported-dance-five-frames.png": {
+      "bytes": 489206,
+      "sha256": "ef3dbdd546e84622e9c3bce35c76b2d755019f3f7fda17eb26a87f3cb1532159"
+    },
+    "training/train_supported_dance.py": {
+      "bytes": 4663,
+      "sha256": "bdad439e30b946ef1aa745663b8839ac07ded4788ff5d0f72774943b01119d5b"
+    },
+    "reports/overnight-20261025/supported-dance-native.mp4": {
+      "bytes": 2342906,
+      "sha256": "6552a699ef98cf6f13a1121d0fe5b66c90244b44ff8dce0b6fe793645c3d274f"
+    },
+    "reports/overnight-20261025/legacy-roll-diagnostic.json": {
+      "bytes": 4914,
+      "sha256": "3a4dd95a163b51ea1dfbf46c1410ef2878c377ca14ce028535939298a517933b"
+    },
+    "reports/overnight-20261025/supported-dance-review.json": {
+      "bytes": 19706,
+      "sha256": "0efc6277038c12618a016d453ebde8eb6f8bcbedf5aba96afd2616840e2a4ce8"
+    },
+    "training/evaluate_roll_baseline.py": {
+      "bytes": 3002,
+      "sha256": "11e2a8d8c768593e7903314fcbaf205acffe08aed36ccaef51413ca5ae1fa98c"
+    },
+    "training/dance_teacher.py": {
+      "bytes": 3424,
+      "sha256": "40d97f99ccb7376534ed6dea82464ba0cfa620d80bf4044b95ec745f4b384a60"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

@@ -11,6 +11,16 @@ PARAMETERS=[46.70310170041174,76.40411983212645,70.33832955536383,-8.10415155250
             -48.12318649688403,1.9329865677460158]
 
 class SitCycleTests(unittest.TestCase):
+    def test_measured_pose_matches_final_substep_and_torque_is_live(self):
+        plant=SitPlant();plant.reset(5)
+        for _ in range(5):plant.advance(plant.previous+.03)
+        s=plant.sim;positions=s.data.geom_xpos.copy();rotations=s.data.xmat.copy()
+        plant.mj.mj_forward(s.model,s.data)
+        np.testing.assert_allclose(s.data.geom_xpos,positions,atol=1e-12)
+        np.testing.assert_allclose(s.data.xmat,rotations,atol=1e-12)
+        self.assertGreater(plant.peak_torque_nm,.01)
+        self.assertGreaterEqual(plant.peak_torque_nm,float(np.max(np.abs(s.data.ctrl[s.motor.act_indexes]))))
+
     def test_teacher_sits_then_rises_without_reset_at_50hz(self):
         plant=SitPlant();calls=[]
         def predict(obs):

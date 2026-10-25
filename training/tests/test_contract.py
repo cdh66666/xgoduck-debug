@@ -6,6 +6,20 @@ import numpy as np
 from native_env import NativeEpisode,manifest
 
 class Contract(unittest.TestCase):
+ def test_own_full_actor_transfer_preserves_weights_and_new_learning_rate(self):
+  import tempfile,torch
+  from types import SimpleNamespace
+  from full_refine import initialize,KIND
+  actor=torch.nn.Linear(3,2);critic=torch.nn.Linear(3,1)
+  state={'kind':KIND,'iteration':7,'algorithm':{'actor_state_dict':actor.state_dict(),'critic_state_dict':critic.state_dict()}}
+  target=SimpleNamespace(actor=torch.nn.Linear(3,2),critic=torch.nn.Linear(3,1))
+  target.optimizer=torch.optim.Adam(list(target.actor.parameters())+list(target.critic.parameters()),lr=3e-6)
+  with tempfile.TemporaryDirectory() as directory:
+   checkpoint=Path(directory)/'source.pt';torch.save(state,checkpoint);report=initialize(target,checkpoint)
+  self.assertTrue(report['actor_load_exact']);self.assertEqual(report['source_iteration'],7)
+  self.assertEqual(target.optimizer.param_groups[0]['lr'],3e-6);self.assertFalse(target.optimizer.state)
+  for name,value in actor.state_dict().items():self.assertTrue(torch.equal(target.actor.state_dict()[name],value))
+
  def test_evaluation_horizon_is_explicit_without_resets_or_physics_changes(self):
   env=NativeEpisode(manifest(),42,curriculum='stand',auto_reset=False,max_episode_steps=2)
   try:

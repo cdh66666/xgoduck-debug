@@ -1,5 +1,5 @@
 """Render two real native MuJoCo rollouts side by side, without reset in a clip."""
-import argparse,gc,json,math,shutil,subprocess,sys
+import argparse,gc,json,math,os,shutil,subprocess,sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import numpy as np
@@ -45,10 +45,17 @@ def main():
  p.add_argument('--scenarios',default='stand4,forward_stop,backward_stop,left_stop,right_stop')
  p.add_argument('--seed',type=int,default=20261030);p.add_argument('--push-n',type=float,default=.8)
  p.add_argument('--width',type=int,default=640);p.add_argument('--height',type=int,default=540)
+ p.add_argument('--runtime-profile',choices=['legacy','calibrated-20261025'],default='legacy')
+ p.add_argument('--model-xml',type=Path)
+ p.add_argument('--forward-speed',type=float,default=.3)
+ p.add_argument('--ffmpeg',default=shutil.which('ffmpeg'))
  p.add_argument('--output',type=Path,required=True);args=p.parse_args()
+ if not .2<=args.forward_speed<=1:p.error('Forward speed must be .2..1 m/s')
+ os.environ['XGODUCK_RUNTIME_PROFILE']=args.runtime_profile
+ if args.model_xml:os.environ['XGODUCK_TRAIN_XML']=str(args.model_xml.resolve())
  if args.output.exists():p.error('Use a new video path')
  args.output.parent.mkdir(parents=True,exist_ok=True)
- ffmpeg=shutil.which('ffmpeg')
+ ffmpeg=args.ffmpeg
  if not ffmpeg:raise RuntimeError('ffmpeg is not installed')
  policies=[OnnxPolicy(args.left),OnnxPolicy(args.right)]
  font_path='C:/Windows/Fonts/msyh.ttc'
@@ -61,7 +68,10 @@ def main():
   encoder=subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.DEVNULL,stderr=log)
   try:
    for key in args.scenarios.split(','):
-    case=scenarios(args.push_n)[key];envs=[new_episode(args.seed) for _ in policies]
+    case=scenarios(args.push_n)[key]
+    if key=='forward_stop':case=dict(title=f'前进 {args.forward_speed:g} → 松键停止',segments=[(6.,[args.forward_speed,0.,0.]),(6.,[0.,0.,0.])])
+    envs=[new_episode(args.seed) for _ in policies]
+    samples=[];sample_indices=[2*int(x*round(duration(case)/.04))+1 for x in (0,.25,.5,.75,.99)]
     views=[make_renderer(e,args.width,args.height) for e in envs];rows=[[],[]];done=[False,False]
     try:
      for index in range(round(duration(case)/.02)):
@@ -84,7 +94,12 @@ def main():
         draw.text((x+18,104),f"3.0s 施加 {args.push_n:g} N 推力，持续 0.16s",font=fonts[2],fill=(240,218,143))
        if r['failure']:draw.text((x+20,104),'FAIL: '+','.join(r['failure']),font=fonts[1],fill=(255,75,75))
       encoder.stdin.write(np.asarray(canvas).tobytes());count+=1
+      if index in sample_indices:samples.append(canvas.copy())
       if count==1:canvas.save(args.output.with_suffix('.preview.png'))
+     sheet=Image.new('RGB',(1920,3*int(height*640/width)),(15,22,32))
+     tile_height=int(height*640/width)
+     for i,sample in enumerate(samples):sheet.paste(sample.resize((640,tile_height)),((i%3)*640,(i//3)*tile_height))
+     sheet.crop((0,0,1920,2*tile_height)).save(args.output.with_name(args.output.stem+'-'+key+'-five-frames.png'))
      reports.append({'scenario':key,'seed':args.seed,'left':case_metrics(rows[0],case),'right':case_metrics(rows[1],case),'rows':rows})
      print(json.dumps({'scenario':key,'frames_total':count,'left_failure':reports[-1]['left']['failure'],'right_failure':reports[-1]['right']['failure']}),flush=True)
     finally:
@@ -95,6 +110,7 @@ def main():
    encoder.stdin.close();code=encoder.wait()
   if code:raise RuntimeError('ffmpeg failed; see '+str(args.output.with_suffix('.ffmpeg.log')))
  result={'scope':'Native MuJoCo 3.15.0 / BAM. New independent scene between clips; no reset inside a clip. Not hardware.',
+  'runtime_profile':args.runtime_profile,'physical_model':__import__('native_env').manifest()['physical_model'],
   'left_sha256':policies[0].sha256,'right_sha256':policies[1].sha256,'fps':25,'frames':count,'seconds':count/25.,'cases':reports}
  args.output.with_suffix('.json').write_text(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False),'utf-8')
  print(json.dumps({'video':str(args.output),'seconds':count/25.,'frames':count}),flush=True)

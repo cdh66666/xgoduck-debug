@@ -36,6 +36,22 @@ def initialize(alg,checkpoint=None):
  from refine import parity
  source=Path(checkpoint) if checkpoint else ROOT/'checkpoints/model_047500.pt'
  saved=torch.load(source,map_location='cpu',weights_only=False)
+ if saved.get('kind')==KIND:
+  # Deliberate new optimization run: retain every learned actor/critic tensor
+  # but start a fresh optimizer with this run's explicitly selected PPO config.
+  state=saved['algorithm']
+  alg.actor.load_state_dict(state['actor_state_dict'],strict=True)
+  alg.critic.load_state_dict(state['critic_state_dict'],strict=True)
+  for module,key in ((alg.actor,'actor_state_dict'),(alg.critic,'critic_state_dict')):
+   for name,value in state[key].items():
+    if not torch.equal(value,module.state_dict()[name]):raise ValueError('Transfer changed '+name)
+  if alg.optimizer.state:raise ValueError('Transfer optimizer must start fresh')
+  return {'initialization':'all own full-actor/critic tensors; new Adam with explicit run config',
+   'source_checkpoint_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
+   'source_iteration':int(saved['iteration']),'actor_load_exact':True,'critic_load_exact':True,
+   'optimizer_reset_for_new_scope':True,'initial_optimizer_entries':0,
+   'trainable_actor_parameters':sum(p.numel() for p in alg.actor.parameters() if p.requires_grad),
+   'trainable_scope':'all actor weights + critic; original sigma/normalizer fixed'}
  if saved.get('kind')!='xgoduck-backskip-47500-bodyframe-v2':raise ValueError('Expected packaged47500 source')
  alg.actor.load_state_dict(saved['actor_state_dict'],strict=True)
  alg.critic.load_state_dict(saved['critic_state_dict'],strict=True)

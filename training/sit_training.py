@@ -75,10 +75,16 @@ class Plant:
         alpha=np.full(14,.45);alpha[5:9]=.2
         self.filtered=alpha*self.filtered+(1-alpha)*self.previous
         target=np.deg2rad(HOME)+self.filtered
+        self.peak_torque_nm=0.;self.peak_joint_speed_radps=0.
         for _ in range(4):
             if round(self.sim.data.time/.005)%2==0:self.sim._receive_policy_feedback()
             delayed=self.delay.pop(0);self.delay.append(target.copy())
             self.sim.motor.q_target=delayed;self.sim.motor.update();self.mj.mj_step(self.sim.model,self.sim.data)
+            self.peak_torque_nm=max(self.peak_torque_nm,float(np.max(np.abs(self.sim.data.ctrl[self.sim.motor.act_indexes]))))
+            self.peak_joint_speed_radps=max(self.peak_joint_speed_radps,float(np.max(np.abs(self.sim.data.qvel[self.sim.motor.dof_indexes]))))
+        # Like NativeEpisode.step, align geometry/contact observations with the
+        # final qpos, rather than using the pose from the preceding 5ms substep.
+        self.mj.mj_forward(self.sim.model,self.sim.data)
 
     def rollout(self,seed,predict=None,record=False):
         self.reset(seed);xs=[];ys=[];trace=[];failed=None

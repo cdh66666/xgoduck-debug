@@ -53,6 +53,8 @@ def main():
              sit_duration_s=1.,rise_duration_s=parameters[5],features=FEATURES,home_deg=HOME.tolist(),
              teacher_parameters=parameters,teacher_sha256=hashlib.sha256(args.teacher.read_bytes()).hexdigest(),
              physics_model_sha256=hashlib.sha256(XML.read_bytes()).hexdigest(),
+             plant_source_sha256=hashlib.sha256(Path(__file__).with_name('sit_training.py').read_bytes()).hexdigest(),
+             teacher_source_sha256=hashlib.sha256(Path(__file__).with_name('search_butt_raise.py').read_bytes()).hexdigest(),
              initial_pose_sha256=hashlib.sha256(SEED_RECORD.read_bytes()).hexdigest(),
              hardware_deployment_ready=False,hardware_commands_sent=False,
              scope='sit supported at 2-3s then rise and settle without reset; no walking handoff acceptance yet')

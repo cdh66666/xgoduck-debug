@@ -7,14 +7,15 @@ from butt_sit import SitPlant,setup_renderer
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--trace',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--ffmpeg',default=shutil.which('ffmpeg'));p.add_argument('--font',default='C:/Windows/Fonts/msyh.ttc');a=p.parse_args()
+    p.add_argument('--ffmpeg',default=shutil.which('ffmpeg'));p.add_argument('--font',default='C:/Windows/Fonts/msyh.ttc')
+    p.add_argument('--azimuth',type=float,default=100);a=p.parse_args()
     if not a.ffmpeg:p.error('Provide ffmpeg')
     rows=json.loads(a.trace.read_text());a.output.mkdir(parents=True,exist_ok=True)
     plant=SitPlant();renderer,cam,opt=setup_renderer(plant,960,600)
-    cam.distance=.5;cam.elevation=-14;cam.azimuth=100
+    cam.distance=.5;cam.elevation=-14;cam.azimuth=a.azimuth
     plant.sim.model.geom_rgba[plant.floor_id]=[.10,.16,.20,1.]
     font=ImageFont.truetype(a.font,24);small=ImageFont.truetype(a.font,19)
-    labels={'sit':'臀部坐下','raise':'起身','rise':'起身','stand':'站立','forward':'前进','stop':'停稳','stand_after':'起身后站立','backward':'后退','stop_final':'停止'}
+    labels={'sit':'臀部坐下','raise':'起身','rise':'起身','stand':'站立','forward':'前进','stop':'停稳','stand_after':'起身后站立','backward':'后退','stop_final':'停止','dance':'摆身舞蹈','single_support':'单脚支撑候选'}
     def frame(row):
         s=plant.sim;s.data.qpos[:]=row['qpos'];plant.mj.mj_forward(s.model,s.data)
         cam.lookat[:]=[row['qpos'][0],row['qpos'][1],.12]
@@ -38,11 +39,13 @@ def main():
     for row in rows:process.stdin.write(frame(row).tobytes())
     process.stdin.close();assert process.wait()==0
     sit_rows=[r for r in rows if r['stage']=='sit'];rise_rows=[r for r in rows if r['stage'] in ('rise','raise')]
-    selected=[rows[0],sit_rows[-1],rise_rows[min(35,len(rise_rows)-1)],rise_rows[min(130,len(rise_rows)-1)],rows[-1]]
+    selected=[rows[0],sit_rows[-1],rise_rows[min(35,len(rise_rows)-1)],rise_rows[min(130,len(rise_rows)-1)],rows[-1]] if sit_rows and rise_rows else [rows[round(t*(len(rows)-1))] for t in (0,.22,.48,.74,1)]
     sheet=Image.new('RGB',(1440,792),'#0b1b28');draw=ImageDraw.Draw(sheet)
     for i,row in enumerate(selected):sheet.paste(frame(row).resize((480,360)),((i%3)*480,48+(i//3)*360))
-    draw.text((24,9),'原始物理回放：站立 → 臀部坐地 → 重心前移 → 起身 → 站稳',font=font,fill='#85e1f2')
-    for j,text in enumerate(['绿色点：臀部实际接触','原速 / 连续 / 无扶持','仅仿真，实机尚未验证']):draw.text((985,475+j*54),text,font=small,fill='#b9d3df')
+    heading='站立 → 臀部坐地 → 重心前移 → 起身 → 站稳' if sit_rows and rise_rows else labels.get(rows[0]['stage'],rows[0]['stage'])+' · 五帧连续物理证据'
+    draw.text((24,9),'原始物理回放：'+heading,font=font,fill='#85e1f2')
+    evidence='双脚支撑 · 基础摆身舞蹈' if rows[0]['stage']=='dance' else '绿色点：臀部实际接触'
+    for j,text in enumerate([evidence,'原速 / 连续 / 无扶持','仅仿真，实机尚未验证']):draw.text((985,475+j*54),text,font=small,fill='#b9d3df')
     sheet.save(a.output/'five-frames.png');renderer.close()
     print(json.dumps({'frames':len(rows),'duration_s':len(rows)/50,'output':str(a.output)}))
 

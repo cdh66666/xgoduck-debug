@@ -54,7 +54,10 @@ def set_command(env,command):
  if not np.array_equal(target,env.command):
   previous=env.command.copy();env.motion_window.reset(target);env.command_age_ticks=0
   env.zero_release=bool(np.any(previous) and not np.any(target))
- env.command=target;env.command_ticks=1000000;env.command_index=COMMANDS.index(command)
+ env.command=target;env.command_ticks=1000000
+ if command in COMMANDS:env.command_index=COMMANDS.index(command)
+ elif 0<float(command[0])<=1 and command[1:]==[0,0]:env.command_index=2
+ else:raise ValueError('Unsupported evaluation command')
 
 
 def tick(env,policy,case,index):

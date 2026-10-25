@@ -1,0 +1,76 @@
+{
+  "scope": "Native MuJoCo 3.15.0 / BAM. New independent scene between clips; no reset inside a clip. Not hardware.",
+  "runtime_profile": "calibrated-20261025",
+  "physical_model": {
+    "path": "D:\\codex\\xgoduck-debug\\training\\model\\robot_inertial_candidate_20261025.xml",
+    "sha256": "c89d853c85d3b04ab2027cc2c413d48b95ad93aa002d064a3cc95b69954838af",
+    "reference_model_sha256": "4160b1cb64baac710049cf91a9faf37975c9311dc63dac2413d4a9ac82883231"
+  },
+  "left_sha256": "8a462e51d41fd43cbca1026698a2320f76fd84ef61d5c081cc63b7bcad7e394f",
+  "right_sha256": "be5019c4fa94e5b9b6a43539642fc68c40095ec54dc9e9ae6455c456a3b1be5d",
+  "fps": 25,
+  "frames": 300,
+  "seconds": 12.0,
+  "cases": [
+    {
+      "scenario": "backward_stop",
+      "seed": 20261030,
+      "left": {
+        "complete": true,
+        "failure": null,
+        "max_tilt_deg": 10.82945762650348,
+        "quiet_speed_rms_mps": 0.044247239318355405,
+        "quiet_yaw_rms_radps": 0.05060870358055092,
+        "quiet_tilt_rms_deg": 4.167202498166016,
+        "stops": [
+          {
+            "start_s": 6.0,
+            "previous_command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "first_second_planar_path_m": 0.05852325109768612,
+            "first_second_yaw_path_rad": 0.05460799247674649,
+            "first_second_tilt_rms_deg": 3.955961391446992,
+            "max_tilt_deg": 5.641218130042973,
+            "settling_s": 0.40000000000000036
+          }
+        ]
+      },
+      "right": {
+        "complete": true,
+        "failure": null,
+        "max_tilt_deg": 8.804730035047143,
+        "quiet_speed_rms_mps": 0.03914704498229336,
+        "quiet_yaw_rms_radps": 0.08834616175080039,
+        "quiet_tilt_rms_deg": 2.93878674255183,
+        "stops": [
+          {
+            "start_s": 6.0,
+            "previous_command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "first_second_planar_path_m": 0.05327970698271178,
+            "first_second_yaw_path_rad": 0.11602010631618746,
+            "first_second_tilt_rms_deg": 3.0153392229586577,
+            "max_tilt_deg": 5.5834250345940415,
+            "settling_s": 0.41999999999999993
+          }
+        ]
+      },
+      "moving_comparison": [
+        {
+          "moving_mean_vx_mps": -0.2286922339122079,
+          "moving_yaw_rms_radps": 0.4198339034231236
+        },
+        {
+          "moving_mean_vx_mps": -0.29123693958969965,
+          "moving_yaw_rms_radps": 0.15748571283794266
+        }
+      ]
+    }
+  ]
+}
