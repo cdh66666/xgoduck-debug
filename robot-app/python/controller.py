@@ -14,6 +14,7 @@ from wire import *
 from display_telemetry import DisplayTelemetryCache
 from current_telemetry import CurrentTelemetry
 from factory_calibration import FactoryCalibrationMixin, atomic_json
+from tray_guard import is_tray_pose, require_motion_clear, TRAY_REASON
 
 FACTORY_ZERO = [
     2236, 2005, 1912, 1866, 1945,
@@ -29,14 +30,19 @@ ROULADE_ALPHA = 0.15
 CONTROL_PERIOD = 0.02
 
 from keyboard_runtime import KeyboardRuntimeMixin
+from sit_runtime import SitRuntimeMixin
 
-class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
+class Controller(SitRuntimeMixin, KeyboardRuntimeMixin, FactoryCalibrationMixin):
     def __init__(self, bridge):
         self.bridge = bridge
         self.lock = threading.RLock()
         self.servo_op_lock = threading.Lock()
         self.policy_lock = threading.Lock()
-        self.policy = Policy(reference_home=True)
+        # The walk export declares its own HOME (hip_pitch/ankle 24.01 deg). Forcing
+        # the runtime 22 deg here tells the policy it is standing 2 deg away from
+        # where it was trained, on every frame, and it answers by moving the legs.
+        # Its own metadata is the only correct reference for this model.
+        self.policy = Policy()
         ok, message = self.policy.load()
         if not ok:
             raise RuntimeError(message)
@@ -80,6 +86,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         self.web_time = 0.0
         self.remote_command_timed_out = False
         self.arm_pending = False
+        self._sit_init()
         self.seq = self.received = self.inferred = self.sent = self.bad_frames = self.gaps = 0
         self.last_error = ''
         self.stop_event = threading.Event()
@@ -284,6 +291,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             self.filtered = self.filter.update(fb.acc, self.gyro_bias_control.correct(fb.gyro), fb.angles, fb.velocities,
                 timestamp=sample_time, imu_ok=fb.imu_ok)
             self.feedback, self.rx_time = fb, now
+            self._stop_for_tray_locked()
             self.received += 1; self.rx_times.append(now)
             receive_epoch = self._feedback_receive_epoch
         self.current_telemetry.submit(raw, fb, now, receiver_epoch=receive_epoch)
@@ -324,12 +332,32 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             raise ValueError('required servo feedback / IMU missing')
         if not self._zero_sync_confirmed():
             raise ValueError('MCU zero synchronization pending')
+        require_motion_clear(fb)
         return fb
+
+    def _stop_for_tray_locked(self):
+        if not is_tray_pose(self.feedback):
+            return False
+        if self.mode in ('hold', 'policy') or self.feedback.enabled:
+            self.mode = 'off'; self.generation += 1
+            self.last_error = TRAY_REASON
+            self.recovery.reset(); self.policy_needs_reset = True
+            self._stop_pick_locked(); self._stop_roulade_locked(); self._keyboard_cancel_locked()
+            self._disarm_now()
+            return True
+        return False
 
     def _stale_joint_ids(self, now):
         # A live IMU/packet does not refresh joints absent from its servo mask.
         return [joint for joint, received in zip(MOTOR_IDS, self._joint_rx_times)
                 if received is None or now-received > .15]
+
+    def start_sit(self,phase_limit=1.):
+        with self.lock:
+            result=super().start_sit(phase_limit)
+            self._keyboard_cancel_locked()
+            with self.intent_lock:self.pending_intent=None
+            return result
 
     def _disarm_now(self):
         self.arm_pending = False
@@ -343,6 +371,9 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         if mode not in ('shadow', 'off', 'hold', 'policy', 'calibrate', 'servo_debug'):
             raise ValueError('unknown mode')
         with self.lock:
+            self._sit_mode_locked(mode)
+            if mode in ('hold', 'policy'):
+                require_motion_clear(self.feedback)
             if mode in ('hold','policy') and self.factory_pending:
                 raise ValueError('calibration outcome unresolved; inspect pending transaction')
             if mode == self.mode:
@@ -511,6 +542,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
         with self.lock:
             if self.mode in EXCLUSIVE_MODES:
                 raise ValueError('motion commands disabled in calibrate/servo_debug')
+            self._sit_command_locked(t,h,m)
             self._expire_remote_intent_locked(time.monotonic())
             if self._keyboard_recovery_command_locked(t, h, manual_pick_depth, forward_specialist, fast_forward, navigation_specialist):
                 if m is not None and not self.pick_active: self.mouth = m
@@ -722,7 +754,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                 self.recovery.fall_elapsed = 0.0
                 self.policy_needs_reset = True
             rolling = self._roulade_on(now)
-            if mode in ('shadow', 'policy') and not rolling:
+            if mode in ('shadow', 'policy') and not rolling and not (self.sit_active and mode=='policy'):
                 changed = self.recovery.update(filt['grav'] if filt else [0,0,0],
                                                now, valid)
                 self.policy_needs_reset |= changed
@@ -750,6 +782,9 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             else:
                 selected = self.policy if phase == 'walk' else self.getup_policy
             selected, twist, head, mouth = self._keyboard_select_locked(selected, twist, head, mouth, mode=mode, phase=phase, valid=valid, now=now, automatic=rolling or picking)
+            if self.sit_active and mode=='policy' and valid:
+                selected=self._sit_select_locked(now,filt['grav'],fb)
+                phase='walk';twist,head,mouth=[0.]*3,[0.]*4,0.
             reset_policy = self.policy_needs_reset
             # ARM sends measured angles only; do not advance an actor for an
             # output that is deliberately replaced and will never be applied.
@@ -759,7 +794,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             exclusive = mode in EXCLUSIVE_MODES
         if exclusive:
             return
-        target = [0.0]*15 if mode == 'hold' else list(DEFAULT_DEG)
+        target = list(self.last_action) if self.sit_active and mode=='policy' else ([0.0]*15 if mode == 'hold' else list(DEFAULT_DEG))
         policy_step = None
         if inferring and phase == 'default_pose':
             # Switch to getup immediately, but force action/history to zero for 1 s.
@@ -797,6 +832,8 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                 return
             mode = self.mode
             if mode in EXCLUSIVE_MODES:
+                return
+            if self._stop_for_tray_locked():
                 return
             # A RAW mismatch arriving during inference also wins before ARM/TX.
             if mode in ('hold','policy') and not self._zero_sync_confirmed():
@@ -940,7 +977,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             result['gyro_bias_control'] = self.gyro_bias_control.status()
             result['joint_feedback_age_ms']=[None if t is None else (now-t)*1000 for t in self._joint_rx_times]
             result['stale_joint_ids']=self._stale_joint_ids(now)
-            result['control_ready']=bool(zero_confirmed and fb and fb.imu_ok and not result['stale_joint_ids'] and now-self.rx_time<.15 and self.mode not in EXCLUSIVE_MODES)
+            result['control_ready']=bool(zero_confirmed and fb and fb.imu_ok and not result['stale_joint_ids'] and now-self.rx_time<.15 and self.mode not in EXCLUSIVE_MODES and not is_tray_pose(fb))
             result['zero_sync']=dict(confirmed=zero_confirmed, expected_zero_pos=list(self.zero_pos),
                 mcu_zero_pos=list(self._mcu_zero_pos) if self._mcu_zero_pos is not None else None,
                 pending_transaction=bool(getattr(self, 'factory_pending', None)),
@@ -948,6 +985,7 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
             result['servo_scan_version'] = 1
             result['joint_limits_deg'] = {'32': [-HEAD_YAW_LIMIT_DEG, HEAD_YAW_LIMIT_DEG]}
             result['head_yaw_output'] = self.head_yaw_output
+            result['tray_motion_guard'] = dict(detected=is_tray_pose(fb), reason=TRAY_REASON if is_tray_pose(fb) else '')
             result['feedback_timing']=dict(filter_clock='mcu_sample_us',
                 freshness_clock='host_monotonic', sample_clock_s=self._feedback_clock_s,
                 last_sample_us=self._feedback_clock_us, receiver_epoch=self._feedback_receive_epoch,
@@ -982,6 +1020,8 @@ class Controller(KeyboardRuntimeMixin, FactoryCalibrationMixin):
                     result['active_model'] = self.getup_policy.file
             else:
                 result['active_model'] = None
+            result['sit_down']=self._sit_status_locked(now)
+            if result['sit_down']['active']:result['active_model']=self.sit_policy.file
             if fb:
                 result.update(servo_ids=[i for j,i in enumerate(MOTOR_IDS) if fb.mask & (1<<j)],
                     imu_ok=fb.imu_ok, enabled=fb.enabled, mcu_watchdog=bool(fb.flags&4),

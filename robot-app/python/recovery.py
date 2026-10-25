@@ -4,7 +4,7 @@ import math
 
 class Recovery:
     FALL_DEG, FALL_SECONDS = 55.0, 0.15
-    STAND_DEG, STAND_SECONDS = 15.0, 1.0
+    STAND_DEG, STAND_SECONDS = 15.0, 0.2
     HOLD_SECONDS = 0.0
     PERIOD = 1.0 / 50.0
 
@@ -29,7 +29,10 @@ class Recovery:
         if not valid or not math.isfinite(norm) or norm < 1e-6:
             return False
         self.angle_deg = math.degrees(math.acos(max(-1.0, min(1.0, -gravity[2]/norm))))
-        if self.angle_deg > self.FALL_DEG:
+        # Starting from OFF is not a running walk that deserves fall debounce.
+        # A partially collapsed robot may still have a 20-50 degree trunk tilt;
+        # send it to get-up unless it already meets the upright condition.
+        if self.angle_deg >= self.STAND_DEG:
             self.phase = 'getup'
             self.phase_since = now
             self.transitions = 1

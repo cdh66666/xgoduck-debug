@@ -1,5 +1,5 @@
 """Create the weight-free native simulation; no hardware/network imports."""
-import sys
+import hashlib,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent
 sys.path.insert(0,str(ROOT/'engine'))
@@ -7,6 +7,9 @@ import worker
 class Adapter:
  def __init__(self,frozen,seed,scenario,enable_initial_policy=False):
   self.worker=worker
+  self.physical_model=frozen['physical_model']
+  if hashlib.sha256(Path(self.physical_model['path']).read_bytes()).hexdigest()!=self.physical_model['sha256']:
+   raise ValueError('Selected physics XML changed before worker load')
   class Counted(worker.Simulation):
    def __init__(self):self.reset_calls=0;super().__init__()
    def reset(self):self.reset_calls+=1;return super().reset()
@@ -18,9 +21,11 @@ class Adapter:
      self.max_substep_tilt_deg=max(self.max_substep_tilt_deg,tilt)
      self.max_substep_height_error_m=max(self.max_substep_height_error_m,abs(float(self.data.qpos[2])-self.standing_height))
   self.sim=Counted()
-  bound={'sha256':'scratch','selected':'scratch','xml':str(ROOT/'model/robot.xml'),'bam':str(ROOT/'params/1910_m6.json'),
+  bound={'sha256':'scratch','selected':'scratch','xml':frozen['physical_model']['path'],'bam':str(ROOT/'params/1910_m6.json'),
    'models':{n:{'path':None,'default_command':[0.,0.,0.]} for n in ('scratch','walk','getup')},'sources':{}}
   self.sim.load(bound,'scratch')
+  from runtime_profile import apply
+  apply(self.sim,frozen.get('runtime_profile','legacy'))
   if self.sim.extra_contacts!=13 or self.sim.model.opt.timestep!=.005:raise ValueError('physics contract changed')
   # Same initial yaw/joint perturbation contract as the frozen native evaluator.
   rng=worker.np.random.default_rng(seed);yaw=float(rng.uniform(-.03,.03));self.sim.data.qpos[3:7]=[worker.np.cos(yaw/2),0,0,worker.np.sin(yaw/2)]

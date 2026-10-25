@@ -1,0 +1,28 @@
+{
+  "version": "2026.10.25-neutral-r2",
+  "mcu_build": "20261025-feedback-r1",
+  "stage": "neutral-hold-20261025-r2",
+  "elf_sha256": "770e412fcb93af129892e462c5670a61ff3216640cdf6ea279c30861680eeeb2",
+  "files": {
+    "python/current_telemetry.py": "9e31be319f54f2b52a0e5cdbaeb6ab6af49cd7d0a57e49ca0136cca0a74fef5a",
+    "python/display_telemetry.py": "ae5cae3d75984d4f5f0d35e61c4b11fe982ad164ad383de50958d62a9bac8bf3",
+    "python/main.py": "beec57c2612892e3114aea63f7d1357c491038a44f318a8ced081ea6c4c299a3",
+    "python/runtime_identity.py": "f3e3d45eb80d82307107dbe5e1f372f8f5b34caf7d90a15fdd3587ebf05a6470",
+    "python/servo_health.py": "7fc109f95f5e7d6fb93ddff2d1aa30a5a75393db73f400e92bd545ad09a4e270",
+    "python/wire.py": "bd8701996c8f86d69651e7ac6a41d3865e1e27307dead2e0a1ef7cf43ca940ba",
+    "sketch/current_telemetry.h": "6a40c41a715a369d4eda672a23b8a9f2fbba0f34559049b6fd212dbbf5b1362b",
+    "sketch/display_telemetry.h": "8abf6c66b81d20e1cb5862b67a726a55594e7c26cb4849dc90c112bd15d3559e",
+    "sketch/duck_config.h": "b9f00183d6b9524ab8df016f0db6f2e5c875252abded677ebe91718e111be780",
+    "sketch/factory_calibration.h": "e06f95455760b64d8e868fad4962d0949e524dbcd9d6b7f347fa99c40b119870",
+    "sketch/joint_limits.h": "ab30178d228f635d8b664af3a326d6a06d35fdb5f80f95a9364a9577df8f6368",
+    "sketch/protocol.h": "6d2d7622b39ee528fb4ae9636bd1564e0d993983bbeefc0007ca96f9a5963e06",
+    "sketch/qmi8658.h": "b1958c5a38792e0b24905aa4ccdbc7a4d1ea83565b533b3cb233ce4c10aaa23c",
+    "sketch/route_refresh.h": "07ed36223db35f15c900021f7f305f418a73277ee74269754428548bdc92bb43",
+    "sketch/scs_bus.h": "710eb3d12658b2170add4899097f7c77cb7e707d9a2593c71089a7df528ac139",
+    "sketch/servo_rx_health.h": "1266aaa8eebb24e82785cb86b2fbb36892c78dc69663200aaba5c17702e193c6",
+    "sketch/sketch.ino": "7c1e6d62c252546f81aaef14744b33fa6a61f0518924a9c49b4de9ff22a4e9ce",
+    "sketch/sketch.yaml": "2a519632fd9f5c254c1f395ded353c1a61a4a4e6ebfef0d081c42058e8c95ba8",
+    "sketch/uart_fifo.h": "90ed76314fe73c522bb0c1984f12168ef89349458cb0e2d861a05e6b4ecb5fd8",
+    "python/controller.py": "0de772cf8d1812f26937402367f933f8a4c5c8387f5df86431dac272a2a0c8f4"
+  }
+}

@@ -30,7 +30,7 @@ FIELDS = ('uptime_s', 'mode', 'enabled', 'command', 'head', 'mouth', 'active_mod
           'sent', 'inferred', 'feedback_hz', 'inference_hz', 'inference_interval_ms', 'last_error',
           'gyro_bias_control', 'zero_sync', 'head_yaw_output', 'display_heading',
           'servo_power', 'servo_current', 'factory_calibration', 'raw_pos', 'zero_pos',
-          'deployment', 'mcu_period_us', 'mcu_work_us', 'control_event', 'control_intent')
+          'deployment', 'mcu_period_us', 'mcu_work_us', 'control_event', 'control_intent','sit_down')
 
 
 def actuating(state):

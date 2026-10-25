@@ -45,6 +45,11 @@ def manifest():
         binding['path']=str(R/binding['path'])
         if sha(binding['path']) != binding['sha256']:
             raise ValueError('frozen_binding_changed:' + key)
+    xml=Path(os.environ.get('XGODUCK_TRAIN_XML') or R/'model/robot.xml').resolve()
+    result['physical_model']=dict(path=str(xml),sha256=sha(xml),
+        reference_model_sha256=result['bindings']['model/robot.xml']['sha256'])
+    from runtime_profile import selected
+    result['runtime_profile']=selected()
     return result
 
 
@@ -122,6 +127,11 @@ class NativeEpisode:
         self.command_age_ticks = 0
         self.zero_release = index == 0 and previous_index not in (None, 0)
         self.command = self.np.asarray(COMMANDS[index], dtype=self.np.float32)
+        if self.curriculum == 'speed' and index == 2:
+            maximum = float(os.environ.get('XGODUCK_MAX_FORWARD', '.3'))
+            if not .2 <= maximum <= 1.:
+                raise ValueError('speed curriculum maximum must be .2..1 m/s')
+            self.command[0] = float(self.rng.uniform(max(.2, maximum * .7), maximum))
         bounds = (3., 5.) if self.curriculum == 'stability' else ((6., 8.) if index == 0 else (4., 6.))
         if self.curriculum=='stop':
             bounds=((4.,5.) if self.rng.random()<.25 else (1.3,1.8)) if index==0 else (3.,5.)
@@ -346,7 +356,9 @@ def _worker(connection, frozen, seeds, curriculum):
         np = envs[0].np
         connection.send(('ready', np.stack([env.observe() for env in envs]),
                          np.stack([env.critic_linear_velocity() for env in envs]),
-                         dict(pid=os.getpid(), mujoco=envs[0].mj.__version__, envs=len(envs),torch_imported='torch' in sys.modules)))
+                         dict(pid=os.getpid(), mujoco=envs[0].mj.__version__, envs=len(envs),torch_imported='torch' in sys.modules,
+                              physical_model_sha256=envs[0].adapter.physical_model['sha256'],
+                              compiled_total_mass_kg=float(envs[0].sim.model.body_mass.sum()))))
         while True:
             op, payload = connection.recv()
             if op == 'close':
@@ -375,6 +387,8 @@ def _worker(connection, frozen, seeds, curriculum):
 class NativePool:
     def __init__(self, workers=8, envs_per_worker=2, seed=20261220, curriculum='six'):
         frozen = manifest()
+        self.physical_model = frozen['physical_model']
+        self.runtime_profile = frozen['runtime_profile']
         self.np = __import__('numpy')
         self.workers = workers
         self.envs_per_worker = envs_per_worker
@@ -441,6 +455,10 @@ class NativeVecEnv:
                         physics_dt=.005, curriculum=kwargs.get('curriculum', 'six'),
                         runtime_interface_version='bodyframe-v2',gyro_frame='root_body_xmat',linear_velocity_frame='root_body_xmat',
                         hardware_commands_sent=False, deployment_allowed=False)
+        self.cfg['physical_model']=self.pool.physical_model
+        self.cfg['runtime_profile']=self.pool.runtime_profile
+        if kwargs.get('curriculum') == 'speed':
+            self.cfg['max_forward_mps']=float(os.environ.get('XGODUCK_MAX_FORWARD', '.3'))
         if kwargs.get('curriculum') in ('stability','stop'):
             self.cfg['stability_reward']=STABILITY_REWARD.copy()
             self.cfg['stability_commands']='alternate zero and random original moving command, each 3-5s'

@@ -170,14 +170,14 @@
   $('calibration-panel-close').onclick=()=>setCalibrationVisible(false);
   $('bench-test-close').onclick=()=>setTestsVisible(false);
   $('sequence-passive-id10').hidden=true;
-  text('sequence-hint','释放 → 手摆中位 → 校准并保持。其他已保持关节不变。');
+  text('sequence-hint','卸力 → 贴合托盘中位 → 保存中位。托盘内禁止上力。');
   for(const id of IDS){const b=document.createElement('button');b.className='quiet';b.textContent='ID '+id;b.onclick=()=>selectJoint(id);$('sequence-joints').append(b);}
   document.querySelectorAll('[data-sequence-group]').forEach(b=>b.onclick=()=>highlight(b.dataset.sequenceGroup==='left'?IDS.slice(0,5):b.dataset.sequenceGroup==='right'?IDS.slice(5,10):IDS.slice(10)));
   const highlight=ids=>$('imu-duck-frame')?.contentWindow?.postMessage({type:'imu-model-highlight',version:1,ids},location.origin);
   function selectJoint(id){selected=id;window.dispatchEvent(new CustomEvent('duck-restored-joint',{detail:id}));highlight([id]);window.DuckCalibration?.select(id);paintJoint();}
   function paintJoint(){const i=IDS.indexOf(selected),s=last?.runtime;const position=s?.raw_pos?.[i],zero=s?.zero_pos?.[i];text('sequence-selected',`当前 ID ${selected}`);text('sequence-selected-detail',`ID ${selected} · 编码 ${position??'—'} · 零位 ${zero??'—'}`);window.DuckCalibration?.paint();}
   window.addEventListener('duck-calibration-select',e=>selectJoint(e.detail));
-  $('wl-home').textContent='校准回中';
+  $('wl-home').textContent='回正';
   function feedbackAge(s=last?.runtime){return Number.isFinite(s?.feedback_age_ms)&&s.feedback_age_ms>=0?s.feedback_age_ms+Math.max(0,performance.now()-lastReceivedAt):Infinity;}
   function ageAtReceipt(s,requestMs){
     if(!Number.isFinite(s?.feedback_age_ms)||s.feedback_age_ms<0)return Infinity;
@@ -191,7 +191,7 @@
       Math.max(s.feedback_age_ms,native+delivery+sinceObservation):s.feedback_age_ms+requestMs;
   }
   function homeFeedbackFresh(){return last?.connected&&last?.runtime?.full_robot_ready===true&&feedbackAge()<150;}
-  let reported=null,reportedAt=0,feedbackRateAt=-Infinity;
+  let reported=null,reportedAt=0,reportedPoseBasis=false,feedbackRateAt=-Infinity;
   function reportedAge(){return reported?reported.feedback_age_ms+Math.max(0,performance.now()-reportedAt):Infinity;}
   function paintReportedState(){
     // Transport liveness, last reported hardware state, and control freshness
@@ -230,18 +230,33 @@
     $('feedback-timing').dataset.freshness=last?.connected&&age<150?'fresh':'stale';
     $('feedback-timing').title='板端实际接收频率，取整显示，每两秒更新一次。精确反馈年龄见诊断；控制仍按150毫秒时效判断。';
   }
+  const inTray=()=>last?.runtime?.tray_motion_guard?.detected===true||(!last?.runtime&&reported?.tray_motion_guard?.detected===true);
+  const motionLocked=()=>inTray()||!!last?.runtime?.motion_inhibited;
+  function paintPoseActions(){
+    const tray=inTray();
+    $('pose-presets').hidden=tray;
+    $('tray-motion-lock').hidden=!tray;
+    // These buttons open an action preview. Brief wireless/render jitter must
+    // not repaint them. Confirmation still requires <150 ms feedback and the
+    // board independently checks its sensors and tray lock before enabling.
+    const previewAvailable=reportedAge()<2000&&(last?.runtime?last.runtime_basis_matches:reportedPoseBasis);
+    $('wl-home').disabled=motionLocked()||!!history?.active||!previewAvailable||!!window.DuckCalibration?.snapshot()?.calibration?.active;
+    $('bench-policy').disabled=$('wl-home').disabled||!keyboardCapabilitiesReady();
+    // The tray prohibits torque and motion, but is precisely where unloaded
+    // mechanical calibration belongs. Opening this dialog is read-only.
+    $('sequence-toggle').disabled=!!history?.active;
+    $('sequence-toggle').title=history?.active?'先返回实时，再打开校准':'托盘内可进行卸力中位校准';
+  }
   function paintFreshness(){
     const s=last?.runtime,fresh=last?.connected&&feedbackAge()<150;
     paintReportedState();
-    $('wl-home').disabled=!!s?.motion_inhibited||!!history?.active||!homeFeedbackFresh()||!last?.runtime_basis_matches||!!window.DuckCalibration?.snapshot()?.calibration?.active;
-    $('bench-policy').disabled=$('wl-home').disabled||!keyboardCapabilitiesReady();
-    $('sequence-toggle').disabled=!!s?.motion_inhibited||!!history?.active;
-    $('bench-policy').textContent=s?.motion_inhibited?'托盘静止 · 动作锁定':'站立 / 起身';
+    paintPoseActions();
     history?.update();
     $('bench-pick').disabled=$('bench-roulade').disabled=!fresh||!automaticReady();
     return homeFeedbackFresh();
   }
   $('wl-home').onclick=()=>{
+    if(motionLocked()){note('托盘或维护动作锁定中，不能回正。');return;}
     if(!homeFeedbackFresh()||window.DuckCalibration?.snapshot()?.calibration?.active){note('反馈未确认或校准进行中，请等待当前状态。');return;}
     const target=last.runtime.policy_targets;
     if(last.runtime.mode==='hold'&&Array.isArray(target)&&target.length===15&&target.every(value=>Number.isFinite(value)&&value===0)){note('正在保持校准中位，无需重复回正');return;}
@@ -254,12 +269,11 @@
   controls.innerHTML='<button id="bench-tests-toggle" class="quiet" aria-haspopup="dialog" aria-controls="bench-test-panel" aria-expanded="false">控制</button>';
   $('sequence-toggle').before(controls);
   const actions=document.createElement('div');actions.className='bench-actions';
-  actions.innerHTML='<button id="bench-policy">站立 / 起身</button><button id="bench-control-stop" class="danger">停止 / 卸力</button>';
+  actions.innerHTML='<button id="bench-policy" title="启动零速站立，必要时先起身">站立姿态</button><button id="bench-control-stop" class="danger">停止 / 卸力</button>';
   $('bench-test-panel').querySelector('p').after(actions);
-  // Ground operation starts the model; calibration middle belongs with the tray.
-  $('wl-home').before($('bench-policy'));
+  // Show both poses on the live page. A detected tray replaces the whole group.
+  $('wl-home').after($('bench-policy'));
   $('wl-home').className='quiet';
-  $('calibration-single-details').before($('wl-home'));
   const extraActions=document.createElement('div');extraActions.className='bench-actions';
   extraActions.innerHTML='<button id="bench-pick" class="quiet">空载 Pick</button><button id="bench-roulade" class="quiet">翻滚模型</button><label class="bench-forward-speed">W 前进<select id="bench-forward-speed" aria-label="W 前进速度"><option value="0.2" selected>0.2 m/s</option></select></label>';
   $('bench-more-tests-content').querySelector('p').after(extraActions);
@@ -319,13 +333,13 @@
   async function prepare(action){
     if(startRequest){note('正在等待上次启动请求返回，请稍候。');return;}
     if(document.hidden||page!=='imu')return;
-    if(last?.runtime?.motion_inhibited){note('托盘内静止排查，动作已锁定。');return;}
+    if(motionLocked()){note('托盘或维护动作锁定中，保持卸力。');return;}
     if(history?.active){note('先返回实时姿态，再启动动作。');return;}
     if((action==='hold'||action==='policy')&&(owned||sessionPending))await stop();
     if(action==='policy'&&!keyboardCapabilitiesReady()){pending=null;note('键盘控制升级待部署；当前不会启动策略或发送新协议。');paintKeyboard();return;}
     if((action==='pick'||action==='roulade')&&!automaticReady()){pending=null;note('先松开走动键，停稳后再启动动作。');return;}
     pending={action,forwardSpeed:forwardSpeed()};
-    text('bench-motion-description',{hold:'托稳或放入校准托盘后，回到校准中位并保持。地面站立请使用“站立 / 起身”。',policy:'将进入站立 / 跌倒起身策略并启用本页键盘，起步零速度。W用前进策略0.2 m/s，Shift+W同策略0.3；S用原模型后退指令0.3（仿真实测约0.18–0.22 m/s），A/D用原模型原地左右转1 rad/s。有净AD优先转向，无净转向再按净WS前后，相反键抵消，走动松键停止。专用模型互换先当前零速刹停3秒、原站立一帧，再执行仍按住的最新方向；头部先累计，回原站立后应用，嘴即时。K/I按档低头抬回、松键保持，腿配合；J/L左右看（低头时延后），U/O张闭嘴；走动前先抬回。Space请求一次官方翻滚（历史实物未通过），Esc停止卸力。所有运动实物待验收。',pick:'将执行一次空载低头开合嘴动作，结束后回到站立策略。',roulade:'将执行一次官方翻滚模型。历史实物翻滚未通过，不预设本次成功。'}[action]);
+    text('bench-motion-description',{hold:'离开托盘并稳妥支撑机身后，回到校准中位并保持。这个姿态不保证地面平衡；地面站立请用“站立姿态”。',policy:'将进入站立 / 跌倒起身策略并启用本页键盘，起步零速度。W用前进策略0.2 m/s，Shift+W同策略0.3；S用原模型后退指令0.3（仿真实测约0.18–0.22 m/s），A/D用原模型原地左右转1 rad/s。有净AD优先转向，无净转向再按净WS前后，相反键抵消，走动松键停止。专用模型互换先当前零速刹停3秒、原站立一帧，再执行仍按住的最新方向；头部先累计，回原站立后应用，嘴即时。K/I按档低头抬回、松键保持，腿配合；J/L左右看（低头时延后），U/O张闭嘴；走动前先抬回。Space请求一次官方翻滚（历史实物未通过），Esc停止卸力。所有运动实物待验收。',pick:'将执行一次空载低头开合嘴动作，结束后回到站立策略。',roulade:'将执行一次官方翻滚模型。历史实物翻滚未通过，不预设本次成功。'}[action]);
     if(STAND_ONLY&&action==='policy')text('bench-motion-description','将启动原版零速站立/必要起身并保持。普通抬头、左右看与嘴部原接口保留；行走/快跑/深度Pick/翻滚默认停用，翻滚断电原因尚未修复。');
     if(BASIC&&action==='policy')text('bench-motion-description','将启用新版基础键盘模型与原版必要起身，初始零速度。W前进0.2、Shift+W前进0.3、S后退−0.3 m/s，A/D原地左右转±1 rad/s；净转向优先，相反键抵消，松键立即发送零速。同一actor连续运行，没有旧版3秒刹车。JKLUIO、Space、Pick和头部回中本轮停用。实物行走/停稳及起身交接尚待验收。');
     dialog.showModal();
@@ -350,7 +364,7 @@
     const priorUptime=last?.runtime?.uptime_s,priorEpoch=last?.runtime?.pc_host_epoch;
     if(!action)return;
     if(document.hidden||page!=='imu')return;
-    if(last?.runtime?.motion_inhibited){pending=null;note('托盘内静止排查，动作已锁定。');return;}
+    if(motionLocked()){pending=null;note('托盘或维护动作锁定中，保持卸力。');return;}
     if(history?.active){pending=null;note('先返回实时姿态，再启动动作。');return;}
     if(action==='policy'&&!keyboardCapabilitiesReady()){pending=null;note('键盘控制升级待部署；未发送策略启动请求。');paintKeyboard();return;}
     let attempt=null;
@@ -475,7 +489,7 @@
       const requestStarted=performance.now(),snapshot=await api('/api/bench/status'+cursor);if(generation!==actionGeneration)return;
       lastReceivedAt=performance.now();last=snapshot;
       if(last.runtime)last.runtime={...last.runtime,feedback_age_ms:ageAtReceipt(last.runtime,lastReceivedAt-requestStarted)};
-      if(last.runtime){reported=last.runtime;reportedAt=lastReceivedAt;}
+      if(last.runtime){reported=last.runtime;reportedAt=lastReceivedAt;reportedPoseBasis=!!last.runtime_basis_matches;}
       window.dispatchEvent(new CustomEvent('duck-restored-status',{detail:last}));const s=last.runtime;
       if(statusErrorMessage&&$('wl-result').textContent===statusErrorMessage)note('');statusErrorMessage=null;
       const fresh=paintFreshness();
@@ -515,10 +529,7 @@
         currentKnown?'reported':current?.supported?'pending':'unknown');
       text('wl-home-state',s?`${labels[s.mode]||s.mode} · ${s.recovery?.phase||'—'} · 倾角 ${Number.isFinite(s.recovery?.angle_deg)?s.recovery.angle_deg.toFixed(1)+'°':'—'} · 反馈 ${s.feedback_hz?.toFixed(1)??'—'} Hz`:'主控无线未连接；页面保留，连接后只读恢复。');
       if(maintenanceView?.maintenance?.active&&!maintenanceView.maintenance.integrated)text('wl-home-state','厂家校准维护中，正式模型与实时姿态显示暂停。当前扭矩状态需要重新读回。');
-      $('wl-home').disabled=!!s?.motion_inhibited||!!history?.active||!homeFeedbackFresh()||!last.runtime_basis_matches||!!maintenanceView?.calibration?.active;
-      $('bench-policy').disabled=$('wl-home').disabled||!keyboardCapabilitiesReady();
-      $('sequence-toggle').disabled=!!s?.motion_inhibited||!!history?.active;
-      $('bench-policy').textContent=s?.motion_inhibited?'托盘静止 · 动作锁定':'站立 / 起身';history?.update();
+      paintPoseActions();history?.update();
       $('bench-pick').disabled=$('bench-roulade').disabled=!fresh||!automaticReady();
       if(await handleFeedbackGap(fresh))return;
       if(owned&&(fresh&&!sessionPending&&(s?.mode==='off'||s?.mode==='shadow')||controlledMode==='policy'&&!keyboardCapabilitiesReady())){
@@ -533,7 +544,7 @@
       paintSpeed();text('simple-pending',keyboardCapabilitiesReady()?'基线：前进0.2/0.3 + 导航纯后退/原地转向 + 手动Pick；净转向优先，实物待验收。':'键盘控制升级待部署；原回正、校准与停止入口保留。');
       if(BASIC&&keyboardCapabilitiesReady())text('simple-pending','新版基础模型：前后左右与松键零速均为同一actor；头嘴、Pick、翻滚本轮停用，实物验收待进行。');
       text('diag-service','工作台 '+last.revision);text('diag-controller',last.connected?'已连接':'未连接');text('diag-torque',torqueKnown?motionLabel(s):'未知');
-      text('diag-identity',last.runtime_basis_matches?'新零位 / 直接起身参数匹配':'当前主控基线待读取或不匹配');text('diag-model',s?.active_model||'模型尚未运行');text('diag-refresh-note',last.error||`本地源文件 ${last.baseline.files_checked} 项核对：${last.baseline.local_sources_verified?'通过':'失败'}；主控源哈希另行验收。`);
+      text('diag-identity',last.runtime_basis_matches?'姿态接口参数匹配；运行版本见“固件”':'当前主控姿态参数待读取或不匹配');text('diag-model',s?.active_model||'模型尚未运行');text('diag-refresh-note',last.error||`本地源文件 ${last.baseline.files_checked} 项核对：${last.baseline.local_sources_verified?'通过':'失败'}；主控源哈希另行验收。`);
       text('comm-version','基于 '+last.baseline.reference.slice(0,12));text('comm-result','安装 / 更新继续使用已验证的专项流程。');
       for(const id of ['comm-usb','comm-update','comm-discover'])$(id).disabled=true;
       paintJoint();paintTest(last.test);paintKeyboard();sendPose(s);
@@ -542,7 +553,8 @@
       loseOwnership();if(last)last.connected=false;sendPose(null);
       statusErrorMessage='电脑服务读取失败：'+e.message;
       paintReportedState();text('diag-controller','待读取');text('diag-torque','未知');
-      for(const id of ['wl-home','bench-policy','bench-pick','bench-roulade'])$(id).disabled=true;
+      paintPoseActions();
+      for(const id of ['bench-pick','bench-roulade'])$(id).disabled=true;
       note(statusErrorMessage);
     }finally{busy=false;}
   }

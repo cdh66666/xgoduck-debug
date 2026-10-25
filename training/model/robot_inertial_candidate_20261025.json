@@ -1,0 +1,223 @@
+{
+  "status": "EXPERIMENTAL_INERTIAL_CANDIDATE_NOT_HARDWARE_VALIDATED",
+  "source_xml_sha256": "4160b1cb64baac710049cf91a9faf37975c9311dc63dac2413d4a9ac82883231",
+  "xml": "D:\\codex\\xgoduck-debug\\training\\model\\robot_inertial_candidate_20261025.xml",
+  "xml_sha256": "c89d853c85d3b04ab2027cc2c413d48b95ad93aa002d064a3cc95b69954838af",
+  "total_mass_kg": 0.826,
+  "source_total_mass_kg": 0.8255,
+  "original_trunk_mass_kg": 0.25528788690710374,
+  "original_trunk_center_m": [
+    -0.016291346337,
+    -0.000155041755885,
+    -0.0243823159184
+  ],
+  "new_trunk_mass_kg": 0.25578788690710363,
+  "new_trunk_center_m": [
+    -0.01402062873638018,
+    -2.998236851048199e-05,
+    -0.02606237270610519
+  ],
+  "new_trunk_inertia_kg_m2": [
+    [
+      0.00015852341212941213,
+      3.311110319416177e-07,
+      -3.804016035607142e-05
+    ],
+    [
+      3.311110319416177e-07,
+      0.00022465117609239712,
+      7.001238076777936e-07
+    ],
+    [
+      -3.804016035607142e-05,
+      7.001238076777936e-07,
+      0.00018100477445351856
+    ]
+  ],
+  "parameters": {
+    "uno_q_mass_g": 30.0,
+    "servo_mass_g": 21.0
+  },
+  "parts": [
+    {
+      "name": "battery",
+      "mass_kg": 0.108,
+      "center": [
+        -0.01783791694929808,
+        -0.00011111237108707413,
+        -0.03279827839287466
+      ],
+      "inertia_per_kg": [
+        [
+          0.0004575188177714082,
+          -2.1794572850773476e-20,
+          4.226826249846977e-19
+        ],
+        [
+          -2.1794572850773476e-20,
+          0.00038702695238385283,
+          3.6324288084622456e-20
+        ],
+        [
+          4.226826249846977e-19,
+          3.6324288084622456e-20,
+          0.00011854591184248232
+        ]
+      ],
+      "volume_m3": 3.91395606849453e-05,
+      "source": "User: battery about 108 g; existing two-cell assembly geometry; uniform component density"
+    },
+    {
+      "name": "trunk_servos",
+      "mass_kg": 0.063,
+      "center": [
+        0.009333755684386599,
+        -5.274802739459893e-15,
+        -0.014118256637061639
+      ],
+      "inertia_per_kg": [
+        [
+          0.00045112998420951097,
+          3.719188658242975e-15,
+          -3.333881650025706e-05
+        ],
+        [
+          3.719188658242975e-15,
+          0.0002940152933763278,
+          6.581551155190926e-16
+        ],
+        [
+          -3.333881650025706e-05,
+          6.581551155190926e-16,
+          0.00044076635843713136
+        ]
+      ],
+      "volume_m3": 4.183721564090895e-05,
+      "source": "Three parent-mounted servos; HD-1910 nominal 21 +/-2 g each; uniform assembly density approximation"
+    },
+    {
+      "name": "uno_q",
+      "mass_kg": 0.03,
+      "center": [
+        -0.037411978371834645,
+        -0.0007926377627517542,
+        -0.031125543122422276
+      ],
+      "inertia_per_kg": [
+        [
+          0.0006625149663683435,
+          -3.5444027806008346e-06,
+          -4.822951544303467e-06
+        ],
+        [
+          -3.5444027806008346e-06,
+          0.0003899745438827063,
+          2.0237301522968516e-05
+        ],
+        [
+          -4.822951544303467e-06,
+          2.0237301522968516e-05,
+          0.0002883108372733638
+        ]
+      ],
+      "volume_m3": 8.332583625984857e-06,
+      "source": "Unverified board-only mass prior, default 30 g; test 20..40 g; geometry from existing UNO Q mesh"
+    },
+    {
+      "name": "extension",
+      "mass_kg": 0.02,
+      "center": [
+        -0.04797831785479921,
+        0.002217102845298256,
+        -0.030410389105218295
+      ],
+      "inertia_per_kg": [
+        [
+          0.0006817810529822868,
+          1.0752493195472172e-05,
+          -7.343802793604074e-06
+        ],
+        [
+          1.0752493195472172e-05,
+          0.0004475718502487232,
+          3.222181407759648e-06
+        ],
+        [
+          -7.343802793604074e-06,
+          3.222181407759648e-06,
+          0.0002489423398174812
+        ]
+      ],
+      "volume_m3": 8.62400886324782e-06,
+      "source": "User: extension board about 20 g; uniform existing mesh density"
+    },
+    {
+      "name": "bearings",
+      "mass_kg": 0.01116026964774713,
+      "center": [
+        0.019999329027082676,
+        1.038510911888591e-06,
+        -0.02600000211528918
+      ],
+      "inertia_per_kg": [
+        [
+          0.0003535217105007378,
+          -4.49199833757952e-09,
+          -5.743378879111767e-16
+        ],
+        [
+          -4.49199833757952e-09,
+          4.7275760290124014e-05,
+          5.053355028464165e-16
+        ],
+        [
+          -5.743378879111767e-16,
+          5.053355028464165e-16,
+          0.0003981836914216513
+        ]
+      ],
+      "volume_m3": 1.4216904009868957e-06,
+      "source": "Existing ring geometry; homogeneous steel density approximation 7850 kg/m3"
+    },
+    {
+      "name": "printed_trunk",
+      "mass_kg": 0.023627617259356498,
+      "center": [
+        -0.01646847277801624,
+        -0.0006874795928404017,
+        -0.017040816814889472
+      ],
+      "inertia_per_kg": [
+        [
+          0.0011065921791513949,
+          -2.7134371792484086e-05,
+          -0.00039316956893522187
+        ],
+        [
+          -2.7134371792484086e-05,
+          0.0015965237935531165,
+          -4.636533223411458e-06
+        ],
+        [
+          -0.00039316956893522187,
+          -4.636533223411458e-06,
+          0.0014288909475151956
+        ]
+      ],
+      "volume_m3": 5.2385388253458864e-05,
+      "source": "Residual trunk mass budget; uniform effective density across actual printed mesh; PETG 15% infill is not a measured component mass"
+    }
+  ],
+  "unchanged": "All contact geometry, other articulated-body inertials, policy HOME and actuator parameters",
+  "limitations": [
+    "Other body masses retain prior CAD lumped inertials, not newly weighed PETG parts",
+    "Board-only UNO Q mass and printed density require sensitivity testing",
+    "Uniform-density mesh approximation does not identify individual motor rotor COM",
+    "This is a dynamics candidate, not a new mechanical design or a structure-strength validation"
+  ],
+  "sources": {
+    "uno_q_geometry": "https://docs.arduino.cc/resources/datasheets/ABX00162-datasheet.pdf",
+    "servo_nominal": "https://ftservo.github.io/ftservo-wiki/products/models/hd-1910-c001/main/"
+  },
+  "compiled_total_mass_kg": 0.8259999999999963
+}

@@ -97,5 +97,14 @@ class JointFeedbackTests(unittest.TestCase):
             self.assertEqual(sent[3],22.)
             self.assertEqual(self.c.last_action[12],sent[12])
 
+    def test_sit_with_one_invalid_fusion_update_holds_last_target(self):
+        self.c.mode='policy';self.c.policy_needs_reset=False;self.c.sit_active=True
+        goal=[0.,0.,54.,83.,29.,0.,0.,-54.,-83.,-29.,20.,20.,0.,0.,0.]
+        self.c.last_action=list(goal);self.c.filtered['imu_fusion_updated']=False
+        self.step(10.01)
+        sent=COMMAND.unpack(self.bridge.notify.call_args.args[1])[7:]
+        self.assertEqual(tuple(sent),tuple(goal))
+        self.assertEqual(self.c.mode,'policy')
+
 
 if __name__=='__main__':unittest.main(verbosity=2)

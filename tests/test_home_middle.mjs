@@ -33,7 +33,7 @@ function harness(file,{trained=false,standOnly=false,sourceTransform=value=>valu
   querySelectorAll:selector=>selector==='#model-list button'?$('model-list').children:[],
   addEventListener:(name,fn)=>{events['document:'+name]=fn;}};
  const window={COMMISSION_TOKEN:'offline',XGO_RELEASE_PROFILE:standOnly?{schema:'xgoduck-stand-getup-publication-profile-v1'}:undefined,parent:{postMessage:(...args)=>messages.push(args)},addEventListener:(name,fn)=>{(events[name]??=[]).push(fn);},dispatchEvent(){}};
- window.DuckCalibration={paint(){},select(){},snapshot:()=>calibrationState,isMaintenance:()=>!!calibrationState?.maintenance?.active,stop:async()=>{}};
+ window.DuckCalibration={paint(){},select(){},isBusy:()=>!!calibrationState?.calibration?.active,openFlow(){},closeFlow(){},snapshot:()=>calibrationState,isMaintenance:()=>!!calibrationState?.maintenance?.active,stop:async()=>{}};
  const context={setTimeout:(fn,ms)=>{clock+=ms;return setImmediate(fn);},console,document,window,location:{origin:'http://offline'},navigator:{sendBeacon(){throw Error('Unexpected unload write');}},
   Date,Number,Math,Map,Set,JSON,Error,Blob,URL,AbortSignal,performance:{now:()=>clock},CustomEvent:class{constructor(name,value){this.name=name;this.detail=value?.detail;}},
   setInterval:(fn,delay)=>{intervals.push({fn,delay});},fetch:async(url,options={})=>{const body=options.body?JSON.parse(options.body):undefined;calls.push({url,body});if(url==='/api/bench/calibration/action'){if(restoreError)throw Error('退出校准请求失败');calibrationState.calibration.active=true;return {ok:true,json:async()=>structuredClone(calibrationState.calibration)};}if(url==='/api/bench/calibration'){if(restoreDelayReads>0)restoreDelayReads--;else{calibrationState.maintenance.active=false;calibrationState.maintenance.phase='official';calibrationState.calibration.active=false;}return {ok:true,json:async()=>structuredClone(calibrationState)};}
@@ -57,6 +57,22 @@ let checks=0;const check=(condition,message)=>{assert.ok(condition,message);chec
 const posts=h=>h.calls.filter(call=>call.body);
 const maintained=()=>({maintenance:{active:true,phase:'maintenance',integrated:true},calibration:{active:false,error:''}});
 const idle=harness('official-workbench.js',{standOnly:true});await settle();
+check(idle.$('wl-home').textContent==='回正','HOME has the requested pose name');
+check(!idle.$('pose-presets').hidden&&idle.$('tray-motion-lock').hidden,'ground view shows two presets, not the tray indicator');
+idle.state.runtime.motion_inhibited=true;idle.state.runtime.tray_motion_guard={detected:true};await idle.poll();
+check(idle.$('pose-presets').hidden&&!idle.$('tray-motion-lock').hidden,'detected tray replaces both pose buttons with lock status');
+check(idle.$('wl-home').disabled&&idle.$('bench-policy').disabled&&!idle.$('sequence-toggle').disabled,'tray blocks motion but leaves calibration entry usable');
+idle.$('sequence-panel').hidden=true;idle.$('sequence-toggle').onclick();
+check(idle.$('calibration-flow-dialog').open&&posts(idle).length===0,'opening tray calibration is read-only');
+idle.$('calibration-panel-close').onclick();
+idle.$('wl-home').onclick();idle.$('bench-policy').onclick();
+check(!idle.$('bench-motion-dialog').open&&posts(idle).length===0,'tray cannot prepare either pose or send commands');
+idle.state.runtime.motion_inhibited=false;await idle.poll();
+check(idle.$('wl-home').disabled&&idle.$('bench-policy').disabled,'tray detection alone blocks poses even without an explicit maintenance lock');
+idle.state.runtime.tray_motion_guard.detected=false;idle.state.runtime.motion_inhibited=true;await idle.poll();
+check(!idle.$('pose-presets').hidden&&idle.$('tray-motion-lock').hidden&&idle.$('wl-home').disabled,'other motion lock does not pretend the duck is in the tray');
+idle.state.runtime.motion_inhibited=false;await idle.poll();
+check(!idle.$('pose-presets').hidden&&!idle.$('wl-home').disabled,'ground presets return without sending any action');
 idle.state.runtime.angles=Array(15).fill(.35);await idle.poll();
 idle.$('wl-home').onclick();
 check(posts(idle).length===0,'fifteen finite fresh angles at threshold cause no writes');

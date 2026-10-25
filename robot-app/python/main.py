@@ -20,6 +20,9 @@ from motion_recording import MotionRecorder
 # Bound GIL handoff latency between the 100 Hz receiver, policy and WebUI.
 sys.setswitchinterval(0.00025)
 controller = Controller(Bridge)
+sit_preparation = controller.prepare_sit()
+if not sit_preparation['ok']:
+    print('Optional sit model unavailable:', sit_preparation['error'], flush=True)
 motion_recorder = MotionRecorder(controller.status)
 ui = WebUI(port=9527)
 # Preserve wireless API authentication while the official page is proxied over SSH.
@@ -83,6 +86,16 @@ def filtering(body: dict):
         leg, head = controller.set_action_alphas(**body)
         return {'leg':leg,'head':head}
     except (TypeError, ValueError) as exc: raise HTTPException(400, str(exc))
+
+def sit(_body: dict = None):
+    require_motion_permission()
+    try:return controller.start_sit((_body or {}).get('phase_limit',1.))
+    except ValueError as exc:raise HTTPException(400,str(exc))
+
+def sit_stand(_body: dict = None):
+    require_motion_permission()
+    try:return controller.start_sit_stand()
+    except ValueError as exc:raise HTTPException(400,str(exc))
 
 def pick(_body: dict = None):
     require_motion_permission()
@@ -185,6 +198,8 @@ def motion_session(sid: str):
 ui.expose_api('GET', '/api/status', status)
 ui.expose_api('POST', '/api/mode', mode)
 ui.expose_api('POST', '/api/command', command)
+ui.expose_api('POST', '/api/sit', sit)
+ui.expose_api('POST', '/api/stand', sit_stand)
 ui.expose_api('POST', '/api/filter', filtering)
 ui.expose_api('POST', '/api/pick', pick)
 ui.expose_api('POST', '/api/roulade', roulade)

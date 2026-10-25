@@ -68,10 +68,11 @@
     "robot-app/python/main.py": {
       "source": "verified-runtime/python/main.py",
       "source_sha256": "702045380734619107b7282f4ce58f18ec5a4b4800c370b23812d2b6630a9a8e",
-      "published_sha256": "107b999509a856833c420c6df5b601c2e437d60698d418894997213e6cb8abdd",
+      "published_sha256": "0ab1cb0f1fd9a1f09571f05034b1c73b4243be91613dcd79e68c4443312abe27",
       "changes": [
         "2026-10-24 measured ordering/queue/latest-display repair; see docs/LATENCY_FIX_20261024.md",
-        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
       ]
     },
     "robot-app/python/requirements.txt": {
@@ -83,13 +84,15 @@
     "robot-app/python/controller.py": {
       "source": "verified-runtime/python/controller.py",
       "source_sha256": "5c798b211b3ef05deeef6802316c8307d5f7c0655e54c346652be10b7fd2afe5",
-      "published_sha256": "745933986afc721fec5d94cd59ab31713aa5bc0ccaab010b6ac4d7fcac10363f",
+      "published_sha256": "f9d6ab38de9218e1c8f95bdc986dfb186671f6e3ca3e1cb593cc57f3032e5340",
       "changes": [
         "Reject same-boot old endpoints without false restart; snapshot receive age under the controller lock.",
         "Reject reordered batches and conservatively recover repeated startup markers or source loss; withdraw old fit/zero sync and preserve explicit disabled OFF intent.",
         "Use official policy HOME, preserve head limit and latch sustained per-axis feedback loss before/after inference.",
         "2026-10-24 static debugging: mDNS fallback, preserve explicit disabled OFF on receiver reset, personal page mark; see docs/STATIC_DEBUG_20261024.md",
-        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; add tray motion guard and correct right-leg filter grouping; add explicit inertial-model provenance and bounded retraining. Current sources are not installed; backward/turning physical acceptance remains open.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
       ]
     },
     "robot-app/python/rl_core.py": {
@@ -103,17 +106,21 @@
     "robot-app/python/wire.py": {
       "source": "verified-runtime/python/wire.py",
       "source_sha256": "0083ef513f97dedac7cd075fcc0842bb80afb4ad64e5e9f6fcae46387c2d4fdb",
-      "published_sha256": "21f8acfe61e220edf40f18a53f69ffca93fa8d4bebb19fb63abdf1a666a4d36f",
+      "published_sha256": "e8d0d089473f2348ebe78f46b6fe87239859b39827cdaf5620be69b87fae4550",
       "changes": [
-        "Expose the already-validated packet boot identity without changing the wire ABI."
+        "Expose the already-validated packet boot identity without changing the wire ABI.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; add tray motion guard and correct right-leg filter grouping; add explicit inertial-model provenance and bounded retraining. Current sources are not installed; backward/turning physical acceptance remains open.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
       ]
     },
     "robot-app/python/policy.py": {
       "source": "verified-runtime/python/policy.py",
       "source_sha256": "2029e370328ae7e55f43e70a98a86030c63508439cc607e6d202b1c1f207c017",
-      "published_sha256": "04c0303f976446c97b4bf6b148f729ca721b58ce4c1f8110a0a8579df17572da",
+      "published_sha256": "b2e6ef5982f8c6162bffebd682cc2fa0a12d7da8fda4bcecfeb94f450bbc33b3",
       "changes": [
-        "Explicit official shared-HOME contract, retaining opt-in metadata adaptation for independent model use."
+        "Explicit official shared-HOME contract, retaining opt-in metadata adaptation for independent model use.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; add tray motion guard and correct right-leg filter grouping; add explicit inertial-model provenance and bounded retraining. Current sources are not installed; backward/turning physical acceptance remains open.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
       ]
     },
     "robot-app/python/current_telemetry.py": {
@@ -127,8 +134,11 @@
     "robot-app/python/factory_calibration.py": {
       "source": "verified-runtime/python/factory_calibration.py",
       "source_sha256": "4ff880610d2bf634348cdeebdda0a7e88aee0338393599cb11a3f4a5e90b5422",
-      "published_sha256": "4ff880610d2bf634348cdeebdda0a7e88aee0338393599cb11a3f4a5e90b5422",
-      "changes": []
+      "published_sha256": "19edf459648e31b332b6c725b909df002144b2e95a7871700f8a1c9bfbf1ac35",
+      "changes": [
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; add tray motion guard and correct right-leg filter grouping; add explicit inertial-model provenance and bounded retraining. Current sources are not installed; backward/turning physical acceptance remains open.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
+      ]
     },
     "robot-app/python/proc.py": {
       "source": "verified-runtime/python/proc.py",
@@ -139,8 +149,13 @@
     "robot-app/python/recovery.py": {
       "source": "verified-runtime/python/recovery.py",
       "source_sha256": "125e7a2cb2d20186dc88b95652a35b55a4d6859a7ce187e728d25c54cceff664",
-      "published_sha256": "125e7a2cb2d20186dc88b95652a35b55a4d6859a7ce187e728d25c54cceff664",
-      "changes": []
+      "published_sha256": "c8e319e762e57535494cafdccce9993ff813bdb748edb8642327c73560774ee5",
+      "changes": [
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation.",
+        "2026-10-24: record failed ground/model comparisons and latest runtime boundaries; preserve the startup-classification candidate and the prominent return-to-live replay control. Physical standing has not passed.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; add tray motion guard and correct right-leg filter grouping; add explicit inertial-model provenance and bounded retraining. Current sources are not installed; backward/turning physical acceptance remains open.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
+      ]
     },
     "robot-app/python/release_profile.py": {
       "source": "verified-runtime/python/release_profile.py",
@@ -157,14 +172,20 @@
     "robot-app/sketch/factory_calibration.h": {
       "source": "verified-runtime/sketch/factory_calibration.h",
       "source_sha256": "22a0d55b4bd1302ee5d24d5d3352ed867695df08d2ccc4548b32541b2cde163a",
-      "published_sha256": "22a0d55b4bd1302ee5d24d5d3352ed867695df08d2ccc4548b32541b2cde163a",
-      "changes": []
+      "published_sha256": "e06f95455760b64d8e868fad4962d0949e524dbcd9d6b7f347fa99c40b119870",
+      "changes": [
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; add tray motion guard and correct right-leg filter grouping; add explicit inertial-model provenance and bounded retraining. Current sources are not installed; backward/turning physical acceptance remains open.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
+      ]
     },
     "robot-app/sketch/sketch.ino": {
       "source": "verified-runtime/sketch/sketch.ino",
       "source_sha256": "09eb23897face7cb89212fefc36c64ed155b0a0d723d7b38a618b52f7ada2599",
-      "published_sha256": "09eb23897face7cb89212fefc36c64ed155b0a0d723d7b38a618b52f7ada2599",
-      "changes": []
+      "published_sha256": "d6c7c0f407e98f087457ec138683fa84d76112f976114a657acd0f5fab2e964f",
+      "changes": [
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; add tray motion guard and correct right-leg filter grouping; add explicit inertial-model provenance and bounded retraining. Current sources are not installed; backward/turning physical acceptance remains open.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
+      ]
     },
     "robot-app/sketch/uart_fifo.h": {
       "source": "verified-runtime/sketch/uart_fifo.h",
@@ -269,9 +290,11 @@
     "pc/bench_calibration.py": {
       "source": "pc/bench_calibration.py",
       "source_sha256": "f42a132965eedde8d8dc708d061855abb3fa7177b81f6e44b86d218981c83c67",
-      "published_sha256": "d97c3433ca84d59dfaca556fe77539719b0b43883f8822e45fa6cb8ec06fdc9b",
+      "published_sha256": "c10bf949363b4634f2f652e0a0d82abd43c1f352ae38587e808394bd1c0dbfb6",
       "changes": [
-        "2026-10-24 replace obsolete firmware-switch calibration with the existing current integrated FactoryCalibration implementation; preserve current request semantics"
+        "2026-10-24 replace obsolete firmware-switch calibration with the existing current integrated FactoryCalibration implementation; preserve current request semantics",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; add tray motion guard and correct right-leg filter grouping; add explicit inertial-model provenance and bounded retraining. Current sources are not installed; backward/turning physical acceptance remains open.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
       ],
       "consolidated_from": {
         "source": "pre-simplification/pc/factory_calibration.py",
@@ -281,9 +304,10 @@
     "pc/bench_server.py": {
       "source": "pc/bench_server.py",
       "source_sha256": "2cb01fa6b5ce0f58503db7ccc1307a15da2e4123148b7d1608db89283e60c86e",
-      "published_sha256": "fe627d19ace45e2198621738a33730fc58a762277417f38b709818fdd20ab403",
+      "published_sha256": "a3bc43e026b121a16680890a7069b66d10e05607fd90bff46d5dee5a979d111d",
       "changes": [
-        "2026-10-24 initialize the current status reader and integrated calibration once; consolidate official baseline and remove unreachable old status/history/standalone entry"
+        "2026-10-24 initialize the current status reader and integrated calibration once; consolidate official baseline and remove unreachable old status/history/standalone entry",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
       ]
     },
     "pc/bench_tests.py": {
@@ -295,11 +319,12 @@
     "pc/factory_workbench.py": {
       "source": "pc/factory_workbench.py",
       "source_sha256": "47f8007e6e8dbbc6c6bb22848b6b1f7d1b9d8260294999a70570b0b3aafbef1a",
-      "published_sha256": "0cce96c694c4c70809e8aed2015dd083e239a2cdef8d2a04e48dfa60afbe48a5",
+      "published_sha256": "f06aa2f93d093d58a39aac92897b79180f477d9b58733c06ea20c8e192841e98",
       "changes": [
         "relative publication manifest instead of private deployment receipt",
         "2026-10-24 reuse the integrated base initialization and baseline; remove duplicate construction and inactive overlay watcher",
-        "2026-10-24 measured ordering/queue/latest-display repair; see docs/LATENCY_FIX_20261024.md"
+        "2026-10-24 measured ordering/queue/latest-display repair; see docs/LATENCY_FIX_20261024.md",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
       ]
     },
     "pc/model_http.py": {
@@ -417,8 +442,10 @@
     "pc/assets/bench-calibration.js": {
       "source": "pc/assets/bench-calibration.js",
       "source_sha256": "bcd470a6569264d771e57a98f558ffd20380e932cd93908ef8b3f0dddaafb88b",
-      "published_sha256": "bcd470a6569264d771e57a98f558ffd20380e932cd93908ef8b3f0dddaafb88b",
-      "changes": []
+      "published_sha256": "1187f98459a06a6322224ebabab17a88639848952345eb4cf6f2f8068365a326",
+      "changes": [
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
+      ]
     },
     "pc/assets/bench-models.html": {
       "source": "pc/assets/bench-models.html",
@@ -433,10 +460,11 @@
     "pc/assets/bench-workbench.css": {
       "source": "pc/assets/bench-workbench.css",
       "source_sha256": "ac4f67da2c918fe6102c6bb9f6b5d188f4f8ac50914d190aad6f89a929486dd5",
-      "published_sha256": "9141fe6cba0099ea2463cdc8f20dbf16508355cf1c173f886f546571e9afc062",
+      "published_sha256": "710cc65af408d330e708a0a3e67ab0cad9f53587aa7e7aafdebfe02a5fc24dca",
       "changes": [
         "2026-10-24 status semantics separated from frame freshness; see docs/STATUS_STABILITY_20261024.md",
-        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
       ]
     },
     "pc/assets/calibration-tray.html": {
@@ -588,12 +616,13 @@
     "pc/assets/official-workbench.js": {
       "source": "pc/assets/official-workbench.js",
       "source_sha256": "3c5b64ff84367df530fcf7734b118798fc1e64321e43f34c80c13ed302e60456",
-      "published_sha256": "9a0dcfb40f4180363934ef99114cc4ff7ae17f389c3db00bd4838be9da131b61",
+      "published_sha256": "6d09703cfdedd15ba3afeed22d6aedeb4480cea66af302fe6216ee26974c61a0",
       "changes": [
         "Expire status and motion eligibility together, including browser wait and queued old responses.",
         "2026-10-24 measured ordering/queue/latest-display repair; see docs/LATENCY_FIX_20261024.md",
         "2026-10-24 status semantics separated from frame freshness; see docs/STATUS_STABILITY_20261024.md",
-        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
       ]
     },
     "pc/assets/pose-playback.js": {
@@ -782,14 +811,17 @@
     "pc/index.html": {
       "source": "pc/index.html",
       "source_sha256": "83f01d2104a29e6065207da21c04a050289dd729475519dedcb83d24d36ff5aa",
-      "published_sha256": "893315bcaa013c5956e2803e91aedd516afeff4ed780a5c4391c0a7e661802dd",
+      "published_sha256": "42b37adeff6ed3d3daf58916533fea3e1bac8f0064312e95adf8b32056efa976",
       "changes": [
         "Remove the duplicated numbering heading and connection instruction around the real-model view.",
         "2026-10-24 static debugging: mDNS fallback, preserve explicit disabled OFF on receiver reset, personal page mark; see docs/STATIC_DEBUG_20261024.md",
         "2026-10-24 measured ordering/queue/latest-display repair; see docs/LATENCY_FIX_20261024.md",
         "2026-10-24 status semantics separated from frame freshness; see docs/STATUS_STABILITY_20261024.md",
         "2026-10-24 delegate duplicate model reception overlay to workbench status; see docs/STATUS_STABILITY_20261024.md",
-        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation."
+        "2026-10-24: restore the 50 Hz control clock, reduce diagnostic contention, and display the Pick mouth timing; physical standing remains subject to measured ground validation.",
+        "2026-10-24: record failed ground/model comparisons and latest runtime boundaries; preserve the startup-classification candidate and the prominent return-to-live replay control. Physical standing has not passed.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; add tray motion guard and correct right-leg filter grouping; add explicit inertial-model provenance and bounded retraining. Current sources are not installed; backward/turning physical acceptance remains open.",
+        "2026-10-25: preserve WorkBuddy handoff and accepted stance; adapt tray guard and right-leg filter correction to the actual official split board build; add unloaded direct-offset calibration, physical-model provenance and bounded retraining. Complete custom controller snapshot is not deployed; backward/turning physical acceptance remains open."
       ]
     },
     "pc/model-assets/model-data.json": {
@@ -1732,19 +1764,19 @@
       "role": "current stationary motion recording/replay, source-clock display, diagnostics or regression; physical standing and wireless root cause OPEN"
     },
     "MODEL_ACCEPTANCE.json": {
-      "sha256": "ba96312b076d9f532a4929d4dfa9bff1a3a589a725448016b5060f692c6142a8",
-      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
+      "sha256": "f55d5f1b98d88312e3ac8867dc45d581e7b38258da8d0b67b3d72c0d8c587f35",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "README.md": {
-      "sha256": "05cc8d3e4d625bab33533e87ef06cf2fad7c3abe7a007ebf684961b34548eda9",
-      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
+      "sha256": "b719d08a73c89876812dd0f297d327ed91c49e71e27e9eb410aecae2d434a4bd",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "RELEASE_PROFILE.json": {
       "sha256": "2fc534417e7d3a6f621eaabe9bcc91f31821f01dcd1e0f8d6142a037d8344972",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "RELEASE_RUNTIME.json": {
-      "sha256": "d1db9c73b5d45b0d59c5750e9ee5ff005e182a419ffb12541fe34ac13a44e1b3",
+      "sha256": "7f7cd941bd73d3c406c7546f1cb31ad74dcf7c64bf83d440f3d9826517f747a7",
       "role": "2026-10-24 stationary debug update or documentation; motion and wireless stability remain unverified"
     },
     "SNAPSHOT_VERIFICATION.json": {
@@ -2816,8 +2848,8 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "tests/test_home_middle.mjs": {
-      "sha256": "b167968a0fd35e91f4ba18a221e0e131d5c2d72860524f1b3dbe6315c0e63b05",
-      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+      "sha256": "ed6d9493412e855e359db22aaba1c1b3c4d257bfa793ca585624f2304505657d",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "tests/test_official_status_stream.py": {
       "sha256": "2323cda5ec7629c756ef43fb5f0fd1597c4aa9916674f2dca6219e4b2123e6c7",
@@ -2828,16 +2860,16 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "tests/test_release.py": {
-      "sha256": "7efb2f8271044561ea13f63d99d4595f13ea15ec09815fdba580a40f5e697556",
-      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
+      "sha256": "e1fb58b27abde89df2057ddd0a52cb4229df76f9139894c0cb588778b7b90874",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "tests/test_wireless_stall_recovery.py": {
       "sha256": "cd47e0712bd2e4df691140248c8335e9e5e49ab96731daac5c91d777de0bee0d",
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "tests/test_workbench.mjs": {
-      "sha256": "67159598ef88c9e7182054d1b82bbf849ac0f8dcde4c20f9cd763a6fe31b1671",
-      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
+      "sha256": "58be047a3363818640675053dc6d34dce8baa9e2b168ee28f5341fe93cf84449",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/.gitignore": {
       "sha256": "798bb7c6321a1cbc82ffe8f83009612189c14925d3cf328d4536c6167f0a070a",
@@ -2848,8 +2880,8 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "training/README.md": {
-      "sha256": "65d584db306d501b1dd26083494a14365a7466b85715bae942311310bc472f8b",
-      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+      "sha256": "1b4fbc87e0711636062d4e2abeffca1f4803b8bdc313d36416d2e6ae2cc2d16f",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/SOURCE_LINEAGE.json": {
       "sha256": "7c74f6de3fb2bbbb474214c184c7d19864b645a2f7883c253f6925bc1ec3209f",
@@ -2956,8 +2988,8 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "training/evaluate.py": {
-      "sha256": "af0d9d88ec1aea4d7903d447e8ff2248904d185ddda4a658f6ab7111023dd584",
-      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+      "sha256": "76fe8ec909784f5b939eac0f8d71b8a0eeff6912f3f5f2fc8617434fe0e799a3",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/lateral_reward.py": {
       "sha256": "8c6bbf79950575e304aaf94c8657cda696d9137a02a05f1af90c714ce90275c6",
@@ -3052,8 +3084,8 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "training/native_env.py": {
-      "sha256": "73d4db88e7f9d4674b8836135aaf4cd5a810b6d66a08c20976cccaabc0d3daac",
-      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+      "sha256": "ca688237d188e7d2c35ad18587f9b984b93f0743614b1ed6c20c2b38f6d4ef10",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/params/1910_m6.json": {
       "sha256": "ef2d51adfb1cc0831b9b02ca19aa9176fceecdf725148d084378d7d9a64afceb",
@@ -3084,8 +3116,8 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "training/requirements.txt": {
-      "sha256": "1f3faca719f41eb270d927c938a4c3a774f68c013c3c0ab514c5bf88f48ce2ea",
-      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+      "sha256": "0dee9fcc5362fade0568cff31b39e9a5cb39b9e2c925b3c82b9648a260be0c6f",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/tests/test_contract.py": {
       "sha256": "a45f57c073902bac493b4d86f8121d2b913f56f8fa4d0f57183017fd82584efc",
@@ -3096,12 +3128,12 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "training/train.py": {
-      "sha256": "4f5d603aa6850905b0ca75e26d80290c7d69b8583332d240693d6e9f3144f681",
-      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+      "sha256": "dbcd684a3f0aad506e74f566132cb82e1df82bcdc3c4027617a0c2a3ae747945",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/training_adapter.py": {
-      "sha256": "fd40b8d52f6111509852527584494b8248e0e15d4761e549d95c4daf106d0e8b",
-      "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
+      "sha256": "ec9af7e43c4afc986001df5f01419529d638e720e280e640fac2c6e58d0ce0a4",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/yaw_reward.py": {
       "sha256": "70bfeefa4e5a36ce27d08cea06a19839873f5f14bfa27e3c63ae902df367e9cc",
@@ -3160,8 +3192,8 @@
       "role": "current control/debugging source, bounded evidence summary or regression; full acceptance pending"
     },
     "tests/test_joint_feedback_loss.py": {
-      "sha256": "93dd07168cf14443358b8231660c14e3d30d112ac46a042fbe35c552e944e167",
-      "role": "current control/debugging source, bounded evidence summary or regression; full acceptance pending"
+      "sha256": "5ad10a2afdf5a2415d56087ae67a4ea6b7d8da6ce9b8a93f54509148989413c4",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "tests/test_official_policy_contract.py": {
       "sha256": "44b61f5115702d3f531dc5e4f78e789d5ea0fa6f18bfc0a529dc9bfe10999803",
@@ -3180,16 +3212,16 @@
       "role": "current stationary motion recording/replay, source-clock display, diagnostics or regression; physical standing and wireless root cause OPEN"
     },
     "pc/assets/motion-history.js": {
-      "sha256": "f882afd4300e22b19bf084e6ba5308856f95f844fb060267e25a5a51927b32d4",
-      "role": "stationary latency repair, measurement or regression; motion not tested"
+      "sha256": "1055b16d28adb81ebe2334ce0c94d479f5ea72817b2de6d53e9798d060beecee",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "pc/assets/motion-history.css": {
-      "sha256": "0cd546fc9122a295624459b0bae012272e8194938173e628ca12bbad77430364",
-      "role": "current stationary motion recording/replay, source-clock display, diagnostics or regression; physical standing and wireless root cause OPEN"
+      "sha256": "e1196e4d2f5d30a72956ae93a12d54c49c0655f37ab941c19d6d367893253b85",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "robot-app/python/motion_recording.py": {
-      "sha256": "78af2daf1f4fb76dd719e463ecd51d5682463fc0d2848d3700fcfb5cdfaf396d",
-      "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
+      "sha256": "d1114f46c9c6863de319461843e19bd3a999360fe7f65e31753449adffdf2edc",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "tests/test_motion_recording.py": {
       "sha256": "af21a70934325db89636beadfe6f34c90055feb00b5ef124aab9c022c17e6fbe",
@@ -3310,6 +3342,190 @@
     "docs/CONTROL_CYCLE_20261024.md": {
       "sha256": "ef4aa8d30e079eb48ee43a7e0cdfddcc77367242cf2f6524423e1d94164032f3",
       "role": "50 Hz scheduling / Pick mouth source, regression or measured validation; no claim of physical stability from unit tests"
+    },
+    "tests/test_recovery_startup.py": {
+      "sha256": "91cc2e2d1e7f002169187eb4b3a5e5abb7597100d543c6c25cb8a5b4e1528344",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "docs/GROUND_STANDING_20261024.md": {
+      "sha256": "dff64921ed68de1359af295053574d5ee5557c9c8093a92e2b1d7705e7874cd4",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/model/robot_massfix.xml": {
+      "sha256": "73b2b44bae1119b6dabc206fbb457e217ed23e7eb4dd69af539079094c3ccefd",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/tests/test_physical_model_binding.py": {
+      "sha256": "ef6583f820f5b79fd56e309c01099b3ae139b568750e24147380662d97002235",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/tools/build_inertial_candidate.py": {
+      "sha256": "46a43892502f587d64a450904b47fd9f1cf304433b3ceeff07344c8c7f3fdecf",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "robot-app/python/tray_guard.py": {
+      "sha256": "ef3392c8386e13bb194c889c7cbe0e0e6e54fa5e60c142a5e8841c4793066bb1",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "tests/test_policy_filter_groups.py": {
+      "sha256": "5ade0515ebffe45352ccdcc470df15b98c93bf818f01c2cfec8f40d5322168e3",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "docs/WORKBUDDY_HANDOFF_20261025.md": {
+      "sha256": "1d95c6da0ffe642dfb7a14192b1d5a5aec903531f403efaab10664b65a783ea9",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/model/robot_inertial_candidate_20261025.json": {
+      "sha256": "a362e39077febc49d7cfc5298a1a0ce778571edd80099255147d8b211dcb0348",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "tests/test_tray_guard.py": {
+      "sha256": "79df036e595bebc93460f0b8fbbb72d60f790572be4e00c868d60850810ab4d1",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/model/robot_inertial_candidate_20261025.xml": {
+      "sha256": "c89d853c85d3b04ab2027cc2c413d48b95ad93aa002d064a3cc95b69954838af",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "AGENTS.md": {
+      "sha256": "f812d8adf1f4a3e2c39488ccd6110734d2a5d169264f7ab145b12f972de5b3c0",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "simulation-model/robot_massfix.xml": {
+      "sha256": "73b2b44bae1119b6dabc206fbb457e217ed23e7eb4dd69af539079094c3ccefd",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/tests/test_inertial_candidate.py": {
+      "sha256": "60032e803c4325c883fb577ef5a99cf5c2c71802badc46a1658015da1b992015",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "tests/test_factory_unloaded.py": {
+      "sha256": "9ea97369c3e117bf7882a1e96fad3b0c4e0da7dbf002b3f139051c2e2b46e547",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "robot-app/python/native_factory.py": {
+      "sha256": "43f7535f736263e5ebefea76904508e7c423c89fdd911ddf6cdf7ed3362a7115",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "tests/factory_unloaded_test.cpp": {
+      "sha256": "9e56b06505096b8388608d224dcbe428ec882926068003415e5f5d7e26d9eba4",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "tests/test_sit_policy.py": {
+      "sha256": "8cf6f1c7b3670213dea5ebf9105b8a4d720a03f15ce25c976d48208ccb379c00",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "robot-app/python/sit_policy.py": {
+      "sha256": "fd2cd62e70a15934d30e59d1aa5ed2a13edbded6d0a0085fca1495f0b16110a5",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/sit_training.py": {
+      "sha256": "3e26c75ecc77d9702a7c412c24130b2e3f4f53f353e6b40d46a3063cf49ee7ed",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "robot-app/python/sit_runtime.py": {
+      "sha256": "b0aee1cf735f0720227d5aba121c23bc740508d9045f31ab153a7b71b43d97b3",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "pc/firmware-release.json": {
+      "sha256": "15a0f214e6baa441f1a7937266d26e75bab285001a6e4878b96cff57dd3abcfa",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "pc/firmware_install_remote.py": {
+      "sha256": "fd6e54280177e403023fcd7b01ace39d46f117dd484a344a49f2dd9fc4430d7e",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "tests/test_firmware_manager.py": {
+      "sha256": "dbc20927f81b40a82a1fa0c6589ed6a027d6a4820e950734cfda85863fb9b7f5",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "pc/servo_parser_check.py": {
+      "sha256": "cb5b23a3701b6ad42a3a3c5eded5064127070c189295afea9856103e1764003b",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "pc/control_clock_check.py": {
+      "sha256": "9f8b32f5fb361cdcfe724c27e4db7ffd9fd125e075a33f23a07b8289022689d9",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "robot-app/python/runtime_identity.py": {
+      "sha256": "f3e3d45eb80d82307107dbe5e1f372f8f5b34caf7d90a15fdd3587ebf05a6470",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "pc/assets/firmware.css": {
+      "sha256": "bb7f3d9a9f8707c3640feb74c3e2c292b265a856435806f2250f2f241e91541e",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "pc/assets/firmware.js": {
+      "sha256": "dd3e48a1d9c669f1626ce76b7cd46ffa1077827687e4c0151b7a4aaf3e8553c9",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "robot-app/python/servo_health.py": {
+      "sha256": "7fc109f95f5e7d6fb93ddff2d1aa30a5a75393db73f400e92bd545ad09a4e270",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "tests/test_runtime_identity.py": {
+      "sha256": "f469813500b0431ec86ba45c56dc5909ac398d807c7afb96e51cb30e07a9a899",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "pc/firmware_manager.py": {
+      "sha256": "1ec5e51c2d39a3fb915f92d4f58e54e5351dd98239a2f1b995f6f3609596164d",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "tests/test_control_clock_contract.py": {
+      "sha256": "c6eff1a792e4c61a754eab0630dab8784876676c695b0af07eb95f8d2f82415d",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/butt_sit.py": {
+      "sha256": "ea1b371d66cfc3c3afce901a76ae900f9201d1fd7c696c1d6f52a0d30f595c5b",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "tests/test_pose_basis.py": {
+      "sha256": "1ea7de795bd63a77899bfc3f0bc049c17e0981001629fbf98a86fb827ec1cdf8",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/train_butt_sit.py": {
+      "sha256": "41e935e1c1ce93a249e3acb370b5ffb0bbb1ce6eb87cd3a7f07f605824e2c8a1",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "pc/pose_contract_check.py": {
+      "sha256": "09fea7cfcecfada72271adc385b059b3fff7803698a5506cc331ffe048437a40",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/render_butt_sit.py": {
+      "sha256": "389a97640b08eb9895277dcd196faf2f87957ac5d86ff478a05fbee9c7e783a7",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "docs/TRAY_POSES_AND_BUTT_SIT_20261025.md": {
+      "sha256": "146c6f83c38b69ea890bfa30d38d89179d234bdccc544c692de07fb4012deb6b",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/tools/run_overnight.py": {
+      "sha256": "c2fb1544787073b43951946fa5c705a51f8cc9a9d9c9236dbed68c6f166e2ae8",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "docs/OVERNIGHT_20261025.md": {
+      "sha256": "344bdd6a5131aabdefaaa3f73e65983b438a3e87e68a148958332f1ffd8e6be2",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/tests/test_runtime_profile.py": {
+      "sha256": "b301478eb21a859ec5315d472b7ce67ae867d4f788609e0bd5a8180fbcda55d7",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/runtime_profile.py": {
+      "sha256": "fcdf7d849418f1f39b3dafe5dd2420158e11aba8aa2a7359f53fda8688c7ecc4",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/model/standing_seed_20261025.json": {
+      "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/search_butt_raise.py": {
+      "sha256": "10dbeddcfedc1fbab59dd59025a71be5dc4dec8ae7aa3d1ec242fca6bc322391",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/interim-audit.json": {
+      "sha256": "35ea044ffd96dd7cf655223b4a5f9bdea5c64030f1c23ebb575acea313552d17",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     }
   },
   "audit_visualization_v2": {

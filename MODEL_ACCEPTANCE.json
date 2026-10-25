@@ -6,9 +6,10 @@
   "hardware_acceptance": "NOT_PASSED",
   "portable_adapter_hardware_verified": false,
   "current_findings": {
-    "standing": "NOT_PASSED: authorized 2026-10-24 floor test still fell after briefly upright; remained in getup and never handed off to walk; see docs/CONTROL_CYCLE_20261024.md",
+    "standing": "BOUNDED_USER_PASS_IN_WORKBUDDY: user subsequently confirmed standing and forward usable with accepted hip22/ankle18/head20 stance; backward and turning still fail. Leg detached/reinstalled afterward; unloaded tray calibration now completed, no post-reassembly ground pass. See docs/WORKBUDDY_HANDOFF_20261025.md",
+    "neutral_calibration": "PASSED_REGISTER_READBACK_20261025: all 15 encoders 2048, torque 0, EEPROM lock 1, mode 4; goals unchanged; final OFF readback mask 32767; tray motion guard and motion-inhibit remain active",
     "interactive_push_recovery": "NOT_PASSED",
-    "walking_and_release_stop": "BOUNDED_COMMAND_CHAIN_OBSERVED: .2 forward command, neutral hold and normal OFF; six-point gait speed/displacement not qualified",
+    "walking_and_release_stop": "BOUNDED_USER_FORWARD_PASS_IN_WORKBUDDY: 0.2 m/s for 6 s and zero-command standing for 15 s did not fall; turning/backward not passed; no new locomotion trial during tray calibration",
     "battery_roll_power_loss": "unresolved; no root cause fix claimed",
     "wireless": "IMPROVED_NOT_WORST_CASE_QUALIFIED: zero display buffer, ordering and contention fixes deployed; measured feedback near 100 Hz and policy near 50 Hz; OS/network long tails remain"
   },
@@ -42,17 +43,18 @@
     "hardware_operations": 0,
     "physical_acceptance": "NOT_PASSED"
   },
-  "snapshot_date": "2026-10-22",
+  "snapshot_date": "2026-10-25",
   "wireless_acceptance": "NOT_PASSED",
-  "latest_motion_attempt": "2026-10-24 authorized floor test: fell_after_upright at approximately 2.15 s, then OFF / disabled / motion inhibited; see docs/CONTROL_CYCLE_20261024.md",
+  "latest_motion_attempt": "WorkBuddy 2026-10-25: bounded standing and forward accepted by user; backward/turning still fall. Leg subsequently detached/reinstalled. Current Codex work is unloaded tray calibration only, without get-up/walk/turn commands.",
   "new_computer_tested": true,
   "current_features": {
     "basic_actor_sha256": "57cdebf36e7fa23116270dec96f013a6a64511f37311d322443f5297bdc3d6db",
     "local_model_not_driven_by_pc_pose_stream": true,
     "local_feedback_watchdog_s": 0.15,
     "weights_included_by_user_request": true,
-    "home_contract": "Official shared 22-degree HOME; head alpha .2",
-    "automatic_motion_recordings": true,
+    "home_contract": "Preserved WorkBuddy accepted hip +/-22, ankle +/-18, neck/head 20/20; corrected policy right-leg filter group; leg alpha .45, head .2",
+    "automatic_motion_recordings": false,
+    "automatic_motion_recordings_scope": "Source and prior archives preserved; current official split board build lacks recording routes",
     "history_replay_read_only": true,
     "display_source_clock": "robot uptime",
     "display_buffer_ms": 0,
@@ -69,10 +71,14 @@
   "encrypted_connection_configuration_included": false,
   "raw_robot_traces_included": false,
   "control_comparison_date": "2026-10-23",
-  "current_operating_constraint": "User placed robot on open floor and authorized tests. Following a failed standing trial, robot returned to OFF / disabled / motion inhibited; floor placement is not the earlier tray restriction.",
+  "current_operating_constraint": "Latest user state remains neutral calibration tray after leg reassembly. All 15 unloaded neutral calibrations completed and read back; do not repeat. Any similar lying pose prohibits torque enable, hold, get-up and motion. Final mode OFF with motion-inhibit set. Never reuse older open-floor authorization.",
   "control_cycle_update_20261024": {
     "report": "docs/CONTROL_CYCLE_20261024.md",
-    "board_modules_deployed": ["controller.py", "main.py", "motion_recording.py"],
+    "board_modules_deployed": [
+      "controller.py",
+      "main.py",
+      "motion_recording.py"
+    ],
     "mailbox_shadow_inference_hz": 50.00473834415239,
     "intent_consume_wait_p99_ms": 19.71332999983133,
     "intent_consume_wait_max_ms": 20.484949999627133,

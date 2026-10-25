@@ -15,6 +15,23 @@ def wireless_transport_alive(tunnel):
     return tunnel.port is not None and process is not None and process.poll() is None
 
 
+def pose_basis_matches(baseline, state):
+    """Match the deployed pose contract, not a recovery delay from an old build.
+
+    This is parameter compatibility only. Running binary identity is reported
+    separately by /api/runtime and the firmware panel.
+    """
+    if not baseline.get('local_sources_verified'):
+        return False
+    deployment=state.get('deployment',{})
+    if deployment.get('reference')=='rl/raspi_deploy':
+        return (deployment.get('control_hz')==50 and
+                deployment.get('home_deg')==[0,-5,-22,0,18,20,20,0,0,0,5,22,0,-18] and
+                deployment.get('default_deg')==[0,-5,-22,0,18,0,5,22,0,-18,20,20,0,0,0] and
+                state.get('encoder_center')==2047)
+    return state.get('recovery',{}).get('thresholds',{}).get('default_pose_s')==0
+
+
 class FactoryWorkbenchServer(WorkbenchServer):
     def __init__(self,address,tunnel):
         super().__init__(address,tunnel)
@@ -59,6 +76,8 @@ class FactoryWorkbenchHandler(WorkbenchHandler):
         calibration=self.server.calibration
         with calibration.lock:
             calibration.state['supported']=factory.get('supported',False)
+            calibration.state['unloaded_calibration_supported']=factory.get('unloaded_calibration_supported',False)
+            calibration.state['calibration_loads_motor']=factory.get('calibration_loads_motor')
             calibration.state['held_mask']=factory.get('held_mask',0) if factory.get('active') else 0
             calibration.state['readback_live']=False
             calibration.state['registers']=factory.get('registers',{})
@@ -93,7 +112,7 @@ class FactoryWorkbenchHandler(WorkbenchHandler):
                 return self.send(200,{'ok':True,'revision':REVISION,'connected':True,'wireless_transport_alive':wireless_transport_alive(self.server.tunnel),'startup_read_only':True,
                     'runtime':state,'runtime_frames':self.received_frames(state),'baseline':self.server.baseline,
                     'status_stream':self.server.reader.diagnostics() if hasattr(self.server.reader,'diagnostics') else None,
-                    'runtime_basis_matches':self.server.baseline['local_sources_verified'] and state.get('recovery',{}).get('thresholds',{}).get('default_pose_s')==0,
+                    'runtime_basis_matches':pose_basis_matches(self.server.baseline,state),
                     'test':self.server.tests.snapshot(),'events':self.server.events[-20:],
                     'current_recording':self.server.current_recorder.snapshot() if getattr(self.server,'current_recorder',None) else None})
             except (OSError,ValueError,http.client.HTTPException) as error:

@@ -18,10 +18,10 @@ SERVO_ENTER, SERVO_EXIT, SERVO_UNLOCK, SERVO_SET_ID, SERVO_GOTO, SERVO_SET_PERM_
 SERVO_PING = 7
 FACTORY = struct.Struct('<4sBBHI')
 FACTORY_REPLY = struct.Struct('<4sBBBBI4H4B4H')
-FACTORY_OPS = dict(capabilities=0, read=1, calibrate=2, release=3, off=4)
+FACTORY_OPS = dict(capabilities=0, read=1, calibrate=2, release=3, off=4, calibrate_unloaded=5)
 
 def encode_factory(op, target_id, request):
-    if op not in range(5) or not 0 <= target_id <= 253:
+    if op not in range(6) or not 0 <= target_id <= 253:
         raise ValueError('invalid factory operation/id')
     return FACTORY.pack(b'DQF1', op, target_id, 0, request & 0xffffffff)
 
@@ -29,9 +29,9 @@ def decode_factory_reply(data):
     if not isinstance(data,(bytes,bytearray)) or len(data)!=32:
         raise ValueError('expected 32-byte factory reply')
     x=FACTORY_REPLY.unpack(data)
-    if x[0]!=b'DQF2' or x[1] not in range(5) or x[2]>253:
+    if x[0]!=b'DQF2' or x[1] not in range(6) or x[2]>253:
         raise ValueError('invalid factory reply ABI')
-    return dict(op=x[1],target_id=x[2],ok=x[3]==0,error_code=x[3],zero_changed=bool(x[4]&1),
+    return dict(op=x[1],target_id=x[2],ok=x[3]==0,error_code=x[3],zero_changed=bool(x[4]&1),offset_written=bool(x[4]&2),
                 request=x[5],position=x[6],zero_pos=x[7],offset_raw=x[8],goal=x[9],
                 mode=x[10],torque=x[11],locked=x[12],held_mask=x[14],off_mask=x[15],capabilities=x[16])
 

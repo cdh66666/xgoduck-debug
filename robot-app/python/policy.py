@@ -135,10 +135,10 @@ class Policy:
         if not np.isfinite(action).all():
             raise ValueError('model output contains NaN or Inf')
         self.prev_action[:] = action
-        # Keep the reference script's exact slices, including ID 20 in [5:10].
+        # Policy order has four head joints (IDs 30..33), then right leg ID20.
         for sl, alpha in ((slice(0, 5), self.action_alpha),
-                          (slice(5, 10), self.action_alpha_head),
-                          (slice(10, 14), self.action_alpha)):
+                          (slice(5, 9), self.action_alpha_head),
+                          (slice(9, 14), self.action_alpha)):
             self._act_filt[sl] *= alpha
             self._act_filt[sl] += action[sl] * (1 - alpha)
         # Freeze the exact input/output before warm() or the next infer() reuses

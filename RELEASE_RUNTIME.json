@@ -1,6 +1,6 @@
 {
   "schema": "xgoduck-portable-release-runtime-v1",
-  "snapshot_source_count": 40,
+  "snapshot_source_count": 46,
   "runtime_sources": {
     "app.yaml": {
       "path": "robot-app/app.yaml",
@@ -20,7 +20,7 @@
     },
     "python/main.py": {
       "path": "robot-app/python/main.py",
-      "sha256": "107b999509a856833c420c6df5b601c2e437d60698d418894997213e6cb8abdd"
+      "sha256": "0ab1cb0f1fd9a1f09571f05034b1c73b4243be91613dcd79e68c4443312abe27"
     },
     "python/requirements.txt": {
       "path": "robot-app/python/requirements.txt",
@@ -28,7 +28,7 @@
     },
     "python/controller.py": {
       "path": "robot-app/python/controller.py",
-      "sha256": "745933986afc721fec5d94cd59ab31713aa5bc0ccaab010b6ac4d7fcac10363f"
+      "sha256": "f9d6ab38de9218e1c8f95bdc986dfb186671f6e3ca3e1cb593cc57f3032e5340"
     },
     "python/rl_core.py": {
       "path": "robot-app/python/rl_core.py",
@@ -36,11 +36,11 @@
     },
     "python/wire.py": {
       "path": "robot-app/python/wire.py",
-      "sha256": "21f8acfe61e220edf40f18a53f69ffca93fa8d4bebb19fb63abdf1a666a4d36f"
+      "sha256": "e8d0d089473f2348ebe78f46b6fe87239859b39827cdaf5620be69b87fae4550"
     },
     "python/policy.py": {
       "path": "robot-app/python/policy.py",
-      "sha256": "04c0303f976446c97b4bf6b148f729ca721b58ce4c1f8110a0a8579df17572da"
+      "sha256": "b2e6ef5982f8c6162bffebd682cc2fa0a12d7da8fda4bcecfeb94f450bbc33b3"
     },
     "python/current_telemetry.py": {
       "path": "robot-app/python/current_telemetry.py",
@@ -48,7 +48,7 @@
     },
     "python/factory_calibration.py": {
       "path": "robot-app/python/factory_calibration.py",
-      "sha256": "4ff880610d2bf634348cdeebdda0a7e88aee0338393599cb11a3f4a5e90b5422"
+      "sha256": "19edf459648e31b332b6c725b909df002144b2e95a7871700f8a1c9bfbf1ac35"
     },
     "python/proc.py": {
       "path": "robot-app/python/proc.py",
@@ -56,7 +56,7 @@
     },
     "python/recovery.py": {
       "path": "robot-app/python/recovery.py",
-      "sha256": "125e7a2cb2d20186dc88b95652a35b55a4d6859a7ce187e728d25c54cceff664"
+      "sha256": "c8e319e762e57535494cafdccce9993ff813bdb748edb8642327c73560774ee5"
     },
     "python/release_profile.py": {
       "path": "robot-app/python/release_profile.py",
@@ -68,11 +68,11 @@
     },
     "sketch/factory_calibration.h": {
       "path": "robot-app/sketch/factory_calibration.h",
-      "sha256": "22a0d55b4bd1302ee5d24d5d3352ed867695df08d2ccc4548b32541b2cde163a"
+      "sha256": "e06f95455760b64d8e868fad4962d0949e524dbcd9d6b7f347fa99c40b119870"
     },
     "sketch/sketch.ino": {
       "path": "robot-app/sketch/sketch.ino",
-      "sha256": "09eb23897face7cb89212fefc36c64ed155b0a0d723d7b38a618b52f7ada2599"
+      "sha256": "d6c7c0f407e98f087457ec138683fa84d76112f976114a657acd0f5fab2e964f"
     },
     "sketch/route_refresh.h": {
       "path": "robot-app/sketch/route_refresh.h",
@@ -144,7 +144,31 @@
     },
     "python/motion_recording.py": {
       "path": "robot-app/python/motion_recording.py",
-      "sha256": "78af2daf1f4fb76dd719e463ecd51d5682463fc0d2848d3700fcfb5cdfaf396d"
+      "sha256": "d1114f46c9c6863de319461843e19bd3a999360fe7f65e31753449adffdf2edc"
+    },
+    "python/tray_guard.py": {
+      "path": "robot-app/python/tray_guard.py",
+      "sha256": "ef3392c8386e13bb194c889c7cbe0e0e6e54fa5e60c142a5e8841c4793066bb1"
+    },
+    "python/native_factory.py": {
+      "path": "robot-app/python/native_factory.py",
+      "sha256": "43f7535f736263e5ebefea76904508e7c423c89fdd911ddf6cdf7ed3362a7115"
+    },
+    "python/sit_policy.py": {
+      "path": "robot-app/python/sit_policy.py",
+      "sha256": "fd2cd62e70a15934d30e59d1aa5ed2a13edbded6d0a0085fca1495f0b16110a5"
+    },
+    "python/sit_runtime.py": {
+      "path": "robot-app/python/sit_runtime.py",
+      "sha256": "b0aee1cf735f0720227d5aba121c23bc740508d9045f31ab153a7b71b43d97b3"
+    },
+    "python/servo_health.py": {
+      "path": "robot-app/python/servo_health.py",
+      "sha256": "7fc109f95f5e7d6fb93ddff2d1aa30a5a75393db73f400e92bd545ad09a4e270"
+    },
+    "python/runtime_identity.py": {
+      "path": "robot-app/python/runtime_identity.py",
+      "sha256": "f3e3d45eb80d82307107dbe5e1f372f8f5b34caf7d90a15fdd3587ebf05a6470"
     }
   },
   "external_models": {
@@ -304,5 +328,18 @@
     "receipt": "firmware-support/validation/keyboard-simulation-20261024.json",
     "scope": "local keyboard simulation and model library",
     "hardware_motion": false
+  },
+  "handoff_20261025": {
+    "notes": "docs/WORKBUDDY_HANDOFF_20261025.md",
+    "tray_guard": "adapted and installed on verified official split build; complete custom controller snapshot is not installed",
+    "firmware_release": "pc/firmware-release.json",
+    "physical_acceptance": "post-calibration zero-speed standing confirmed by user; backward/turning unpassed; low-squat sit v2 rejected by user; feedback-r1 verified while unloaded only"
+  },
+  "optional_experimental_models": {
+    "python/xgoduck_sit.onnx": {
+      "included": false,
+      "required_for_startup": false,
+      "role": "rejected low-squat v2 local experiment; V3 butt-supported sit remains simulation-only"
+    }
   }
 }

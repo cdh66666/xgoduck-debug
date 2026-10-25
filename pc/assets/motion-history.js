@@ -6,7 +6,7 @@
     Math.atan2(Math.hypot(s.gravity[0],s.gravity[1]),-s.gravity[2])*180/Math.PI:null;
   const estimatedTilt=s=>s?.body_attitude_estimate?.basis==='raw_acceleration_only'?tilt({gravity:s.body_attitude_estimate.gravity}):null;
   const phases={walk:'行走模型',getup:'起身模型',default_pose:'准备',off:'卸力',hold:'校准中位',shadow:'只推理'};
-  const phaseLabel=s=>s?.mode==='policy'?(s.enabled===false?'策略请求 · 尚未上力':phases[s.recovery?.phase]||'策略控制'):
+  const phaseLabel=s=>s?.sit_down?.active?(s.sit_down.error?'坐姿保护 · 保持支撑':({lowering:'缓慢坐下',seated:'坐姿保持',raising:'缓慢起身',standing:'站姿就绪',settling:'姿态到位中'}[s.sit_down.phase]||'坐下模型')):s?.mode==='policy'?(s.enabled===false?'策略请求 · 尚未上力':phases[s.recovery?.phase]||'策略控制'):
     s?.mode==='legacy'?(s.enabled?'上力 · 旧原始反馈':'已卸力 · 旧原始反馈'):
     phases[s?.mode]||s?.mode||'旧记录 · 模型阶段缺失';
   class Timeline {

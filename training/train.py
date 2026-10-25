@@ -12,6 +12,11 @@ KIND='xgoduck-scratch-mlp-bodyframe-v2'
 
 def check_contract(cfg,actor_class='rsl_rl.models:MLPModel'):
  expected=json.loads((ROOT/'config.json').read_text('utf-8'))
+ from runtime_profile import selected,CALIBRATED,HOME_DEG
+ if selected()==CALIBRATED:
+  import math
+  expected['home_rad']=[math.radians(v) for v in HOME_DEG]
+  expected['runtime_profile']=CALIBRATED
  if {k:v for k,v in cfg.items() if k!='ppo'}!={k:v for k,v in expected.items() if k!='ppo'}:
   raise ValueError('Training config changed the fixed physical/observation/action contract')
  if cfg['ppo']['actor']['class_name']!=actor_class or cfg['ppo']['critic']['class_name']!='rsl_rl.models:MLPModel':
@@ -19,22 +24,30 @@ def check_contract(cfg,actor_class='rsl_rl.models:MLPModel'):
  return cfg
 
 def config(path=None):
- return check_contract(json.loads((path or ROOT/'config.json').read_text('utf-8')))
+ cfg=json.loads((path or ROOT/'config.json').read_text('utf-8'))
+ if path is None:
+  from runtime_profile import selected,CALIBRATED,HOME_DEG
+  if selected()==CALIBRATED:
+   import math
+   cfg['home_rad']=[math.radians(v) for v in HOME_DEG];cfg['runtime_profile']=CALIBRATED
+ return check_contract(cfg)
 
 def construct(env,cfg):
  from rsl_rl.algorithms import PPO
  return PPO.construct_algorithm(env.get_observations(),env,copy.deepcopy(cfg['ppo']),'cpu')
 
-def export_policy(actor,path,cfg,*,architecture=KIND,initialization='random, no parent weights'):
+def export_policy(actor,path,cfg,*,architecture=KIND,initialization='random, no parent weights',physical_model=None):
  import numpy as np,torch,onnx,onnxruntime as ort
  module=actor.as_onnx(verbose=False).eval().cpu()
  torch.onnx.export(module,torch.zeros(1,61),str(path),input_names=['obs'],output_names=['actions'],opset_version=17,dynamo=False)
  graph=onnx.load(str(path));onnx.checker.check_model(graph)
  metadata=dict(default_joint_pos=','.join(str(v) for v in cfg['home_rad']),joint_names=','.join(cfg['joint_names']),
-  action_scale='1.0',runtime_hz='50',action_alpha='.45',gyro_alpha='.5',velocity_alpha='.4',kp_fw='6',kd_fw='20',
+  action_scale='1.0',runtime_hz='50',action_alpha='.45',action_alpha_head='.2' if cfg.get('runtime_profile')=='calibrated-20261025' else '.45',gyro_alpha='.5',velocity_alpha='.4',kp_fw='6',kd_fw='20',
   runtime_interface_version='bodyframe-v2',architecture=architecture,training_initialization=initialization,
   observation_names='base_ang_vel,projected_gravity,joint_pos,joint_vel,actions,command,head_command,body_command',
   body_command='zero',hardware_deployment_ready='false',kd_model_limitation='BAM has no identified Feetech D20 mapping')
+ metadata['runtime_profile']=cfg.get('runtime_profile','legacy')
+ if physical_model is not None:metadata['physical_model_sha256']=physical_model['sha256']
  for key,value in metadata.items():item=graph.metadata_props.add();item.key=key;item.value=value
  onnx.save(graph,str(path));session=ort.InferenceSession(str(path),providers=['CPUExecutionProvider'])
  samples=np.random.default_rng(17).normal(0,.25,(64,61)).astype('float32')
@@ -52,17 +65,25 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
  parser.add_argument('--iterations',type=int,default=1)
  parser.add_argument('--workers',type=int,default=1)
  parser.add_argument('--envs-per-worker',type=int,default=2)
- parser.add_argument('--curriculum',choices=['stand','six','stability','stop'],default='stand')
+ parser.add_argument('--curriculum',choices=['stand','six','stability','stop','speed'],default='stand')
+ parser.add_argument('--runtime-profile',choices=['legacy','calibrated-20261025'],default='legacy')
+ parser.add_argument('--max-forward',type=float,default=.3,help='Speed curriculum forward upper bound, .2 to 1 m/s')
+ parser.add_argument('--trace-every',type=int,default=1,help='Record one full rollout per N updates; metrics remain every update')
  parser.add_argument('--seed',type=int,default=20261022)
  parser.add_argument('--config',type=Path,help='Optional PPO hyperparameters; fixed physical and interface fields must match')
  parser.add_argument('--max-wall-seconds',type=float,help='Finish the current update and export when this training time is reached')
  parser.add_argument('--resume',type=Path,help='Only a checkpoint made by this entry with the same config')
  parser.add_argument('--initial-checkpoint',type=Path,help='Explicit source for this entry initialization; cannot combine with resume')
+ parser.add_argument('--model-xml',type=Path,help='Explicit experimental physics XML; its hash is saved in checkpoint, run and ONNX')
  args=parser.parse_args()
  if min(args.iterations,args.workers,args.envs_per_worker)<1:parser.error('Positive iteration/worker/env counts required')
  if args.max_wall_seconds is not None and args.max_wall_seconds<=0:parser.error('Positive wall time required')
  if args.resume and args.initial_checkpoint:parser.error('Use resume or an initial checkpoint, not both')
  if args.initial_checkpoint and initialize is None:parser.error('This entry has no pretrained initialization')
+ if not .2<=args.max_forward<=1. or args.trace_every<1:parser.error('Invalid speed or trace interval')
+ os.environ['XGODUCK_RUNTIME_PROFILE']=args.runtime_profile
+ os.environ['XGODUCK_MAX_FORWARD']=str(args.max_forward)
+ if args.model_xml:os.environ['XGODUCK_TRAIN_XML']=str(args.model_xml.resolve())
  args.output=args.output.resolve();args.output.mkdir(parents=True,exist_ok=False)
  import numpy as np,torch
  from native_env import NativeVecEnv
@@ -71,6 +92,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
   'deployment_allowed':False,'behavior_qualified':False,'cpu_only':True,'seed':args.seed,'curriculum':args.curriculum,
   'versions':{'torch':torch.__version__,'numpy':np.__version__},'requested_updates':args.iterations,
   'max_wall_seconds':args.max_wall_seconds,'workers':args.workers,'envs_per_worker':args.envs_per_worker}
+ report['trace_every_updates']=args.trace_every
  (args.output/'config.json').write_text(json.dumps(cfg,indent=2),encoding='utf-8')
  try:
   env=NativeVecEnv(workers=args.workers,envs_per_worker=args.envs_per_worker,seed=args.seed,curriculum=args.curriculum)
@@ -80,6 +102,9 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
   if args.resume:
    checkpoint=torch.load(args.resume,map_location='cpu',weights_only=False)
    if checkpoint.get('kind')!=kind or checkpoint.get('config')!=cfg:raise ValueError('Checkpoint is not this entry/config contract')
+   old_model=checkpoint.get('training_environment',{}).get('physical_model',{})
+   expected_model=old_model.get('sha256',env.cfg['physical_model']['reference_model_sha256'])
+   if expected_model!=env.cfg['physical_model']['sha256']:raise ValueError('Resume physics model differs; use a deliberate pretrained initialization for a new plant')
    alg.load(checkpoint['algorithm'],load_cfg=None,strict=True);base=checkpoint['iteration'];report['initialization']='resume own '+kind+' checkpoint'
    report['resume_sha256']=hashlib.sha256(args.resume.read_bytes()).hexdigest()
   elif initialize is not None:
@@ -97,9 +122,10 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
      rows=extras['native_rows']
      for row in rows:failures.update(row['failure_reasons'])
      fields=('velocity','tilt','height','standing_height','command','command_age_s','zero_release','failure_reasons','resets','steps')
-     trace.write(json.dumps({'iteration':iteration,'tick':tick,'t':env.common_step_counter*.02,
-      'actions':actions.tolist(),'rewards':reward.tolist(),'done':done.tolist(),
-      'envs':[{k:row[k] for k in fields} for row in rows]},allow_nan=False)+'\n')
+     if (iteration-base-1)%args.trace_every==0:
+      trace.write(json.dumps({'iteration':iteration,'tick':tick,'t':env.common_step_counter*.02,
+       'actions':actions.tolist(),'rewards':reward.tolist(),'done':done.tolist(),
+       'envs':[{k:row[k] for k in fields} for row in rows]},allow_nan=False)+'\n')
     alg.compute_returns(obs)
    losses=alg.update();updates+=1
    elapsed=time.monotonic()-started
@@ -119,7 +145,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
   if verify_actor is not None:report.update(verify_actor(before,alg.actor))
   report['completed_updates']=updates;report['final_iteration']=iteration;report['stop_reason']='wall_budget' if budget_reached else 'iteration_budget'
   report['transitions']=updates*cfg['ppo']['num_steps_per_env']*env.num_envs
-  report['export']=export_policy(alg.actor,args.output/'policy.onnx',cfg,architecture=kind,initialization=report['initialization'])
+  report['export']=export_policy(alg.actor,args.output/'policy.onnx',cfg,architecture=kind,initialization=report['initialization'],physical_model=env.cfg['physical_model'])
   report['wall_s']=time.monotonic()-started;report['result']='SMOKE_PASS_NOT_BEHAVIOR_QUALIFIED' if args.mode=='smoke' else 'TRAINED_PENDING_INDEPENDENT_EVALUATION'
   (args.output/'run.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
  finally:

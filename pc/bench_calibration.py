@@ -151,8 +151,8 @@ class FactoryCalibration:
             else:
                 self._command({'restore':'exit','stop':'off'}.get(action,action),joint)
             with self.lock:
-                self.state['message'] = {'all':'15/15 已校准、保存并保持。','recalibrate':'校准成功，15颗新零位已保存。',
-                    'calibrate':f'ID {joint} 已校准、保存并保持。', 'enter':'校准模式已就绪；固件未切换。',
+                self.state['message'] = {'all':'15/15 已校准并保存，扭矩状态见实时读回。','recalibrate':'校准成功，15颗新零位已保存。',
+                    'calibrate':f'ID {joint} 已校准并保存，扭矩状态见实时读回。', 'enter':'校准模式已就绪；固件未切换。',
                     'restore':'已退出校准，保持 OFF。', 'stop':'全部卸力已确认。',
                     'release':f'ID {joint} 已释放。', 'read':'实际寄存器读回已更新。'}[action]
         except Exception as error:

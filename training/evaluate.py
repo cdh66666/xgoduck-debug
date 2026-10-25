@@ -9,13 +9,22 @@ from train import KIND,check_contract,config
 
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--checkpoint',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
- p.add_argument('--seeds',type=int,default=8);p.add_argument('--first-seed',type=int,default=20261030);a=p.parse_args()
+ p.add_argument('--seeds',type=int,default=8);p.add_argument('--first-seed',type=int,default=20261030)
+ p.add_argument('--model-xml',type=Path,help='Explicit evaluation plant; otherwise reuse the checkpoint physics model')
+ p.add_argument('--runtime-profile',choices=['legacy','calibrated-20261025'],help='Explicit evaluation contract, otherwise the checkpoint profile')
+ p.add_argument('--max-forward',type=float,default=.3,help='Replace the Shift test speed, up to 1 m/s')
+ a=p.parse_args()
  if a.seeds<1:p.error('At least one seed required')
+ if not .2<=a.max_forward<=1.:p.error('Forward speed must be .2..1 m/s')
  import numpy as np,torch
  from tensordict import TensorDict
  from native_env import NativeEpisode,manifest,COMMANDS
  from rsl_rl.models import MLPModel
- torch.set_num_threads(1);cfg=config();saved=torch.load(a.checkpoint,map_location='cpu',weights_only=False)
+ torch.set_num_threads(1);saved=torch.load(a.checkpoint,map_location='cpu',weights_only=False)
+ profile=a.runtime_profile or saved.get('training_environment',{}).get('runtime_profile','legacy')
+ os.environ['XGODUCK_RUNTIME_PROFILE']=profile
+ cfg=config()
+ commands=[list(c) for c in COMMANDS];commands[2][0]=a.max_forward
  actor_class=MLPModel
  if saved.get('kind')==KIND:
   cfg=check_contract(saved['config'])
@@ -34,11 +43,18 @@ def main():
   from refine_model import BackskipActor
   cfg=refine_config();state=saved['actor_state_dict'];actor_class=BackskipActor
  else:raise ValueError('Expected own scratch/full47500 or packaged47500 composite checkpoint')
+ trained_model=saved.get('training_environment',{}).get('physical_model',{})
+ explicit_model=a.model_xml is not None or bool(os.environ.get('XGODUCK_TRAIN_XML'))
+ if a.model_xml:os.environ['XGODUCK_TRAIN_XML']=str(a.model_xml.resolve())
+ elif not explicit_model and trained_model.get('path'):
+  os.environ['XGODUCK_TRAIN_XML']=trained_model['path']
  dummy=TensorDict({'actor':torch.zeros(1,61)},batch_size=[1]);actor_cfg=dict(cfg['ppo']['actor']);actor_cfg.pop('class_name')
  actor=actor_class(dummy,{'actor':['actor']},'actor',14,**actor_cfg);actor.load_state_dict(state);actor.eval()
  cases=[];frozen=manifest()
+ if not explicit_model and trained_model and frozen['physical_model']['sha256']!=trained_model['sha256']:
+  raise ValueError('Checkpoint physics XML changed on disk')
  for seed in range(a.first_seed,a.first_seed+a.seeds):
-  for command in COMMANDS:
+  for command in commands:
    env=NativeEpisode(frozen,seed,curriculum='stand',auto_reset=False);env.reset();rows=[];failure=None;previous_command=None
    try:
     for tick in range(750 if command==[0.,0.,0.] else 900):
@@ -47,7 +63,7 @@ def main():
      if current!=previous_command:
       env.motion_window.reset(target);env.command_age_ticks=0;env.zero_release=previous_command is not None and current==[0.,0.,0.]
       previous_command=list(current)
-     env.command=target;env.command_ticks=1000000;env.command_index=COMMANDS.index(current)
+     env.command=target;env.command_ticks=1000000;env.command_index=commands.index(current)
      obs=env.observe()
      with torch.inference_mode():action=actor(TensorDict({'actor':torch.tensor(obs[None])},batch_size=[1])).numpy()[0]
      _,_,done,_,info=env.step(action)
@@ -73,6 +89,7 @@ def main():
    case={'seed':seed,'command':command,'passed':bool(passed),'ticks':len(rows),'failure':failure,'max_tilt_deg':tilt if math.isfinite(tilt) else None,'mean_velocity':mean.tolist() if mean is not None else None,'rmse':rmse.tolist() if rmse is not None else None,'stop_passed':stop_ok,'resets_during_recording':0,'rows':rows}
    cases.append(case);print(json.dumps({k:v for k,v in case.items() if k!='rows'}),flush=True)
  report={'kind':saved['kind'],'result':'PASS_THIS_MATRIX' if all(c['passed'] for c in cases) else 'NOT_PASSED','cases':cases,'seeds':a.seeds,
+  'physical_model':frozen['physical_model'],'training_physical_model':trained_model or None,'runtime_profile':profile,'max_forward_mps':a.max_forward,
   'checkpoint_sha256':__import__('hashlib').sha256(a.checkpoint.read_bytes()).hexdigest(),'hardware_deployment_ready':False,
   'scope':'stand15s, independent six commands12s then stop6s; no reset/recovery allowed. Does not include continuous126s or disturbance/getup acceptance.'}
  a.output.parent.mkdir(parents=True,exist_ok=True)

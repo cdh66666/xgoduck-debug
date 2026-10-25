@@ -68,6 +68,12 @@ class ReleaseTests(unittest.TestCase):
         self.assertFalse(manifest['raw_robot_traces_included'])
         self.assertTrue(manifest['plaintext_connection_configuration_included'])
 
+    def test_required_runtime_files_are_actually_in_the_public_package(self):
+        runtime=json.loads((ROOT/'RELEASE_RUNTIME.json').read_text('utf-8'))
+        package=json.loads((ROOT/'PACKAGE_FILES.json').read_text('utf-8'))['files']
+        for row in runtime['runtime_sources'].values():
+            self.assertIn(row['path'],package,'Local-only candidates must not be required to start a clean checkout')
+
     def test_disconnected_start_and_gets_never_spawn_hardware_process(self):
         import servo_current_recorder as recorder
         class Tunnel:

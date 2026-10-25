@@ -61,6 +61,7 @@ const posts=h=>h.calls.filter(call=>call.body);
 const packet=h=>h.calls.filter(call=>call.url==='/api/command').at(-1).body;
 async function start(h){await settle();h.$('bench-policy').onclick();await h.$('bench-confirm').onclick();await h.poll();}
 async function tap(h,key){await h.key('keydown',key);await h.key('keyup',key);}
+async function rejectsStaleStart(h,message){const before=posts(h).length;h.$('wl-home').onclick();h.$('bench-policy').onclick();await h.$('bench-confirm').onclick();check(posts(h).length===before,message);}
 
 const idle=harness('official-workbench.js');await settle();
 check(posts(idle).length===0,'page load is read-only');
@@ -74,7 +75,8 @@ same(modelKeys.messages.filter(([m])=>m.type==='bench-models-shortcut').length,3
 const staleCache=harness('official-workbench.js',{trained:true});await settle();
 staleCache.state.runtime.feedback_age_ms=258;
 await staleCache.poll();
-check(staleCache.$('wl-home').disabled&&staleCache.$('bench-policy').disabled,'258ms cached feedback cannot start motion');
+check(!staleCache.$('wl-home').disabled&&!staleCache.$('bench-policy').disabled,'258ms display jitter does not flicker the pose previews');
+await rejectsStaleStart(staleCache,'258ms feedback cannot start either motion despite stable preview buttons');
 same(staleCache.$('simple-imu').querySelector('label').textContent,'IMU回报','hardware card describes the last report, not current freshness');
 same(staleCache.$('feedback-timing').dataset.freshness,'stale','late data remains explicitly stale while hardware reports stay readable');
 same(staleCache.$('diag-feedback-age').textContent,'250 ms','exact age is retained in diagnostics without a flashing badge');
@@ -82,21 +84,21 @@ const agesWhilePending=harness('official-workbench.js',{trained:true});await set
 agesWhilePending.$('bench-policy').onclick();
 agesWhilePending.deferStatus();await agesWhilePending.poll();
 agesWhilePending.advance(250);await agesWhilePending.poll();
-check(agesWhilePending.$('wl-home').disabled,'browser elapsed time expires controls while status request is pending');
+check(!agesWhilePending.$('wl-home').disabled,'brief pending response does not flicker the preview');
 await agesWhilePending.$('bench-confirm').onclick();
 check(posts(agesWhilePending).length===0,'confirmation rechecks age and cannot submit an old prepared start');
 await agesWhilePending.releaseStatus();
-check(agesWhilePending.$('wl-home').disabled,'a delayed old reply cannot renew the feedback age');
+await rejectsStaleStart(agesWhilePending,'a delayed old reply cannot renew permission to start');
 same(agesWhilePending.$('feedback-timing').dataset.freshness,'stale','delayed reply remains stale in status bar');
 const queuedOldReply=harness('official-workbench.js',{trained:true});await settle();
 Object.assign(queuedOldReply.state.runtime,{feedback_age_ms:8,native_feedback_age_ms:8,pc_cache_age_ms:0,pc_observed_unix_s:Date.now()/1000-.5});
 await queuedOldReply.poll();
-check(queuedOldReply.$('wl-home').disabled&&queuedOldReply.$('bench-policy').disabled,'existing observation clock includes time spent in a queued reply');
+await rejectsStaleStart(queuedOldReply,'existing observation clock includes time spent in a queued reply');
 const queuedBacklog=harness('official-workbench.js',{trained:true});await settle();
 Object.assign(queuedBacklog.state.runtime,{feedback_age_ms:103,native_feedback_age_ms:3,
  pc_delivery_age_lower_bound_ms:100,pc_cache_age_ms:0,pc_observed_unix_s:Date.now()/1000-.1});
 await queuedBacklog.poll();
-check(queuedBacklog.$('wl-home').disabled&&queuedBacklog.$('bench-policy').disabled,'delivery backlog remains counted while a reply waits in the browser queue');
+await rejectsStaleStart(queuedBacklog,'delivery backlog remains counted while a reply waits in the browser queue');
 same(queuedBacklog.$('feedback-timing').dataset.freshness,'stale','queued delayed state cannot be labeled as current IMU');
 const stableReports=harness('official-workbench.js',{trained:true});await settle();
 stableReports.state.wireless_transport_alive=true;
@@ -111,7 +113,8 @@ await stableReports.releaseStatus();
 for(const age of [149,151,80,180,99,150,70]){
  stableReports.state.runtime.feedback_age_ms=age;stableReports.state.runtime.feedback_hz=99.9;await stableReports.poll();
  same(reportCards(),originalCards,'short delivery jitter and fractional Hz variation do not invent hardware changes');
- same(stableReports.$('wl-home').disabled,age>=150,'every delayed frame still expires motion permission immediately');
+ same(stableReports.$('wl-home').disabled,false,'150ms boundary jitter never flickers the preview buttons');
+ if(age>=150)await rejectsStaleStart(stableReports,'every delayed frame still expires actual motion permission immediately');
 }
 stableReports.advance(2000);await stableReports.poll();
 same(stableReports.$('feedback-rate').textContent,'100 Hz','99.9 Hz is a stable whole-Hz display');
@@ -328,7 +331,7 @@ check(/待读取/.test(lost.$('simple-link').querySelector('strong').textContent
 check(/最近一次主控回报/.test(lost.$('simple-servos').querySelector('small').textContent),'poll failure retains only explicitly historical servo report');
 check(lost.$('feedback-timing').dataset.state==='interrupted','poll failure clearly marks the retained report as interrupted');
 check(lost.$('simple-motion').querySelector('label').textContent==='扭矩回报'&&lost.$('diag-torque').textContent==='未知','cached torque report is not current torque proof');
-check(lost.$('bench-policy').disabled,'poll failure disables motion start');
+await rejectsStaleStart(lost,'poll failure blocks motion start even while preview appearance stays stable');
 const lostPosts=posts(lost).length;lost.failStatus(false);await lost.poll();await lost.intervals.find(item=>item.delay===50).fn();await tap(lost,'w');await tap(lost,'u');
 check(posts(lost).length===lostPosts,'reconnect never restores old movement, phase, or mouth');
 check(/低头目标阶段 0%.*嘴 0°/.test(lost.$('bench-keyboard-readout').textContent),'lost ownership resets local phase and mouth');
@@ -583,7 +586,7 @@ torquePending.state.runtime.mode='off';torquePending.state.runtime.enabled=true;
 same(torquePending.$('simple-motion').querySelector('strong').textContent,'卸力中','OFF intent is not disabled feedback');
 torquePending.state.runtime.enabled=false;await torquePending.poll();
 same(torquePending.$('simple-motion').querySelector('strong').textContent,'已卸力','fresh disabled feedback confirms torque release');
-same(torquePending.$('wl-home').textContent,'校准回中','executed JS preserves the calibration-only button name');
+same(torquePending.$('wl-home').textContent,'回正','executed JS uses the requested pose button name');
 torquePending.state.runtime.mode='servo_debug';torquePending.state.runtime.enabled=false;
 torquePending.state.runtime.factory_calibration={active:true,held_mask:1};await torquePending.poll();
 same(torquePending.$('simple-motion').querySelector('strong').textContent,'校准 / 维护','normal-loop disabled flag cannot prove individual calibration axes are unloaded');

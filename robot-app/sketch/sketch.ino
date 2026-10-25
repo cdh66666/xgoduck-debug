@@ -54,6 +54,8 @@ struct FactoryBus {
   bool torque(uint8_t id,uint8_t value) {return ack(factoryServo.EnableTorque(id,value));}
   bool calibrationOfs(uint8_t id) {return ack(factoryServo.CalibrationOfs(id));}
   bool lock(uint8_t id) {return ack(factoryServo.LockEprom(id));}
+  bool unlock(uint8_t id) {return ack(factoryServo.unLockEprom(id));}
+  bool offset(uint8_t id,uint16_t value) {return ack(factoryServo.writeWord(id,31,value));}
   bool goal(uint8_t id,uint16_t value) {return ack(factoryServo.writeWord(id,42,value));}
   void settle() {k_msleep(50);}
 };
@@ -62,7 +64,7 @@ static void receiveFactory(MsgPack::bin_t<uint8_t> bytes) {
   FactoryPacket pkt={};
   if(bytes.size()!=sizeof(pkt)) return;
   memcpy(&pkt,bytes.data(),sizeof(pkt));
-  if(memcmp(pkt.magic,"DQF1",4) || pkt.op>FACTORY_OFF || pkt.targetId>253 || pkt.reserved) return;
+  if(memcmp(pkt.magic,"DQF1",4) || pkt.op>FACTORY_CALIBRATE_UNLOADED || pkt.targetId>253 || pkt.reserved) return;
   k_mutex_lock(&hostMu,K_FOREVER);
   if(!factoryPending) {pendingFactory=pkt; factoryPending=true;}
   k_mutex_unlock(&hostMu);

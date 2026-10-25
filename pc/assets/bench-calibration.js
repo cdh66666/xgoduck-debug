@@ -30,19 +30,19 @@
     $('calibration-stop').hidden=!active;
     $('sequence-count').hidden=phase==='placement';
     if(active){text('calibration-mode','正在校准，请保持托盘和鸭子不动。');text('sequence-count',`${ids.length} / 15`);}
-    else if(success){text('calibration-mode','校准成功 · 15颗已保存并保持');text('sequence-count','15 / 15');}
+    else if(success){text('calibration-mode','校准成功 · 15颗中位已保存'+(c?.calibration_loads_motor===false?' · 保持卸力':''));text('sequence-count','15 / 15');}
     else if(flowRequested){text('calibration-mode','本次校准未完成，请查看提示。');text('sequence-count',`${ownsRun?ids.length:0} / 15`);}
-    else{text('calibration-mode','把鸭子放入 R7 托盘，确认全身中位。');text('sequence-result','确认后将自动卸力、进入校准，并逐颗保存中位。');}
+    else{text('calibration-mode','把鸭子放入 R7 托盘，确认全身贴合定位槽。');text('sequence-result',c?.calibration_loads_motor===false?'确认后逐颗保存机械中位，全程卸力，不执行回正或站立。':'确认后将自动卸力、进入校准，并逐颗保存中位；托盘内须使用支持卸力校准的固件。');}
     if(active||ownsRun){$('calibration-progress').value=ids.length;text('calibration-progress-text',`${ids.length} / 15${active&&c?.current_id?' · 当前 ID '+c.current_id:success?' · 已完成':''}`);}
   }
   const dialog=document.createElement('dialog');dialog.id='calibration-confirm-dialog';
   dialog.innerHTML='<h2>校准操作预告</h2><p id="calibration-confirm-text"></p><div class="bench-actions"><button id="calibration-cancel" class="quiet">取消</button><button id="calibration-confirm">确认本次操作</button></div>';
   document.body.append(dialog);
   const explanations={
-    enter:'将停止正式模型程序，临时切换厂家校准固件。切换时全部卸力，请用固定台或手稳妥支撑。进入后不会自动校准。',
+    enter:'将进入校准维护，请先全部卸力并支撑机身。进入后不会自动保存中位。',
     restore:'将核对全部卸力与本次零位保存结果，再恢复正式模型固件和程序。恢复后保持 OFF，动作须另行启动。',
-    all:'确认鸭子全身已摆入固定台，每个关节均处于机械中位且全部卸力。将依次对15轴执行厂家校准、保存新零位并保持当前姿态。停止会取消后续轴，当前单轴事务结束后全部卸力。',
-    calibrate:()=>`将把 ID ${selected} 的当前手摆姿态设为新的厂家机械中位，保存后该轴上力保持；其他已保持轴不变。`
+    all:'确认鸭子全身已贴合托盘定位槽，每个关节均处于机械中位且全部卸力。将依次对15轴保存新中位。停止会取消后续轴。',
+    calibrate:()=>`将把 ID ${selected} 的当前手摆姿态保存为新的机械中位。${data?.calibration?.calibration_loads_motor===false?'全程保持卸力。':'托盘内须使用支持卸力校准的固件，扭矩状态以主控读回为准。'}`
   };
   async function get(){
     if(busy)return;busy=true;

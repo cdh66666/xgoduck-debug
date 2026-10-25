@@ -5,6 +5,7 @@ import threading
 import time
 from pathlib import Path
 from wire import encode_factory, decode_factory_reply, FACTORY_OPS
+from tray_guard import require_motion_clear, is_tray_pose
 
 
 def atomic_json(path, value):
@@ -62,7 +63,7 @@ class FactoryCalibrationMixin:
                 result=dict(self.factory_reply)
                 self.factory_caps=result['capabilities']
                 self.factory_held=result['held_mask']
-                if action in ('read','calibrate') and result['ok']:
+                if action in ('read','calibrate','calibrate_unloaded') and result['ok']:
                     record=dict(result,read_at=time.time(),read_monotonic=time.monotonic(),boot_epoch=self.factory_epoch)
                     self.factory_reads[str(target_id)]=record
             return result
@@ -101,8 +102,12 @@ class FactoryCalibrationMixin:
                 from rl_core import MOTOR_IDS
                 replies=[self._factory_request('read',int(i)) for i in MOTOR_IDS]
                 return {'ok':all(r['ok'] for r in replies),'servos':replies,'boot_epoch':self.factory_epoch}
-            if action not in ('read','release','calibrate'): raise ValueError('unknown factory action')
-            if action!='calibrate': return self._factory_request(action,target_id)
+            if action=='calibrate' and is_tray_pose(self.feedback) and self.factory_caps & 0x40:
+                action='calibrate_unloaded'
+            if action not in ('read','release','calibrate','calibrate_unloaded'): raise ValueError('unknown factory action')
+            if action not in ('calibrate','calibrate_unloaded'): return self._factory_request(action,target_id)
+            if action=='calibrate': require_motion_clear(self.feedback)
+            elif not self.factory_caps & 0x40: raise ValueError('MCU does not support unloaded direct-offset calibration')
             if self.factory_pending: raise ValueError('previous calibration outcome is unknown; inspect pending transaction before any further EEPROM write')
             from rl_core import MOTOR_IDS
             if target_id not in MOTOR_IDS: raise ValueError('calibration target is not a commissioned axis')
@@ -112,7 +117,7 @@ class FactoryCalibrationMixin:
             pending=self.factory_dir/'pending.json'
             atomic_json(pending,transaction)
             self.factory_pending=transaction
-            result=self._factory_request('calibrate',target_id)
+            result=self._factory_request(action,target_id)
             if result['zero_changed']:
                 with self.lock:
                     self.zero_pos[list(MOTOR_IDS).index(target_id)]=result['zero_pos']
@@ -129,7 +134,8 @@ class FactoryCalibrationMixin:
         now=time.monotonic()
         reads={key:dict(value,age_ms=(now-value['read_monotonic'])*1000) for key,value in self.factory_reads.items()}
         last=max((x['read_at'] for x in reads.values()),default=None)
-        return {'supported':True,'mcu_supported':self.factory_caps==31,'capabilities':self.factory_caps,
+        return {'supported':True,'mcu_supported':self.factory_caps in (31,63,127),'capabilities':self.factory_caps,
+                'unloaded_calibration_supported':bool(self.factory_caps & 0x40),
                 'active':self.mode=='servo_debug' and self.factory_active,'held_mask':self.factory_held,
                 'held_mask_is_live':False,'last_read':last,'boot_epoch':self.factory_epoch,
                 'registers':reads,'pending':self.factory_pending,'protocol':'DQF1/DQF2',

@@ -15,6 +15,7 @@ from bench_calibration import FactoryMaintenance, FactoryCalibration, board_requ
 from active_runtime import verified_sources
 from official_status_stream import OfficialStatusStream
 from release_profile import PROFILE
+from firmware_manager import FirmwareManager
 
 REVISION = '2026-10-24-official-console-r1'
 
@@ -48,6 +49,7 @@ class WorkbenchServer(OfficialServer):
         self.events = []
         self.maintenance = FactoryMaintenance(ROOT)
         self.calibration = FactoryCalibration(ROOT,self.maintenance,board_request(tunnel,wireless_key))
+        self.firmware = FirmwareManager(ROOT)
         super().__init__(address, tunnel)
         self.RequestHandlerClass = WorkbenchHandler
 
@@ -61,7 +63,7 @@ class WorkbenchServer(OfficialServer):
 class WorkbenchHandler(OfficialHandler):
     def maintenance_locked(self):
         calibration = self.server.calibration.snapshot()
-        return self.server.maintenance.snapshot()['active'] or (calibration['active'] and calibration['operation'] in ('enter','restore'))
+        return self.server.firmware.snapshot().get('busy',False) or self.server.maintenance.snapshot()['active'] or (calibration['active'] and calibration['operation'] in ('enter','restore'))
 
     def do_GET(self):
         path = urlsplit(self.path).path
@@ -74,6 +76,8 @@ class WorkbenchHandler(OfficialHandler):
                                    'calibration':self.server.calibration.snapshot()})
         if path == '/api/bench/tests':
             return self.send(200, self.server.tests.snapshot())
+        if path == '/api/bench/firmware':
+            return self.send(200,self.server.firmware.refresh())
         if path in ('/api/local-session', '/api/bench/session'):
             return self.send(200, {'token': self.server.session_token})
         if path.startswith('/api/bench/report/'):
@@ -113,7 +117,13 @@ class WorkbenchHandler(OfficialHandler):
                 size = int(self.headers.get('Content-Length', '0'))
                 if not 0 < size <= 8192: raise ValueError('Invalid length')
                 body = json.loads(self.rfile.read(size))
+                if path == '/api/bench/firmware/update':
+                    if self.server.maintenance.snapshot()['active'] or self.server.calibration.snapshot()['active'] or self.server.tests.snapshot().get('active'):
+                        raise RuntimeError('请先结束校准和测试，再更新固件')
+                    return self.send(202,self.server.firmware.update(body.get('version')))
                 if path == '/api/bench/calibration/action':
+                    if self.server.firmware.snapshot().get('busy',False):
+                        raise RuntimeError('固件更新中不能执行校准维护')
                     action = body['action']
                     if action in ('enter','recalibrate') and self.server.tests.snapshot().get('active'):
                         raise RuntimeError('先结束姿态测试记录，再进入校准维护')

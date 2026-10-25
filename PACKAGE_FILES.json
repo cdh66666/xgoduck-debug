@@ -10,28 +10,28 @@
       "sha256": "bf163d2f95592215af2cc98c481e26944f30fa0c6a8105f47d83b45437a099da"
     },
     "MODEL_ACCEPTANCE.json": {
-      "bytes": 4433,
-      "sha256": "ba96312b076d9f532a4929d4dfa9bff1a3a589a725448016b5060f692c6142a8"
+      "bytes": 5298,
+      "sha256": "f55d5f1b98d88312e3ac8867dc45d581e7b38258da8d0b67b3d72c0d8c587f35"
     },
     "README.md": {
-      "bytes": 9231,
-      "sha256": "05cc8d3e4d625bab33533e87ef06cf2fad7c3abe7a007ebf684961b34548eda9"
+      "bytes": 10830,
+      "sha256": "b719d08a73c89876812dd0f297d327ed91c49e71e27e9eb410aecae2d434a4bd"
     },
     "RELEASE_PROFILE.json": {
       "bytes": 960,
       "sha256": "2fc534417e7d3a6f621eaabe9bcc91f31821f01dcd1e0f8d6142a037d8344972"
     },
     "RELEASE_RUNTIME.json": {
-      "bytes": 12240,
-      "sha256": "d1db9c73b5d45b0d59c5750e9ee5ff005e182a419ffb12541fe34ac13a44e1b3"
+      "bytes": 14005,
+      "sha256": "7f7cd941bd73d3c406c7546f1cb31ad74dcf7c64bf83d440f3d9826517f747a7"
     },
     "SNAPSHOT_VERIFICATION.json": {
       "bytes": 2099,
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 218329,
-      "sha256": "e595511992c4185ff449d2f1d46f0c115a534e5e16543a325ab740703f953521"
+      "bytes": 241045,
+      "sha256": "e08b3fa1d22e344d6e901537d35de09f13c4b171311d88cbf0ed1922cddedb2d"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -1074,16 +1074,16 @@
       "sha256": "dbcaf8c6e3f88835fb7384eb46d048823e32466d8636fe87a9300cf5459f716c"
     },
     "pc/assets/bench-calibration.js": {
-      "bytes": 10423,
-      "sha256": "bcd470a6569264d771e57a98f558ffd20380e932cd93908ef8b3f0dddaafb88b"
+      "bytes": 10621,
+      "sha256": "1187f98459a06a6322224ebabab17a88639848952345eb4cf6f2f8068365a326"
     },
     "pc/assets/bench-models.html": {
       "bytes": 2262,
       "sha256": "1ebf59b89a948f1a66b625b45426a1a3d149761a9b410f1d3213ad7aeda51b46"
     },
     "pc/assets/bench-workbench.css": {
-      "bytes": 18091,
-      "sha256": "9141fe6cba0099ea2463cdc8f20dbf16508355cf1c173f886f546571e9afc062"
+      "bytes": 18800,
+      "sha256": "710cc65af408d330e708a0a3e67ab0cad9f53587aa7e7aafdebfe02a5fc24dca"
     },
     "pc/assets/calibration-tray-r7/manifest.json": {
       "bytes": 5304,
@@ -1222,12 +1222,12 @@
       "sha256": "458fd364d394bcb155fe358510be90cee4f130bc5d9ca57783f43e73a0a3a770"
     },
     "pc/assets/motion-history.css": {
-      "bytes": 1718,
-      "sha256": "0cd546fc9122a295624459b0bae012272e8194938173e628ca12bbad77430364"
+      "bytes": 2347,
+      "sha256": "e1196e4d2f5d30a72956ae93a12d54c49c0655f37ab941c19d6d367893253b85"
     },
     "pc/assets/motion-history.js": {
-      "bytes": 11148,
-      "sha256": "f882afd4300e22b19bf084e6ba5308856f95f844fb060267e25a5a51927b32d4"
+      "bytes": 11376,
+      "sha256": "1055b16d28adb81ebe2334ce0c94d479f5ea72817b2de6d53e9798d060beecee"
     },
     "pc/assets/motor-current.js": {
       "bytes": 3261,
@@ -1262,8 +1262,8 @@
       "sha256": "daf1e940eea549e6f2f46ecc2653cc06b684a08fdd8b8c1ca862695efe407b8e"
     },
     "pc/assets/official-workbench.js": {
-      "bytes": 58007,
-      "sha256": "9a0dcfb40f4180363934ef99114cc4ff7ae17f389c3db00bd4838be9da131b61"
+      "bytes": 58591,
+      "sha256": "6d09703cfdedd15ba3afeed22d6aedeb4480cea66af302fe6216ee26974c61a0"
     },
     "pc/assets/pose-playback.js": {
       "bytes": 9401,
@@ -1310,12 +1310,12 @@
       "sha256": "d956e26c045862ba57b4bf11289f83d9f2a9226dbc1392c56edc52abacb6691b"
     },
     "pc/bench_calibration.py": {
-      "bytes": 9652,
-      "sha256": "d97c3433ca84d59dfaca556fe77539719b0b43883f8822e45fa6cb8ec06fdc9b"
+      "bytes": 9694,
+      "sha256": "c10bf949363b4634f2f652e0a0d82abd43c1f352ae38587e808394bd1c0dbfb6"
     },
     "pc/bench_server.py": {
-      "bytes": 8651,
-      "sha256": "fe627d19ace45e2198621738a33730fc58a762277417f38b709818fdd20ab403"
+      "bytes": 9465,
+      "sha256": "a3bc43e026b121a16680890a7069b66d10e05607fd90bff46d5dee5a979d111d"
     },
     "pc/bench_tests.py": {
       "bytes": 16930,
@@ -1350,12 +1350,12 @@
       "sha256": "c0d21c9258a4f31c590e31bc07974dd5fe12714226438cf3850a367663eaa406"
     },
     "pc/factory_workbench.py": {
-      "bytes": 6797,
-      "sha256": "0cce96c694c4c70809e8aed2015dd083e239a2cdef8d2a04e48dfa60afbe48a5"
+      "bytes": 7734,
+      "sha256": "f06aa2f93d093d58a39aac92897b79180f477d9b58733c06ea20c8e192841e98"
     },
     "pc/index.html": {
-      "bytes": 19240,
-      "sha256": "893315bcaa013c5956e2803e91aedd516afeff4ed780a5c4391c0a7e661802dd"
+      "bytes": 21063,
+      "sha256": "42b37adeff6ed3d3daf58916533fea3e1bac8f0064312e95adf8b32056efa976"
     },
     "pc/model-assets/LICENSE-xgoduck_rl": {
       "bytes": 11553,
@@ -1922,8 +1922,8 @@
       "sha256": "f7b697d025d7eff1635c1acbf3fbe6a42322067b62fecdb69447e0f17588373c"
     },
     "robot-app/python/controller.py": {
-      "bytes": 53949,
-      "sha256": "745933986afc721fec5d94cd59ab31713aa5bc0ccaab010b6ac4d7fcac10363f"
+      "bytes": 56122,
+      "sha256": "f9d6ab38de9218e1c8f95bdc986dfb186671f6e3ca3e1cb593cc57f3032e5340"
     },
     "robot-app/python/current_telemetry.py": {
       "bytes": 12925,
@@ -1934,8 +1934,8 @@
       "sha256": "ae5cae3d75984d4f5f0d35e61c4b11fe982ad164ad383de50958d62a9bac8bf3"
     },
     "robot-app/python/factory_calibration.py": {
-      "bytes": 6919,
-      "sha256": "4ff880610d2bf634348cdeebdda0a7e88aee0338393599cb11a3f4a5e90b5422"
+      "bytes": 7471,
+      "sha256": "19edf459648e31b332b6c725b909df002144b2e95a7871700f8a1c9bfbf1ac35"
     },
     "robot-app/python/gyro_bias_control.py": {
       "bytes": 8880,
@@ -1946,24 +1946,24 @@
       "sha256": "302800087ccca64c9e4c88c28caf2f9612872bce8177665b310fd3fb60149792"
     },
     "robot-app/python/main.py": {
-      "bytes": 8694,
-      "sha256": "107b999509a856833c420c6df5b601c2e437d60698d418894997213e6cb8abdd"
+      "bytes": 9324,
+      "sha256": "0ab1cb0f1fd9a1f09571f05034b1c73b4243be91613dcd79e68c4443312abe27"
     },
     "robot-app/python/motion_recording.py": {
-      "bytes": 17981,
-      "sha256": "78af2daf1f4fb76dd719e463ecd51d5682463fc0d2848d3700fcfb5cdfaf396d"
+      "bytes": 17992,
+      "sha256": "d1114f46c9c6863de319461843e19bd3a999360fe7f65e31753449adffdf2edc"
     },
     "robot-app/python/policy.py": {
-      "bytes": 8631,
-      "sha256": "04c0303f976446c97b4bf6b148f729ca721b58ce4c1f8110a0a8579df17572da"
+      "bytes": 8629,
+      "sha256": "b2e6ef5982f8c6162bffebd682cc2fa0a12d7da8fda4bcecfeb94f450bbc33b3"
     },
     "robot-app/python/proc.py": {
       "bytes": 2020,
       "sha256": "01a6a501d225f73e73bdef66105bd6e516e50182be00c02af7116ec6367a35fd"
     },
     "robot-app/python/recovery.py": {
-      "bytes": 2816,
-      "sha256": "125e7a2cb2d20186dc88b95652a35b55a4d6859a7ce187e728d25c54cceff664"
+      "bytes": 3052,
+      "sha256": "c8e319e762e57535494cafdccce9993ff813bdb748edb8642327c73560774ee5"
     },
     "robot-app/python/release_profile.py": {
       "bytes": 2510,
@@ -1978,8 +1978,8 @@
       "sha256": "0ab3f52a82e2f7513ceb0322b3eb838896eada0708b99e6545c5bfcc01a13a95"
     },
     "robot-app/python/wire.py": {
-      "bytes": 6448,
-      "sha256": "21f8acfe61e220edf40f18a53f69ffca93fa8d4bebb19fb63abdf1a666a4d36f"
+      "bytes": 6498,
+      "sha256": "e8d0d089473f2348ebe78f46b6fe87239859b39827cdaf5620be69b87fae4550"
     },
     "robot-app/python/xgoduck_getup.onnx": {
       "bytes": 793706,
@@ -2010,8 +2010,8 @@
       "sha256": "d7877465e68aa3da03ff80657d0a42a4e99feb28d44fbd1eb32c904e58f79955"
     },
     "robot-app/sketch/factory_calibration.h": {
-      "bytes": 4036,
-      "sha256": "22a0d55b4bd1302ee5d24d5d3352ed867695df08d2ccc4548b32541b2cde163a"
+      "bytes": 5734,
+      "sha256": "e06f95455760b64d8e868fad4962d0949e524dbcd9d6b7f347fa99c40b119870"
     },
     "robot-app/sketch/joint_limits.h": {
       "bytes": 1023,
@@ -2034,8 +2034,8 @@
       "sha256": "538ae49ca7c670d41aab0a96fc83c4ccc0d936489dacd0876c4f5278cc3ecf5a"
     },
     "robot-app/sketch/sketch.ino": {
-      "bytes": 24902,
-      "sha256": "09eb23897face7cb89212fefc36c64ed155b0a0d723d7b38a618b52f7ada2599"
+      "bytes": 25081,
+      "sha256": "d6c7c0f407e98f087457ec138683fa84d76112f976114a657acd0f5fab2e964f"
     },
     "robot-app/sketch/sketch.yaml": {
       "bytes": 337,
@@ -2186,12 +2186,12 @@
       "sha256": "be3fb0db1d855cf9543ec38f9cc0ef26767100324af3c776acd76ae2cc8211cd"
     },
     "tests/test_home_middle.mjs": {
-      "bytes": 12950,
-      "sha256": "b167968a0fd35e91f4ba18a221e0e131d5c2d72860524f1b3dbe6315c0e63b05"
+      "bytes": 14740,
+      "sha256": "ed6d9493412e855e359db22aaba1c1b3c4d257bfa793ca585624f2304505657d"
     },
     "tests/test_joint_feedback_loss.py": {
-      "bytes": 4810,
-      "sha256": "93dd07168cf14443358b8231660c14e3d30d112ac46a042fbe35c552e944e167"
+      "bytes": 5313,
+      "sha256": "5ad10a2afdf5a2415d56087ae67a4ea6b7d8da6ce9b8a93f54509148989413c4"
     },
     "tests/test_motion_history.mjs": {
       "bytes": 4524,
@@ -2238,8 +2238,8 @@
       "sha256": "2b6154669cc09dbe5cc27e6d75fed4523506277909b30b82e9234dcce0e72a45"
     },
     "tests/test_release.py": {
-      "bytes": 9973,
-      "sha256": "7efb2f8271044561ea13f63d99d4595f13ea15ec09815fdba580a40f5e697556"
+      "bytes": 10387,
+      "sha256": "e1fb58b27abde89df2057ddd0a52cb4229df76f9139894c0cb588778b7b90874"
     },
     "tests/test_remote_disconnect.py": {
       "bytes": 5836,
@@ -2254,8 +2254,8 @@
       "sha256": "cd47e0712bd2e4df691140248c8335e9e5e49ab96731daac5c91d777de0bee0d"
     },
     "tests/test_workbench.mjs": {
-      "bytes": 61791,
-      "sha256": "67159598ef88c9e7182054d1b82bbf849ac0f8dcde4c20f9cd763a6fe31b1671"
+      "bytes": 62153,
+      "sha256": "58be047a3363818640675053dc6d34dce8baa9e2b168ee28f5341fe93cf84449"
     },
     "training/.gitignore": {
       "bytes": 153,
@@ -2266,8 +2266,8 @@
       "sha256": "4f99b031ca5127bfc799ae71e30119cad11cbba71d7aa2693132dcfad3a80bda"
     },
     "training/README.md": {
-      "bytes": 15075,
-      "sha256": "65d584db306d501b1dd26083494a14365a7466b85715bae942311310bc472f8b"
+      "bytes": 17348,
+      "sha256": "1b4fbc87e0711636062d4e2abeffca1f4803b8bdc313d36416d2e6ae2cc2d16f"
     },
     "training/SESSION_20261023.md": {
       "bytes": 3608,
@@ -2402,8 +2402,8 @@
       "sha256": "dfcc968249915c8f15d1959e9bfd20d01d74a9ffbda7f95c891abe50b9c7aa98"
     },
     "training/evaluate.py": {
-      "bytes": 5650,
-      "sha256": "af0d9d88ec1aea4d7903d447e8ff2248904d185ddda4a658f6ab7111023dd584"
+      "bytes": 6977,
+      "sha256": "76fe8ec909784f5b939eac0f8d71b8a0eeff6912f3f5f2fc8617434fe0e799a3"
     },
     "training/full_refine.py": {
       "bytes": 3255,
@@ -2506,8 +2506,8 @@
       "sha256": "5432d9dec99f5a23e4db0659477a54d92be2ab3cc94bff2208add1e85b775e6d"
     },
     "training/native_env.py": {
-      "bytes": 25190,
-      "sha256": "73d4db88e7f9d4674b8836135aaf4cd5a810b6d66a08c20976cccaabc0d3daac"
+      "bytes": 26412,
+      "sha256": "ca688237d188e7d2c35ad18587f9b984b93f0743614b1ed6c20c2b38f6d4ef10"
     },
     "training/params/1910_m6.json": {
       "bytes": 754,
@@ -2538,8 +2538,8 @@
       "sha256": "c53c970129341fb38178cf9fb5506452b2183992cecbe4deb33687f3c90fa8ed"
     },
     "training/requirements.txt": {
-      "bytes": 237,
-      "sha256": "1f3faca719f41eb270d927c938a4c3a774f68c013c3c0ab514c5bf88f48ce2ea"
+      "bytes": 252,
+      "sha256": "0dee9fcc5362fade0568cff31b39e9a5cb39b9e2c925b3c82b9648a260be0c6f"
     },
     "training/stability_protocol.py": {
       "bytes": 5373,
@@ -2590,12 +2590,12 @@
       "sha256": "b582c0e89b8fd811582d547693f512f5b15ee1b24fd6d86dfe3ccb300c24633a"
     },
     "training/train.py": {
-      "bytes": 9475,
-      "sha256": "4f5d603aa6850905b0ca75e26d80290c7d69b8583332d240693d6e9f3144f681"
+      "bytes": 11428,
+      "sha256": "dbcd684a3f0aad506e74f566132cb82e1df82bcdc3c4027617a0c2a3ae747945"
     },
     "training/training_adapter.py": {
-      "bytes": 2283,
-      "sha256": "fd40b8d52f6111509852527584494b8248e0e15d4761e549d95c4daf106d0e8b"
+      "bytes": 2624,
+      "sha256": "ec9af7e43c4afc986001df5f01419529d638e720e280e640fac2c6e58d0ce0a4"
     },
     "training/yaw_reward.py": {
       "bytes": 806,
@@ -2664,6 +2664,190 @@
     "docs/CONTROL_CYCLE_20261024.md": {
       "bytes": 4371,
       "sha256": "ef4aa8d30e079eb48ee43a7e0cdfddcc77367242cf2f6524423e1d94164032f3"
+    },
+    "tests/test_recovery_startup.py": {
+      "bytes": 1509,
+      "sha256": "91cc2e2d1e7f002169187eb4b3a5e5abb7597100d543c6c25cb8a5b4e1528344"
+    },
+    "docs/GROUND_STANDING_20261024.md": {
+      "bytes": 12685,
+      "sha256": "dff64921ed68de1359af295053574d5ee5557c9c8093a92e2b1d7705e7874cd4"
+    },
+    "training/model/robot_inertial_candidate_20261025.json": {
+      "bytes": 6521,
+      "sha256": "a362e39077febc49d7cfc5298a1a0ce778571edd80099255147d8b211dcb0348"
+    },
+    "tests/test_tray_guard.py": {
+      "bytes": 3644,
+      "sha256": "79df036e595bebc93460f0b8fbbb72d60f790572be4e00c868d60850810ab4d1"
+    },
+    "training/model/robot_massfix.xml": {
+      "bytes": 14239,
+      "sha256": "73b2b44bae1119b6dabc206fbb457e217ed23e7eb4dd69af539079094c3ccefd"
+    },
+    "training/tests/test_inertial_candidate.py": {
+      "bytes": 1594,
+      "sha256": "60032e803c4325c883fb577ef5a99cf5c2c71802badc46a1658015da1b992015"
+    },
+    "training/model/robot_inertial_candidate_20261025.xml": {
+      "bytes": 14766,
+      "sha256": "c89d853c85d3b04ab2027cc2c413d48b95ad93aa002d064a3cc95b69954838af"
+    },
+    "AGENTS.md": {
+      "bytes": 5999,
+      "sha256": "f812d8adf1f4a3e2c39488ccd6110734d2a5d169264f7ab145b12f972de5b3c0"
+    },
+    "training/tests/test_physical_model_binding.py": {
+      "bytes": 1467,
+      "sha256": "ef6583f820f5b79fd56e309c01099b3ae139b568750e24147380662d97002235"
+    },
+    "training/tools/build_inertial_candidate.py": {
+      "bytes": 8935,
+      "sha256": "46a43892502f587d64a450904b47fd9f1cf304433b3ceeff07344c8c7f3fdecf"
+    },
+    "robot-app/python/tray_guard.py": {
+      "bytes": 1137,
+      "sha256": "ef3392c8386e13bb194c889c7cbe0e0e6e54fa5e60c142a5e8841c4793066bb1"
+    },
+    "tests/test_policy_filter_groups.py": {
+      "bytes": 884,
+      "sha256": "5ade0515ebffe45352ccdcc470df15b98c93bf818f01c2cfec8f40d5322168e3"
+    },
+    "simulation-model/robot_massfix.xml": {
+      "bytes": 14239,
+      "sha256": "73b2b44bae1119b6dabc206fbb457e217ed23e7eb4dd69af539079094c3ccefd"
+    },
+    "docs/WORKBUDDY_HANDOFF_20261025.md": {
+      "bytes": 14210,
+      "sha256": "1d95c6da0ffe642dfb7a14192b1d5a5aec903531f403efaab10664b65a783ea9"
+    },
+    "tests/test_factory_unloaded.py": {
+      "bytes": 2651,
+      "sha256": "9ea97369c3e117bf7882a1e96fad3b0c4e0da7dbf002b3f139051c2e2b46e547"
+    },
+    "robot-app/python/native_factory.py": {
+      "bytes": 1858,
+      "sha256": "43f7535f736263e5ebefea76904508e7c423c89fdd911ddf6cdf7ed3362a7115"
+    },
+    "tests/factory_unloaded_test.cpp": {
+      "bytes": 2843,
+      "sha256": "9e56b06505096b8388608d224dcbe428ec882926068003415e5f5d7e26d9eba4"
+    },
+    "tests/test_sit_policy.py": {
+      "bytes": 4915,
+      "sha256": "8cf6f1c7b3670213dea5ebf9105b8a4d720a03f15ce25c976d48208ccb379c00"
+    },
+    "robot-app/python/sit_policy.py": {
+      "bytes": 2419,
+      "sha256": "fd2cd62e70a15934d30e59d1aa5ed2a13edbded6d0a0085fca1495f0b16110a5"
+    },
+    "training/sit_training.py": {
+      "bytes": 12546,
+      "sha256": "3e26c75ecc77d9702a7c412c24130b2e3f4f53f353e6b40d46a3063cf49ee7ed"
+    },
+    "robot-app/python/sit_runtime.py": {
+      "bytes": 6248,
+      "sha256": "b0aee1cf735f0720227d5aba121c23bc740508d9045f31ab153a7b71b43d97b3"
+    },
+    "pc/firmware-release.json": {
+      "bytes": 2187,
+      "sha256": "15a0f214e6baa441f1a7937266d26e75bab285001a6e4878b96cff57dd3abcfa"
+    },
+    "pc/firmware_install_remote.py": {
+      "bytes": 6358,
+      "sha256": "fd6e54280177e403023fcd7b01ace39d46f117dd484a344a49f2dd9fc4430d7e"
+    },
+    "tests/test_firmware_manager.py": {
+      "bytes": 3634,
+      "sha256": "dbc20927f81b40a82a1fa0c6589ed6a027d6a4820e950734cfda85863fb9b7f5"
+    },
+    "pc/servo_parser_check.py": {
+      "bytes": 3202,
+      "sha256": "cb5b23a3701b6ad42a3a3c5eded5064127070c189295afea9856103e1764003b"
+    },
+    "pc/control_clock_check.py": {
+      "bytes": 1448,
+      "sha256": "9f8b32f5fb361cdcfe724c27e4db7ffd9fd125e075a33f23a07b8289022689d9"
+    },
+    "robot-app/python/runtime_identity.py": {
+      "bytes": 1526,
+      "sha256": "f3e3d45eb80d82307107dbe5e1f372f8f5b34caf7d90a15fdd3587ebf05a6470"
+    },
+    "pc/assets/firmware.css": {
+      "bytes": 1323,
+      "sha256": "bb7f3d9a9f8707c3640feb74c3e2c292b265a856435806f2250f2f241e91541e"
+    },
+    "pc/assets/firmware.js": {
+      "bytes": 3988,
+      "sha256": "dd3e48a1d9c669f1626ce76b7cd46ffa1077827687e4c0151b7a4aaf3e8553c9"
+    },
+    "robot-app/python/servo_health.py": {
+      "bytes": 1414,
+      "sha256": "7fc109f95f5e7d6fb93ddff2d1aa30a5a75393db73f400e92bd545ad09a4e270"
+    },
+    "tests/test_runtime_identity.py": {
+      "bytes": 2016,
+      "sha256": "f469813500b0431ec86ba45c56dc5909ac398d807c7afb96e51cb30e07a9a899"
+    },
+    "pc/firmware_manager.py": {
+      "bytes": 6899,
+      "sha256": "1ec5e51c2d39a3fb915f92d4f58e54e5351dd98239a2f1b995f6f3609596164d"
+    },
+    "tests/test_control_clock_contract.py": {
+      "bytes": 999,
+      "sha256": "c6eff1a792e4c61a754eab0630dab8784876676c695b0af07eb95f8d2f82415d"
+    },
+    "training/butt_sit.py": {
+      "bytes": 4306,
+      "sha256": "ea1b371d66cfc3c3afce901a76ae900f9201d1fd7c696c1d6f52a0d30f595c5b"
+    },
+    "tests/test_pose_basis.py": {
+      "bytes": 1367,
+      "sha256": "1ea7de795bd63a77899bfc3f0bc049c17e0981001629fbf98a86fb827ec1cdf8"
+    },
+    "training/train_butt_sit.py": {
+      "bytes": 8640,
+      "sha256": "41e935e1c1ce93a249e3acb370b5ffb0bbb1ce6eb87cd3a7f07f605824e2c8a1"
+    },
+    "training/render_butt_sit.py": {
+      "bytes": 5861,
+      "sha256": "389a97640b08eb9895277dcd196faf2f87957ac5d86ff478a05fbee9c7e783a7"
+    },
+    "docs/TRAY_POSES_AND_BUTT_SIT_20261025.md": {
+      "bytes": 5950,
+      "sha256": "146c6f83c38b69ea890bfa30d38d89179d234bdccc544c692de07fb4012deb6b"
+    },
+    "pc/pose_contract_check.py": {
+      "bytes": 2662,
+      "sha256": "09fea7cfcecfada72271adc385b059b3fff7803698a5506cc331ffe048437a40"
+    },
+    "training/tools/run_overnight.py": {
+      "bytes": 4399,
+      "sha256": "c2fb1544787073b43951946fa5c705a51f8cc9a9d9c9236dbed68c6f166e2ae8"
+    },
+    "training/tests/test_runtime_profile.py": {
+      "bytes": 2543,
+      "sha256": "b301478eb21a859ec5315d472b7ce67ae867d4f788609e0bd5a8180fbcda55d7"
+    },
+    "training/model/standing_seed_20261025.json": {
+      "bytes": 863,
+      "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
+    },
+    "docs/OVERNIGHT_20261025.md": {
+      "bytes": 6743,
+      "sha256": "344bdd6a5131aabdefaaa3f73e65983b438a3e87e68a148958332f1ffd8e6be2"
+    },
+    "training/runtime_profile.py": {
+      "bytes": 2405,
+      "sha256": "fcdf7d849418f1f39b3dafe5dd2420158e11aba8aa2a7359f53fda8688c7ecc4"
+    },
+    "training/search_butt_raise.py": {
+      "bytes": 6047,
+      "sha256": "10dbeddcfedc1fbab59dd59025a71be5dc4dec8ae7aa3d1ec242fca6bc322391"
+    },
+    "reports/overnight-20261025/interim-audit.json": {
+      "bytes": 15582,
+      "sha256": "35ea044ffd96dd7cf655223b4a5f9bdea5c64030f1c23ebb575acea313552d17"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

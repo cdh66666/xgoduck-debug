@@ -1,5 +1,20 @@
 # 换电脑使用47500模型、继续训练或从零训练
 
+## 2026-10-25 修正物理参数后的新训练
+
+旧稳定版的结论只适用于旧模型和旧 HOME。新训练使用 `model/robot_inertial_candidate_20261025.xml`（826 g；质量来源和未实测惯量范围见同名 JSON），并显式传入 `--runtime-profile calibrated-20261025`：髋 ±22°、踝 ±18°、头部滤波 0.2，右髋归腿部滤波。这个选项同时约束观测零点、目标零点、仿真起始姿态和 ONNX 元数据。旧 `legacy` 保留以复现旧结果，不能与新基准的 checkpoint 混续。
+
+```powershell
+.\.venv-training\Scripts\python.exe -B training/full_refine.py --mode train --iterations 6000 --max-wall-seconds 1800 --workers 6 --envs-per-worker 4 --curriculum speed --max-forward 0.3 --runtime-profile calibrated-20261025 --model-xml training/model/robot_inertial_candidate_20261025.xml --trace-every 100 --output training/outputs/my-calibrated-run
+.\.venv-training\Scripts\python.exe -B training/evaluate.py --checkpoint training/outputs/my-calibrated-run/checkpoint.pt --seeds 8 --max-forward 0.3 --output training/outputs/my-calibrated-run/evaluation.json
+```
+
+`speed` 保留零速、0.2 m/s、后退和原地转向；仅把 Shift 前进分支扩展为 `--max-forward` 的 70%–100%（下限 0.2）。上限可逐级到 1.0 m/s。普通六点验收默认仍是旧 0.3，评测高速候选必须明确指定上限。50 Hz 为物理时间中的实际策略调用计数；CPU 仿真可以快于实时，不能由此宣称实机每周期必达 20 ms。
+
+完整 actor 的 226702 个参数均参与更新；旧权重只作初始化，固定标准化统计和探索噪声。这不同于只更新残差，也不同于从随机权重训练。独立评测未通过的候选不准入实机或公开运行权重。
+
+坐下工具 `train_butt_sit.py` 使用公开的派生站姿参考 `model/standing_seed_20261025.json`，无需本机私有原始记录。`search_butt_raise.py` 搜索坐下后连续起身的闭环教师轨迹，结果不是神经模型，也不代表已验收。`render_butt_sit.py --output <训练目录> --ffmpeg <可执行文件>` 渲染真实接触轨迹，`--before-model` 可选提供旧模型对照，`--font` 指定中文字体。完整夜间范围见 [任务记录](../docs/OVERNIGHT_20261025.md)。
+
 这里包含训练代码、R5 无 EVA 仿真 XML/实际网格、BAM 执行器配置、PPO 配置，以及 **47500 的便携 PT（3.31MB）和同版 ONNX（0.918MB）**。只打包 `checkpoints/MANIFEST.json` 白名单里的两份权重；不含设备密钥、校准数据、本机环境或日志。训练入口不连接机器人。
 
 2026-10-23本机已建立独立环境。早期5轮实训见 [SESSION_20261023.md](SESSION_20261023.md) 和 [VALIDATION_20261023.json](VALIDATION_20261023.json)；后续站立/走停训练及原生录像见 [SESSION_20261023_STABILITY.md](SESSION_20261023_STABILITY.md)。站立候选在独立8-seed集的静止倾角RMS减少约49%，48/48基础矩阵通过，但走停尚未整体改进，继续保留原运行基线。**均未操作、部署或通过实机验收。** 新候选和逐时刻数据保存在本机独立outputs目录，未加入公开权重白名单。
