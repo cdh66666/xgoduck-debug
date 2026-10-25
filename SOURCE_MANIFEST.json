@@ -3504,7 +3504,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "sha256": "7b8c620eb98f4cd583298ebc65e417dd517cda09e4b3edabca9250d2edf5277f",
+      "sha256": "480e19b0632c7ad5173c011b60d26fac5b71d939051e3d486d88f111417584d9",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/tests/test_runtime_profile.py": {
@@ -3749,6 +3749,30 @@
     },
     "reports/overnight-20261025/locomotion-review-0130.json": {
       "sha256": "7948d591210f02013ccef2ce065f59fb450a27b8bd82c2d3f64b7a5f505106f1",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/joint_temporal_ppo.py": {
+      "sha256": "8501fa07bc74c71aa83460a341442220356d5c9c3490c4c877eed157746bfc2e",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/tests/test_joint_temporal_ppo.py": {
+      "sha256": "f848c3429d322eb9ff95473500a86529b86a41b2839442b1c4860cbbf5bd4786",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-sit-hip-diagnostic-five-frames.png": {
+      "sha256": "60b99512e85d3ec35eb1df2c904e07bd34ccb90c0e032111b4516f19f4dea43e",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/licenses/rsl_rl.txt": {
+      "sha256": "3f58bb6b9272e416b8ccbe65889463f75a2fdf66e0e5722513f8622fb23dc778",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-sit-v3-failed-five-frames.png": {
+      "sha256": "bec728a14269749def042ac87c0e933ae5ebab39303c17df264b9200ea52ba85",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/training-review-0200.json": {
+      "sha256": "70cfcb130549e5d694bf306c6e187515a39b58577f9e1076f9455d761acd6853",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     }
   },

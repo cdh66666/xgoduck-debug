@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 258299,
-      "sha256": "3a37e46acc3acd5dfb3efd6ef836c75dcb291352ff3044a7dcdc1496cf69b55c"
+      "bytes": 260169,
+      "sha256": "9ac1e3b58a82473f4788f90877831a42dea08375b389ac204ab60b31f67afeae"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 35067,
-      "sha256": "7b8c620eb98f4cd583298ebc65e417dd517cda09e4b3edabca9250d2edf5277f"
+      "bytes": 37817,
+      "sha256": "480e19b0632c7ad5173c011b60d26fac5b71d939051e3d486d88f111417584d9"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -3060,6 +3060,30 @@
     "reports/overnight-20261025/locomotion-review-0130.json": {
       "bytes": 224346,
       "sha256": "7948d591210f02013ccef2ce065f59fb450a27b8bd82c2d3f64b7a5f505106f1"
+    },
+    "training/joint_temporal_ppo.py": {
+      "bytes": 3959,
+      "sha256": "8501fa07bc74c71aa83460a341442220356d5c9c3490c4c877eed157746bfc2e"
+    },
+    "training/tests/test_joint_temporal_ppo.py": {
+      "bytes": 2524,
+      "sha256": "f848c3429d322eb9ff95473500a86529b86a41b2839442b1c4860cbbf5bd4786"
+    },
+    "reports/overnight-20261025/official-sit-hip-diagnostic-five-frames.png": {
+      "bytes": 458482,
+      "sha256": "60b99512e85d3ec35eb1df2c904e07bd34ccb90c0e032111b4516f19f4dea43e"
+    },
+    "training/licenses/rsl_rl.txt": {
+      "bytes": 1632,
+      "sha256": "3f58bb6b9272e416b8ccbe65889463f75a2fdf66e0e5722513f8622fb23dc778"
+    },
+    "reports/overnight-20261025/official-sit-v3-failed-five-frames.png": {
+      "bytes": 417967,
+      "sha256": "bec728a14269749def042ac87c0e933ae5ebab39303c17df264b9200ea52ba85"
+    },
+    "reports/overnight-20261025/training-review-0200.json": {
+      "bytes": 186292,
+      "sha256": "70cfcb130549e5d694bf306c6e187515a39b58577f9e1076f9455d761acd6853"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",
