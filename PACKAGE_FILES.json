@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 254449,
-      "sha256": "a762ae36b21bbf1dd65d6228a4238d6cbe65f7089b937d4bb8a1d93903146e64"
+      "bytes": 255413,
+      "sha256": "ae2dd532d6d7f317210b82b0c6aa618bcdb9b7a7ef1fb1ea391a8d75f75ac927"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2406,8 +2406,8 @@
       "sha256": "43f43f9f3385242892e914a020802e3b59398bdc1bcdd0c76b0feb487bf26a86"
     },
     "training/full_refine.py": {
-      "bytes": 4441,
-      "sha256": "e2991e271d030f3f12f992598184c7530ecbd7aef81e23aca97f0b41041f4c9a"
+      "bytes": 4488,
+      "sha256": "748466029fdea705c5988baf8e8863f5a619329f8faf19cb38b1b69644b94728"
     },
     "training/full_refine_model.py": {
       "bytes": 342,
@@ -2694,8 +2694,8 @@
       "sha256": "c89d853c85d3b04ab2027cc2c413d48b95ad93aa002d064a3cc95b69954838af"
     },
     "AGENTS.md": {
-      "bytes": 5999,
-      "sha256": "f812d8adf1f4a3e2c39488ccd6110734d2a5d169264f7ab145b12f972de5b3c0"
+      "bytes": 6653,
+      "sha256": "9ed51728a7337a7c0c092d98f32f9587ea0b2c689808dd732422f26005c1e3a6"
     },
     "training/tests/test_physical_model_binding.py": {
       "bytes": 1467,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 27646,
-      "sha256": "cd112c28e1b4684df10b6d28d7f508f91efc34e65a8502d5f8ab269d1555003f"
+      "bytes": 31983,
+      "sha256": "886da27f95b06b2c70a5b767736c7ec3104cbf676e3892fe14e190b58705ecb7"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -2958,16 +2958,16 @@
       "sha256": "d25bd6a4d45d1fe667ed2019db9c162912efceb9e0e91e3f136b7e5f249de1e7"
     },
     "training/tests/test_continuous_model.py": {
-      "bytes": 1729,
-      "sha256": "4f2331fe4815f1354e9f5de1d850458a590255e23e4346b3984daf64970d400f"
+      "bytes": 3132,
+      "sha256": "39ee2de77e5a02c7f949e7a37d6c898a84217fc66911fe4e3efec9de7f14b201"
     },
     "reports/overnight-20261025/continuous-gate-audit.json": {
       "bytes": 17746,
       "sha256": "a030200fd2e79711baad56498f99af7fb6d5f20311f3f477a742916447655982"
     },
     "training/continuous_refine.py": {
-      "bytes": 1081,
-      "sha256": "aa7630196991c8574a4ab6d2a2edc2e761c71b7a76d225caa077e758f24c3626"
+      "bytes": 1360,
+      "sha256": "45129dcbb769359da69bcea8da4cdc28fafdc51636c4413bfbe1b552a1c8d80b"
     },
     "training/roll_phase_refine.py": {
       "bytes": 1392,
@@ -3012,6 +3012,18 @@
     "training/tests/test_pool_cleanup.py": {
       "bytes": 873,
       "sha256": "709a4a160f662719cd68b0411b96ab22367310ad37354ee599c7192afda852bb"
+    },
+    "reports/overnight-20261025/official-sit-pose-comparison.png": {
+      "bytes": 93265,
+      "sha256": "b058d84cd074288d0db7989fcd8af7804f845728577012a62625d2a13617ccd3"
+    },
+    "reports/overnight-20261025/official-sit-reference-0030.json": {
+      "bytes": 8612,
+      "sha256": "26cbd7bcfcfd390d99411f084a35704c1967a2aac3f206a061d38d5130c32f8b"
+    },
+    "reports/overnight-20261025/locomotion-review-0030.json": {
+      "bytes": 332443,
+      "sha256": "7a4c5f4f52d7a805f3a8f4a83adb5469e5500cbd1e9a6e5743833416ddb47b9c"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

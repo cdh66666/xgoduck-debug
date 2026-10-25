@@ -31,12 +31,12 @@ def config(path=None):
  return check_contract(cfg,ACTOR_CLASS)
 
 
-def initialize(alg,checkpoint=None):
+def initialize(alg,checkpoint=None,*,accepted_full_kinds=(KIND,)):
  import torch
  from refine import parity
  source=Path(checkpoint) if checkpoint else ROOT/'checkpoints/model_047500.pt'
  saved=torch.load(source,map_location='cpu',weights_only=False)
- if saved.get('kind')==KIND:
+ if saved.get('kind') in accepted_full_kinds:
   # Deliberate new optimization run: retain every learned actor/critic tensor
   # but start a fresh optimizer with this run's explicitly selected PPO config.
   state=saved['algorithm']

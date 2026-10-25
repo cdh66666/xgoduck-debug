@@ -3388,7 +3388,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "AGENTS.md": {
-      "sha256": "f812d8adf1f4a3e2c39488ccd6110734d2a5d169264f7ab145b12f972de5b3c0",
+      "sha256": "9ed51728a7337a7c0c092d98f32f9587ea0b2c689808dd732422f26005c1e3a6",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "simulation-model/robot_massfix.xml": {
@@ -3504,7 +3504,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "sha256": "cd112c28e1b4684df10b6d28d7f508f91efc34e65a8502d5f8ab269d1555003f",
+      "sha256": "886da27f95b06b2c70a5b767736c7ec3104cbf676e3892fe14e190b58705ecb7",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/tests/test_runtime_profile.py": {
@@ -3580,7 +3580,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/full_refine.py": {
-      "sha256": "e2991e271d030f3f12f992598184c7530ecbd7aef81e23aca97f0b41041f4c9a",
+      "sha256": "748466029fdea705c5988baf8e8863f5a619329f8faf19cb38b1b69644b94728",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "reports/overnight-20261025/supported-dance-native.mp4": {
@@ -3648,7 +3648,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/tests/test_continuous_model.py": {
-      "sha256": "4f2331fe4815f1354e9f5de1d850458a590255e23e4346b3984daf64970d400f",
+      "sha256": "39ee2de77e5a02c7f949e7a37d6c898a84217fc66911fe4e3efec9de7f14b201",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "reports/overnight-20261025/continuous-gate-audit.json": {
@@ -3656,7 +3656,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/continuous_refine.py": {
-      "sha256": "aa7630196991c8574a4ab6d2a2edc2e761c71b7a76d225caa077e758f24c3626",
+      "sha256": "45129dcbb769359da69bcea8da4cdc28fafdc51636c4413bfbe1b552a1c8d80b",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/roll_phase_refine.py": {
@@ -3701,6 +3701,18 @@
     },
     "training/tests/test_pool_cleanup.py": {
       "sha256": "709a4a160f662719cd68b0411b96ab22367310ad37354ee599c7192afda852bb",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-sit-pose-comparison.png": {
+      "sha256": "b058d84cd074288d0db7989fcd8af7804f845728577012a62625d2a13617ccd3",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-sit-reference-0030.json": {
+      "sha256": "26cbd7bcfcfd390d99411f084a35704c1967a2aac3f206a061d38d5130c32f8b",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/locomotion-review-0030.json": {
+      "sha256": "7a4c5f4f52d7a805f3a8f4a83adb5469e5500cbd1e9a6e5743833416ddb47b9c",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     }
   },

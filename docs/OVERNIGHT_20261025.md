@@ -116,3 +116,14 @@ Python `.venv-training/Scripts/python.exe -B -X utf8`；训练产物 `training/o
 - 当前训练回归 30 项通过。实际板端完全未操作，所有未验收权重仍在本地实验目录。
 - 00:16 补充：首个 ramped 长跑在前进→转向过渡时失败；旧停滞检测限定单轴，而速度渐变会短暂形成双轴指令。现仅在过渡期间不累计“稳定单指令停滞”窗口，倾角/高度物理失败检测一直保留；抵达目标后正常检测。错误后的 worker 管道关闭竞态也已修复，避免 BrokenPipeError 覆盖原始失败并跳过其他 worker 清理。补了真实前进→转向输入/奖励/50 Hz 回归及管道清理回归，共 31 项通过。
 - 不能用之前 2 更新 smoke 代表覆盖了几秒后的换向；修复后运行 60 更新/28.8 秒原生训练，实际记录 26 个双轴过渡采样，完整导出通过（误差 5.96e-7），未放宽物理验收门槛。失败目录完整保留，ramped 从同一初始 checkpoint、同一 seed 重新开始为 `continuous-ramped-conservative-r2`（00:18:29，launcher 29564），唯一评测 `review_0015_ramp.py` / `branch-reviews-0015`；旧 reviewer0000 只继续六指令对照，旧失败 ramped 不作为新模型评测结论。
+
+## 00:30–00:55 跟进：用户纠正坐姿与课程对照
+
+- 用户明确要求坐下对齐官方展示，不得换成其他动作。之前将坐下验收限定为 `r5_cover_collision` 后盖接地，会把候选导向约 −24° 的后仰坐姿；这项实现选择不能代替用户的动作标准。保留旧 sit-rise-v1 的历史物理成绩，不再将它视为官方坐姿通过。已向用户询问确切视频链接/标题，同时继续查官方源码和官网视频。
+- 找到官方 [SitStand 配置](https://github.com/LuwuDynamics/xgoduck_rl/blob/main/src/mjlab_microduck/tasks/microduck_sitstand_env_cfg.py)：腿部参考髋俯仰 ∓0.4079 rad、膝 ±1.35 rad、髋侧摆/踝 0。Xgo 参考高度在 [xgoduck_constants.py](https://github.com/LuwuDynamics/xgoduck_rl/blob/main/src/mjlab_microduck/robot/xgoduck_constants.py) 为 85.868 mm，不能沿用 MicroDuck 的 60 mm。官方按坐/站命令训练同一策略，没有公开的固定动作轨迹；2 秒是奖励目标渐变，不能称演示动作恰为 2 秒。
+- 官网中文宣传片 42–56 秒已逐帧查看，该段为倒地起身及翻滚，不冒充用户说的坐下演示。官方 keyframe 在当前修正模型的静态高度复算为 85.86815 mm；8 次直接初始化保持 5 秒后倾角 3.53–3.99°，实际由腿壳和脚支撑，后盖无接触。直接从站姿做 2 秒关节插值则 8/8 前倾失败，说明静态关键帧不是可直接下发的动作。对比图和诊断在 `official-sit-reference-0030.json` / `official-sit-pose-comparison.png`，只是几何与固定目标诊断，未训练模型、未部署。
+- `official-sit-teacher-0030` 于 00:47:47 开始 600 秒有界离线过渡搜索（launcher 29296），终态固定为官方关键姿态，仍检查头部间隙、实际支撑、倾角和 50 Hz；确切视频动作形态仍待核对。当前单训练种子的好成绩不能代替 16 个独立种子验收。旧最佳过渡简单反放的 8 次诊断均未完成坐起，不能把坐下视频倒放当作起身策略。下一轮先读其 result.json 再决定后续训练，不自动将未通过教师蒸馏发布。
+- `continuous-light-full` 最终名义 8/24、压力 7/24、连续链 0/8。相同低学习率/同 seed 的六指令与渐变指令对照现均完成 6000 次完整 actor/critic 更新：six 名义 **24/24**、压力 **20/24**；ramped-r2 名义 **24/24**、压力 **18/24**；均无这些矩阵中的物理失败，但连续链平滑仍 **0/8**。二者都保留，不能说渐变课程已解决抖动。链使用旧坐下模型仅用于固定对照，不表示该坐姿重新获验收。
+- 另做了官方 Walk 加仿真特权速度反馈的 4 组 PI 教师诊断，40 个案例无完整跟踪/停止通过。速度均值变近不代表横向与偏航达标；该特权真值不可直接当硬件观测，因此没有将其蒸馏成新模型。数据保留 `walk-feedback-teacher-0030/`。实机命令仍为零，所有新权重保持本地。
+- 00:52:41，从同一 `continuous-six-conservative` 完整 actor/critic 开始两组仅改变代价的保守有界训练：`conservative-head02-full`（launcher 24240，head 0.05→0.2，rate 0.2不变）与 `conservative-rate06-full`（launcher 52712，rate 0.2→0.6，head 0.05不变）。同 seed 2026102603、六指令、LR1e-7、3×4 环境、6000 更新/1800秒。`review_0050_jobs.py`（launcher 23312）唯一评测入口，最多等90分钟；不重复启动。之前高代价/LR分支已停滞，当前两组仍必须按实际移动/停止/平滑比较，不能只看奖励。
+- 00:55 更正运行状态：上述两个新实验均在初始化阶段失败，原因是 continuous 入口沿用旧加载器，只认旧 full 类型，反而拒绝自己的完整 checkpoint；未进行训练，FAILED 记录完整保留。已修复为 continuous 入口显式接受自身与旧 full 类型，仍严格核对全部 actor/critic 张量、保持新优化器；旧 full 入口仍拒绝 continuous，避免无意退回硬开关。32 项训练回归通过，真实 2 更新迁移/导出 smoke 通过（误差5.96e−7）。同配置重启为 `conservative-head02-full-r2`（2896）/`conservative-rate06-full-r2`（24244），00:54:54 起；唯一评测 `review_0055_jobs.py`（32864）。后续只检查 r2 与 reviewer0055，不重复旧失败实验。
