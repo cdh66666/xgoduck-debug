@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 241045,
-      "sha256": "e08b3fa1d22e344d6e901537d35de09f13c4b171311d88cbf0ed1922cddedb2d"
+      "bytes": 241642,
+      "sha256": "ff0e537bf6477cebf3564d8caaf71ef937039b707ac95a2663b55587765f6472"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2266,8 +2266,8 @@
       "sha256": "4f99b031ca5127bfc799ae71e30119cad11cbba71d7aa2693132dcfad3a80bda"
     },
     "training/README.md": {
-      "bytes": 17348,
-      "sha256": "1b4fbc87e0711636062d4e2abeffca1f4803b8bdc313d36416d2e6ae2cc2d16f"
+      "bytes": 17850,
+      "sha256": "180f56aee11e3e6a1a9f2dc7b8e2e37ae03b933a3c0dfa98d4a2cc886b3e7b5e"
     },
     "training/SESSION_20261023.md": {
       "bytes": 3608,
@@ -2402,8 +2402,8 @@
       "sha256": "dfcc968249915c8f15d1959e9bfd20d01d74a9ffbda7f95c891abe50b9c7aa98"
     },
     "training/evaluate.py": {
-      "bytes": 6977,
-      "sha256": "76fe8ec909784f5b939eac0f8d71b8a0eeff6912f3f5f2fc8617434fe0e799a3"
+      "bytes": 7301,
+      "sha256": "9ae4e0f7a3877c0a9ab9e5373da8e9fd70b46e7d02b93bb42ade1f93ef68570f"
     },
     "training/full_refine.py": {
       "bytes": 3255,
@@ -2506,8 +2506,8 @@
       "sha256": "5432d9dec99f5a23e4db0659477a54d92be2ab3cc94bff2208add1e85b775e6d"
     },
     "training/native_env.py": {
-      "bytes": 26412,
-      "sha256": "ca688237d188e7d2c35ad18587f9b984b93f0743614b1ed6c20c2b38f6d4ef10"
+      "bytes": 27112,
+      "sha256": "26d87895374ee6ff78f1a3894854831604dccf3a5eb627e84171acf10ef02870"
     },
     "training/params/1910_m6.json": {
       "bytes": 754,
@@ -2590,8 +2590,8 @@
       "sha256": "b582c0e89b8fd811582d547693f512f5b15ee1b24fd6d86dfe3ccb300c24633a"
     },
     "training/train.py": {
-      "bytes": 11428,
-      "sha256": "dbcd684a3f0aad506e74f566132cb82e1df82bcdc3c4027617a0c2a3ae747945"
+      "bytes": 11656,
+      "sha256": "8722a0fcef9b0ba890165ad6d5c0edd275b7dd340a322998266c401fb52b5291"
     },
     "training/training_adapter.py": {
       "bytes": 2624,
@@ -2834,20 +2834,28 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 6743,
-      "sha256": "344bdd6a5131aabdefaaa3f73e65983b438a3e87e68a148958332f1ffd8e6be2"
+      "bytes": 8386,
+      "sha256": "1b2a3293786080c0f24d9061f543dadef6e05d2d0412fc82cd9208324dd15915"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
       "sha256": "fcdf7d849418f1f39b3dafe5dd2420158e11aba8aa2a7359f53fda8688c7ecc4"
     },
     "training/search_butt_raise.py": {
-      "bytes": 6047,
-      "sha256": "10dbeddcfedc1fbab59dd59025a71be5dc4dec8ae7aa3d1ec242fca6bc322391"
+      "bytes": 6626,
+      "sha256": "0da2d03e8ed2e7f831c0ad8271d655a3c45652e2c34273fc72b3c35e2eab07a5"
     },
     "reports/overnight-20261025/interim-audit.json": {
       "bytes": 15582,
       "sha256": "35ea044ffd96dd7cf655223b4a5f9bdea5c64030f1c23ebb575acea313552d17"
+    },
+    "training/physics_variation.py": {
+      "bytes": 2070,
+      "sha256": "3d6f376aeb73bbea9c806ea9bbc0f4d112ba80cdcb7c2bceed2f675501bf3647"
+    },
+    "training/tests/test_physics_variation.py": {
+      "bytes": 1590,
+      "sha256": "bf5ea6efbdb972cd7611fb2fa0ac109ac0ace8cd2f4e68218e2b5d163740a228"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

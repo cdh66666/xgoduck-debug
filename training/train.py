@@ -67,6 +67,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
  parser.add_argument('--envs-per-worker',type=int,default=2)
  parser.add_argument('--curriculum',choices=['stand','six','stability','stop','speed'],default='stand')
  parser.add_argument('--runtime-profile',choices=['legacy','calibrated-20261025'],default='legacy')
+ parser.add_argument('--randomize-physics',action='store_true',help='Use the documented assumed voltage/contact/COM/inertia/delay stress envelope')
  parser.add_argument('--max-forward',type=float,default=.3,help='Speed curriculum forward upper bound, .2 to 1 m/s')
  parser.add_argument('--trace-every',type=int,default=1,help='Record one full rollout per N updates; metrics remain every update')
  parser.add_argument('--seed',type=int,default=20261022)
@@ -82,6 +83,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
  if args.initial_checkpoint and initialize is None:parser.error('This entry has no pretrained initialization')
  if not .2<=args.max_forward<=1. or args.trace_every<1:parser.error('Invalid speed or trace interval')
  os.environ['XGODUCK_RUNTIME_PROFILE']=args.runtime_profile
+ os.environ['XGODUCK_RANDOMIZE_PHYSICS']='1' if args.randomize_physics else '0'
  os.environ['XGODUCK_MAX_FORWARD']=str(args.max_forward)
  if args.model_xml:os.environ['XGODUCK_TRAIN_XML']=str(args.model_xml.resolve())
  args.output=args.output.resolve();args.output.mkdir(parents=True,exist_ok=False)

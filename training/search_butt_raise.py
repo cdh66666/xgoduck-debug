@@ -10,12 +10,17 @@ from butt_sit import SitPlant,HOME,INDEX,smooth
 from train_butt_sit import END,teacher as sit_teacher
 
 def raise_teacher(obs,start,parameters,t):
-    h,k,a,pitch_mid,split,duration,kp,kd=parameters
+    h,k,a,pitch_mid,split,duration,kp,kd,neck,neck_return=parameters
     mid=END.copy();mid[[2,3,4]]=[h,k,a];mid[[7,8,9]]=[-h,-k,-a]
+    mid[10]=neck
     if t<split:
-        u=smooth(t/split);target=END+(mid-END)*u;pitch_goal=-25+(pitch_mid+25)*u
+        u=smooth(t/split);target=END+(mid-END)*u;pitch_goal=-25
     else:
-        u=smooth((t-split)/(duration-split));target=mid+(start-mid)*u;pitch_goal=pitch_mid*(1-u)
+        u=smooth((t-split)/(duration-split))
+        target=mid+(start-mid)*u;pitch_goal=-25+(pitch_mid+25)*u
+        return_s=min(neck_return,duration-split)
+        head_u=smooth((t-duration+return_s)/return_s)
+        target[10]=neck+(start[10]-neck)*head_u
     pitch=np.rad2deg(np.arctan2(obs[3],-obs[5]))
     correction=np.clip(kp*(pitch-pitch_goal)+kd*np.rad2deg(obs[1]),-25,25)
     target[4]=np.clip(target[4]+correction,-85,85)
@@ -28,10 +33,13 @@ def rollout(plant,parameters,seed=1000,variant=False):
     plant.sim.model.geom_friction[:,0]=float(rng.uniform(.55,1.)) if variant else .8
     plant.reset(seed);trace=[];targets=[];failed=None
     for tick in range(round((3+parameters[5]+2)*50)):
-        t=tick*.02;obs,_=plant.observation(min(1,t),1 if t<3 else -1)
+        t=tick*.02;obs,_=plant.observation(min(1,t) if t<3 else min(1,(t-3)/parameters[5]),1 if t<3 else -1)
         raw=sit_teacher(obs,plant.start) if t<3 else raise_teacher(obs,plant.start,parameters,t-3)
         plant.advance(raw);row=plant.measure();row['stage']='sit' if t<3 else 'raise'
-        trace.append(row);targets.append(raw.tolist())
+        trace.append(row)
+        # Smoothness concerns the actual filtered setpoints during the rise,
+        # including its handoff from the supported seated target.
+        if tick>=149:targets.append(plant.filtered.tolist())
         if row['head_clearance_mm']<40 or abs(row['pitch_deg'])>65 or abs(row['roll_deg'])>30:
             failed='tilt_or_head_clearance';break
     tail=trace[-50:];mean=lambda fn:float(np.mean([fn(r) for r in tail]))
@@ -66,7 +74,9 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True)
     p.add_argument('--seconds',type=float,default=1200);args=p.parse_args()
     args.output.mkdir(parents=True,exist_ok=False);plant=SitPlant();began=time.monotonic();best=None;count=0
-    bounds=[(-15,40),(20,85),(0,85),(-20,30),(.3,1.1),(1.5,3.5),(.15,.8),(.05,.35)]
+    # FK: moving neck +20 -> -60 deg shifts COM forward ~30 mm to the feet.
+    # Keep it forward while extending legs, then return the head after support.
+    bounds=[(25,65),(65,89),(60,85),(-10,15),(.5,1.1),(2.8,4.5),(.15,.8),(.05,.35),(-80,-40),(1.2,3.)]
     def objective(parameters):
         nonlocal best,count
         score,m,trace=rollout(plant,parameters);count+=1
@@ -78,7 +88,7 @@ def main():
         return score
     # Cross-entropy trajectory search using the existing NumPy dependency.
     rng=np.random.default_rng(25);limits=np.asarray(bounds);span=limits[:,1]-limits[:,0]
-    center=np.asarray([20,65,50,5,.7,2.5,.3,.2]);spread=span*.3
+    center=np.asarray([40,80,75,0,.8,3.5,.3,.2,-60,2.5]);spread=span*.25
     objective(center)
     for generation in range(40):
         candidates=np.clip(rng.normal(center,spread,(48,len(bounds))),limits[:,0],limits[:,1])

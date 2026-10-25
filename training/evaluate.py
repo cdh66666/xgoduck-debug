@@ -12,6 +12,7 @@ def main():
  p.add_argument('--seeds',type=int,default=8);p.add_argument('--first-seed',type=int,default=20261030)
  p.add_argument('--model-xml',type=Path,help='Explicit evaluation plant; otherwise reuse the checkpoint physics model')
  p.add_argument('--runtime-profile',choices=['legacy','calibrated-20261025'],help='Explicit evaluation contract, otherwise the checkpoint profile')
+ p.add_argument('--randomize-physics',action='store_true',help='Independent randomized plant stress tests; nominal is the default')
  p.add_argument('--max-forward',type=float,default=.3,help='Replace the Shift test speed, up to 1 m/s')
  a=p.parse_args()
  if a.seeds<1:p.error('At least one seed required')
@@ -23,6 +24,7 @@ def main():
  torch.set_num_threads(1);saved=torch.load(a.checkpoint,map_location='cpu',weights_only=False)
  profile=a.runtime_profile or saved.get('training_environment',{}).get('runtime_profile','legacy')
  os.environ['XGODUCK_RUNTIME_PROFILE']=profile
+ os.environ['XGODUCK_RANDOMIZE_PHYSICS']='1' if a.randomize_physics else '0'
  cfg=config()
  commands=[list(c) for c in COMMANDS];commands[2][0]=a.max_forward
  actor_class=MLPModel
@@ -87,10 +89,12 @@ def main():
     else:tracking=tracking and math.hypot(rmse[0],rmse[1])<=.05
    passed=finite and complete and failure is None and tilt<=25 and stop_ok and tracking
    case={'seed':seed,'command':command,'passed':bool(passed),'ticks':len(rows),'failure':failure,'max_tilt_deg':tilt if math.isfinite(tilt) else None,'mean_velocity':mean.tolist() if mean is not None else None,'rmse':rmse.tolist() if rmse is not None else None,'stop_passed':stop_ok,'resets_during_recording':0,'rows':rows}
+   if env.variation:case['physics_sample']=env.variation.sample.copy()
    cases.append(case);print(json.dumps({k:v for k,v in case.items() if k!='rows'}),flush=True)
  report={'kind':saved['kind'],'result':'PASS_THIS_MATRIX' if all(c['passed'] for c in cases) else 'NOT_PASSED','cases':cases,'seeds':a.seeds,
   'physical_model':frozen['physical_model'],'training_physical_model':trained_model or None,'runtime_profile':profile,'max_forward_mps':a.max_forward,
   'checkpoint_sha256':__import__('hashlib').sha256(a.checkpoint.read_bytes()).hexdigest(),'hardware_deployment_ready':False,
+  'randomized_physics':a.randomize_physics,
   'scope':'stand15s, independent six commands12s then stop6s; no reset/recovery allowed. Does not include continuous126s or disturbance/getup acceptance.'}
  a.output.parent.mkdir(parents=True,exist_ok=True)
  with a.output.open('x',encoding='utf-8') as f:json.dump(report,f,ensure_ascii=False,indent=2,allow_nan=False)

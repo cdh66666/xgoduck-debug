@@ -50,6 +50,7 @@ def manifest():
         reference_model_sha256=result['bindings']['model/robot.xml']['sha256'])
     from runtime_profile import selected
     result['runtime_profile']=selected()
+    result['randomize_physics']=os.environ.get('XGODUCK_RANDOMIZE_PHYSICS','0')=='1'
     return result
 
 
@@ -80,6 +81,11 @@ class NativeEpisode:
         self.mj = self.adapter.worker.mujoco
         self.seed = seed
         self.rng = self.np.random.default_rng(seed + 70001)
+        self.variation=None
+        if frozen.get('randomize_physics'):
+            from physics_variation import PhysicsVariation
+            self.variation=PhysicsVariation(self.sim,seed)
+            self.variation.before_reset();self.sim.reset();self.variation.after_reset()
         self.curriculum = curriculum
         self.auto_reset = auto_reset
         self.max_episode_steps = max_episode_steps
@@ -176,7 +182,9 @@ class NativeEpisode:
 
     def reset(self):
         sim, np, mj = self.sim, self.np, self.mj
+        if self.variation:self.variation.before_reset()
         sim.reset()
+        if self.variation:self.variation.after_reset()
         # Same seed distribution as the frozen evaluator, not physics DR.
         yaw = float(self.rng.uniform(-.03, .03))
         sim.data.qpos[3:7] = [np.cos(yaw / 2), 0., 0., np.sin(yaw / 2)]
@@ -389,6 +397,7 @@ class NativePool:
         frozen = manifest()
         self.physical_model = frozen['physical_model']
         self.runtime_profile = frozen['runtime_profile']
+        self.randomize_physics = frozen['randomize_physics']
         self.np = __import__('numpy')
         self.workers = workers
         self.envs_per_worker = envs_per_worker
@@ -457,6 +466,9 @@ class NativeVecEnv:
                         hardware_commands_sent=False, deployment_allowed=False)
         self.cfg['physical_model']=self.pool.physical_model
         self.cfg['runtime_profile']=self.pool.runtime_profile
+        if self.pool.randomize_physics:
+            from physics_variation import ENVELOPE
+            self.cfg['physics_randomization']=ENVELOPE.copy()
         if kwargs.get('curriculum') == 'speed':
             self.cfg['max_forward_mps']=float(os.environ.get('XGODUCK_MAX_FORWARD', '.3'))
         if kwargs.get('curriculum') in ('stability','stop'):
