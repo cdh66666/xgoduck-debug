@@ -3084,7 +3084,7 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "training/native_env.py": {
-      "sha256": "b56137235ba8c6c958a08f8ac1a62363987eb0f9080e9699b3ce8e6d57fe8139",
+      "sha256": "b57e5334a6dc245118db44222e82f7fa8a96912f903525e1f7c187e58c742bca",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/params/1910_m6.json": {
@@ -3504,11 +3504,11 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "sha256": "4834d59c49427bce54eb4dcad2d735e157696baf2a2e3a2c1947813ebc792184",
+      "sha256": "cd112c28e1b4684df10b6d28d7f508f91efc34e65a8502d5f8ab269d1555003f",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/tests/test_runtime_profile.py": {
-      "sha256": "9e43d54dbe5c8d2cba1ea46ef36c19344e46dc3029a599324d532a08dcb43463",
+      "sha256": "2f3b8d334db8eecba49e16c7a85798764d0ecc848b336978c8f4752069fce642",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/runtime_profile.py": {
@@ -3697,6 +3697,10 @@
     },
     "reports/overnight-20261025/locomotion-review-0000.json": {
       "sha256": "c460a08f105aa08367af795f13746b792b6292f3b69a8150359253d6cfd52b3e",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/tests/test_pool_cleanup.py": {
+      "sha256": "709a4a160f662719cd68b0411b96ab22367310ad37354ee599c7192afda852bb",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     }
   },

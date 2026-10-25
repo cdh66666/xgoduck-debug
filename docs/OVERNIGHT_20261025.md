@@ -114,3 +114,5 @@ Python `.venv-training/Scripts/python.exe -B -X utf8`；训练产物 `training/o
 - `continuous-six-conservative` / `continuous-ramped-conservative` 从同一 stress-full 完整 actor/critic 初始化，用相同 seed、LR=1e-7、目标变化代价 0.2、头部代价 0.05、3×4 环境、6000 更新/1800 秒；00:09:52/53 起运行，仅指令课程不同，以此判断课程差异而非同时改奖励。`review_0000_jobs.py` 唯一后台评测脚本等待这两份输出；`review_2330_jobs.py` 仍负责 continuous-light，勿重复启动。2 更新的 ramped 真正训练/导出 smoke 通过，回归确认采样指令、实际 policy 输入与奖励归属一致，15 次推理恰为 0.3 秒。
 - 单脚静态搜索扩展为 3360 个全关节限位内候选，最好 COM 到足底凸包边界约 2.38 mm；8 个候选自由动力学保持仍 0/8，约 0.4 秒失稳。它只是初始化姿态诊断，未演示站立→单脚过渡，未训练出单脚模型。不得把静态 COM 在支撑多边形内当作动态稳定证明。
 - 当前训练回归 30 项通过。实际板端完全未操作，所有未验收权重仍在本地实验目录。
+- 00:16 补充：首个 ramped 长跑在前进→转向过渡时失败；旧停滞检测限定单轴，而速度渐变会短暂形成双轴指令。现仅在过渡期间不累计“稳定单指令停滞”窗口，倾角/高度物理失败检测一直保留；抵达目标后正常检测。错误后的 worker 管道关闭竞态也已修复，避免 BrokenPipeError 覆盖原始失败并跳过其他 worker 清理。补了真实前进→转向输入/奖励/50 Hz 回归及管道清理回归，共 31 项通过。
+- 不能用之前 2 更新 smoke 代表覆盖了几秒后的换向；修复后运行 60 更新/28.8 秒原生训练，实际记录 26 个双轴过渡采样，完整导出通过（误差 5.96e-7），未放宽物理验收门槛。失败目录完整保留，ramped 从同一初始 checkpoint、同一 seed 重新开始为 `continuous-ramped-conservative-r2`（00:18:29，launcher 29564），唯一评测 `review_0015_ramp.py` / `branch-reviews-0015`；旧 reviewer0000 只继续六指令对照，旧失败 ramped 不作为新模型评测结论。

@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 254150,
-      "sha256": "2a3ada9d7d213bd2761139e04c06d4f5954e9b31f5555b945f464a4b72d7dea3"
+      "bytes": 254449,
+      "sha256": "a762ae36b21bbf1dd65d6228a4238d6cbe65f7089b937d4bb8a1d93903146e64"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2506,8 +2506,8 @@
       "sha256": "5432d9dec99f5a23e4db0659477a54d92be2ab3cc94bff2208add1e85b775e6d"
     },
     "training/native_env.py": {
-      "bytes": 31002,
-      "sha256": "b56137235ba8c6c958a08f8ac1a62363987eb0f9080e9699b3ce8e6d57fe8139"
+      "bytes": 31507,
+      "sha256": "b57e5334a6dc245118db44222e82f7fa8a96912f903525e1f7c187e58c742bca"
     },
     "training/params/1910_m6.json": {
       "bytes": 754,
@@ -2826,16 +2826,16 @@
       "sha256": "c2fb1544787073b43951946fa5c705a51f8cc9a9d9c9236dbed68c6f166e2ae8"
     },
     "training/tests/test_runtime_profile.py": {
-      "bytes": 4758,
-      "sha256": "9e43d54dbe5c8d2cba1ea46ef36c19344e46dc3029a599324d532a08dcb43463"
+      "bytes": 5326,
+      "sha256": "2f3b8d334db8eecba49e16c7a85798764d0ecc848b336978c8f4752069fce642"
     },
     "training/model/standing_seed_20261025.json": {
       "bytes": 863,
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 26588,
-      "sha256": "4834d59c49427bce54eb4dcad2d735e157696baf2a2e3a2c1947813ebc792184"
+      "bytes": 27646,
+      "sha256": "cd112c28e1b4684df10b6d28d7f508f91efc34e65a8502d5f8ab269d1555003f"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -3008,6 +3008,10 @@
     "reports/overnight-20261025/locomotion-review-0000.json": {
       "bytes": 159693,
       "sha256": "c460a08f105aa08367af795f13746b792b6292f3b69a8150359253d6cfd52b3e"
+    },
+    "training/tests/test_pool_cleanup.py": {
+      "bytes": 873,
+      "sha256": "709a4a160f662719cd68b0411b96ab22367310ad37354ee599c7192afda852bb"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

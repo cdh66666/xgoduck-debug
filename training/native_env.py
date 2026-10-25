@@ -347,7 +347,11 @@ class NativeEpisode:
                           max(abs(height - sim.standing_height), sim.max_substep_height_error_m) >= .025)
         # Measure the OLD/current command before any resampling. No previous
         # command's samples enter this segment. Zero command never stalls.
-        motion_progress=self.motion_window.observe(self.command,velocity,self.command_age_ticks)
+        ramping=self.curriculum=='ramped' and not np.array_equal(self.command,self.command_target)
+        # A cross-axis transition may briefly contain both forward and yaw.
+        # The single-command stall window starts only at the settled endpoint;
+        # physical tilt/height failure detection still applies during the ramp.
+        motion_progress=self.motion_window.summary(self.command_age_ticks) if ramping else self.motion_window.observe(self.command,velocity,self.command_age_ticks)
         motion_stall=motion_progress['triggered']
         terminated,timeout,event_penalty=event_outcome(physical_terminated,motion_stall,self.episode_steps>=self.max_episode_steps)
         failure_reasons = []
@@ -480,7 +484,8 @@ class NativePool:
     def close(self):
         for connection, process in zip(self.connections, self.processes):
             if process.is_alive():
-                connection.send(('close', None))
+                try:connection.send(('close', None))
+                except (BrokenPipeError,EOFError):pass # failed worker already closed its pipe
         for process in self.processes:
             process.join(timeout=15.)
         for connection in self.connections:

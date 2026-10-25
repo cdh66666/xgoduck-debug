@@ -85,6 +85,15 @@ class RuntimeProfileTests(unittest.TestCase):
             self.assertLess(env.command_age_ticks,15)
             self.assertAlmostEqual(env.sim.data.time-before,.3)
             self.assertEqual(env.total_resets,1)
+            env.rng.choice.return_value=4;env._resample()
+            self.assertGreater(env.command[0],0);self.assertGreater(env.command[2],0)
+            for _ in range(20):
+                requested=env.command.copy()
+                _,_,done,_,info=env.step(np.zeros(14,dtype=np.float32))
+                np.testing.assert_allclose(info['command'],requested)
+                self.assertFalse(info['motion_stall']);self.assertFalse(done)
+            np.testing.assert_array_equal(env.command,[0,0,1])
+            self.assertAlmostEqual(env.sim.data.time-before,.7)
         finally:env.close()
 
 if __name__ == '__main__': unittest.main()
