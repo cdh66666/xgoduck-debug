@@ -1,0 +1,180 @@
+{
+  "hardware_commands_sent": false,
+  "deployment_allowed": false,
+  "entry_difference": {
+    "seed": 4000,
+    "initial_pitch_deg": -2.6937961043646874,
+    "after_stop_pitch_deg": 2.7820572455872847,
+    "initial_height_mm": 143.0459476715761,
+    "after_stop_height_mm": 138.3100732864684,
+    "joint_delta_deg": {
+      "left_hip_yaw": -0.21588650177659188,
+      "left_hip_roll": -0.26445131764049024,
+      "left_hip_pitch": 1.0614800732895697,
+      "left_knee": -2.606463636040395,
+      "left_ankle": -1.7575055801094608,
+      "neck_pitch": -6.333453333490333,
+      "head_pitch": 0.30290171366643276,
+      "head_yaw": -2.111307547619411,
+      "head_roll": 1.0135911524086607,
+      "right_hip_yaw": 0.4868355833010291,
+      "right_hip_roll": 1.9111520041990178,
+      "right_hip_pitch": -4.93716972598269,
+      "right_knee": -1.0428036535937069,
+      "right_ankle": 1.3022771879041946
+    },
+    "after_stop_body_velocity": [
+      0.0005683600590309057,
+      -9.685652144654455e-05,
+      -0.00031041318262273263
+    ],
+    "after_stop_target_step_deg": 0.005520341693572323,
+    "initial_qpos": [
+      0.0,
+      0.0,
+      0.1430459476715761,
+      0.9995009283765214,
+      -0.02112150828334602,
+      -0.02348991405493561,
+      0.0,
+      0.0009136046733021139,
+      -0.08741347510970965,
+      -0.3768506226394398,
+      -0.014423798601150064,
+      0.2800899768581291,
+      0.3085579674868158,
+      0.42645307607112626,
+      -0.016774277895666573,
+      -0.03495115811327184,
+      -8.254570934976852e-05,
+      0.08287820834316006,
+      0.41093034002596557,
+      0.013158967933307474,
+      -0.3078367294359319
+    ],
+    "after_stop_qpos": [
+      0.8081106060026492,
+      -0.05011261441569564,
+      0.13831007328646838,
+      0.9993509753878396,
+      0.0021794767665304473,
+      0.02434158082782823,
+      -0.026464416018475104,
+      -0.002854325593312002,
+      -0.09202902131377357,
+      -0.3583243004162261,
+      -0.0599151708835581,
+      0.24941571786304603,
+      0.19801835379599905,
+      0.4317397082845386,
+      -0.053623546123832265,
+      -0.017260655234657057,
+      0.008414338135120315,
+      0.11623410332252142,
+      0.3247604725777814,
+      -0.005041389273729108,
+      -0.2851077047333908
+    ],
+    "hardware_commands_sent": false
+  },
+  "smoke": {
+    "kind": "xgoduck-official-sit-cycle-full-v1",
+    "initialization": "resume own xgoduck-official-sit-cycle-full-v1 checkpoint",
+    "parent_checkpoint_required": false,
+    "hardware_commands_sent": false,
+    "deployment_allowed": false,
+    "behavior_qualified": false,
+    "cpu_only": true,
+    "seed": 2026102620,
+    "curriculum": "sit_cycle",
+    "versions": {
+      "torch": "2.14.1+cpu",
+      "numpy": "2.5.4"
+    },
+    "requested_updates": 20,
+    "max_wall_seconds": null,
+    "workers": 1,
+    "envs_per_worker": 2,
+    "trace_every_updates": 1,
+    "worker_metadata": [
+      {
+        "pid": 43532,
+        "mujoco": "3.15.0",
+        "envs": 2,
+        "torch_imported": false,
+        "physical_model_sha256": "c89d853c85d3b04ab2027cc2c413d48b95ad93aa002d064a3cc95b69954838af",
+        "compiled_total_mass_kg": 0.8259999999999963
+      }
+    ],
+    "training_environment": {
+      "backend": "Windows native frozen MuJoCo/BAM",
+      "policy_dt": 0.02,
+      "physics_dt": 0.005,
+      "curriculum": "sit_cycle",
+      "runtime_interface_version": "bodyframe-v2",
+      "gyro_frame": "root_body_xmat",
+      "linear_velocity_frame": "root_body_xmat",
+      "hardware_commands_sent": false,
+      "deployment_allowed": false,
+      "physical_model": {
+        "path": "D:\\codex\\xgoduck-debug\\training\\model\\robot_inertial_candidate_20261025.xml",
+        "sha256": "c89d853c85d3b04ab2027cc2c413d48b95ad93aa002d064a3cc95b69954838af",
+        "reference_model_sha256": "4160b1cb64baac710049cf91a9faf37975c9311dc63dac2413d4a9ac82883231"
+      },
+      "runtime_profile": "calibrated-20261025",
+      "target_rate_cost": 0.0,
+      "head_motion_cost": 0.0,
+      "sit_cycle": {
+        "sit_duration_s": 1.8967401589126274,
+        "rise_duration_s": 3.2405872655960186,
+        "steps": 457,
+        "contact_sampling_hz": 200,
+        "reward_tilt_margins_deg": [
+          17,
+          22
+        ],
+        "acceptance_tilt_deg": [
+          20,
+          25
+        ],
+        "source_sha256": "9b48e2ed7c91f4330042550003a02c4a0aff0e63b1905f5434fbbc3ec430774b",
+        "reference_sha256": "9d9be672d368d2ed1b3fffb3f3d526ce1a31e27ccdd7e5ca61e2354555812ad4",
+        "entry_walk": {
+          "path": "D:\\codex\\xgoduck-debug\\training\\outputs\\overnight-20261025\\continuous-six-conservative\\policy.onnx",
+          "sha256": "2035580cbc5e1a106df3c4ce0e31e679e06c77c31b4f90fff3c8a480dee8e367",
+          "source_sha256": "ccda6bb832375e5147674c3bf1e99639a176c6e8153599bdacaca0e208205243",
+          "protocol": "alternate fresh reset and 2s stand+4s forward0.2+3s stop; preserve plant, history, feedback, EMA and delay into sit",
+          "prefix_policy_hz": 50,
+          "prefix_duration_s": 9.0
+        }
+      }
+    },
+    "resume_sha256": "ed9aa2ce4cd2f985bf0bd398e34329f7d8a57c4ededbbd5df8cf743ae7f2bd9c",
+    "actor_parameters_changed": true,
+    "actor_mlp_changed": true,
+    "normalizer_and_sigma_fixed": true,
+    "completed_updates": 20,
+    "final_iteration": 1020,
+    "stop_reason": "iteration_budget",
+    "transitions": 960,
+    "export": {
+      "max_abs_error": 2.980232238769531e-07,
+      "inputs": [
+        1,
+        61
+      ],
+      "outputs": [
+        1,
+        14
+      ],
+      "samples": 64,
+      "behavior_qualified": false
+    },
+    "wall_s": 4.936999999918044,
+    "result": "SMOKE_PASS_NOT_BEHAVIOR_QUALIFIED"
+  },
+  "validation": {
+    "training_regressions": 41
+  },
+  "behavior_status": "bounded fullactor trial in progress; independent reviews pending"
+}

@@ -13,6 +13,10 @@ class NativeSitEpisode:
             raise ValueError('Sit cycle requires the corrected plant, calibrated HOME and explicit curriculum')
         self.plant=SitPlant();self.sim=self.plant.sim;self.adapter=self.plant.adapter;self.mj=self.plant.mj;self.np=np
         self.rng=np.random.default_rng(seed);self.auto_reset=auto_reset;self.variation=None
+        self.entry_walk=None
+        if frozen.get('sit_entry_walk'):
+            from sit_entry import load_walk
+            self.entry_walk=load_walk(frozen['sit_entry_walk'],frozen['physical_model'])
         if frozen.get('randomize_physics'):
             from physics_variation import PhysicsVariation
             self.variation=PhysicsVariation(self.sim,seed)
@@ -23,6 +27,10 @@ class NativeSitEpisode:
         self.plant.reset(int(self.rng.integers(1,2000000000)))
         if self.variation:
             self.plant.delay=[self.plant.delay[0].copy() for _ in range(self.variation.sample['transport_delay_physics_steps'])]
+        self.entry_mode='fresh';self.entry_duration=0.
+        if self.entry_walk is not None and self.total_resets%2==0:
+            from sit_entry import advance_walk_stop
+            self.entry_duration=advance_walk_stop(self.plant,self.entry_walk);self.entry_mode='walking_stop'
         self.steps=0;self.total_resets+=1;self.standing_height=float(self.sim.data.qpos[2])
         self.previous_targets=self.plant.filtered.copy();self.tail=deque(maxlen=50)
         self.seat_achieved=False;self.sit_peak_tilt=0.;self.rise_peak_tilt=0.;self.episode_target_step=0.
@@ -87,7 +95,7 @@ class NativeSitEpisode:
             if not passed:failures.append('sit_cycle_pose_or_margin')
         info=dict(velocity=[float(velocity[3]),float(velocity[4]),float(velocity[2])],tilt=math.radians(tilt),height=height,standing_height=self.standing_height,
             command=[0.,0.,0.],command_age_s=self.steps*.02,zero_release=False,failure_reasons=failures,resets=self.total_resets,steps=self.steps,
-            phase=progress,direction=direction,seat_achieved=self.seat_achieved,sit_peak_tilt_deg=self.sit_peak_tilt,rise_peak_tilt_deg=self.rise_peak_tilt,
+            phase=progress,direction=direction,entry_mode=self.entry_mode,entry_duration_s=self.entry_duration,seat_achieved=self.seat_achieved,sit_peak_tilt_deg=self.sit_peak_tilt,rise_peak_tilt_deg=self.rise_peak_tilt,
             target_step_deg=target_step,head_min_mm=r['head_clearance_mm'],seat_support_n=seat,upper_contact_n=upper,
             peak_motor_torque_nm=self.plant.peak_torque_nm,peak_joint_speed_radps=self.plant.peak_joint_speed_radps,contact_sampling_hz=200,physical_termination=physical)
         obs=self.reset() if done and self.auto_reset else self.observe()

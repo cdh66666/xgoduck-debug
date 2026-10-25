@@ -85,6 +85,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
  parser.add_argument('--resume',type=Path,help='Only a checkpoint made by this entry with the same config')
  parser.add_argument('--initial-checkpoint',type=Path,help='Explicit source for this entry initialization; cannot combine with resume')
  parser.add_argument('--model-xml',type=Path,help='Explicit experimental physics XML; its hash is saved in checkpoint, run and ONNX')
+ parser.add_argument('--sit-entry-walk',type=Path,help='Sit-cycle only: alternate fresh starts with a native walking/stop prefix using this fixed ONNX')
  args=parser.parse_args()
  if min(args.iterations,args.workers,args.envs_per_worker)<1:parser.error('Positive iteration/worker/env counts required')
  if args.max_wall_seconds is not None and args.max_wall_seconds<=0:parser.error('Positive wall time required')
@@ -93,11 +94,13 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
  if not .2<=args.max_forward<=1. or args.trace_every<1:parser.error('Invalid speed or trace interval')
  if not 0<=args.target_rate_cost<=10:parser.error('Target rate cost must be in [0,10]')
  if not 0<=args.head_motion_cost<=10:parser.error('Head motion cost must be in [0,10]')
+ if args.sit_entry_walk and args.curriculum!='sit_cycle':parser.error('Walking entry is only supported for sit_cycle')
  os.environ['XGODUCK_RUNTIME_PROFILE']=args.runtime_profile
  os.environ['XGODUCK_RANDOMIZE_PHYSICS']='1' if args.randomize_physics else '0'
  os.environ['XGODUCK_MAX_FORWARD']=str(args.max_forward)
  os.environ['XGODUCK_TARGET_RATE_COST']=str(args.target_rate_cost)
  os.environ['XGODUCK_HEAD_MOTION_COST']=str(args.head_motion_cost)
+ os.environ['XGODUCK_SIT_ENTRY_WALK']=str(args.sit_entry_walk.resolve()) if args.sit_entry_walk else ''
  if args.model_xml:os.environ['XGODUCK_TRAIN_XML']=str(args.model_xml.resolve())
  args.output=args.output.resolve();args.output.mkdir(parents=True,exist_ok=False)
  import numpy as np,torch
@@ -138,7 +141,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
      for row in rows:failures.update(row['failure_reasons'])
      fields=('velocity','tilt','height','standing_height','command','command_age_s','zero_release','failure_reasons','resets','steps')
      if args.curriculum in ('roll','roll_phase'):fields+=('roll_rotation_deg','roll_complete','head_peak_n','head_impulse_ns','contact_sampling_hz')
-     if args.curriculum=='sit_cycle':fields+=('phase','direction','seat_achieved','sit_peak_tilt_deg','rise_peak_tilt_deg','target_step_deg','head_min_mm','seat_support_n','upper_contact_n','peak_motor_torque_nm','peak_joint_speed_radps','contact_sampling_hz')
+     if args.curriculum=='sit_cycle':fields+=('phase','direction','entry_mode','entry_duration_s','seat_achieved','sit_peak_tilt_deg','rise_peak_tilt_deg','target_step_deg','head_min_mm','seat_support_n','upper_contact_n','peak_motor_torque_nm','peak_joint_speed_radps','contact_sampling_hz')
      if (iteration-base-1)%args.trace_every==0:
       trace.write(json.dumps({'iteration':iteration,'tick':tick,'t':env.common_step_counter*.02,
        'actions':actions.tolist(),'rewards':reward.tolist(),'done':done.tolist(),

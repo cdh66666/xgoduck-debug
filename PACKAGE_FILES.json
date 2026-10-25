@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 267521,
-      "sha256": "558dbb1e3be039540543210a09c537dc4db002f3ada04d5085ee87d6588287e1"
+      "bytes": 268421,
+      "sha256": "a322648d94e3261c32ce131e6d5758b3f653859ed55e37a8b1e56745a0859bad"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2266,8 +2266,8 @@
       "sha256": "4f99b031ca5127bfc799ae71e30119cad11cbba71d7aa2693132dcfad3a80bda"
     },
     "training/README.md": {
-      "bytes": 20589,
-      "sha256": "90455192c31019b9528146ccc0bdf944f37cd739e2b8b1feabe47d91cfb6ae89"
+      "bytes": 21217,
+      "sha256": "90ab6623b1e7d261e2984008c485720e82d6281e83f2d850482fb1ee72563406"
     },
     "training/SESSION_20261023.md": {
       "bytes": 3608,
@@ -2506,8 +2506,8 @@
       "sha256": "5432d9dec99f5a23e4db0659477a54d92be2ab3cc94bff2208add1e85b775e6d"
     },
     "training/native_env.py": {
-      "bytes": 32242,
-      "sha256": "f6360fd151c666daa97205154862b822bba63cd001b9d9aacac2945f5eb55eff"
+      "bytes": 32818,
+      "sha256": "fc187f6127d4674bea8ab181cc48dd733b7e1fdd4279cfc07c3cdf52ac9e969b"
     },
     "training/params/1910_m6.json": {
       "bytes": 754,
@@ -2590,8 +2590,8 @@
       "sha256": "b582c0e89b8fd811582d547693f512f5b15ee1b24fd6d86dfe3ccb300c24633a"
     },
     "training/train.py": {
-      "bytes": 13777,
-      "sha256": "7cff59c83a9179be376826b910f2bedf1ade7b4e5cb34945d424c3f89e03fb75"
+      "bytes": 14185,
+      "sha256": "acb4d6d04bf9a925d0c2f3ea8713ae6fee40cae392bc8c4a4167311950c2675d"
     },
     "training/training_adapter.py": {
       "bytes": 2624,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 46764,
-      "sha256": "461655c95ca992a2d26795b3db615f5ef252176aaff466363fc382564753854e"
+      "bytes": 48295,
+      "sha256": "dfa6c38811fc9b93942c64e18a47bf986caef027169603ef56da6dc1b07e49a9"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -2862,8 +2862,8 @@
       "sha256": "26561fb6579f1be80428f6d213a5fa878c0b875f066dc90004cf1a3698180d86"
     },
     "training/evaluate_skill_chain.py": {
-      "bytes": 9831,
-      "sha256": "bcfc7fef3485c12342bc1d4550eaf231752caebbf6998af06c868c7282c7abdc"
+      "bytes": 9912,
+      "sha256": "0974dfaaf747449be27773f2787a8a88ae685d0025d147c37ccb75e624d2c77b"
     },
     "reports/overnight-20261025/sit-rise-review.json": {
       "bytes": 24807,
@@ -3106,8 +3106,8 @@
       "sha256": "8a9070c8eac7704a4f60cdd34e9d584130dc226d52d21de60b0bbe8711231c14"
     },
     "training/native_sit_env.py": {
-      "bytes": 6543,
-      "sha256": "e44cf1e5611b689bc0f9220031b3b2555d0067a434c5375cc557f9d82640daff"
+      "bytes": 7093,
+      "sha256": "9b48e2ed7c91f4330042550003a02c4a0aff0e63b1905f5434fbbc3ec430774b"
     },
     "training/sit_refine.py": {
       "bytes": 3591,
@@ -3176,6 +3176,18 @@
     "reports/overnight-20261025/official-sit-ppo1000-native.mp4": {
       "bytes": 2006906,
       "sha256": "e3292fd7f8fe8311ae87b8966a9a567fe53738022a10f1ca603779ed71354a40"
+    },
+    "training/tests/test_sit_entry.py": {
+      "bytes": 2092,
+      "sha256": "97ae19893b13ea8816441f939a1772c3896f46bf835c787ab0518fc63547fcbc"
+    },
+    "reports/overnight-20261025/sit-entry-training-0745.json": {
+      "bytes": 6025,
+      "sha256": "bcb78301e06c78f83d80ad8878230691f96602fcd250513c5c6617ba7e07178e"
+    },
+    "training/sit_entry.py": {
+      "bytes": 2022,
+      "sha256": "ccda6bb832375e5147674c3bf1e99639a176c6e8153599bdacaca0e208205243"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

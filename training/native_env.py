@@ -51,6 +51,9 @@ def manifest():
     from runtime_profile import selected
     result['runtime_profile']=selected()
     result['randomize_physics']=os.environ.get('XGODUCK_RANDOMIZE_PHYSICS','0')=='1'
+    entry=os.environ.get('XGODUCK_SIT_ENTRY_WALK')
+    if entry:
+        path=Path(entry).resolve();result['sit_entry_walk']={'path':str(path),'sha256':sha(path)}
     return result
 
 
@@ -443,6 +446,7 @@ class NativePool:
         self.physical_model = frozen['physical_model']
         self.runtime_profile = frozen['runtime_profile']
         self.randomize_physics = frozen['randomize_physics']
+        self.sit_entry_walk=frozen.get('sit_entry_walk')
         self.np = __import__('numpy')
         self.workers = workers
         self.envs_per_worker = envs_per_worker
@@ -522,6 +526,9 @@ class NativeVecEnv:
             self.cfg['sit_cycle']=dict(sit_duration_s=SIT_DURATION,rise_duration_s=RISE_DURATION,steps=CYCLE_STEPS,
                 contact_sampling_hz=200,reward_tilt_margins_deg=[17,22],acceptance_tilt_deg=[20,25],
                 source_sha256=sha(R/'native_sit_env.py'),reference_sha256=sha(R/'sit_reference.py'))
+            if self.pool.sit_entry_walk:
+                self.cfg['sit_cycle']['entry_walk']=dict(self.pool.sit_entry_walk,source_sha256=sha(R/'sit_entry.py'),
+                    protocol='alternate fresh reset and 2s stand+4s forward0.2+3s stop; preserve plant, history, feedback, EMA and delay into sit',prefix_policy_hz=50,prefix_duration_s=9.)
         if kwargs.get('curriculum') in ('roll','roll_phase'):
             self.cfg['roll_episode']=dict(duration_s=1.9,contact_sampling_hz=200,head_force_reference_n=20.,reference_is_strength_limit=False,
                 source_sha256=sha(R/'native_skill_env.py'),plant_source_sha256=sha(R/'sit_training.py'),contact_source_sha256=sha(R/'butt_sit.py'))

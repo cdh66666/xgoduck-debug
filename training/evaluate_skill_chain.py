@@ -91,6 +91,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--walk',type=Path,required=True)
     source=p.add_mutually_exclusive_group(required=True);source.add_argument('--sit-directory',type=Path);source.add_argument('--official-sit-model',type=Path)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--seeds',type=int,default=8)
+    p.add_argument('--first-seed',type=int,default=4000)
     p.add_argument('--smooth-commands',action='store_true');a=p.parse_args()
     a.output.mkdir(parents=True,exist_ok=False)
     if a.official_sit_model:
@@ -105,9 +106,9 @@ def main():
         cfg=json.loads((a.sit_directory/'config.json').read_text());model=a.sit_directory/'sit-rise.onnx'
         if cfg['physics_model_sha256']!=hashlib.sha256(XML.read_bytes()).hexdigest():raise ValueError('Sit model physics mismatch')
     plant=SitPlant();walk=predictor(a.walk);sit=predictor(model);cases=[]
-    for seed in range(4000,4000+a.seeds):
+    for seed in range(a.first_seed,a.first_seed+a.seeds):
         metrics,trace=run(plant,walk,sit,cfg['rise_duration_s'],seed,a.smooth_commands,sit_duration=cfg.get('sit_duration_s',1.),official_sit=bool(a.official_sit_model));cases.append(metrics)
-        if seed==4000 or not metrics['passed']:(a.output/f'trace-{seed}.json').write_text(json.dumps(trace))
+        if seed==a.first_seed or not metrics['passed']:(a.output/f'trace-{seed}.json').write_text(json.dumps(trace))
         print(json.dumps(metrics),flush=True)
     result=dict(passed=sum(c['passed'] for c in cases),total=len(cases),cases=cases,hardware_commands_sent=False,
                 walk_sha256=hashlib.sha256(a.walk.read_bytes()).hexdigest(),sit_sha256=hashlib.sha256(model.read_bytes()).hexdigest(),
