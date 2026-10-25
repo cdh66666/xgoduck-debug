@@ -34,6 +34,10 @@ def main():
  elif saved.get('kind')=='xgoduck-full-47500-bodyframe-v2':
   from full_refine import ACTOR_CLASS,Full47500Actor
   cfg=check_contract(saved['config'],ACTOR_CLASS);state=saved['algorithm']['actor_state_dict'];actor_class=Full47500Actor
+ elif saved.get('kind')=='xgoduck-continuous-command-full-v1':
+  from continuous_refine import ACTOR_CLASS
+  from continuous_model import Continuous47500Actor
+  cfg=check_contract(saved['config'],ACTOR_CLASS);state=saved['algorithm']['actor_state_dict'];actor_class=Continuous47500Actor
  elif saved.get('kind')=='xgoduck-standstop-47500-bodyframe-v2':
   from standstop import ACTOR_CLASS,StandstopActor
   cfg=check_contract(saved['config'],ACTOR_CLASS);state=saved['algorithm']['actor_state_dict'];actor_class=StandstopActor

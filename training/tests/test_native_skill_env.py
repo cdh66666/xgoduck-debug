@@ -9,6 +9,22 @@ from native_skill_env import NativeSkillEpisode
 from evaluate_skill_chain import predictor
 
 class NativeSkillTests(unittest.TestCase):
+    def test_phase_distinguishes_start_from_end_without_changing_50hz(self):
+        with patch.dict(os.environ,{'XGODUCK_TRAIN_XML':str(XML),'XGODUCK_RUNTIME_PROFILE':'calibrated-20261025','XGODUCK_RANDOMIZE_PHYSICS':'0'}):frozen=manifest()
+        env=NativeSkillEpisode(frozen,17,curriculum='roll_phase',auto_reset=False)
+        try:
+            self.assertEqual(env.observe()[55],0.)
+            env.step(np.zeros(14,dtype=np.float32))
+            self.assertAlmostEqual(float(env.observe()[55]),1/95)
+            self.assertAlmostEqual(env.sim.data.time,.02)
+        finally:env.close()
+
+    def test_single_roll_progress_does_not_reward_an_extra_turn(self):
+        import math
+        self.assertGreater(NativeSkillEpisode.single_roll_progress(1.,1.1),0)
+        self.assertLess(NativeSkillEpisode.single_roll_progress(2*math.pi,2*math.pi+.1),0)
+        self.assertLess(NativeSkillEpisode.single_roll_progress(4*math.pi,4*math.pi+.1),0)
+
     def test_roll_can_cross_inverted_attitude_without_walking_recovery_or_reset(self):
         with patch.dict(os.environ,{'XGODUCK_TRAIN_XML':str(XML),'XGODUCK_RUNTIME_PROFILE':'calibrated-20261025','XGODUCK_RANDOMIZE_PHYSICS':'0'}):frozen=manifest()
         env=NativeSkillEpisode(frozen,41,auto_reset=False);policy=predictor(Path(__file__).resolve().parents[2]/'robot-app/python/xgoduck_roulade.onnx')

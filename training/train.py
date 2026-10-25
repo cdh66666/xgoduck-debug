@@ -47,6 +47,9 @@ def export_policy(actor,path,cfg,*,architecture=KIND,initialization='random, no 
   observation_names='base_ang_vel,projected_gravity,joint_pos,joint_vel,actions,command,head_command,body_command',
   body_command='zero',hardware_deployment_ready='false',kd_model_limitation='BAM has no identified Feetech D20 mapping')
  metadata['runtime_profile']=cfg.get('runtime_profile','legacy')
+ if architecture=='xgoduck-roll-phase-full-v2':
+  metadata.update(role='forward-roll-single-cycle',phase_index='55',phase_duration_s='1.9',
+   phase_definition='min(elapsed_seconds/1.9,1)',body_command='observation55 is phase; remaining body-command entries zero')
  if physical_model is not None:metadata['physical_model_sha256']=physical_model['sha256']
  for key,value in metadata.items():item=graph.metadata_props.add();item.key=key;item.value=value
  onnx.save(graph,str(path));session=ort.InferenceSession(str(path),providers=['CPUExecutionProvider'])
@@ -65,7 +68,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
  parser.add_argument('--iterations',type=int,default=1)
  parser.add_argument('--workers',type=int,default=1)
  parser.add_argument('--envs-per-worker',type=int,default=2)
- parser.add_argument('--curriculum',choices=['stand','six','stability','stop','speed','roll'],default='stand')
+ parser.add_argument('--curriculum',choices=['stand','six','stability','stop','speed','continuous','roll','roll_phase'],default='stand')
  parser.add_argument('--runtime-profile',choices=['legacy','calibrated-20261025'],default='legacy')
  parser.add_argument('--randomize-physics',action='store_true',help='Use the documented assumed voltage/contact/COM/inertia/delay stress envelope')
  parser.add_argument('--target-rate-cost',type=float,default=0.,help='Additional mean squared filtered-target rate cost, relative to 0.1 rad per 20ms')
@@ -130,7 +133,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
      rows=extras['native_rows']
      for row in rows:failures.update(row['failure_reasons'])
      fields=('velocity','tilt','height','standing_height','command','command_age_s','zero_release','failure_reasons','resets','steps')
-     if args.curriculum=='roll':fields+=('roll_rotation_deg','roll_complete','head_peak_n','head_impulse_ns','contact_sampling_hz')
+     if args.curriculum in ('roll','roll_phase'):fields+=('roll_rotation_deg','roll_complete','head_peak_n','head_impulse_ns','contact_sampling_hz')
      if (iteration-base-1)%args.trace_every==0:
       trace.write(json.dumps({'iteration':iteration,'tick':tick,'t':env.common_step_counter*.02,
        'actions':actions.tolist(),'rewards':reward.tolist(),'done':done.tolist(),
@@ -157,6 +160,12 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
   report['export']=export_policy(alg.actor,args.output/'policy.onnx',cfg,architecture=kind,initialization=report['initialization'],physical_model=env.cfg['physical_model'])
   report['wall_s']=time.monotonic()-started;report['result']='SMOKE_PASS_NOT_BEHAVIOR_QUALIFIED' if args.mode=='smoke' else 'TRAINED_PENDING_INDEPENDENT_EVALUATION'
   (args.output/'run.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+ except Exception as error:
+  # A failed export must not leave the dependent evaluator waiting forever for
+  # a completion marker. Preserve checkpoints and the actual failure result.
+  report.update(result='FAILED',error_type=type(error).__name__,error_message=str(error),wall_s=time.monotonic()-started)
+  (args.output/'run.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+  raise
  finally:
   if trace is not None:trace.close()
   if env is not None:env.close()

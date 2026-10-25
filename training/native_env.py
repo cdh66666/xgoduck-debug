@@ -140,6 +140,10 @@ class NativeEpisode:
             if not .2 <= maximum <= 1.:
                 raise ValueError('speed curriculum maximum must be .2..1 m/s')
             self.command[0] = float(self.rng.uniform(max(.2, maximum * .7), maximum))
+        if self.curriculum == 'continuous' and index and self.rng.random()<.5:
+            # Train the intermediate commands traversed during keyboard ramps;
+            # retain half of the original nonzero endpoints and all zero cases.
+            self.command*=float(self.rng.uniform(.05,1.))
         bounds = (3., 5.) if self.curriculum == 'stability' else ((6., 8.) if index == 0 else (4., 6.))
         if self.curriculum=='stop':
             bounds=((4.,5.) if self.rng.random()<.25 else (1.3,1.8)) if index==0 else (3.,5.)
@@ -372,7 +376,7 @@ def _worker(connection, frozen, seeds, curriculum):
         os.environ['OMP_NUM_THREADS'] = '1'
         os.environ['OPENBLAS_NUM_THREADS'] = '1'
         factory=NativeEpisode
-        if curriculum=='roll':
+        if curriculum in ('roll','roll_phase'):
             from native_skill_env import NativeSkillEpisode
             factory=NativeSkillEpisode
         envs = [factory(frozen, seed, curriculum=curriculum) for seed in seeds]
@@ -473,7 +477,7 @@ class NativeVecEnv:
         self.pool = NativePool(**kwargs)
         self.num_envs, self.num_actions = self.pool.num_envs, 14
         self.device = torch.device('cpu')
-        self.max_episode_length = 95 if kwargs.get('curriculum')=='roll' else 1200
+        self.max_episode_length = 95 if kwargs.get('curriculum') in ('roll','roll_phase') else 1200
         self.episode_length_buf = torch.zeros(self.num_envs, dtype=torch.long)
         self.cfg = dict(backend='Windows native frozen MuJoCo/BAM', policy_dt=.02,
                         physics_dt=.005, curriculum=kwargs.get('curriculum', 'six'),
@@ -483,14 +487,17 @@ class NativeVecEnv:
         self.cfg['runtime_profile']=self.pool.runtime_profile
         self.cfg['target_rate_cost']=float(os.environ.get('XGODUCK_TARGET_RATE_COST','0'))
         self.cfg['head_motion_cost']=float(os.environ.get('XGODUCK_HEAD_MOTION_COST','0'))
-        if kwargs.get('curriculum')=='roll':
+        if kwargs.get('curriculum') in ('roll','roll_phase'):
             self.cfg['roll_episode']=dict(duration_s=1.9,contact_sampling_hz=200,head_force_reference_n=20.,reference_is_strength_limit=False,
                 source_sha256=sha(R/'native_skill_env.py'),plant_source_sha256=sha(R/'sit_training.py'),contact_source_sha256=sha(R/'butt_sit.py'))
+            self.cfg['roll_episode']['phase_conditioned']=kwargs.get('curriculum')=='roll_phase'
         if self.pool.randomize_physics:
             from physics_variation import ENVELOPE
             self.cfg['physics_randomization']=ENVELOPE.copy()
         if kwargs.get('curriculum') == 'speed':
             self.cfg['max_forward_mps']=float(os.environ.get('XGODUCK_MAX_FORWARD', '.3'))
+        if kwargs.get('curriculum') == 'continuous':
+            self.cfg['intermediate_command_distribution']='50% of nonzero commands scaled by Uniform(.05,1), original endpoints and zero otherwise'
         if kwargs.get('curriculum') in ('stability','stop'):
             self.cfg['stability_reward']=STABILITY_REWARD.copy()
             self.cfg['stability_commands']='alternate zero and random original moving command, each 3-5s'

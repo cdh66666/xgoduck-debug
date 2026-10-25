@@ -39,10 +39,16 @@ def main():
     for row in rows:process.stdin.write(frame(row).tobytes())
     process.stdin.close();assert process.wait()==0
     sit_rows=[r for r in rows if r['stage']=='sit'];rise_rows=[r for r in rows if r['stage'] in ('rise','raise')]
-    selected=[rows[0],sit_rows[-1],rise_rows[min(35,len(rise_rows)-1)],rise_rows[min(130,len(rise_rows)-1)],rows[-1]] if sit_rows and rise_rows else [rows[round(t*(len(rows)-1))] for t in (0,.22,.48,.74,1)]
+    forward=[r for r in rows if r['stage']=='forward'];backward=[r for r in rows if r['stage']=='backward']
+    if forward and backward and sit_rows and rise_rows:
+        # A multi-skill contact sheet must also show the walking phases; a
+        # sit-only selection would omit the very motion under investigation.
+        selected=[rows[0],forward[len(forward)//2],sit_rows[-1],rise_rows[min(130,len(rise_rows)-1)],backward[len(backward)//2]]
+    else:selected=[rows[0],sit_rows[-1],rise_rows[min(35,len(rise_rows)-1)],rise_rows[min(130,len(rise_rows)-1)],rows[-1]] if sit_rows and rise_rows else [rows[round(t*(len(rows)-1))] for t in (0,.22,.48,.74,1)]
     sheet=Image.new('RGB',(1440,792),'#0b1b28');draw=ImageDraw.Draw(sheet)
     for i,row in enumerate(selected):sheet.paste(frame(row).resize((480,360)),((i%3)*480,48+(i//3)*360))
     heading='站立 → 臀部坐地 → 重心前移 → 起身 → 站稳' if sit_rows and rise_rows else labels.get(rows[0]['stage'],rows[0]['stage'])+' · 五帧连续物理证据'
+    if forward and backward and sit_rows and rise_rows:heading='站立 → 前进 → 坐地 → 起身 → 后退（完整视频含起停）'
     draw.text((24,9),'原始物理回放：'+heading,font=font,fill='#85e1f2')
     evidence='双脚支撑 · 基础摆身舞蹈' if rows[0]['stage']=='dance' else '绿色点：臀部实际接触'
     for j,text in enumerate([evidence,'原速 / 连续 / 无扶持','仅仿真，实机尚未验证']):draw.text((985,475+j*54),text,font=small,fill='#b9d3df')

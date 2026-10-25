@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 249857,
-      "sha256": "b70853d102f24f26bbcd7f760a80f81344ba05214585ee8ea148253ae61df239"
+      "bytes": 251990,
+      "sha256": "6fbc4b9aaf3fc4a0656ba53f5603d95b5b611518e4101ea46287ae4c729bca08"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2402,8 +2402,8 @@
       "sha256": "dfcc968249915c8f15d1959e9bfd20d01d74a9ffbda7f95c891abe50b9c7aa98"
     },
     "training/evaluate.py": {
-      "bytes": 7301,
-      "sha256": "9ae4e0f7a3877c0a9ab9e5373da8e9fd70b46e7d02b93bb42ade1f93ef68570f"
+      "bytes": 7588,
+      "sha256": "1e8da8f2fa213685e830f704e49c24fd7ee4fd7dc866f6dabecc66d6f90c766f"
     },
     "training/full_refine.py": {
       "bytes": 4441,
@@ -2506,8 +2506,8 @@
       "sha256": "5432d9dec99f5a23e4db0659477a54d92be2ab3cc94bff2208add1e85b775e6d"
     },
     "training/native_env.py": {
-      "bytes": 28707,
-      "sha256": "b31c5a69f737a128a748b22d2b856161bf57e3d3398ef0a2a7879ee2af4d29b1"
+      "bytes": 29359,
+      "sha256": "55c47e9e4af1a69fb83b482648648d821f4a3a76ec77c265b1ebbf399010e7b7"
     },
     "training/params/1910_m6.json": {
       "bytes": 754,
@@ -2590,8 +2590,8 @@
       "sha256": "b582c0e89b8fd811582d547693f512f5b15ee1b24fd6d86dfe3ccb300c24633a"
     },
     "training/train.py": {
-      "bytes": 12420,
-      "sha256": "fcfeb1eee533d1a1d6872a46b309a21b7956e8a90efba3fdc7391bbcd0ed0618"
+      "bytes": 13145,
+      "sha256": "4cb9573021f7c85ddeb3440b377a8ee7c22d9bfc9763521a3e006330e6a4cf08"
     },
     "training/training_adapter.py": {
       "bytes": 2624,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 16495,
-      "sha256": "e4ceb4a71a367952f0c55621d92b70d977951750bacb4e637a54a23d877cf406"
+      "bytes": 19890,
+      "sha256": "f48b303b15b15b7aaa6e7bc01d840ead15beb52f2d38e777604a1cb6d12cbe6c"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -2874,8 +2874,8 @@
       "sha256": "79f00ae17ee6065d49c35177e690901e53162f6f156cb121242f9aea86b2505e"
     },
     "training/render_sit_cycle.py": {
-      "bytes": 4658,
-      "sha256": "d984f2d4d3010e2bb0d1e60f7a73d40a0ebcf46aa7b24e9c3f87ed071c5b5edc"
+      "bytes": 5251,
+      "sha256": "86bf029c1239183f3909886843e9b53766e092efdc72d859ea943e0e9e6aa3eb"
     },
     "reports/overnight-20261025/sit-rise-five-frames.png": {
       "bytes": 459272,
@@ -2930,20 +2930,20 @@
       "sha256": "40d97f99ccb7376534ed6dea82464ba0cfa620d80bf4044b95ec745f4b384a60"
     },
     "training/evaluate_roll_candidate.py": {
-      "bytes": 4215,
-      "sha256": "df815efc99686dc76aad2fbd3ca6876512c36a00a3eae6dbbd3ab6fa1678ce4d"
+      "bytes": 4602,
+      "sha256": "ccb8f6f587b94a4767c3223843813fd4a8cd9b808beeb47d32be34d4bc3fea4f"
     },
     "reports/overnight-20261025/retraining-review-2230.json": {
       "bytes": 153633,
       "sha256": "95005cc9697704d7200f9dd0b99df6a3fce065a1afbcc4c59bf78f829045dc8c"
     },
     "training/native_skill_env.py": {
-      "bytes": 4186,
-      "sha256": "e5d48b704efcd9bf6b5e8866051edcd939772010e83c39339c16f80ee26306f7"
+      "bytes": 4861,
+      "sha256": "39ee1a3aa85b79fd5b994b57d05d50d9c459bd76800432afafa610f59692e192"
     },
     "training/tests/test_native_skill_env.py": {
-      "bytes": 1888,
-      "sha256": "7bcea0551c9442876b9f42cff69d7982691c784cd585408427471f352e3b235c"
+      "bytes": 2834,
+      "sha256": "76866b212db9ed27ecbbff49c9f3e0b8952f5e3284c5c5e5c047eb1fc795c231"
     },
     "training/skill_refine_model.py": {
       "bytes": 376,
@@ -2952,6 +2952,34 @@
     "training/skill_refine.py": {
       "bytes": 3343,
       "sha256": "3e9d7c85a24a87cc5dfde03b0a849559ddb6956270a52530832b589cfdadda76"
+    },
+    "reports/overnight-20261025/roll-full-v1-failure.json": {
+      "bytes": 1931,
+      "sha256": "d25bd6a4d45d1fe667ed2019db9c162912efceb9e0e91e3f136b7e5f249de1e7"
+    },
+    "training/tests/test_continuous_model.py": {
+      "bytes": 1729,
+      "sha256": "4f2331fe4815f1354e9f5de1d850458a590255e23e4346b3984daf64970d400f"
+    },
+    "reports/overnight-20261025/continuous-gate-audit.json": {
+      "bytes": 17746,
+      "sha256": "a030200fd2e79711baad56498f99af7fb6d5f20311f3f477a742916447655982"
+    },
+    "training/continuous_refine.py": {
+      "bytes": 1081,
+      "sha256": "aa7630196991c8574a4ab6d2a2edc2e761c71b7a76d225caa077e758f24c3626"
+    },
+    "training/roll_phase_refine.py": {
+      "bytes": 1392,
+      "sha256": "0756063c7b2f4a008a1ae0d6abd0192918478936b24acf48274ca73cc9750420"
+    },
+    "reports/overnight-20261025/continuous-gate-response.png": {
+      "bytes": 73197,
+      "sha256": "a48b656f172bed6feda4c9c329af9ad7d93bd42bd8dd1c2e4fd6b94f26a92aac"
+    },
+    "training/continuous_model.py": {
+      "bytes": 1475,
+      "sha256": "e46610d799f1dc6af408c6a6d4695ea5a25b2d717510d15459fef9ff7ffee7f8"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

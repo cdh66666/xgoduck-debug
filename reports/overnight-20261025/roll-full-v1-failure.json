@@ -1,0 +1,47 @@
+{
+  "nominal": {
+    "hardware_qualified": false,
+    "hardware_commands_sent": false,
+    "control_hz": 50,
+    "contact_sampling_hz": 200,
+    "scope": "Paired same seeds and physics, 1.9s roll then 4s walk hold, no reset. Torque separates requested ctrl and applied force-limited torque.",
+    "impact_reduction_passed": false,
+    "before": {
+      "cycles_completed": 16,
+      "total": 16,
+      "head_peak_p95_n": 41.29456980990524,
+      "head_impulse_mean_ns": 3.345091754217936,
+      "onnx_sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97"
+    },
+    "after": {
+      "cycles_completed": 0,
+      "total": 16,
+      "head_peak_p95_n": 62.765932833238054,
+      "head_impulse_mean_ns": 10.14118659869891,
+      "onnx_sha256": "b60cf34fd6fe385736a83930ecfe56e476022f0644eedadf2c7df3ad29e4a2bf"
+    }
+  },
+  "stress": {
+    "hardware_qualified": false,
+    "hardware_commands_sent": false,
+    "control_hz": 50,
+    "contact_sampling_hz": 200,
+    "scope": "Paired same seeds and physics, 1.9s roll then 4s walk hold, no reset. Torque separates requested ctrl and applied force-limited torque.",
+    "impact_reduction_passed": false,
+    "before": {
+      "cycles_completed": 16,
+      "total": 16,
+      "head_peak_p95_n": 48.271054417560975,
+      "head_impulse_mean_ns": 3.3750952179865505,
+      "onnx_sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97"
+    },
+    "after": {
+      "cycles_completed": 1,
+      "total": 16,
+      "head_peak_p95_n": 53.4420273084587,
+      "head_impulse_mean_ns": 6.836573245646684,
+      "onnx_sha256": "b60cf34fd6fe385736a83930ecfe56e476022f0644eedadf2c7df3ad29e4a2bf"
+    }
+  },
+  "outcome": "First full actor retrain failed. Multiple rotations and larger impulse; not deployable. Next phase-conditioned objective rewards approach to exactly one turn, with explicit progress timing."
+}
