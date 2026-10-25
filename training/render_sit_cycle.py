@@ -15,7 +15,7 @@ def main():
     cam.distance=.5;cam.elevation=-14;cam.azimuth=a.azimuth
     plant.sim.model.geom_rgba[plant.floor_id]=[.10,.16,.20,1.]
     font=ImageFont.truetype(a.font,24);small=ImageFont.truetype(a.font,19)
-    labels={'sit':'臀部坐下','raise':'起身','rise':'起身','stand':'站立','forward':'前进','stop':'停稳','stand_after':'起身后站立','backward':'后退','stop_final':'停止','dance':'摆身舞蹈','single_support':'单脚支撑候选'}
+    labels={'sit':'臀部坐下','raise':'起身','rise':'起身','stand':'站立','forward':'前进','stop':'停稳','stand_after':'起身后站立','backward':'后退','stop_final':'停止','dance':'摆身舞蹈','single_support':'单脚支撑候选','roll':'前滚翻候选'}
     def frame(row):
         s=plant.sim;s.data.qpos[:]=row['qpos'];plant.mj.mj_forward(s.model,s.data)
         cam.lookat[:]=[row['qpos'][0],row['qpos'][1],.12]

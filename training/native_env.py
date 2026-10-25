@@ -105,6 +105,7 @@ class NativeEpisode:
         self.reward_sum = 0.
         self.motion_window=MotionWindow()
         self.target_rate_cost=float(os.environ.get('XGODUCK_TARGET_RATE_COST','0'))
+        self.head_motion_cost=float(os.environ.get('XGODUCK_HEAD_MOTION_COST','0'))
         self._enable_without_infer()
         self._resample()
 
@@ -298,6 +299,12 @@ class NativeEpisode:
                             progress=3.*progress, pose=.35*pose, action_rate=-.05*action_rate)
         target_step=sim.last_targets-previous_targets
         reward_terms['filtered_target_rate']=-self.target_rate_cost*float(np.mean((target_step/.1)**2))
+        # The observed large jumps are predominantly head_roll. Penalize its
+        # real motion and large head offsets during locomotion, without changing
+        # targets, filtering, inference rate or which actor weights can learn.
+        head_speed=sim.data.qvel[sim.motor.dof_indexes][5:9]
+        head_offset=sim.last_targets[5:9]-sim.home[5:9]
+        reward_terms['head_motion']=-self.head_motion_cost*float(np.mean((head_speed/2.)**2)+.25*np.mean((head_offset/.35)**2))
         if self.curriculum in ('stability','stop') and not moving:
             target=STABILITY_REWARD
             reward_terms['stop_stability'] = target['zero_speed_amplitude']*math.exp(-float((velocity[:2]**2).sum())/target['linear_sigma_mps']**2-float(velocity[2]**2)/target['yaw_sigma_radps']**2)
@@ -364,7 +371,11 @@ def _worker(connection, frozen, seeds, curriculum):
     try:
         os.environ['OMP_NUM_THREADS'] = '1'
         os.environ['OPENBLAS_NUM_THREADS'] = '1'
-        envs = [NativeEpisode(frozen, seed, curriculum=curriculum) for seed in seeds]
+        factory=NativeEpisode
+        if curriculum=='roll':
+            from native_skill_env import NativeSkillEpisode
+            factory=NativeSkillEpisode
+        envs = [factory(frozen, seed, curriculum=curriculum) for seed in seeds]
         np = envs[0].np
         connection.send(('ready', np.stack([env.observe() for env in envs]),
                          np.stack([env.critic_linear_velocity() for env in envs]),
@@ -462,7 +473,7 @@ class NativeVecEnv:
         self.pool = NativePool(**kwargs)
         self.num_envs, self.num_actions = self.pool.num_envs, 14
         self.device = torch.device('cpu')
-        self.max_episode_length = 1200
+        self.max_episode_length = 95 if kwargs.get('curriculum')=='roll' else 1200
         self.episode_length_buf = torch.zeros(self.num_envs, dtype=torch.long)
         self.cfg = dict(backend='Windows native frozen MuJoCo/BAM', policy_dt=.02,
                         physics_dt=.005, curriculum=kwargs.get('curriculum', 'six'),
@@ -471,6 +482,10 @@ class NativeVecEnv:
         self.cfg['physical_model']=self.pool.physical_model
         self.cfg['runtime_profile']=self.pool.runtime_profile
         self.cfg['target_rate_cost']=float(os.environ.get('XGODUCK_TARGET_RATE_COST','0'))
+        self.cfg['head_motion_cost']=float(os.environ.get('XGODUCK_HEAD_MOTION_COST','0'))
+        if kwargs.get('curriculum')=='roll':
+            self.cfg['roll_episode']=dict(duration_s=1.9,contact_sampling_hz=200,head_force_reference_n=20.,reference_is_strength_limit=False,
+                source_sha256=sha(R/'native_skill_env.py'),plant_source_sha256=sha(R/'sit_training.py'),contact_source_sha256=sha(R/'butt_sit.py'))
         if self.pool.randomize_physics:
             from physics_variation import ENVELOPE
             self.cfg['physics_randomization']=ENVELOPE.copy()

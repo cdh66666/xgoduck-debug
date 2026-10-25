@@ -20,8 +20,8 @@ class SitPlant(Plant):
         self.foot_ids=[self.sim.model.geom(n).id for n in ('left_foot_collision','right_foot_collision')]
         self.head_contact_ids=[i for i in range(self.sim.model.ngeom) if self.sim.model.geom_bodyid[i] in self.head_ids and self.sim.model.geom_group[i]==3]
 
-    def measure(self):
-        s=self.sim;r=s.data.xmat[s.root_id].reshape(3,3)
+    def ground_contacts(self):
+        s=self.sim
         forces={'butt':0.,'feet':0.,'head':0.,'other':0.};contacts=[]
         for j in range(s.data.ncon):
             c=s.data.contact[j]
@@ -30,6 +30,17 @@ class SitPlant(Plant):
             f=np.zeros(6);self.mj.mj_contactForce(s.model,s.data,j,f)
             kind='butt' if g==self.butt_id else 'feet' if g in self.foot_ids else 'head' if g in self.head_contact_ids else 'other'
             forces[kind]+=max(0.,float(f[0]));contacts.append({'geom':s.model.geom(g).name,'kind':kind,'force_n':float(f[0]),'z_mm':float(c.pos[2]*1000),'position_m':c.pos.tolist()})
+        return forces,contacts
+
+    def _record_substep(self):
+        super()._record_substep()
+        forces,_=self.ground_contacts()
+        for key,value in forces.items():
+            self.peak_contact_forces_n[key]=max(self.peak_contact_forces_n[key],value)
+            self.contact_impulse_ns[key]+=value*.005
+
+    def measure(self):
+        s=self.sim;r=s.data.xmat[s.root_id].reshape(3,3);forces,contacts=self.ground_contacts()
         return {'t':float(s.data.time),'pitch_deg':math.degrees(math.atan2(r[0,2],r[2,2])),
                 'roll_deg':math.degrees(math.atan2(r[2,1],r[2,2])),
                 'head_clearance_mm':float(min(self.vertices(g)[:,2].min() for g in self.head_geoms)*1000),

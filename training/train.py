@@ -65,10 +65,11 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
  parser.add_argument('--iterations',type=int,default=1)
  parser.add_argument('--workers',type=int,default=1)
  parser.add_argument('--envs-per-worker',type=int,default=2)
- parser.add_argument('--curriculum',choices=['stand','six','stability','stop','speed'],default='stand')
+ parser.add_argument('--curriculum',choices=['stand','six','stability','stop','speed','roll'],default='stand')
  parser.add_argument('--runtime-profile',choices=['legacy','calibrated-20261025'],default='legacy')
  parser.add_argument('--randomize-physics',action='store_true',help='Use the documented assumed voltage/contact/COM/inertia/delay stress envelope')
  parser.add_argument('--target-rate-cost',type=float,default=0.,help='Additional mean squared filtered-target rate cost, relative to 0.1 rad per 20ms')
+ parser.add_argument('--head-motion-cost',type=float,default=0.,help='Locomotion reward cost for head joint speed and large head target offsets; no output clamp')
  parser.add_argument('--max-forward',type=float,default=.3,help='Speed curriculum forward upper bound, .2 to 1 m/s')
  parser.add_argument('--trace-every',type=int,default=1,help='Record one full rollout per N updates; metrics remain every update')
  parser.add_argument('--seed',type=int,default=20261022)
@@ -84,10 +85,12 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
  if args.initial_checkpoint and initialize is None:parser.error('This entry has no pretrained initialization')
  if not .2<=args.max_forward<=1. or args.trace_every<1:parser.error('Invalid speed or trace interval')
  if not 0<=args.target_rate_cost<=10:parser.error('Target rate cost must be in [0,10]')
+ if not 0<=args.head_motion_cost<=10:parser.error('Head motion cost must be in [0,10]')
  os.environ['XGODUCK_RUNTIME_PROFILE']=args.runtime_profile
  os.environ['XGODUCK_RANDOMIZE_PHYSICS']='1' if args.randomize_physics else '0'
  os.environ['XGODUCK_MAX_FORWARD']=str(args.max_forward)
  os.environ['XGODUCK_TARGET_RATE_COST']=str(args.target_rate_cost)
+ os.environ['XGODUCK_HEAD_MOTION_COST']=str(args.head_motion_cost)
  if args.model_xml:os.environ['XGODUCK_TRAIN_XML']=str(args.model_xml.resolve())
  args.output=args.output.resolve();args.output.mkdir(parents=True,exist_ok=False)
  import numpy as np,torch
@@ -127,6 +130,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
      rows=extras['native_rows']
      for row in rows:failures.update(row['failure_reasons'])
      fields=('velocity','tilt','height','standing_height','command','command_age_s','zero_release','failure_reasons','resets','steps')
+     if args.curriculum=='roll':fields+=('roll_rotation_deg','roll_complete','head_peak_n','head_impulse_ns','contact_sampling_hz')
      if (iteration-base-1)%args.trace_every==0:
       trace.write(json.dumps({'iteration':iteration,'tick':tick,'t':env.common_step_counter*.02,
        'actions':actions.tolist(),'rewards':reward.tolist(),'done':done.tolist(),

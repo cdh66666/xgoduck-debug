@@ -37,7 +37,8 @@ def run(plant,walk,sit,rise_duration,seed,smooth_commands=False):
             row['target_step_deg']=float(np.max(np.abs(plant.filtered-previous))*180/np.pi)
             row['target_step_joint']=int(np.argmax(np.abs(plant.filtered-previous)))
             row['joint_velocity_radps']=plant.sim.data.qvel[plant.sim.motor.dof_indexes].tolist()
-            row['motor_torque_nm']=plant.sim.data.ctrl[plant.sim.motor.act_indexes].tolist()
+            row['motor_torque_nm']=plant.sim.data.actuator_force[plant.sim.motor.act_indexes].tolist()
+            row['requested_motor_torque_nm']=plant.sim.data.ctrl[plant.sim.motor.act_indexes].tolist()
             row['substep_peak_torque_nm']=plant.peak_torque_nm
             row['substep_peak_joint_speed_radps']=plant.peak_joint_speed_radps
             if tick==0:handoffs.append(dict(stage=name,target_step_deg=row['target_step_deg']))

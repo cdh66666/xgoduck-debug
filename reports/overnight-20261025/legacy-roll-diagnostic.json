@@ -128,5 +128,6 @@
   "physics_sha256": "c89d853c85d3b04ab2027cc2c413d48b95ad93aa002d064a3cc95b69954838af",
   "roll_sha256": "8adb1e6bc3f5eef751ce4edbf940f6d5a25fdec3ec4a798e1d9ca135c8248e97",
   "scope": "Corrected-plant diagnostic baseline: 2s stand, 1.9s old roll, 4.1s walk hold; no reset, brace or impulse; contact loads do not constitute mechanical strength qualification",
-  "contact_sampling_note": "Head/other contact peaks sampled at 50 Hz, not a guaranteed upper bound on impact; torque and joint speed maxima cover 200 Hz substeps."
+  "contact_sampling_note": "Head/other contact peaks sampled at 50 Hz, not a guaranteed upper bound on impact; torque and joint speed maxima cover 200 Hz substeps.",
+  "torque_field_provenance": "Historical max_torque_nm is requested data.ctrl, not force-limited actuator_force. Contact peaks sampled at50Hz, not an impact upper bound. New paired review records both torques and200Hz contacts."
 }

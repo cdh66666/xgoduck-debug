@@ -6,6 +6,19 @@ import numpy as np
 from native_env import NativeEpisode,manifest
 
 class Contract(unittest.TestCase):
+ def test_head_motion_cost_changes_reward_only_not_physics_or_action(self):
+  a=NativeEpisode(manifest(),42,curriculum='stand',auto_reset=False)
+  b=NativeEpisode(manifest(),42,curriculum='stand',auto_reset=False)
+  try:
+   a.head_motion_cost=0.;b.head_motion_cost=2.
+   action=np.zeros(14,dtype=np.float32);action[8]=.4
+   oa,ra,_,_,ia=a.step(action);ob,rb,_,_,ib=b.step(action)
+   np.testing.assert_array_equal(oa,ob);np.testing.assert_array_equal(a.sim.data.qpos,b.sim.data.qpos)
+   self.assertLess(rb,ra);self.assertLess(ib['reward_terms']['head_motion'],0.)
+   self.assertAlmostEqual(rb-ra,.02*ib['reward_terms']['head_motion'])
+   self.assertEqual(a.sim.policy_steps,1);self.assertEqual(b.sim.physics_steps,4)
+  finally:a.close();b.close()
+
  def test_own_full_actor_transfer_preserves_weights_and_new_learning_rate(self):
   import tempfile,torch
   from types import SimpleNamespace

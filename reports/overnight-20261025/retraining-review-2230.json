@@ -1,0 +1,5062 @@
+{
+  "hardware_commands_sent": false,
+  "hardware_qualified": false,
+  "control_hz": 50,
+  "physics_hz": 200,
+  "physical_model_sha256": "c89d853c85d3b04ab2027cc2c413d48b95ad93aa002d064a3cc95b69954838af",
+  "branches": {
+    "target-rate-full": {
+      "nominal": {
+        "passed": 22,
+        "total": 24,
+        "physical_failures": 0,
+        "checkpoint_sha256": "09ac96f2457f01a0828de248409ecdcf33759ace83bc78786d41ae060f715c97",
+        "cases": [
+          {
+            "seed": 20261200,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.9577005147181428,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.540751352521042,
+            "mean_velocity": [
+              0.2032157453445686,
+              -0.006403658146118687,
+              -0.00742453632586034
+            ],
+            "rmse": [
+              0.0119162051027088,
+              0.021094208777557286,
+              0.09967303441941334
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 3.7852381673341546,
+            "mean_velocity": [
+              0.26374444794927115,
+              0.000888291689785843,
+              -0.0022581568982624864
+            ],
+            "rmse": [
+              0.03958602750460844,
+              0.02301384711340152,
+              0.11621083610017426
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.6249972961603,
+            "mean_velocity": [
+              -0.2881843166478539,
+              -0.007583124233881512,
+              0.01079128006079134
+            ],
+            "rmse": [
+              0.027562610611282134,
+              0.04126783307286755,
+              0.18929776944399615
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.585508110452972,
+            "mean_velocity": [
+              0.004661546754662007,
+              -0.012005635322518221,
+              1.0334567223601059
+            ],
+            "rmse": [
+              0.015578692985850328,
+              0.020336854535946202,
+              0.09474337003621228
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.615816189820831,
+            "mean_velocity": [
+              -0.00198485905193856,
+              0.012968265662361906,
+              -0.9590448491413679
+            ],
+            "rmse": [
+              0.014997718718731044,
+              0.021697478140812913,
+              0.1291373691226991
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.8578203660573256,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.831258176089169,
+            "mean_velocity": [
+              0.2030847043944981,
+              -0.0064393045952780255,
+              -0.011172875217528029
+            ],
+            "rmse": [
+              0.012653149421534839,
+              0.020833430746819908,
+              0.09958589839006433
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.892894278230279,
+            "mean_velocity": [
+              0.26395933642362934,
+              0.0010393093347946998,
+              -0.012627027473942395
+            ],
+            "rmse": [
+              0.039458793994656745,
+              0.02300587090679168,
+              0.1304453267044334
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.65652144492001,
+            "mean_velocity": [
+              -0.2896410501680769,
+              -0.005311187348441345,
+              0.0031955027981170705
+            ],
+            "rmse": [
+              0.027549143883275243,
+              0.04244789702658845,
+              0.21323389743469284
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.017503443244653,
+            "mean_velocity": [
+              0.007179820074924934,
+              -0.010879898507475325,
+              1.0376710271893714
+            ],
+            "rmse": [
+              0.015488822644813409,
+              0.018303816688029398,
+              0.08678031121713677
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.647286462924503,
+            "mean_velocity": [
+              -0.0020836479272517768,
+              0.013043756083453345,
+              -0.9592335865138976
+            ],
+            "rmse": [
+              0.013516513832634563,
+              0.021781882351253595,
+              0.11475425266983307
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.834835354488652,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.715662703330815,
+            "mean_velocity": [
+              0.20588001171862694,
+              -0.006355543606454103,
+              -0.013736202981373853
+            ],
+            "rmse": [
+              0.013225681340552145,
+              0.021403078682502935,
+              0.09449068791497676
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.703952501307022,
+            "mean_velocity": [
+              0.2638230038264198,
+              0.0002943745808070283,
+              0.0012127070710145071
+            ],
+            "rmse": [
+              0.03925819788108081,
+              0.022839889187641287,
+              0.11900207995377682
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.712816028761194,
+            "mean_velocity": [
+              -0.29039661853492676,
+              -0.005261733597279306,
+              0.018199711710644773
+            ],
+            "rmse": [
+              0.029084722510569237,
+              0.03964146056032206,
+              0.21437387103023178
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.606626168199672,
+            "mean_velocity": [
+              0.004761362602914226,
+              -0.012061224346299719,
+              1.0306114943124285
+            ],
+            "rmse": [
+              0.015447474181523055,
+              0.02071338451441763,
+              0.09760243209033821
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.889278264724387,
+            "mean_velocity": [
+              -0.0023733993337924177,
+              0.01249364178657985,
+              -0.9618570798243739
+            ],
+            "rmse": [
+              0.012414054350035786,
+              0.02088112859525302,
+              0.1136019792575325
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.943967683192911,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.937277981825847,
+            "mean_velocity": [
+              0.20436267662029753,
+              -0.007278121906069775,
+              -0.010147205773523632
+            ],
+            "rmse": [
+              0.012319878176611882,
+              0.0220310004147179,
+              0.09838922176328069
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.820578110324973,
+            "mean_velocity": [
+              0.26360719997737386,
+              -0.000362964528553084,
+              0.0028357789684305733
+            ],
+            "rmse": [
+              0.03951147269122488,
+              0.024779770520470666,
+              0.11859931238775717
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.049403122790443,
+            "mean_velocity": [
+              -0.290001065739349,
+              -0.008292224645485789,
+              0.027893807301259205
+            ],
+            "rmse": [
+              0.026235500800768183,
+              0.03855535018028882,
+              0.18904368076725508
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.6158620425367545,
+            "mean_velocity": [
+              0.006894633967933341,
+              -0.011009928935509084,
+              1.035823002955852
+            ],
+            "rmse": [
+              0.015632557275461815,
+              0.018848521940823294,
+              0.09049864953824492
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.462694402194683,
+            "mean_velocity": [
+              -0.0020751385980877775,
+              0.012114351029557003,
+              -0.9538942720298185
+            ],
+            "rmse": [
+              0.013780276945937815,
+              0.020239899479819343,
+              0.13062415853266113
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          }
+        ]
+      },
+      "stress": {
+        "passed": 15,
+        "total": 24,
+        "physical_failures": 0,
+        "checkpoint_sha256": "09ac96f2457f01a0828de248409ecdcf33759ace83bc78786d41ae060f715c97",
+        "cases": [
+          {
+            "seed": 20261210,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.8247822703456182,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 3.9068349020876423,
+            "mean_velocity": [
+              0.21196259874014758,
+              -0.009696002410661956,
+              -0.016789835049101122
+            ],
+            "rmse": [
+              0.01673603862922743,
+              0.0229132626923442,
+              0.1429933582198178
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.853111709836265,
+            "mean_velocity": [
+              0.27327083143869463,
+              -0.0015260252866039431,
+              -0.02222157229933901
+            ],
+            "rmse": [
+              0.03036762513720036,
+              0.02616225347263223,
+              0.21201300792734654
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.016680880654615,
+            "mean_velocity": [
+              -0.3064918834443201,
+              -0.001534914222782974,
+              -0.04362427040092709
+            ],
+            "rmse": [
+              0.019158851567972993,
+              0.03885546544901007,
+              0.24819692697190662
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.347671541833338,
+            "mean_velocity": [
+              0.004061054384357819,
+              -0.013813629041731538,
+              1.071332731225555
+            ],
+            "rmse": [
+              0.013403368823829778,
+              0.021739744097997973,
+              0.13125403529099788
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.609261835721901,
+            "mean_velocity": [
+              -0.005636943760113744,
+              0.007174966996390538,
+              -0.9283967033906355
+            ],
+            "rmse": [
+              0.015897300953342196,
+              0.017219483962648375,
+              0.217726823545576
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 3.247356142279716,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.346600147546313,
+            "mean_velocity": [
+              0.18427410000884176,
+              -0.006737363892283366,
+              0.03839587826673132
+            ],
+            "rmse": [
+              0.0197669060934225,
+              0.021524131477975238,
+              0.10747224644211337
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.829247368276727,
+            "mean_velocity": [
+              0.2420661349484138,
+              -0.0024799854989857634,
+              0.06926169317941376
+            ],
+            "rmse": [
+              0.059814101538772535,
+              0.033376284894856424,
+              0.1627786550861246
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 11.467541077041139,
+            "mean_velocity": [
+              -0.2736454818624746,
+              -0.007658054108367342,
+              -0.035311675694004695
+            ],
+            "rmse": [
+              0.051116550514944056,
+              0.04295412198399918,
+              0.328698166229431
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.6901226201580215,
+            "mean_velocity": [
+              0.008782382047529248,
+              -0.010919262464198533,
+              1.041240751950141
+            ],
+            "rmse": [
+              0.018778331660071704,
+              0.03188097078650968,
+              0.19873736621688995
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.563179001581354,
+            "mean_velocity": [
+              0.0039056618767927503,
+              0.019409728584743158,
+              -1.020593887448698
+            ],
+            "rmse": [
+              0.017263756788486587,
+              0.028266881209881294,
+              0.15133190192796034
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 3.2967114918125002,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.374543405804544,
+            "mean_velocity": [
+              0.1867306246259692,
+              -0.005027580423031397,
+              0.03955369603399194
+            ],
+            "rmse": [
+              0.01917142977683685,
+              0.02132442496112745,
+              0.13553418510005275
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.797432274047061,
+            "mean_velocity": [
+              0.24527980841072142,
+              -0.0028136622786035727,
+              0.08571542521352116
+            ],
+            "rmse": [
+              0.056856774238452146,
+              0.03645016911055463,
+              0.19109221944465976
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 11.761654660642582,
+            "mean_velocity": [
+              -0.2854383473973393,
+              -0.005946122333640555,
+              -0.04998501571926879
+            ],
+            "rmse": [
+              0.049204030224873116,
+              0.043982390073001545,
+              0.3738832814208753
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.222866784726585,
+            "mean_velocity": [
+              0.00668489323511197,
+              -0.008488879770154131,
+              1.0695318441168729
+            ],
+            "rmse": [
+              0.018720664679207917,
+              0.034365000766070956,
+              0.2380614391951326
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.776250495987251,
+            "mean_velocity": [
+              0.0036561439470588577,
+              0.02431214766128004,
+              -1.0434992089943125
+            ],
+            "rmse": [
+              0.018969110257287137,
+              0.031826941396939354,
+              0.1943696616931482
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.987586768854972,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 3.9866292023832814,
+            "mean_velocity": [
+              0.19239849091324732,
+              -0.0017810924556748255,
+              0.023447668690462605
+            ],
+            "rmse": [
+              0.013639904310511434,
+              0.0164996142292432,
+              0.09454434115998547
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 9.018697647576765,
+            "mean_velocity": [
+              0.2569391307415482,
+              0.004704193859033346,
+              0.07321357976160947
+            ],
+            "rmse": [
+              0.04660662803700168,
+              0.021579982489258544,
+              0.13928085011965646
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 9.609524669496103,
+            "mean_velocity": [
+              -0.3050117478606027,
+              -0.003355882444309704,
+              -0.0018340316861607672
+            ],
+            "rmse": [
+              0.0414173863691054,
+              0.03721523430300925,
+              0.31530326013016796
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.846239059659199,
+            "mean_velocity": [
+              0.0015987101268225118,
+              -0.009915925301191102,
+              1.0665805281728205
+            ],
+            "rmse": [
+              0.016051021956782797,
+              0.02165000283850677,
+              0.15249146627675095
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.3665696003296866,
+            "mean_velocity": [
+              0.002861355040298395,
+              0.02169703190094069,
+              -1.0367317803255423
+            ],
+            "rmse": [
+              0.017184615052864293,
+              0.026842722258325524,
+              0.1385852170941329
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          }
+        ]
+      },
+      "chain": {
+        "passed": 0,
+        "total": 8,
+        "failures": [
+          {
+            "seed": 4000,
+            "failures": [
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4001,
+            "failures": [
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4002,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4003,
+            "failures": [
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4004,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4005,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4006,
+            "failures": [
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4007,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          }
+        ],
+        "seed4000": {
+          "seed": 4000,
+          "passed": false,
+          "failures": [
+            "handoff_target_step"
+          ],
+          "stages": [
+            {
+              "stage": "stand",
+              "ticks": 100,
+              "expected_ticks": 100,
+              "mean_velocity": [
+                0.00011929753538106411,
+                2.941078204142492e-06,
+                0.00031780326131243086
+              ],
+              "rmse": [
+                0.0001194546648441494,
+                4.180229817505186e-06,
+                0.0003227826244999884
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.103058757178562,
+                0.0,
+                0.0
+              ],
+              "height_mm": 137.99319563183502,
+              "pitch_deg": 2.131264151420738,
+              "max_target_step_deg": 5.12000730279196,
+              "entry_window_target_step_deg": 5.12000730279196
+            },
+            {
+              "stage": "forward",
+              "ticks": 200,
+              "expected_ticks": 200,
+              "mean_velocity": [
+                0.20362898240453095,
+                -0.005380706252001887,
+                -0.010229878066454512
+              ],
+              "rmse": [
+                0.01096836149554818,
+                0.02064013880966832,
+                0.0957718573050647
+              ],
+              "mean_forces_n": [
+                0.0,
+                9.305084141141542,
+                0.0,
+                0.0
+              ],
+              "height_mm": 139.5723127446263,
+              "pitch_deg": -0.5724895810582553,
+              "max_target_step_deg": 36.092692918364236,
+              "entry_window_target_step_deg": 30.89339513759022
+            },
+            {
+              "stage": "stop",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                -6.282894196549881e-05,
+                -6.520352114248273e-05,
+                0.003164487167088245
+              ],
+              "rmse": [
+                0.0007866610624424978,
+                0.00013697318072586077,
+                0.006249871266476719
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.103180736028685,
+                0.0,
+                0.0
+              ],
+              "height_mm": 137.2814456167956,
+              "pitch_deg": 2.6292430464968346,
+              "max_target_step_deg": 28.26865684600425,
+              "entry_window_target_step_deg": 28.26865684600425
+            },
+            {
+              "stage": "sit",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                3.784111589247626e-05,
+                -1.3127875457756613e-05,
+                0.0005582383662989103
+              ],
+              "rmse": [
+                0.00031852911188777765,
+                3.3578869245523064e-05,
+                0.0006436384413948153
+              ],
+              "mean_forces_n": [
+                3.707614370826738,
+                4.395070770965911,
+                0.0,
+                0.0
+              ],
+              "height_mm": 84.99231174126115,
+              "pitch_deg": -23.413962046057108,
+              "max_target_step_deg": 7.350643518012722,
+              "entry_window_target_step_deg": 1.3798530476459125
+            },
+            {
+              "stage": "rise",
+              "ticks": 287,
+              "expected_ticks": 287,
+              "mean_velocity": [
+                -0.00013953116028850543,
+                0.00010409297909563044,
+                -0.0010127291405617337
+              ],
+              "rmse": [
+                0.0010142244182683741,
+                0.000278086606397211,
+                0.0058189610634366675
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.10641769280152,
+                0.0,
+                0.0
+              ],
+              "height_mm": 136.64014684636345,
+              "pitch_deg": 0.026035205373138224,
+              "max_target_step_deg": 4.330949058428803,
+              "entry_window_target_step_deg": 4.330949058428803
+            },
+            {
+              "stage": "stand_after",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                3.892466204862331e-05,
+                1.0653324334144094e-05,
+                0.0010151678617143327
+              ],
+              "rmse": [
+                3.926766559453381e-05,
+                1.0718870374664937e-05,
+                0.001018922263172983
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.103078913572007,
+                0.0,
+                0.0
+              ],
+              "height_mm": 137.00658175342355,
+              "pitch_deg": 3.4002426670242003,
+              "max_target_step_deg": 0.853380308177774,
+              "entry_window_target_step_deg": 0.853380308177774
+            },
+            {
+              "stage": "backward",
+              "ticks": 200,
+              "expected_ticks": 200,
+              "mean_velocity": [
+                -0.30167696855443765,
+                -0.009020280641153462,
+                0.018809595542726307
+              ],
+              "rmse": [
+                0.02549375794644901,
+                0.0338494013116131,
+                0.18108635732662523
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.052714265279482,
+                0.0,
+                0.0
+              ],
+              "height_mm": 145.30642894733782,
+              "pitch_deg": -0.19846551802413692,
+              "max_target_step_deg": 55.417087811232236,
+              "entry_window_target_step_deg": 47.8444976073034
+            },
+            {
+              "stage": "stop_final",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                0.0003569741488708994,
+                2.2282883451026728e-05,
+                0.0013842571011778617
+              ],
+              "rmse": [
+                0.0012848317094050889,
+                0.0006980808550113082,
+                0.012500229427225677
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.116006200215459,
+                0.0,
+                0.0
+              ],
+              "height_mm": 137.64252777750167,
+              "pitch_deg": 2.449623490877914,
+              "max_target_step_deg": 38.871426495491136,
+              "entry_window_target_step_deg": 38.871426495491136
+            }
+          ],
+          "handoffs": [
+            {
+              "stage": "stand",
+              "target_step_deg": 5.12000730279196
+            },
+            {
+              "stage": "forward",
+              "target_step_deg": 14.87807733237395
+            },
+            {
+              "stage": "stop",
+              "target_step_deg": 18.47968474462587
+            },
+            {
+              "stage": "sit",
+              "target_step_deg": 0.0073572642606113264
+            },
+            {
+              "stage": "rise",
+              "target_step_deg": 0.29732342185728494
+            },
+            {
+              "stage": "stand_after",
+              "target_step_deg": 0.008719830072552053
+            },
+            {
+              "stage": "backward",
+              "target_step_deg": 14.54016780323077
+            },
+            {
+              "stage": "stop_final",
+              "target_step_deg": 15.051970077382872
+            }
+          ],
+          "resets_during_recording": 0,
+          "policy_steps": 1387,
+          "sim_time_s": 27.739999999998766,
+          "control_hz": 50,
+          "smooth_commands": true,
+          "voltage_v": 7.60915024103292,
+          "friction": 0.9585570268336852,
+          "min_head_clearance_mm": 94.79736003593412
+        }
+      }
+    },
+    "smooth-lr3e6-full": {
+      "nominal": {
+        "passed": 16,
+        "total": 24,
+        "physical_failures": 0,
+        "checkpoint_sha256": "4604018182532c4d8dc3ced86ec423b6a1e7244db9f80416e33c997d2307c515",
+        "cases": [
+          {
+            "seed": 20261200,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.725967773240989,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.781192527263886,
+            "mean_velocity": [
+              0.19022927162484635,
+              -0.012142411208001401,
+              0.048272910817182775
+            ],
+            "rmse": [
+              0.016677764103490818,
+              0.03576805215286689,
+              0.15213078973982977
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.8422325746164665,
+            "mean_velocity": [
+              0.24550667985124067,
+              -0.010969274588380727,
+              0.1690395536666155
+            ],
+            "rmse": [
+              0.05822036460224905,
+              0.0453891866452215,
+              0.35451905874576506
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.956783318979875,
+            "mean_velocity": [
+              -0.2546907761597419,
+              -0.011603423307013664,
+              -0.02104649902456024
+            ],
+            "rmse": [
+              0.05251186259138096,
+              0.0426987570360971,
+              0.23574970533443687
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.906792405390096,
+            "mean_velocity": [
+              0.012200981907946178,
+              -0.011882605447889976,
+              0.9591031545155814
+            ],
+            "rmse": [
+              0.018815008155772552,
+              0.02674656482533007,
+              0.11885186494339203
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 3.417302701106603,
+            "mean_velocity": [
+              -0.012572705856761865,
+              -0.0013700790363266875,
+              -0.9961532344754648
+            ],
+            "rmse": [
+              0.019828789385389782,
+              0.028287934991497055,
+              0.12659032666507955
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.703111580172148,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.547156035343566,
+            "mean_velocity": [
+              0.19042024045201825,
+              -0.012575293877387246,
+              0.05283459778175479
+            ],
+            "rmse": [
+              0.016585061390764134,
+              0.03445773963211974,
+              0.15724287139225063
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.984528565609717,
+            "mean_velocity": [
+              0.24504409841802982,
+              -0.011175591806853518,
+              0.16756159795104394
+            ],
+            "rmse": [
+              0.05891045915600602,
+              0.04568478429050964,
+              0.35466938876566056
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 9.094271189098173,
+            "mean_velocity": [
+              -0.25288155108829363,
+              -0.010871793347684112,
+              -0.013473854527470287
+            ],
+            "rmse": [
+              0.05388311687617881,
+              0.04523428070246217,
+              0.2438838779592485
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.9513609578542495,
+            "mean_velocity": [
+              0.012733103609719874,
+              -0.011234508003441447,
+              0.9500837838637047
+            ],
+            "rmse": [
+              0.018754239629779013,
+              0.02770300755948409,
+              0.13097117748695705
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 3.6024232104481078,
+            "mean_velocity": [
+              -0.012773720388867229,
+              -0.0013511862151021157,
+              -0.9877277412707124
+            ],
+            "rmse": [
+              0.020122924928822058,
+              0.027998070177705833,
+              0.11761674773236164
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.727610379127772,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.699201472907331,
+            "mean_velocity": [
+              0.1901036863198896,
+              -0.012277823662238322,
+              0.047340887178068364
+            ],
+            "rmse": [
+              0.01661983672218224,
+              0.03660157412437728,
+              0.14854308150784393
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.0888795142027865,
+            "mean_velocity": [
+              0.2491458054537758,
+              -0.013100455336053822,
+              0.16928894304502942
+            ],
+            "rmse": [
+              0.05490409286796054,
+              0.04055842315868034,
+              0.32505584945820704
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.956798424383823,
+            "mean_velocity": [
+              -0.24997545372052649,
+              -0.010133179734056929,
+              -0.03456253319987907
+            ],
+            "rmse": [
+              0.05690065171086079,
+              0.04502195882248878,
+              0.2513961800273024
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.145706383659246,
+            "mean_velocity": [
+              0.012341500457674874,
+              -0.01054853510577695,
+              0.9503861924664472
+            ],
+            "rmse": [
+              0.018143056977811416,
+              0.02694629604690862,
+              0.13279679695155708
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 3.6422145528042864,
+            "mean_velocity": [
+              -0.011862582898214246,
+              -0.0018235318933022048,
+              -0.9985642445381362
+            ],
+            "rmse": [
+              0.019285521617648006,
+              0.02787790698100441,
+              0.10920823446553692
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.716911761848013,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.91120682696985,
+            "mean_velocity": [
+              0.19037804272864328,
+              -0.012652508820050997,
+              0.045780678623525646
+            ],
+            "rmse": [
+              0.015942542152553626,
+              0.03488515804349571,
+              0.1424727607652741
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.091021980196081,
+            "mean_velocity": [
+              0.24719586738247287,
+              -0.011937969356571942,
+              0.1669639538646476
+            ],
+            "rmse": [
+              0.05674930368777893,
+              0.04339116968198741,
+              0.350044895122525
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 9.28130946195383,
+            "mean_velocity": [
+              -0.2550199930847312,
+              -0.011647471202803034,
+              -0.03302294412779601
+            ],
+            "rmse": [
+              0.051641636112518347,
+              0.04192533555214062,
+              0.2383112614023329
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.071888255804198,
+            "mean_velocity": [
+              0.011498069343849124,
+              -0.012735034329275759,
+              0.9567140098820912
+            ],
+            "rmse": [
+              0.018440183674438157,
+              0.02801940210738677,
+              0.12105086661117208
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 3.7141841492774708,
+            "mean_velocity": [
+              -0.012665165581399448,
+              -0.0015225878320455463,
+              -1.0004492214148366
+            ],
+            "rmse": [
+              0.01974530933178101,
+              0.027931282814019524,
+              0.1202493918015378
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          }
+        ]
+      },
+      "stress": {
+        "passed": 15,
+        "total": 24,
+        "physical_failures": 0,
+        "checkpoint_sha256": "4604018182532c4d8dc3ced86ec423b6a1e7244db9f80416e33c997d2307c515",
+        "cases": [
+          {
+            "seed": 20261210,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.7257242872828398,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.252346765056898,
+            "mean_velocity": [
+              0.19158961546821637,
+              -0.0128122941411129,
+              0.05373340537457012
+            ],
+            "rmse": [
+              0.016741188059722575,
+              0.033195935543297216,
+              0.17490394512727614
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.054440475385619,
+            "mean_velocity": [
+              0.2548295356215575,
+              -0.009839363977734838,
+              0.18807471958397393
+            ],
+            "rmse": [
+              0.05031122955017508,
+              0.04124292848815675,
+              0.3888179433746952
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.187897487206902,
+            "mean_velocity": [
+              -0.2625015567335662,
+              -0.01287598643060582,
+              -0.05283138704351805
+            ],
+            "rmse": [
+              0.04354472885245303,
+              0.04207344220481336,
+              0.2805753924333993
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.40636500590507,
+            "mean_velocity": [
+              0.014386038424488008,
+              -0.01306858963918501,
+              1.001051977856441
+            ],
+            "rmse": [
+              0.02085310594625245,
+              0.028108607751493268,
+              0.11515905028993584
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 3.251232921169993,
+            "mean_velocity": [
+              -0.01458200091893552,
+              0.0027313978072031997,
+              -1.0280123976500524
+            ],
+            "rmse": [
+              0.02152433606057577,
+              0.026882633793571253,
+              0.15650626806904877
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.5925058142220245,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.74738056837297,
+            "mean_velocity": [
+              0.180013914085303,
+              -0.01033082076196155,
+              0.0002496945655126398
+            ],
+            "rmse": [
+              0.02489193156986563,
+              0.05843338109827705,
+              0.12886343603724415
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.7033126462183,
+            "mean_velocity": [
+              0.23319907956608563,
+              -0.009415575203750116,
+              0.10115005633052818
+            ],
+            "rmse": [
+              0.06915437008253442,
+              0.04547737215024173,
+              0.26814603919867064
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 9.33211667068293,
+            "mean_velocity": [
+              -0.21409807602497888,
+              0.002329728762632272,
+              -0.20122720768012406
+            ],
+            "rmse": [
+              0.09800664006452058,
+              0.045425869044385454,
+              0.4870665871130542
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.539525461726512,
+            "mean_velocity": [
+              0.011612297547901695,
+              -0.010779975885806337,
+              0.9177330966513492
+            ],
+            "rmse": [
+              0.01809114791259385,
+              0.027842490803690993,
+              0.13762236364912392
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.0358165819788265,
+            "mean_velocity": [
+              -0.01367004343912174,
+              0.00010379482589408315,
+              -0.9908841865470608
+            ],
+            "rmse": [
+              0.02458100248111185,
+              0.032434729884464886,
+              0.17551075128320434
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.7217659090430257,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.227987376457294,
+            "mean_velocity": [
+              0.18676233006831688,
+              -0.010953544309812059,
+              0.024963775002058385
+            ],
+            "rmse": [
+              0.02033830134779393,
+              0.04737189003648743,
+              0.12345496738832994
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.063218923281848,
+            "mean_velocity": [
+              0.2385814052603619,
+              -0.009200401931658803,
+              0.09469916035958394
+            ],
+            "rmse": [
+              0.06501893961491867,
+              0.044916197413730784,
+              0.2990438089548978
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.970103123621234,
+            "mean_velocity": [
+              -0.23211260793947314,
+              0.005062979479072892,
+              -0.21794885059186594
+            ],
+            "rmse": [
+              0.08281729699585094,
+              0.044831711505794736,
+              0.5572765744458711
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.734337854537676,
+            "mean_velocity": [
+              0.011120701192000117,
+              -0.0134173311139847,
+              0.941645817636002
+            ],
+            "rmse": [
+              0.018718036619127115,
+              0.02827584635019425,
+              0.14671759814700855
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.474694809886354,
+            "mean_velocity": [
+              -0.016499919189373876,
+              0.0009055091056691429,
+              -0.998941919238515
+            ],
+            "rmse": [
+              0.028363011823044446,
+              0.03211571564501564,
+              0.19466437752646967
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.852808230020055,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.024518731505483,
+            "mean_velocity": [
+              0.1976131557171648,
+              -0.013654211215951605,
+              0.06337652139499449
+            ],
+            "rmse": [
+              0.014168255398050195,
+              0.035290091416860084,
+              0.13460128327747517
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.068762502055407,
+            "mean_velocity": [
+              0.252869414102668,
+              -0.014737727639882873,
+              0.17231800957737659
+            ],
+            "rmse": [
+              0.05099652943943202,
+              0.03905186555497616,
+              0.3105808897905531
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 9.184909000392196,
+            "mean_velocity": [
+              -0.2631091196445981,
+              -0.00814642476870138,
+              -0.0423201790877732
+            ],
+            "rmse": [
+              0.049454463301790264,
+              0.04103027457466195,
+              0.2614862111763021
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.390196767937029,
+            "mean_velocity": [
+              0.008656777222100582,
+              -0.015123813084914872,
+              0.993051060116593
+            ],
+            "rmse": [
+              0.01679462078939229,
+              0.02726180729438676,
+              0.11266624721416425
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 3.631186403325499,
+            "mean_velocity": [
+              -0.018605336524478207,
+              -9.940427700149309e-05,
+              -1.022006024769535
+            ],
+            "rmse": [
+              0.027743716681947743,
+              0.02922016764452139,
+              0.1388466039476963
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          }
+        ]
+      },
+      "chain": {
+        "passed": 0,
+        "total": 8,
+        "failures": [
+          {
+            "seed": 4000,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4001,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4002,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4003,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4004,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4005,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4006,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4007,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          }
+        ],
+        "seed4000": {
+          "seed": 4000,
+          "passed": false,
+          "failures": [
+            "backward:tracking",
+            "handoff_target_step"
+          ],
+          "stages": [
+            {
+              "stage": "stand",
+              "ticks": 100,
+              "expected_ticks": 100,
+              "mean_velocity": [
+                0.0001945340943589043,
+                2.4382868751791274e-05,
+                -0.0006365992432659784
+              ],
+              "rmse": [
+                0.00019826375261063281,
+                2.576841949967874e-05,
+                0.000644753090117192
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.10301527763857,
+                0.0,
+                0.0
+              ],
+              "height_mm": 137.42660375496988,
+              "pitch_deg": -3.188219174810736,
+              "max_target_step_deg": 11.605010238096492,
+              "entry_window_target_step_deg": 11.605010238096492
+            },
+            {
+              "stage": "forward",
+              "ticks": 200,
+              "expected_ticks": 200,
+              "mean_velocity": [
+                0.1935128475154082,
+                -0.013792055275377331,
+                0.06747395283478635
+              ],
+              "rmse": [
+                0.01701744013288556,
+                0.03808699250974228,
+                0.1892388956715824
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.347712651716984,
+                0.0,
+                0.0
+              ],
+              "height_mm": 139.47803003914194,
+              "pitch_deg": -3.312328634540813,
+              "max_target_step_deg": 30.742092551582605,
+              "entry_window_target_step_deg": 30.742092551582605
+            },
+            {
+              "stage": "stop",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                2.3670930480693447e-05,
+                -4.6739704236766925e-05,
+                0.0006841253647838617
+              ],
+              "rmse": [
+                3.9573263354794354e-05,
+                4.781943585113426e-05,
+                0.0007076750429428966
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.103038698635642,
+                0.0,
+                0.0
+              ],
+              "height_mm": 137.45388252310428,
+              "pitch_deg": -3.3885958071385414,
+              "max_target_step_deg": 21.05630069594965,
+              "entry_window_target_step_deg": 21.05630069594965
+            },
+            {
+              "stage": "sit",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                3.347711765299701e-05,
+                -2.43245080136463e-05,
+                0.00024848846766502926
+              ],
+              "rmse": [
+                0.0003339350604030978,
+                4.665252246693268e-05,
+                0.0006021607539497941
+              ],
+              "mean_forces_n": [
+                3.589576260305833,
+                4.513068111504236,
+                0.0,
+                0.0
+              ],
+              "height_mm": 84.88708623676331,
+              "pitch_deg": -21.340959451010853,
+              "max_target_step_deg": 5.858582494778124,
+              "entry_window_target_step_deg": 2.579420575549021
+            },
+            {
+              "stage": "rise",
+              "ticks": 287,
+              "expected_ticks": 287,
+              "mean_velocity": [
+                -0.00011065741149205586,
+                8.966205763879473e-05,
+                -0.0011422386802194108
+              ],
+              "rmse": [
+                0.0011159139006261128,
+                0.00025895425777160646,
+                0.006581518234199824
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.10144435622562,
+                0.0,
+                0.0
+              ],
+              "height_mm": 136.64607529425578,
+              "pitch_deg": 0.08465017888117815,
+              "max_target_step_deg": 4.281564360325264,
+              "entry_window_target_step_deg": 4.281564360325264
+            },
+            {
+              "stage": "stand_after",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                4.9204257852879746e-05,
+                -0.00011488027728107637,
+                0.0021274447602904014
+              ],
+              "rmse": [
+                7.858507660811618e-05,
+                0.00011657340687908298,
+                0.002181942788003486
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.103269370356895,
+                0.0,
+                0.0
+              ],
+              "height_mm": 137.47327701417532,
+              "pitch_deg": -1.8058770206964971,
+              "max_target_step_deg": 2.079568012790012,
+              "entry_window_target_step_deg": 2.079568012790012
+            },
+            {
+              "stage": "backward",
+              "ticks": 200,
+              "expected_ticks": 200,
+              "mean_velocity": [
+                -0.26776637565084593,
+                -0.0014853414246936468,
+                0.01870453679474309
+              ],
+              "rmse": [
+                0.04088887212880026,
+                0.04787660788793535,
+                0.3234058521648155
+              ],
+              "mean_forces_n": [
+                0.0,
+                9.491012626229383,
+                0.0,
+                0.0
+              ],
+              "height_mm": 141.96235115292092,
+              "pitch_deg": -4.054102895494873,
+              "max_target_step_deg": 45.19650413788313,
+              "entry_window_target_step_deg": 40.81377183656693
+            },
+            {
+              "stage": "stop_final",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                -0.00015976603186572283,
+                -1.989003826603339e-05,
+                0.001399427821353034
+              ],
+              "rmse": [
+                0.00016008180387176512,
+                1.9899784300375073e-05,
+                0.0013998417508424678
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.103061539156911,
+                0.0,
+                0.0
+              ],
+              "height_mm": 136.9867006075755,
+              "pitch_deg": -2.6486061673092958,
+              "max_target_step_deg": 32.1965796311282,
+              "entry_window_target_step_deg": 32.1965796311282
+            }
+          ],
+          "handoffs": [
+            {
+              "stage": "stand",
+              "target_step_deg": 11.605010238096492
+            },
+            {
+              "stage": "forward",
+              "target_step_deg": 15.412746896524542
+            },
+            {
+              "stage": "stop",
+              "target_step_deg": 12.238477454254859
+            },
+            {
+              "stage": "sit",
+              "target_step_deg": 0.025749677181345555
+            },
+            {
+              "stage": "rise",
+              "target_step_deg": 0.23670095566927
+            },
+            {
+              "stage": "stand_after",
+              "target_step_deg": 0.014785116444794284
+            },
+            {
+              "stage": "backward",
+              "target_step_deg": 14.747863071257509
+            },
+            {
+              "stage": "stop_final",
+              "target_step_deg": 10.86600366319113
+            }
+          ],
+          "resets_during_recording": 0,
+          "policy_steps": 1387,
+          "sim_time_s": 27.739999999998766,
+          "control_hz": 50,
+          "smooth_commands": true,
+          "voltage_v": 7.60915024103292,
+          "friction": 0.9585570268336852,
+          "min_head_clearance_mm": 94.80263369666429
+        }
+      }
+    },
+    "speed-lr3e6-full": {
+      "nominal": {
+        "passed": 20,
+        "total": 24,
+        "physical_failures": 0,
+        "checkpoint_sha256": "a50d734dc64c64e086e15bc8b66e691757dae2966219b2c2c7586eee91f421ad",
+        "cases": [
+          {
+            "seed": 20261200,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 3.0563071704048155,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.880936182299397,
+            "mean_velocity": [
+              0.19979446955427801,
+              0.0007666435219589827,
+              0.0033784722540707896
+            ],
+            "rmse": [
+              0.017133100136773754,
+              0.02057638010074089,
+              0.09997091779406232
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.6,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.623234451387609,
+            "mean_velocity": [
+              0.4208928779141594,
+              -0.005134727255737867,
+              0.07759262127918855
+            ],
+            "rmse": [
+              0.1831135256332486,
+              0.03289794363649554,
+              0.4380854500657482
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.895901410495384,
+            "mean_velocity": [
+              -0.30519268951380657,
+              -0.0019380861792717742,
+              -0.037365811742398294
+            ],
+            "rmse": [
+              0.018315531508708023,
+              0.02120922173529264,
+              0.12132276833055654
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.110808874990956,
+            "mean_velocity": [
+              0.0030459435879806747,
+              -0.003188119357704468,
+              1.015035773633932
+            ],
+            "rmse": [
+              0.014805895768444651,
+              0.0157639041460925,
+              0.07737994661149618
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261200,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.296601426914309,
+            "mean_velocity": [
+              -0.00029169110340262805,
+              -0.0026666753790734908,
+              -1.0050555918399204
+            ],
+            "rmse": [
+              0.017785570547669906,
+              0.019773922644752546,
+              0.1063826618945094
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 3.1160154296828964,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.577675919602062,
+            "mean_velocity": [
+              0.19901904063670253,
+              0.0010750134331776746,
+              -0.005709839923826252
+            ],
+            "rmse": [
+              0.01778644560158122,
+              0.020300331448560055,
+              0.09973832258927498
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.6,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 11.565784339109968,
+            "mean_velocity": [
+              0.44140694961823657,
+              -0.009607383558050048,
+              0.24514594183308744
+            ],
+            "rmse": [
+              0.16803426563951993,
+              0.03948006286006102,
+              0.6354659241780047
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.771562129432162,
+            "mean_velocity": [
+              -0.30336625222287006,
+              -0.0008170185843950116,
+              -0.03024013783501672
+            ],
+            "rmse": [
+              0.017735532126012685,
+              0.021240970124738877,
+              0.10997932894475708
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.015603179925985,
+            "mean_velocity": [
+              0.0024947604362820733,
+              -0.002070802259184279,
+              1.0164390392117344
+            ],
+            "rmse": [
+              0.014264106595125066,
+              0.015161549785716395,
+              0.07950018715562396
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261201,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.513921873952319,
+            "mean_velocity": [
+              -0.0011518884500938914,
+              -0.0002988983737083273,
+              -1.009158946586505
+            ],
+            "rmse": [
+              0.017868270520383915,
+              0.017387991370753583,
+              0.1032578700161064
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 3.0736769074505825,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.585873154951023,
+            "mean_velocity": [
+              0.20012585671730204,
+              0.002039239258427618,
+              -0.007370323653595714
+            ],
+            "rmse": [
+              0.0179765780177267,
+              0.01931184454962622,
+              0.09459154011985595
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.6,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 9.682491550272562,
+            "mean_velocity": [
+              0.42468092447590994,
+              -0.007744050119248613,
+              0.12157419641113208
+            ],
+            "rmse": [
+              0.18134242111933158,
+              0.036749671080705815,
+              0.5546216787700811
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 9.009912617829228,
+            "mean_velocity": [
+              -0.3042650336937744,
+              0.00010480525230571096,
+              -0.0292509265479752
+            ],
+            "rmse": [
+              0.01806530414021912,
+              0.024209379736729732,
+              0.11901466764496506
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.976694431589016,
+            "mean_velocity": [
+              0.0032525216561691537,
+              -0.004002951219787798,
+              1.0121576886888273
+            ],
+            "rmse": [
+              0.014082998378104812,
+              0.01623282288827531,
+              0.07467848219169206
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261202,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.494540831716593,
+            "mean_velocity": [
+              -0.00014063416824427793,
+              -0.0012639175780169351,
+              -1.001959578872939
+            ],
+            "rmse": [
+              0.017213740844949088,
+              0.019327528775992343,
+              0.10211692619978796
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 3.0883947905631612,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 4.413441671438272,
+            "mean_velocity": [
+              0.20044685670051185,
+              0.0008799199001094762,
+              0.0025960471280072686
+            ],
+            "rmse": [
+              0.016968445601194707,
+              0.020179798545315056,
+              0.0921948752181978
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.6,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 10.438713114089898,
+            "mean_velocity": [
+              0.43608268216893814,
+              -0.009328768307940999,
+              0.19461329268904307
+            ],
+            "rmse": [
+              0.17253430476738713,
+              0.035486526622074965,
+              0.5977085571909888
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.146975598215437,
+            "mean_velocity": [
+              -0.30331032267373886,
+              -0.002154683800160853,
+              -0.02381832453728034
+            ],
+            "rmse": [
+              0.01912611180454308,
+              0.025955801816189384,
+              0.12625668103491175
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.984094416081511,
+            "mean_velocity": [
+              0.0027998792262703236,
+              -0.002052354991239841,
+              1.0129931192106663
+            ],
+            "rmse": [
+              0.014036816116148177,
+              0.016052907233275085,
+              0.08144177099108783
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          },
+          {
+            "seed": 20261203,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.506264092396365,
+            "mean_velocity": [
+              -0.00027958429312387076,
+              -0.002503368480947022,
+              -0.9986218824011952
+            ],
+            "rmse": [
+              0.017255842666664318,
+              0.01836255924370111,
+              0.11882730446717692
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0
+          }
+        ]
+      },
+      "stress": {
+        "passed": 9,
+        "total": 24,
+        "physical_failures": 2,
+        "checkpoint_sha256": "a50d734dc64c64e086e15bc8b66e691757dae2966219b2c2c7586eee91f421ad",
+        "cases": [
+          {
+            "seed": 20261210,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 3.185494008557985,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 3.953565033662406,
+            "mean_velocity": [
+              0.19495381930684522,
+              0.003798333889241619,
+              1.3269174291057338e-05
+            ],
+            "rmse": [
+              0.01379598679057976,
+              0.02225461774547674,
+              0.15180500381672252
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.6,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 10.642756536749744,
+            "mean_velocity": [
+              0.45417961079461455,
+              -0.009264332269155793,
+              0.4381355928507834
+            ],
+            "rmse": [
+              0.15090968364590332,
+              0.0392432799432391,
+              0.7431000034945566
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.36725365191926,
+            "mean_velocity": [
+              -0.3089315351286368,
+              -0.013267945452302827,
+              -0.1859526450664584
+            ],
+            "rmse": [
+              0.025009596163455026,
+              0.026804035635250256,
+              0.4284258692714149
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.265862036497718,
+            "mean_velocity": [
+              -0.005041337186755067,
+              -0.00384955083806067,
+              1.0156882355539207
+            ],
+            "rmse": [
+              0.015517869156805187,
+              0.015906640002222534,
+              0.20670413704878382
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261210,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.669940575022237,
+            "mean_velocity": [
+              -0.009037193222251367,
+              -0.012078995987882367,
+              -0.9382211520015878
+            ],
+            "rmse": [
+              0.019179598084713104,
+              0.022954351882384993,
+              0.252219679372716
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.592298503429419,
+              "floor_friction": 0.553994114710265,
+              "trunk_com_offset_m": [
+                0.0014851256090066462,
+                -0.0009352750406075971,
+                0.0006873831732885842
+              ],
+              "trunk_inertia_scale": 0.922224494662983,
+              "transport_delay_physics_steps": 3
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 2.9502203354085537,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.095556643703579,
+            "mean_velocity": [
+              0.1902045870057232,
+              0.0020005657658730947,
+              0.04920523805023265
+            ],
+            "rmse": [
+              0.023437570044960682,
+              0.02489451441416608,
+              0.17396757586218303
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.6,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 367,
+            "failure": [
+              "height25mm"
+            ],
+            "max_tilt_deg": 17.267757909447862,
+            "mean_velocity": [
+              0.33319354976325977,
+              -0.028509221521110798,
+              0.24222449828863035
+            ],
+            "rmse": [
+              0.29720198599458736,
+              0.10021163724250073,
+              1.2725741164711108
+            ],
+            "stop_passed": false,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 10.830435019990166,
+            "mean_velocity": [
+              -0.29772539017694105,
+              0.009614277668116861,
+              -0.1628755548726471
+            ],
+            "rmse": [
+              0.029941155160295694,
+              0.036153347116326305,
+              0.32450096322010236
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.782668377614475,
+            "mean_velocity": [
+              0.014924740554768688,
+              0.007831203238339822,
+              1.0236894635131408
+            ],
+            "rmse": [
+              0.02603067537962335,
+              0.023489117517300664,
+              0.22716826482839675
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261211,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.03806720459012,
+            "mean_velocity": [
+              0.006290774539854931,
+              0.021461087305320124,
+              -0.8370123597083815
+            ],
+            "rmse": [
+              0.02706772670468165,
+              0.03388873875736053,
+              0.3600467928947481
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.202075503370949,
+              "floor_friction": 0.5908366463968592,
+              "trunk_com_offset_m": [
+                0.0007014053196384346,
+                -0.00045038752903372894,
+                -0.00020679299291798884
+              ],
+              "trunk_inertia_scale": 1.0136531042355201,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 3.19055183454824,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.147857660858725,
+            "mean_velocity": [
+              0.19076154855466312,
+              0.005166428270376291,
+              0.0837697622122209
+            ],
+            "rmse": [
+              0.02654358539685834,
+              0.03254026759162124,
+              0.22947641849756917
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.6,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 186,
+            "failure": [
+              "tilt25deg"
+            ],
+            "max_tilt_deg": 25.763751848452415,
+            "mean_velocity": [
+              0.41066223479554964,
+              -0.009278367617232908,
+              0.5863022856101633
+            ],
+            "rmse": [
+              0.212590165208397,
+              0.11916445696126049,
+              2.3338746148378786
+            ],
+            "stop_passed": false,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 10.272249039927736,
+            "mean_velocity": [
+              -0.3159498824712298,
+              0.017936857406299796,
+              -0.20692381825626557
+            ],
+            "rmse": [
+              0.03919315756034065,
+              0.04292049393794234,
+              0.5638826107844157
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.7945350534712015,
+            "mean_velocity": [
+              0.016318248186220713,
+              0.005699337431181198,
+              1.0839694520731058
+            ],
+            "rmse": [
+              0.03042896240597681,
+              0.02339133618342065,
+              0.26746006630071756
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261212,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 7.409074679956061,
+            "mean_velocity": [
+              0.010736742203071135,
+              0.02694011950082781,
+              -0.7555881037226534
+            ],
+            "rmse": [
+              0.029063447175165676,
+              0.035935136336227566,
+              0.4468740636405483
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.576044068710588,
+              "floor_friction": 0.6088341252822331,
+              "trunk_com_offset_m": [
+                0.0011422581120222102,
+                -0.0008218397618464632,
+                0.0005207502035348382
+              ],
+              "trunk_inertia_scale": 1.0710963979633088,
+              "transport_delay_physics_steps": 6
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 750,
+            "failure": null,
+            "max_tilt_deg": 3.2807094591999064,
+            "mean_velocity": null,
+            "rmse": null,
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.2,
+              0.0,
+              0.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 5.81605700338863,
+            "mean_velocity": [
+              0.19736150486690354,
+              0.008864743210540028,
+              0.017768763747456385
+            ],
+            "rmse": [
+              0.023424105263917992,
+              0.020497824886451948,
+              0.12808258745842538
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.6,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.561981469523415,
+            "mean_velocity": [
+              0.3960015715986393,
+              -0.012441167792946834,
+              0.2399714063049635
+            ],
+            "rmse": [
+              0.21223475709541023,
+              0.0363226442889723,
+              0.7431701287957212
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              -0.3,
+              0.0,
+              0.0
+            ],
+            "passed": false,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 8.22085954557506,
+            "mean_velocity": [
+              -0.3318755933187367,
+              0.010406674593083148,
+              -0.08439496698212098
+            ],
+            "rmse": [
+              0.03842118205673738,
+              0.026792879285533276,
+              0.2182148940922333
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.496323012967534,
+            "mean_velocity": [
+              0.007191227892405326,
+              0.002391775590758593,
+              1.0703104073517213
+            ],
+            "rmse": [
+              0.021833769229588126,
+              0.019125747327881103,
+              0.15476245031066624
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          },
+          {
+            "seed": 20261213,
+            "command": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "passed": true,
+            "ticks": 900,
+            "failure": null,
+            "max_tilt_deg": 6.2437181072575605,
+            "mean_velocity": [
+              0.009108418404065366,
+              0.017774520484700018,
+              -1.0420977347827738
+            ],
+            "rmse": [
+              0.024027277481874505,
+              0.02530726152448664,
+              0.19152539403234345
+            ],
+            "stop_passed": true,
+            "resets_during_recording": 0,
+            "physics_sample": {
+              "voltage_v": 7.866790918932267,
+              "floor_friction": 0.7864216534439739,
+              "trunk_com_offset_m": [
+                0.0004154815579460846,
+                0.001292099536261256,
+                -0.0012680373788088437
+              ],
+              "trunk_inertia_scale": 1.0763125632299182,
+              "transport_delay_physics_steps": 5
+            }
+          }
+        ]
+      },
+      "chain": {
+        "passed": 0,
+        "total": 8,
+        "failures": [
+          {
+            "seed": 4000,
+            "failures": [
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4001,
+            "failures": [
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4002,
+            "failures": [
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4003,
+            "failures": [
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4004,
+            "failures": [
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4005,
+            "failures": [
+              "backward:tracking",
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4006,
+            "failures": [
+              "handoff_target_step"
+            ]
+          },
+          {
+            "seed": 4007,
+            "failures": [
+              "handoff_target_step"
+            ]
+          }
+        ],
+        "seed4000": {
+          "seed": 4000,
+          "passed": false,
+          "failures": [
+            "handoff_target_step"
+          ],
+          "stages": [
+            {
+              "stage": "stand",
+              "ticks": 100,
+              "expected_ticks": 100,
+              "mean_velocity": [
+                -2.2371311964792022e-05,
+                3.943139112946127e-05,
+                -0.0006114923573228453
+              ],
+              "rmse": [
+                0.0007361048275106161,
+                6.570842086517401e-05,
+                0.0024562370749244933
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.104412718418574,
+                0.0,
+                0.0
+              ],
+              "height_mm": 138.52343739829314,
+              "pitch_deg": -3.0256271710039617,
+              "max_target_step_deg": 11.360867943667419,
+              "entry_window_target_step_deg": 11.360867943667419
+            },
+            {
+              "stage": "forward",
+              "ticks": 200,
+              "expected_ticks": 200,
+              "mean_velocity": [
+                0.20540937037865048,
+                0.006054295423717679,
+                -0.0020226427248554338
+              ],
+              "rmse": [
+                0.02057856960251065,
+                0.018461417287653086,
+                0.08944984989944954
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.977091210101403,
+                0.0,
+                0.0
+              ],
+              "height_mm": 142.02849390967404,
+              "pitch_deg": -1.2557643264954654,
+              "max_target_step_deg": 44.843011447528944,
+              "entry_window_target_step_deg": 39.96179793084015
+            },
+            {
+              "stage": "stop",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                6.437149963381091e-05,
+                -9.565832722129507e-05,
+                0.0009052820304521865
+              ],
+              "rmse": [
+                0.0006552697819074724,
+                0.000147971386380803,
+                0.0018469678612366787
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.1017508817105,
+                0.0,
+                0.0
+              ],
+              "height_mm": 138.63036309596552,
+              "pitch_deg": -3.1833977166836367,
+              "max_target_step_deg": 42.72862485401552,
+              "entry_window_target_step_deg": 42.72862485401552
+            },
+            {
+              "stage": "sit",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                -3.3103458467628185e-05,
+                -3.777777410544101e-05,
+                7.802413612014274e-05
+              ],
+              "rmse": [
+                4.36977804699e-05,
+                3.7839790406119205e-05,
+                0.00017702610798043123
+              ],
+              "mean_forces_n": [
+                3.7467857771986144,
+                4.3667507095211295,
+                0.0,
+                0.0
+              ],
+              "height_mm": 84.85298204488583,
+              "pitch_deg": -23.6178385248259,
+              "max_target_step_deg": 4.291713582253566,
+              "entry_window_target_step_deg": 1.947713651976234
+            },
+            {
+              "stage": "rise",
+              "ticks": 287,
+              "expected_ticks": 287,
+              "mean_velocity": [
+                -5.347201853000966e-05,
+                0.00012856950736520699,
+                -0.0017079972223172793
+              ],
+              "rmse": [
+                0.0010054932813837495,
+                0.000315258861671022,
+                0.0067633116588408275
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.108565034621359,
+                0.0,
+                0.0
+              ],
+              "height_mm": 136.6362370579146,
+              "pitch_deg": -0.058527605766192606,
+              "max_target_step_deg": 4.289486405893353,
+              "entry_window_target_step_deg": 4.289486405893353
+            },
+            {
+              "stage": "stand_after",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                0.00024288980858849966,
+                1.5427482566065713e-06,
+                -0.0022279134671913028
+              ],
+              "rmse": [
+                0.0006773465327541204,
+                0.00020449380020042804,
+                0.003323690616500283
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.095340826643273,
+                0.0,
+                0.0
+              ],
+              "height_mm": 137.96036003911087,
+              "pitch_deg": -2.124548126762283,
+              "max_target_step_deg": 1.1844871600949551,
+              "entry_window_target_step_deg": 1.1844871600949551
+            },
+            {
+              "stage": "backward",
+              "ticks": 200,
+              "expected_ticks": 200,
+              "mean_velocity": [
+                -0.3135268305775965,
+                0.010688427650841135,
+                -0.04004862660904477
+              ],
+              "rmse": [
+                0.022776573771096816,
+                0.02404941519135041,
+                0.08547920608216888
+              ],
+              "mean_forces_n": [
+                0.0,
+                6.797888817293553,
+                0.0,
+                0.0
+              ],
+              "height_mm": 144.07223417941924,
+              "pitch_deg": -0.5969123241697298,
+              "max_target_step_deg": 56.19199171068088,
+              "entry_window_target_step_deg": 54.704450642498365
+            },
+            {
+              "stage": "stop_final",
+              "ticks": 150,
+              "expected_ticks": 150,
+              "mean_velocity": [
+                -0.0001998113205849351,
+                -6.512868774286849e-05,
+                -0.0003071491600785926
+              ],
+              "rmse": [
+                0.0007098869256941607,
+                9.449377858214197e-05,
+                0.0018890231673825988
+              ],
+              "mean_forces_n": [
+                0.0,
+                8.102340296337402,
+                0.0,
+                0.0
+              ],
+              "height_mm": 138.39164047098637,
+              "pitch_deg": -3.602690356036738,
+              "max_target_step_deg": 46.43386286564478,
+              "entry_window_target_step_deg": 46.43386286564478
+            }
+          ],
+          "handoffs": [
+            {
+              "stage": "stand",
+              "target_step_deg": 11.360867943667419
+            },
+            {
+              "stage": "forward",
+              "target_step_deg": 14.287728507714686
+            },
+            {
+              "stage": "stop",
+              "target_step_deg": 14.695700977241021
+            },
+            {
+              "stage": "sit",
+              "target_step_deg": 0.019372291110225193
+            },
+            {
+              "stage": "rise",
+              "target_step_deg": 0.22864028245357557
+            },
+            {
+              "stage": "stand_after",
+              "target_step_deg": 0.009560769348797021
+            },
+            {
+              "stage": "backward",
+              "target_step_deg": 15.061705168010693
+            },
+            {
+              "stage": "stop_final",
+              "target_step_deg": 24.240098869036988
+            }
+          ],
+          "resets_during_recording": 0,
+          "policy_steps": 1387,
+          "sim_time_s": 27.739999999998766,
+          "control_hz": 50,
+          "smooth_commands": true,
+          "voltage_v": 7.60915024103292,
+          "friction": 0.9585570268336852,
+          "min_head_clearance_mm": 94.75512739766523
+        }
+      }
+    }
+  },
+  "torque_correction": "Historical target-rate and speed chain torque may be requested ctrl. New evaluations distinguish requested ctrl from applied force-limited actuator_force. A lower value across this measurement change is not a physical improvement.",
+  "single_leg": {
+    "teacher_passed": 0,
+    "teacher_total": 16,
+    "static_pose_candidates": 1440,
+    "best_static_com_margin_mm": 1.495375220947213,
+    "initialized_free_holds": 8,
+    "holds_with_raised_right_foot": 0,
+    "scope": "Static COM projection/sole convex hull is not dynamic stability. The hold test starts from initialized poses; no learned transition."
+  }
+}

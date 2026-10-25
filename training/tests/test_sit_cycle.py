@@ -19,7 +19,9 @@ class SitCycleTests(unittest.TestCase):
         np.testing.assert_allclose(s.data.geom_xpos,positions,atol=1e-12)
         np.testing.assert_allclose(s.data.xmat,rotations,atol=1e-12)
         self.assertGreater(plant.peak_torque_nm,.01)
-        self.assertGreaterEqual(plant.peak_torque_nm,float(np.max(np.abs(s.data.ctrl[s.motor.act_indexes]))))
+        self.assertGreaterEqual(plant.peak_torque_nm,float(np.max(np.abs(s.data.actuator_force[s.motor.act_indexes]))))
+        self.assertGreaterEqual(plant.peak_command_torque_nm,plant.peak_torque_nm)
+        self.assertGreater(plant.contact_impulse_ns['feet'],0.)
 
     def test_teacher_sits_then_rises_without_reset_at_50hz(self):
         plant=SitPlant();calls=[]
