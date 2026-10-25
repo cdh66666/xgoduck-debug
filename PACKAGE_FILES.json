@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 260169,
-      "sha256": "9ac1e3b58a82473f4788f90877831a42dea08375b389ac204ab60b31f67afeae"
+      "bytes": 261150,
+      "sha256": "1eb16a1cd4cabff76077e95a023ed9108d610cd9b81c2998f73eb1750870f614"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 37817,
-      "sha256": "480e19b0632c7ad5173c011b60d26fac5b71d939051e3d486d88f111417584d9"
+      "bytes": 40522,
+      "sha256": "6b89743c9b3b3041615bcd7c419cf68b2676e815190cc65fbb865131c14e324c"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -3084,6 +3084,18 @@
     "reports/overnight-20261025/training-review-0200.json": {
       "bytes": 186292,
       "sha256": "70cfcb130549e5d694bf306c6e187515a39b58577f9e1076f9455d761acd6853"
+    },
+    "reports/overnight-20261025/training-review-0230.json": {
+      "bytes": 430539,
+      "sha256": "840bc92c6812c8aa23f0c84ea9dcebff5d76f5483f9bb80e127e43fac678bed6"
+    },
+    "reports/overnight-20261025/official-sit-cycle-dagger-v1-five-frames.png": {
+      "bytes": 468418,
+      "sha256": "79e32d74785c46312407775073aeea6eb837d9e0df33790c12af77d7ec004088"
+    },
+    "reports/overnight-20261025/official-sit-cycle-dagger-v1-native.mp4": {
+      "bytes": 1958152,
+      "sha256": "3b712c5d0fc7c86928b182adaf2aa032be05dbf78206d4a171795a734f8aa23d"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

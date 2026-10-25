@@ -3504,7 +3504,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "sha256": "480e19b0632c7ad5173c011b60d26fac5b71d939051e3d486d88f111417584d9",
+      "sha256": "6b89743c9b3b3041615bcd7c419cf68b2676e815190cc65fbb865131c14e324c",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/tests/test_runtime_profile.py": {
@@ -3773,6 +3773,18 @@
     },
     "reports/overnight-20261025/training-review-0200.json": {
       "sha256": "70cfcb130549e5d694bf306c6e187515a39b58577f9e1076f9455d761acd6853",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-sit-cycle-dagger-v1-five-frames.png": {
+      "sha256": "79e32d74785c46312407775073aeea6eb837d9e0df33790c12af77d7ec004088",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-sit-cycle-dagger-v1-native.mp4": {
+      "sha256": "3b712c5d0fc7c86928b182adaf2aa032be05dbf78206d4a171795a734f8aa23d",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/training-review-0230.json": {
+      "sha256": "840bc92c6812c8aa23f0c84ea9dcebff5d76f5483f9bb80e127e43fac678bed6",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     }
   },
