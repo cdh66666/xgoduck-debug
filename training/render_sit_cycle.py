@@ -33,14 +33,21 @@ def main():
         image=Image.new('RGB',(960,720),'#0b1b28');image.paste(Image.fromarray(renderer.render()),(0,60));draw=ImageDraw.Draw(image)
         draw.text((24,16),'星猫 · '+labels.get(row['stage'],row['stage'])+' · 原生物理仿真',font=font,fill='#85e1f2')
         f=row['forces_n'];draw.rectangle((16,620,944,704),fill='#102b3a')
-        draw.text((32,628),f"{row['t']:.2f} 秒    臀部 {f['butt']:.2f} N / 双脚 {f['feet']:.2f} N    头部离地 {row['head_clearance_mm']:.1f} mm",font=small,fill='white')
+        contact=f"头部 {f['head']:.2f} N" if row['stage']=='roll' else f"臀部 {f['butt']:.2f} N"
+        draw.text((32,628),f"{row['t']:.2f} 秒    {contact} / 双脚 {f['feet']:.2f} N    头部离地 {row['head_clearance_mm']:.1f} mm",font=small,fill='white')
         draw.text((32,667),'50 Hz 推理 / 200 Hz 物理 · 全程无重置 · 未下发实机',font=small,fill='#b9d3df');return image
     process=subprocess.Popen([a.ffmpeg,'-hide_banner','-loglevel','error','-y','-f','rawvideo','-vcodec','rawvideo','-pix_fmt','rgb24','-s','960x720','-r','50','-i','-','-an','-c:v','libx264','-preset','fast','-crf','20','-pix_fmt','yuv420p','-movflags','+faststart',str(a.output/'native-cycle.mp4')],stdin=subprocess.PIPE)
     for row in rows:process.stdin.write(frame(row).tobytes())
     process.stdin.close();assert process.wait()==0
     sit_rows=[r for r in rows if r['stage']=='sit'];rise_rows=[r for r in rows if r['stage'] in ('rise','raise')]
     forward=[r for r in rows if r['stage']=='forward'];backward=[r for r in rows if r['stage']=='backward']
-    if forward and backward and sit_rows and rise_rows:
+    roll_rows=[r for r in rows if r['stage']=='roll']
+    if roll_rows:
+        # Uniform samples over roll+hold can miss the entire one-second roll.
+        # Sample actual accumulated pitch, retaining start and final hold.
+        angle=np.rad2deg(np.unwrap(np.deg2rad([r['pitch_deg'] for r in roll_rows])))
+        selected=[rows[0],*[roll_rows[int(np.argmin(np.abs(angle-target)))] for target in (90,180,270)],rows[-1]]
+    elif forward and backward and sit_rows and rise_rows:
         # A multi-skill contact sheet must also show the walking phases; a
         # sit-only selection would omit the very motion under investigation.
         selected=[rows[0],forward[len(forward)//2],sit_rows[-1],rise_rows[min(130,len(rise_rows)-1)],backward[len(backward)//2]]
@@ -49,8 +56,10 @@ def main():
     for i,row in enumerate(selected):sheet.paste(frame(row).resize((480,360)),((i%3)*480,48+(i//3)*360))
     heading='站立 → 臀部坐地 → 重心前移 → 起身 → 站稳' if sit_rows and rise_rows else labels.get(rows[0]['stage'],rows[0]['stage'])+' · 五帧连续物理证据'
     if forward and backward and sit_rows and rise_rows:heading='站立 → 前进 → 坐地 → 起身 → 后退（完整视频含起停）'
+    if roll_rows:heading='起始 → 约90° → 倒置 → 约270° → 站稳'
     draw.text((24,9),'原始物理回放：'+heading,font=font,fill='#85e1f2')
     evidence='双脚支撑 · 基础摆身舞蹈' if rows[0]['stage']=='dance' else '绿色点：臀部实际接触'
+    if roll_rows:evidence='头部接触地面，实机强度未验证'
     for j,text in enumerate([evidence,'原速 / 连续 / 无扶持','仅仿真，实机尚未验证']):draw.text((985,475+j*54),text,font=small,fill='#b9d3df')
     sheet.save(a.output/'five-frames.png');renderer.close()
     print(json.dumps({'frames':len(rows),'duration_s':len(rows)/50,'output':str(a.output)}))

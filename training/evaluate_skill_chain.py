@@ -19,7 +19,7 @@ def run(plant,walk,sit,rise_duration,seed,smooth_commands=False):
     stages=[('stand',2.,[0,0,0]),('forward',4.,[.2,0,0]),('stop',3.,[0,0,0]),
             ('sit',3.,[0,0,0]),('rise',rise_duration+2.,[0,0,0]),('stand_after',3.,[0,0,0]),
             ('backward',4.,[-.3,0,0]),('stop_final',3.,[0,0,0])]
-    trace=[];metrics=[];failures=[];previous=plant.filtered.copy();handoffs=[];filtered_command=np.zeros(3)
+    trace=[];metrics=[];failures=[];previous=plant.filtered.copy();handoffs=[];filtered_command=np.zeros(3);aborted_stage=None
     for name,duration,command in stages:
         rows=[];entry_target=plant.filtered.copy()
         for tick in range(round(duration*50)):
@@ -47,7 +47,7 @@ def run(plant,walk,sit,rise_duration,seed,smooth_commands=False):
             row['body_velocity']=[float(v[3]),float(v[4]),float(v[2])]
             trace.append(row);rows.append(row)
             if row['head_clearance_mm']<40 or abs(row['pitch_deg'])>65 or abs(row['roll_deg'])>30:
-                failures.append(name+':tilt_or_head_clearance');break
+                failures.append(name+':tilt_or_head_clearance');aborted_stage=name;break
         tail=rows[-50:];vel=np.array([r['body_velocity'] for r in tail]);forces=np.array([[r['forces_n'][k] for k in ('butt','feet','head','other')] for r in tail])
         m=dict(stage=name,ticks=len(rows),expected_ticks=round(duration*50),mean_velocity=vel.mean(0).tolist(),rmse=np.sqrt(((vel-command)**2).mean(0)).tolist(),
                mean_forces_n=forces.mean(0).tolist(),height_mm=float(np.mean([r['root_height_mm'] for r in tail])),
@@ -63,13 +63,14 @@ def run(plant,walk,sit,rise_duration,seed,smooth_commands=False):
         else:
             if not 120<m['height_mm']<155 or abs(m['pitch_deg'])>8 or m['mean_forces_n'][0]>.1 or m['mean_forces_n'][1]<6:failures.append(name+':stance')
             if np.any(np.linalg.norm(vel[:,:2],axis=1)>.03) or np.any(np.abs(vel[:,2])>.08):failures.append(name+':not_stopped')
-        if failures and failures[-1].endswith('tilt_or_head_clearance'):break
+        if aborted_stage is not None:break
     if any(r['forces_n']['head']+r['forces_n']['other']>.1 for r in trace):failures.append('unwanted_ground_contact')
     if min(r['head_clearance_mm'] for r in trace)<60:failures.append('head_clearance')
-    if max(m['entry_window_target_step_deg'] for m in metrics[1:])>6:failures.append('handoff_target_step')
+    if max((m['entry_window_target_step_deg'] for m in metrics[1:]),default=0)>6:failures.append('handoff_target_step')
     reset_count=plant.sim.reset_calls-resets_before
     if reset_count:failures.append('unexpected_reset')
     result=dict(seed=seed,passed=not failures,failures=failures,stages=metrics,handoffs=handoffs,
+                aborted_stage=aborted_stage,complete=len(trace)==sum(round(duration*50) for _,duration,_ in stages),
                 resets_during_recording=reset_count,policy_steps=len(trace),sim_time_s=float(plant.sim.data.time),
                 control_hz=50,smooth_commands=smooth_commands,voltage_v=voltage,friction=friction,min_head_clearance_mm=min(r['head_clearance_mm'] for r in trace))
     return result,trace

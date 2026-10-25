@@ -38,6 +38,10 @@ def main():
   from continuous_refine import ACTOR_CLASS
   from continuous_model import Continuous47500Actor
   cfg=check_contract(saved['config'],ACTOR_CLASS);state=saved['algorithm']['actor_state_dict'];actor_class=Continuous47500Actor
+ elif saved.get('kind')=='xgoduck-official-walk-full-v1':
+  from official_walk_refine import ACTOR_CLASS
+  from skill_refine_model import SkillActor
+  cfg=check_contract(saved['config'],ACTOR_CLASS);state=saved['algorithm']['actor_state_dict'];actor_class=SkillActor
  elif saved.get('kind')=='xgoduck-standstop-47500-bodyframe-v2':
   from standstop import ACTOR_CLASS,StandstopActor
   cfg=check_contract(saved['config'],ACTOR_CLASS);state=saved['algorithm']['actor_state_dict'];actor_class=StandstopActor
