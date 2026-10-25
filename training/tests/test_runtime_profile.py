@@ -65,4 +65,26 @@ class RuntimeProfileTests(unittest.TestCase):
             finally:
                 env.close()
 
+    def test_command_ramp_matches_observed_command_and_keeps_50hz(self):
+        from unittest.mock import Mock
+        env=NativeEpisode(manifest(),15,curriculum='ramped',auto_reset=False)
+        try:
+            env.reset();env.command=np.zeros(3,dtype=np.float32)
+            env.rng=Mock(wraps=env.rng);env.rng.choice.return_value=1
+            env._resample();before=env.sim.data.time
+            for _ in range(15):
+                requested=env.command.copy();obs=env.observe()
+                np.testing.assert_array_equal(obs[48:51],requested)
+                _,_,done,_,info=env.step(np.zeros(14,dtype=np.float32))
+                np.testing.assert_allclose(info['command'],requested)
+                np.testing.assert_allclose(env.sessions[env.sim.task].last_obs[0,48:51],requested)
+                self.assertLessEqual(float(np.max(np.abs(env.command-requested))),.020001)
+                self.assertFalse(done)
+            self.assertAlmostEqual(float(env.command[0]),.2)
+            self.assertGreater(env.command_age_ticks,0)
+            self.assertLess(env.command_age_ticks,15)
+            self.assertAlmostEqual(env.sim.data.time-before,.3)
+            self.assertEqual(env.total_resets,1)
+        finally:env.close()
+
 if __name__ == '__main__': unittest.main()

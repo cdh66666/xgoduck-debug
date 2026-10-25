@@ -134,6 +134,7 @@ class NativeEpisode:
         self.command_index = index
         self.command_age_ticks = 0
         self.zero_release = index == 0 and previous_index not in (None, 0)
+        previous_command=getattr(self,'command',self.np.zeros(3,dtype=self.np.float32)).copy()
         self.command = self.np.asarray(COMMANDS[index], dtype=self.np.float32)
         if self.curriculum == 'speed' and index == 2:
             maximum = float(os.environ.get('XGODUCK_MAX_FORWARD', '.3'))
@@ -144,6 +145,12 @@ class NativeEpisode:
             # Train the intermediate commands traversed during keyboard ramps;
             # retain half of the original nonzero endpoints and all zero cases.
             self.command*=float(self.rng.uniform(.05,1.))
+        if self.curriculum == 'ramped':
+            maximum=float(os.environ.get('XGODUCK_MAX_FORWARD','.3'))
+            if not .2<=maximum<=1.:raise ValueError('ramped forward maximum must be .2..1 m/s')
+            if index==2:self.command[0]=maximum
+            self.command_target=self.command.copy();self.command=previous_command
+            self._advance_command_ramp()
         bounds = (3., 5.) if self.curriculum == 'stability' else ((6., 8.) if index == 0 else (4., 6.))
         if self.curriculum=='stop':
             bounds=((4.,5.) if self.rng.random()<.25 else (1.3,1.8)) if index==0 else (3.,5.)
@@ -155,6 +162,13 @@ class NativeEpisode:
             self.push_tick=75
         self.sim.twist[:] = self.command
         self.motion_window.reset(self.command)
+
+    def _advance_command_ramp(self):
+        """Sample the next 20 ms command; never buffer or alter motor actions."""
+        previous=self.command.copy()
+        delta=self.np.clip(self.command_target-self.command,-self.np.array([1.,1.,3.])*.02,self.np.array([1.,1.,3.])*.02)
+        self.command=(self.command+delta).astype(self.np.float32)
+        return not self.np.array_equal(previous,self.command)
 
     def observe(self):
         sim, np = self.sim, self.np
@@ -213,6 +227,7 @@ class NativeEpisode:
         self.episode += 1
         self.total_resets += 1
         self.command_index = None
+        if self.curriculum=='ramped':self.command=np.zeros(3,dtype=np.float32)
         self._resample()
         return self.observe()
 
@@ -363,6 +378,10 @@ class NativeEpisode:
         else:
             if self.command_ticks <= 0:
                 self._resample()
+            elif self.curriculum=='ramped' and self._advance_command_ramp():
+                # The stall window and precision grace apply to one settled
+                # command, not a mixture of ramp values from earlier ticks.
+                self.command_age_ticks=0;self.motion_window.reset(self.command)
             obs = self.observe()
         return obs, float(reward), done, timeout and not terminated, info
 
@@ -498,6 +517,9 @@ class NativeVecEnv:
             self.cfg['max_forward_mps']=float(os.environ.get('XGODUCK_MAX_FORWARD', '.3'))
         if kwargs.get('curriculum') == 'continuous':
             self.cfg['intermediate_command_distribution']='50% of nonzero commands scaled by Uniform(.05,1), original endpoints and zero otherwise'
+        if kwargs.get('curriculum') == 'ramped':
+            self.cfg['command_ramp']=dict(acceleration=[1.,1.,3.],dt_s=.02,hold_s=[4.,6.],zero_hold_s=[6.,8.],source='same command acceleration as evaluate_skill_chain --smooth-commands; no action filtering added')
+            self.cfg['max_forward_mps']=float(os.environ.get('XGODUCK_MAX_FORWARD','.3'))
         if kwargs.get('curriculum') in ('stability','stop'):
             self.cfg['stability_reward']=STABILITY_REWARD.copy()
             self.cfg['stability_commands']='alternate zero and random original moving command, each 3-5s'

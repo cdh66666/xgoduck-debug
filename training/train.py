@@ -68,7 +68,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
  parser.add_argument('--iterations',type=int,default=1)
  parser.add_argument('--workers',type=int,default=1)
  parser.add_argument('--envs-per-worker',type=int,default=2)
- parser.add_argument('--curriculum',choices=['stand','six','stability','stop','speed','continuous','roll','roll_phase'],default='stand')
+ parser.add_argument('--curriculum',choices=['stand','six','stability','stop','speed','continuous','ramped','roll','roll_phase'],default='stand')
  parser.add_argument('--runtime-profile',choices=['legacy','calibrated-20261025'],default='legacy')
  parser.add_argument('--randomize-physics',action='store_true',help='Use the documented assumed voltage/contact/COM/inertia/delay stress envelope')
  parser.add_argument('--target-rate-cost',type=float,default=0.,help='Additional mean squared filtered-target rate cost, relative to 0.1 rad per 20ms')

@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 253832,
-      "sha256": "d564a9df2392944865ae8dbc3f157e094e98b11ae47fb915e34311eb5c0a725f"
+      "bytes": 254150,
+      "sha256": "2a3ada9d7d213bd2761139e04c06d4f5954e9b31f5555b945f464a4b72d7dea3"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2506,8 +2506,8 @@
       "sha256": "5432d9dec99f5a23e4db0659477a54d92be2ab3cc94bff2208add1e85b775e6d"
     },
     "training/native_env.py": {
-      "bytes": 29359,
-      "sha256": "55c47e9e4af1a69fb83b482648648d821f4a3a76ec77c265b1ebbf399010e7b7"
+      "bytes": 31002,
+      "sha256": "b56137235ba8c6c958a08f8ac1a62363987eb0f9080e9699b3ce8e6d57fe8139"
     },
     "training/params/1910_m6.json": {
       "bytes": 754,
@@ -2590,8 +2590,8 @@
       "sha256": "b582c0e89b8fd811582d547693f512f5b15ee1b24fd6d86dfe3ccb300c24633a"
     },
     "training/train.py": {
-      "bytes": 13145,
-      "sha256": "4cb9573021f7c85ddeb3440b377a8ee7c22d9bfc9763521a3e006330e6a4cf08"
+      "bytes": 13154,
+      "sha256": "eb9a10d9dea68b1a5190134119160c03c59cfbf5e63e0604ade7a13bff0471b9"
     },
     "training/training_adapter.py": {
       "bytes": 2624,
@@ -2826,16 +2826,16 @@
       "sha256": "c2fb1544787073b43951946fa5c705a51f8cc9a9d9c9236dbed68c6f166e2ae8"
     },
     "training/tests/test_runtime_profile.py": {
-      "bytes": 3520,
-      "sha256": "2c9cec612b0f32d1c77f1e3bd12e5b14c472d0f932d3bc39c214ac33a65b3f88"
+      "bytes": 4758,
+      "sha256": "9e43d54dbe5c8d2cba1ea46ef36c19344e46dc3029a599324d532a08dcb43463"
     },
     "training/model/standing_seed_20261025.json": {
       "bytes": 863,
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 23817,
-      "sha256": "f5393cca04f7f1d2e9e18340a12c3779ed8a5c045bb7cda8c1df06d28c50af7d"
+      "bytes": 26588,
+      "sha256": "4834d59c49427bce54eb4dcad2d735e157696baf2a2e3a2c1947813ebc792184"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -3004,6 +3004,10 @@
     "reports/overnight-20261025/roll-v2-five-frames.png": {
       "bytes": 461993,
       "sha256": "38f99fba64c344b551fea39c88784458e3ca439ade5426e32542662d5c5f7939"
+    },
+    "reports/overnight-20261025/locomotion-review-0000.json": {
+      "bytes": 159693,
+      "sha256": "c460a08f105aa08367af795f13746b792b6292f3b69a8150359253d6cfd52b3e"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",
