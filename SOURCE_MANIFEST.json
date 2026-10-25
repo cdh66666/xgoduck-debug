@@ -3504,7 +3504,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "sha256": "886da27f95b06b2c70a5b767736c7ec3104cbf676e3892fe14e190b58705ecb7",
+      "sha256": "7b8c620eb98f4cd583298ebc65e417dd517cda09e4b3edabca9250d2edf5277f",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/tests/test_runtime_profile.py": {
@@ -3552,7 +3552,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/render_sit_cycle.py": {
-      "sha256": "bc0d54fe77fc24b0caef770260ad79b91b9c47d9960f33c9789dfb57d9ea7dd1",
+      "sha256": "58e87c28656025108674b4f5f7ae5ffdc540255c21b85566fce6980df674f1ea",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "reports/overnight-20261025/sit-rise-five-frames.png": {
@@ -3713,6 +3713,42 @@
     },
     "reports/overnight-20261025/locomotion-review-0030.json": {
       "sha256": "7a4c5f4f52d7a805f3a8f4a83adb5469e5500cbd1e9a6e5743833416ddb47b9c",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-rise-teacher-baseline-five-frames.png": {
+      "sha256": "3be5a6b5fe798f8cc0264276ba2d6e5a93ffa353e788068363ef9afe7016a10d",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/temporal_ppo.py": {
+      "sha256": "a6192a110cf256fdd6ec0747ec52e9b9e39e0ba9f4ac68d4cf197432ae5fce0c",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/tests/test_temporal_ppo.py": {
+      "sha256": "281d9264b00b0caa70fa9f3446ad46a395ea6138890f17b50adf613df7551240",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-rise-teacher-0130.json": {
+      "sha256": "490f12f25523ce4eae1935906b205f45e6d42320dd7fb409c21298d8d131e08e",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-rise-teacher-v2-native.mp4": {
+      "sha256": "b6019617f9a55ed5339e155d9089f0e8637d0e0126db3235323340a85be26e06",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-sit-feedback-diagnostic-0130.json": {
+      "sha256": "86fb9003cf1bc43abccaa29af8dc54a5b69788982be3f88e84789d13d70803fc",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-rise-teacher-v2-five-frames.png": {
+      "sha256": "8679096799e4d4693f6774ca0cf4e60f75b22cef4a66925b8e3ee609a131868d",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-rise-teacher-baseline-native.mp4": {
+      "sha256": "ab83e5160475fa73176392cdee6aad0b8b0a5ecb5497c0b3254f6121e5def45a",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/locomotion-review-0130.json": {
+      "sha256": "7948d591210f02013ccef2ce065f59fb450a27b8bd82c2d3f64b7a5f505106f1",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     }
   },
