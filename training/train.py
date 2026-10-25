@@ -50,6 +50,10 @@ def export_policy(actor,path,cfg,*,architecture=KIND,initialization='random, no 
  if architecture=='xgoduck-roll-phase-full-v2':
   metadata.update(role='forward-roll-single-cycle',phase_index='55',phase_duration_s='1.9',
    phase_definition='min(elapsed_seconds/1.9,1)',body_command='observation55 is phase; remaining body-command entries zero')
+ if architecture=='xgoduck-official-sit-cycle-full-v1':
+  from sit_reference import SIT_DURATION,RISE_DURATION
+  metadata.update(role='official-reference-sit-rise-candidate',phase_index='55',direction_index='56',
+   sit_duration_s=str(SIT_DURATION),rise_duration_s=str(RISE_DURATION),body_command='phase55 and direction56; other body commands zero')
  if physical_model is not None:metadata['physical_model_sha256']=physical_model['sha256']
  for key,value in metadata.items():item=graph.metadata_props.add();item.key=key;item.value=value
  onnx.save(graph,str(path));session=ort.InferenceSession(str(path),providers=['CPUExecutionProvider'])
@@ -68,7 +72,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
  parser.add_argument('--iterations',type=int,default=1)
  parser.add_argument('--workers',type=int,default=1)
  parser.add_argument('--envs-per-worker',type=int,default=2)
- parser.add_argument('--curriculum',choices=['stand','six','stability','stop','speed','continuous','ramped','roll','roll_phase'],default='stand')
+ parser.add_argument('--curriculum',choices=['stand','six','stability','stop','speed','continuous','ramped','roll','roll_phase','sit_cycle'],default='stand')
  parser.add_argument('--runtime-profile',choices=['legacy','calibrated-20261025'],default='legacy')
  parser.add_argument('--randomize-physics',action='store_true',help='Use the documented assumed voltage/contact/COM/inertia/delay stress envelope')
  parser.add_argument('--target-rate-cost',type=float,default=0.,help='Additional mean squared filtered-target rate cost, relative to 0.1 rad per 20ms')
@@ -134,6 +138,7 @@ def main(*,kind=KIND,config_loader=config,initialize=None,verify_actor=None,desc
      for row in rows:failures.update(row['failure_reasons'])
      fields=('velocity','tilt','height','standing_height','command','command_age_s','zero_release','failure_reasons','resets','steps')
      if args.curriculum in ('roll','roll_phase'):fields+=('roll_rotation_deg','roll_complete','head_peak_n','head_impulse_ns','contact_sampling_hz')
+     if args.curriculum=='sit_cycle':fields+=('phase','direction','seat_achieved','sit_peak_tilt_deg','rise_peak_tilt_deg','target_step_deg','head_min_mm','seat_support_n','upper_contact_n','peak_motor_torque_nm','peak_joint_speed_radps','contact_sampling_hz')
      if (iteration-base-1)%args.trace_every==0:
       trace.write(json.dumps({'iteration':iteration,'tick':tick,'t':env.common_step_counter*.02,
        'actions':actions.tolist(),'rewards':reward.tolist(),'done':done.tolist(),

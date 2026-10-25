@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 261150,
-      "sha256": "1eb16a1cd4cabff76077e95a023ed9108d610cd9b81c2998f73eb1750870f614"
+      "bytes": 264571,
+      "sha256": "7d8992babbf81252a5e9a4e3a0e1cf4357e91d16f72d6d9ce1156e4c8d31c186"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2266,8 +2266,8 @@
       "sha256": "4f99b031ca5127bfc799ae71e30119cad11cbba71d7aa2693132dcfad3a80bda"
     },
     "training/README.md": {
-      "bytes": 17850,
-      "sha256": "180f56aee11e3e6a1a9f2dc7b8e2e37ae03b933a3c0dfa98d4a2cc886b3e7b5e"
+      "bytes": 19680,
+      "sha256": "74fa40f3631010adaa0df3eb949ed5e007814ba96b0b7ce3ba8d3b760894c0a3"
     },
     "training/SESSION_20261023.md": {
       "bytes": 3608,
@@ -2506,8 +2506,8 @@
       "sha256": "5432d9dec99f5a23e4db0659477a54d92be2ab3cc94bff2208add1e85b775e6d"
     },
     "training/native_env.py": {
-      "bytes": 31507,
-      "sha256": "b57e5334a6dc245118db44222e82f7fa8a96912f903525e1f7c187e58c742bca"
+      "bytes": 32242,
+      "sha256": "f6360fd151c666daa97205154862b822bba63cd001b9d9aacac2945f5eb55eff"
     },
     "training/params/1910_m6.json": {
       "bytes": 754,
@@ -2590,8 +2590,8 @@
       "sha256": "b582c0e89b8fd811582d547693f512f5b15ee1b24fd6d86dfe3ccb300c24633a"
     },
     "training/train.py": {
-      "bytes": 13154,
-      "sha256": "eb9a10d9dea68b1a5190134119160c03c59cfbf5e63e0604ade7a13bff0471b9"
+      "bytes": 13777,
+      "sha256": "7cff59c83a9179be376826b910f2bedf1ade7b4e5cb34945d424c3f89e03fb75"
     },
     "training/training_adapter.py": {
       "bytes": 2624,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 40522,
-      "sha256": "6b89743c9b3b3041615bcd7c419cf68b2676e815190cc65fbb865131c14e324c"
+      "bytes": 42837,
+      "sha256": "dd55001c9f8e6d9755f2c336ef8bf3f3f361b40105911b11dcfd841a29ea751d"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -3096,6 +3096,50 @@
     "reports/overnight-20261025/official-sit-cycle-dagger-v1-native.mp4": {
       "bytes": 1958152,
       "sha256": "3b712c5d0fc7c86928b182adaf2aa032be05dbf78206d4a171795a734f8aa23d"
+    },
+    "reports/overnight-20261025/conservative-speed045-full-v1-failed-five-frames.png": {
+      "bytes": 474317,
+      "sha256": "795d98c2ef0d636e679d351cc334ecfef091e8c24a6cecd0ca8aaae13e0efc3e"
+    },
+    "reports/overnight-20261025/conservative-speed045-full-v1-failed-native.mp4": {
+      "bytes": 6682975,
+      "sha256": "8a9070c8eac7704a4f60cdd34e9d584130dc226d52d21de60b0bbe8711231c14"
+    },
+    "training/native_sit_env.py": {
+      "bytes": 6543,
+      "sha256": "e44cf1e5611b689bc0f9220031b3b2555d0067a434c5375cc557f9d82640daff"
+    },
+    "training/sit_refine.py": {
+      "bytes": 3591,
+      "sha256": "393aee6044943834138858b86582879ec2473cbe04be3396fc3dad2c169147e6"
+    },
+    "training/sit_refine_model.py": {
+      "bytes": 865,
+      "sha256": "fba235afc9dd2fe41128f808beda82a8f0bb2b99bb34b0e33300c8d7d35f6777"
+    },
+    "training/tests/test_native_sit_env.py": {
+      "bytes": 4606,
+      "sha256": "c193b6d0b5a24a6ab7cc306207bec4db4c69685492ad076348e1977d38588238"
+    },
+    "reports/overnight-20261025/joint-temporal1-full-v1-failed-five-frames.png": {
+      "bytes": 470442,
+      "sha256": "9579be8edc71fc385644642981a1a271aa026774fa9f1dc38a534e7e2b5f6d2d"
+    },
+    "training/evaluate_official_sit.py": {
+      "bytes": 7800,
+      "sha256": "ac4390dbd6aaa681cb5245dedccce550dfa1bc58a41bc5cfaa3d4397e824dbbd"
+    },
+    "training/sit_reference.py": {
+      "bytes": 981,
+      "sha256": "9d9be672d368d2ed1b3fffb3f3d526ce1a31e27ccdd7e5ca61e2354555812ad4"
+    },
+    "reports/overnight-20261025/training-review-0300.json": {
+      "bytes": 398323,
+      "sha256": "e1efbb7abe1378c2d472505607736489881a92d7898e13fc9238b2426270d3c0"
+    },
+    "reports/overnight-20261025/joint-temporal1-full-v1-failed-native.mp4": {
+      "bytes": 6422212,
+      "sha256": "943dafe41510cdadb0a92f905015aed44344011ef1859b617ad0efd5db1b6101"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

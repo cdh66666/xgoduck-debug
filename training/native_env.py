@@ -402,6 +402,9 @@ def _worker(connection, frozen, seeds, curriculum):
         if curriculum in ('roll','roll_phase'):
             from native_skill_env import NativeSkillEpisode
             factory=NativeSkillEpisode
+        elif curriculum=='sit_cycle':
+            from native_sit_env import NativeSitEpisode
+            factory=NativeSitEpisode
         envs = [factory(frozen, seed, curriculum=curriculum) for seed in seeds]
         np = envs[0].np
         connection.send(('ready', np.stack([env.observe() for env in envs]),
@@ -502,6 +505,9 @@ class NativeVecEnv:
         self.num_envs, self.num_actions = self.pool.num_envs, 14
         self.device = torch.device('cpu')
         self.max_episode_length = 95 if kwargs.get('curriculum') in ('roll','roll_phase') else 1200
+        if kwargs.get('curriculum')=='sit_cycle':
+            from sit_reference import CYCLE_STEPS
+            self.max_episode_length=CYCLE_STEPS
         self.episode_length_buf = torch.zeros(self.num_envs, dtype=torch.long)
         self.cfg = dict(backend='Windows native frozen MuJoCo/BAM', policy_dt=.02,
                         physics_dt=.005, curriculum=kwargs.get('curriculum', 'six'),
@@ -511,6 +517,11 @@ class NativeVecEnv:
         self.cfg['runtime_profile']=self.pool.runtime_profile
         self.cfg['target_rate_cost']=float(os.environ.get('XGODUCK_TARGET_RATE_COST','0'))
         self.cfg['head_motion_cost']=float(os.environ.get('XGODUCK_HEAD_MOTION_COST','0'))
+        if kwargs.get('curriculum')=='sit_cycle':
+            from sit_reference import SIT_DURATION,RISE_DURATION,CYCLE_STEPS
+            self.cfg['sit_cycle']=dict(sit_duration_s=SIT_DURATION,rise_duration_s=RISE_DURATION,steps=CYCLE_STEPS,
+                contact_sampling_hz=200,reward_tilt_margins_deg=[17,22],acceptance_tilt_deg=[20,25],
+                source_sha256=sha(R/'native_sit_env.py'),reference_sha256=sha(R/'sit_reference.py'))
         if kwargs.get('curriculum') in ('roll','roll_phase'):
             self.cfg['roll_episode']=dict(duration_s=1.9,contact_sampling_hz=200,head_force_reference_n=20.,reference_is_strength_limit=False,
                 source_sha256=sha(R/'native_skill_env.py'),plant_source_sha256=sha(R/'sit_training.py'),contact_source_sha256=sha(R/'butt_sit.py'))

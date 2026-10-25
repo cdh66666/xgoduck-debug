@@ -17,6 +17,15 @@
 
 坐下工具 `train_butt_sit.py` 使用公开的派生站姿参考 `model/standing_seed_20261025.json`，无需本机私有原始记录。`search_butt_raise.py` 搜索坐下后连续起身的闭环教师轨迹，结果不是神经模型，也不代表已验收。`render_butt_sit.py --output <训练目录> --ffmpeg <可执行文件>` 渲染真实接触轨迹，`--before-model` 可选提供旧模型对照，`--font` 指定中文字体。完整夜间范围见 [任务记录](../docs/OVERNIGHT_20261025.md)。
 
+官方参考坐起候选使用独立入口 `sit_refine.py --curriculum sit_cycle`。它显式接收本地行为克隆/DAgger checkpoint，完整导入并更新19086个演员参数；不冻结旧演员或追加推理修正。5项演员特征为机身俯仰角速度、重力X/Z、阶段进度和方向，61维输入与14维输出保持不变；标准化统计和探索噪声固定。整段9.14秒、457次50Hz策略调用，坐下到起身保留关节、滤波、传输队列和物理状态。训练奖励在既定20°/25°倾角验收线内优化余量，不能由训练奖励认定合格。
+
+```powershell
+.\.venv-training\Scripts\python.exe -B training/sit_refine.py --mode train --curriculum sit_cycle --runtime-profile calibrated-20261025 --model-xml training/model/robot_inertial_candidate_20261025.xml --initial-checkpoint <本地官方参考坐起checkpoint.pt> --iterations 6000 --max-wall-seconds 1800 --workers 3 --envs-per-worker 4 --trace-every 50 --output training/outputs/my-official-sit
+.\.venv-training\Scripts\python.exe -B training/evaluate_official_sit.py --model training/outputs/my-official-sit/policy.onnx --output training/outputs/my-official-sit/review --first-seed 21000 --seeds 32
+```
+
+候选权重未验收，不随仓库发布，因此上述初始checkpoint需使用本地已保存候选。评测固定官方SitStand关键姿态、头部间隙、真实腿壳/双脚支撑、静止、20°/25°倾角及6°/20ms整段目标步进，保存首例和失败轨迹。默认变化初姿、电压及摩擦；添加 `--randomize-physics` 才扩展到上述COM/惯量/延迟假设压力范围。训练默认使用名义物理参数，可独立选择同一压力开关。官方关键姿态来源已核对，用户所指视频的时序和动作风格仍待核对，不能把旧后仰坐姿当成该动作验收。
+
 这里包含训练代码、R5 无 EVA 仿真 XML/实际网格、BAM 执行器配置、PPO 配置，以及 **47500 的便携 PT（3.31MB）和同版 ONNX（0.918MB）**。只打包 `checkpoints/MANIFEST.json` 白名单里的两份权重；不含设备密钥、校准数据、本机环境或日志。训练入口不连接机器人。
 
 2026-10-23本机已建立独立环境。早期5轮实训见 [SESSION_20261023.md](SESSION_20261023.md) 和 [VALIDATION_20261023.json](VALIDATION_20261023.json)；后续站立/走停训练及原生录像见 [SESSION_20261023_STABILITY.md](SESSION_20261023_STABILITY.md)。站立候选在独立8-seed集的静止倾角RMS减少约49%，48/48基础矩阵通过，但走停尚未整体改进，继续保留原运行基线。**均未操作、部署或通过实机验收。** 新候选和逐时刻数据保存在本机独立outputs目录，未加入公开权重白名单。
