@@ -41,7 +41,7 @@ class JointTemporalTests(unittest.TestCase):
         for key,value in expected.items():self.assertAlmostEqual(value,actual[key],places=7)
 
     def test_regularizer_shares_tracking_steps_and_preserves_critic_learning(self):
-        alg=algorithm(JointTemporalPPO,temporal_coef=.01)
+        alg=algorithm(JointTemporalPPO,temporal_coef=.01,temporal_indices=[8])
         before=copy.deepcopy(alg.critic.state_dict());steps=[]
         handle=alg.optimizer.register_step_post_hook(lambda *_:steps.append(1))
         result=alg.update();handle.remove()

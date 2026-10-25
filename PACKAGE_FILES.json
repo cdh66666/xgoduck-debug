@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 264571,
-      "sha256": "7d8992babbf81252a5e9a4e3a0e1cf4357e91d16f72d6d9ce1156e4c8d31c186"
+      "bytes": 267521,
+      "sha256": "558dbb1e3be039540543210a09c537dc4db002f3ada04d5085ee87d6588287e1"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2266,8 +2266,8 @@
       "sha256": "4f99b031ca5127bfc799ae71e30119cad11cbba71d7aa2693132dcfad3a80bda"
     },
     "training/README.md": {
-      "bytes": 19680,
-      "sha256": "74fa40f3631010adaa0df3eb949ed5e007814ba96b0b7ce3ba8d3b760894c0a3"
+      "bytes": 20589,
+      "sha256": "90455192c31019b9528146ccc0bdf944f37cd739e2b8b1feabe47d91cfb6ae89"
     },
     "training/SESSION_20261023.md": {
       "bytes": 3608,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 42837,
-      "sha256": "dd55001c9f8e6d9755f2c336ef8bf3f3f361b40105911b11dcfd841a29ea751d"
+      "bytes": 46764,
+      "sha256": "461655c95ca992a2d26795b3db615f5ef252176aaff466363fc382564753854e"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -2862,8 +2862,8 @@
       "sha256": "26561fb6579f1be80428f6d213a5fa878c0b875f066dc90004cf1a3698180d86"
     },
     "training/evaluate_skill_chain.py": {
-      "bytes": 7328,
-      "sha256": "bdc310a48b91ba8b1ae31ff48bc90793cf2090bf3fb4df22fe2f8e485c46444a"
+      "bytes": 9831,
+      "sha256": "bcfc7fef3485c12342bc1d4550eaf231752caebbf6998af06c868c7282c7abdc"
     },
     "reports/overnight-20261025/sit-rise-review.json": {
       "bytes": 24807,
@@ -3030,12 +3030,12 @@
       "sha256": "3be5a6b5fe798f8cc0264276ba2d6e5a93ffa353e788068363ef9afe7016a10d"
     },
     "training/temporal_ppo.py": {
-      "bytes": 2205,
-      "sha256": "a6192a110cf256fdd6ec0747ec52e9b9e39e0ba9f4ac68d4cf197432ae5fce0c"
+      "bytes": 2303,
+      "sha256": "9bd02f9e5953f182c108f89e9ec39560623b9ba4df32e59d807fb6e10f5281e8"
     },
     "training/tests/test_temporal_ppo.py": {
-      "bytes": 1535,
-      "sha256": "281d9264b00b0caa70fa9f3446ad46a395ea6138890f17b50adf613df7551240"
+      "bytes": 2549,
+      "sha256": "3cee6b42b958b6a61283f244e7bfc7d052098facbcf1a0463f3bd90bb928d9b1"
     },
     "reports/overnight-20261025/official-rise-teacher-0130.json": {
       "bytes": 30644,
@@ -3062,12 +3062,12 @@
       "sha256": "7948d591210f02013ccef2ce065f59fb450a27b8bd82c2d3f64b7a5f505106f1"
     },
     "training/joint_temporal_ppo.py": {
-      "bytes": 3959,
-      "sha256": "8501fa07bc74c71aa83460a341442220356d5c9c3490c4c877eed157746bfc2e"
+      "bytes": 4335,
+      "sha256": "b2bd761920d255fea2a743da8452200af47db571267e2a2684124f1d96f17203"
     },
     "training/tests/test_joint_temporal_ppo.py": {
-      "bytes": 2524,
-      "sha256": "f848c3429d322eb9ff95473500a86529b86a41b2839442b1c4860cbbf5bd4786"
+      "bytes": 2545,
+      "sha256": "3565ef37e79ba3d64cbbd75fe5502e29abdc66d30c92bfdd071d91add615e2e2"
     },
     "reports/overnight-20261025/official-sit-hip-diagnostic-five-frames.png": {
       "bytes": 458482,
@@ -3126,8 +3126,8 @@
       "sha256": "9579be8edc71fc385644642981a1a271aa026774fa9f1dc38a534e7e2b5f6d2d"
     },
     "training/evaluate_official_sit.py": {
-      "bytes": 7800,
-      "sha256": "ac4390dbd6aaa681cb5245dedccce550dfa1bc58a41bc5cfaa3d4397e824dbbd"
+      "bytes": 7905,
+      "sha256": "4bdda3651b6bdfaa9ef49111dad314d89f2034fb5b4594df5ae5d97e1f2cc7da"
     },
     "training/sit_reference.py": {
       "bytes": 981,
@@ -3140,6 +3140,42 @@
     "reports/overnight-20261025/joint-temporal1-full-v1-failed-native.mp4": {
       "bytes": 6422212,
       "sha256": "943dafe41510cdadb0a92f905015aed44344011ef1859b617ad0efd5db1b6101"
+    },
+    "reports/overnight-20261025/official-sit-ppo1000-five-frames.png": {
+      "bytes": 460160,
+      "sha256": "580efa5999cec0344d6af6c50347146e37e85a24ef59d16683b41f149e5f5e9e"
+    },
+    "reports/overnight-20261025/official-sit-ppo-stress-failed-native.mp4": {
+      "bytes": 2054679,
+      "sha256": "4f4762c15877257c442c86f021a74aefbb0a413821bdfdee56ef6afea7b433e3"
+    },
+    "reports/overnight-20261025/official-sit-ppo-stress-failed-five-frames.png": {
+      "bytes": 459690,
+      "sha256": "20002dd1462eacd277eead2e82eadaf8f0873ebc5fc3239fdd02eb91e9df6ae5"
+    },
+    "reports/overnight-20261025/training-review-0330.json": {
+      "bytes": 1157664,
+      "sha256": "e3954ee0353974a39e4639d3ec229e7b32180a4ab43a2aaf0b568f26709b602a"
+    },
+    "reports/overnight-20261025/official-sit-ppo6000-failed-five-frames.png": {
+      "bytes": 452168,
+      "sha256": "2ad2b13f0f1a06e145bce7bd3799525d313c8ff05751f91e0febfcbcaf4dd13a"
+    },
+    "reports/overnight-20261025/official-chain-ppo1000-native.mp4": {
+      "bytes": 7220640,
+      "sha256": "1bd10d65bd86174b60acc854300b12a54ba134e79d5706d2f40f4d53f9df9bb4"
+    },
+    "reports/overnight-20261025/official-sit-ppo6000-failed-native.mp4": {
+      "bytes": 996041,
+      "sha256": "3ce6a64ba765605c2428e4141b6e1e5018b5c4588a2a540ec6baa42356dd8caf"
+    },
+    "reports/overnight-20261025/official-chain-ppo1000-five-frames.png": {
+      "bytes": 472418,
+      "sha256": "ce2cb07d6215dbfde9c4398654fa40472ff0c3d86b6b503406cb640a15368234"
+    },
+    "reports/overnight-20261025/official-sit-ppo1000-native.mp4": {
+      "bytes": 2006906,
+      "sha256": "e3292fd7f8fe8311ae87b8966a9a567fe53738022a10f1ca603779ed71354a40"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

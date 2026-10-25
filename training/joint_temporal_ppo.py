@@ -15,9 +15,12 @@ from temporal_ppo import consecutive_pairs, temporal_loss
 
 
 class JointTemporalPPO(PPO):
-    def __init__(self, *args, temporal_coef=.01, **kwargs):
+    def __init__(self, *args, temporal_coef=.01, temporal_indices=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.temporal_coef = float(temporal_coef)
+        self.temporal_indices=temporal_indices
+        if temporal_indices is not None and (not temporal_indices or len(set(temporal_indices))!=len(temporal_indices) or any(type(i)!=int or not 0<=i<14 for i in temporal_indices)):
+            raise ValueError('temporal_indices must select distinct actor joints in [0,14)')
         if not 0 <= self.temporal_coef <= 1:
             raise ValueError('temporal_coef must be in [0,1]')
         if (self.schedule != 'fixed' or self.actor.is_recurrent or self.critic.is_recurrent
@@ -52,7 +55,7 @@ class JointTemporalPPO(PPO):
             temporal = loss.new_zeros(())
             start = (index % self.num_mini_batches)*pair_batch_size
             if self.temporal_coef and start < len(left):
-                temporal = temporal_loss(self.actor,left[start:start+pair_batch_size],right[start:start+pair_batch_size])
+                temporal = temporal_loss(self.actor,left[start:start+pair_batch_size],right[start:start+pair_batch_size],indices=self.temporal_indices)
                 loss = loss+self.temporal_coef*temporal
             self.optimizer.zero_grad()
             loss.backward()

@@ -17,10 +17,12 @@ def consecutive_pairs(observations, dones):
     return left[valid].detach().clone(), right[valid].detach().clone()
 
 
-def temporal_loss(actor, left, right, scale=.1):
+def temporal_loss(actor, left, right, scale=.1, indices=None):
     a = actor(TensorDict({'actor': left}, batch_size=[len(left)]))
     b = actor(TensorDict({'actor': right}, batch_size=[len(right)]))
-    return ((a-b)/scale).square().mean()
+    difference=(a-b)/scale
+    if indices is not None:difference=difference[:,indices]
+    return difference.square().mean()
 
 
 class TemporalPPO(PPO):

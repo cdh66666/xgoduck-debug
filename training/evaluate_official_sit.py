@@ -4,7 +4,7 @@ The geometry follows upstream SitStand, not a confirmed user video. The same
 20/25deg tilt and 6deg/20ms target-step gates are retained from the teacher search.
 No teacher targets, output corrections, phase-boundary reset or hardware I/O.
 """
-import argparse,hashlib,json,time
+import argparse,hashlib,json,os,time
 from pathlib import Path
 import numpy as np
 import onnxruntime as ort
@@ -85,6 +85,7 @@ def main():
     latencies=[]
     def predict(obs):
         start=time.perf_counter();value=session.run(None,{name:obs.reshape(1,61)})[0][0];latencies.append((time.perf_counter()-start)*1000);return value
+    os.environ['XGODUCK_RUNTIME_PROFILE']='calibrated-20261025'
     plant=SitPlant();variation=None
     if a.randomize_physics:
         from physics_variation import PhysicsVariation
@@ -101,7 +102,7 @@ def main():
         uncertainty='COM/inertia/delay stress envelope' if variation else 'initial pose, voltage 7.2-8.1V, friction .55-1.0',
         physical_model_sha256=physical_hash,onnx_sha256=hashlib.sha256(a.model.read_bytes()).hexdigest(),
         evaluator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),local_onnx_p99_ms=float(np.percentile(latencies,99)),
-        control_hz=50,feedback_hz=100,physics_hz=200,head_contact_sampling_hz=200,
+        control_hz=50,feedback_hz=100,physics_hz=200,head_contact_sampling_hz=200,runtime_profile='calibrated-20261025',
         hardware_commands_sent=False,deployment_allowed=False)
     (a.output/'result.json').write_text(json.dumps(report,indent=2));print(json.dumps({k:v for k,v in report.items() if k!='cases'}))
 

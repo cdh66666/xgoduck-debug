@@ -30,4 +30,19 @@ class TemporalRegularizerTests(unittest.TestCase):
         self.assertLess(temporal_loss(actor,left,right).item(),before)
         self.assertEqual(temporal_loss(actor,left,left).item(),0.)
 
+    def test_head_roll_loss_does_not_directly_penalize_leg_outputs(self):
+        class Actor(torch.nn.Module):
+            def __init__(self):
+                super().__init__();self.net=torch.nn.Linear(61,14,bias=False)
+            def forward(self,obs):return self.net(obs['actor'])
+        torch.manual_seed(19);actor=Actor();left=torch.zeros(4,61);right=left.clone();right[:,0]=1
+        optimizer=torch.optim.SGD(actor.parameters(),lr=.001);before=actor.net.weight.detach().clone()
+        loss=temporal_loss(actor,left,right,indices=[8]);optimizer.zero_grad();loss.backward()
+        remaining=[i for i in range(14) if i!=8]
+        self.assertEqual(torch.count_nonzero(actor.net.weight.grad[remaining]).item(),0)
+        self.assertGreater(torch.count_nonzero(actor.net.weight.grad[8]).item(),0)
+        optimizer.step()
+        torch.testing.assert_close(actor.net.weight[remaining],before[remaining],rtol=0,atol=0)
+        self.assertLess(temporal_loss(actor,left,right,indices=[8]).item(),loss.item())
+
 if __name__=='__main__':unittest.main()
