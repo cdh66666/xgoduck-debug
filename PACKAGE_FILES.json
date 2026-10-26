@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 268421,
-      "sha256": "a322648d94e3261c32ce131e6d5758b3f653859ed55e37a8b1e56745a0859bad"
+      "bytes": 269712,
+      "sha256": "85500465d3384fa6780da3f7a42db87a0fc1f4bb70c7a89d63e2ed5e6ddeaf11"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 48295,
-      "sha256": "dfa6c38811fc9b93942c64e18a47bf986caef027169603ef56da6dc1b07e49a9"
+      "bytes": 50549,
+      "sha256": "3f8efbbc5583975f47c9f99278cf821c592577cb044db3703664f0884e847c9d"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -2874,8 +2874,8 @@
       "sha256": "79f00ae17ee6065d49c35177e690901e53162f6f156cb121242f9aea86b2505e"
     },
     "training/render_sit_cycle.py": {
-      "bytes": 6902,
-      "sha256": "58e87c28656025108674b4f5f7ae5ffdc540255c21b85566fce6980df674f1ea"
+      "bytes": 7420,
+      "sha256": "95395bc28f8c12ace12b0b787d1edac84aee795e3b4f5588e1a5e0052eafa46a"
     },
     "reports/overnight-20261025/sit-rise-five-frames.png": {
       "bytes": 459272,
@@ -3126,8 +3126,8 @@
       "sha256": "9579be8edc71fc385644642981a1a271aa026774fa9f1dc38a534e7e2b5f6d2d"
     },
     "training/evaluate_official_sit.py": {
-      "bytes": 7905,
-      "sha256": "4bdda3651b6bdfaa9ef49111dad314d89f2034fb5b4594df5ae5d97e1f2cc7da"
+      "bytes": 8677,
+      "sha256": "f457b598a92049efecaea567ba3f1ec53b91edb9737dd366b08b87713cea8a98"
     },
     "training/sit_reference.py": {
       "bytes": 981,
@@ -3188,6 +3188,22 @@
     "training/sit_entry.py": {
       "bytes": 2022,
       "sha256": "ccda6bb832375e5147674c3bf1e99639a176c6e8153599bdacaca0e208205243"
+    },
+    "reports/overnight-20261025/official-sit-entry-ppo-failed-native.mp4": {
+      "bytes": 2969000,
+      "sha256": "5113e26ec840b4360dabee7e3cf92c68ffb7a637b5c8b433c84748d579e3d5e5"
+    },
+    "reports/overnight-20261025/official-sit-entry-ppo-failed-five-frames.png": {
+      "bytes": 477506,
+      "sha256": "1cf842a8f1e6dc358792b88a8ccc29df891f5b98087f39a2b2a66c77469a79b1"
+    },
+    "reports/overnight-20261025/sit-entry-review-0800.json": {
+      "bytes": 142110,
+      "sha256": "c1016a82c92d0e5b17c25654064977149d3ed5be714d07a60c757f4219b4f3cd"
+    },
+    "training/tests/test_sit_evaluation_entry.py": {
+      "bytes": 1894,
+      "sha256": "1a3f9fcc0857f122ccec5a8e135ee339d7a07a6b62858ebebcd7f5fb74f66f08"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

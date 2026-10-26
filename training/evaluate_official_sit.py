@@ -44,14 +44,18 @@ def score_stage(rows,sitting,seed):
     m.update(passed=not failures,failures=failures);return m
 
 
-def cycle(plant,predict,seed,variation=None):
+def cycle(plant,predict,seed,variation=None,*,entry=None):
     rng=np.random.default_rng(seed)
     if variation:variation.before_reset()
     else:
         plant.sim.bam.actuator.vin=float(rng.uniform(7.2,8.1));plant.sim.model.geom_friction[:,0]=float(rng.uniform(.55,1))
     plant.reset(seed)
     if variation:plant.delay=[plant.delay[0].copy() for _ in range(variation.sample['transport_delay_physics_steps'])]
-    resets=plant.sim.reset_calls;trace=[];metrics={};all_targets=[np.rad2deg(plant.filtered).copy()]
+    resets=plant.sim.reset_calls;begin=float(plant.sim.data.time)
+    if entry is not None:entry(plant)
+    if plant.sim.reset_calls!=resets:raise ValueError('Entry must preserve physical state')
+    entry_duration=float(plant.sim.data.time-begin)
+    trace=[];metrics={};all_targets=[np.rad2deg(plant.filtered).copy()]
     for stage,duration,steps,direction in [('sit',SIT_DURATION,SIT_STEPS,1.),('rise',RISE_DURATION,RISE_STEPS,-1.)]:
         rows=[]
         for tick in range(steps):
@@ -70,12 +74,13 @@ def cycle(plant,predict,seed,variation=None):
     step=float(np.max(np.abs(np.diff(all_targets,axis=0))))
     passed='rise' in metrics and all(m['passed'] for m in metrics.values()) and step<=6
     return dict(passed=passed,stage='complete' if passed else stage,**metrics,
-        cycle_max_target_step_deg=step,resets_between_skills=0),trace
+        cycle_max_target_step_deg=step,resets_between_skills=0,entry_duration_s=entry_duration),trace
 
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--model',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--seeds',type=int,default=32);p.add_argument('--first-seed',type=int,default=21000);p.add_argument('--randomize-physics',action='store_true')
+    p.add_argument('--entry-walk',type=Path,help='Run the fixed 9s walking-stop prefix before sitting, without resetting its state')
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
     options=ort.SessionOptions();options.intra_op_num_threads=1
     session=ort.InferenceSession(str(a.model),sess_options=options,providers=['CPUExecutionProvider']);name=session.get_inputs()[0].name
@@ -86,14 +91,19 @@ def main():
     def predict(obs):
         start=time.perf_counter();value=session.run(None,{name:obs.reshape(1,61)})[0][0];latencies.append((time.perf_counter()-start)*1000);return value
     os.environ['XGODUCK_RUNTIME_PROFILE']='calibrated-20261025'
-    plant=SitPlant();variation=None
+    plant=SitPlant();variation=None;entry=None;entry_sha=None
+    if a.entry_walk:
+        from sit_entry import load_walk,advance_walk_stop
+        entry_sha=hashlib.sha256(a.entry_walk.read_bytes()).hexdigest()
+        walk=load_walk(dict(path=str(a.entry_walk),sha256=entry_sha),dict(sha256=physical_hash))
+        entry=lambda current:advance_walk_stop(current,walk)
     if a.randomize_physics:
         from physics_variation import PhysicsVariation
         variation=PhysicsVariation(plant.sim,a.first_seed)
     results=[]
     try:
         for seed in range(a.first_seed,a.first_seed+a.seeds):
-            m,trace=cycle(plant,predict,seed,variation);results.append(m)
+            m,trace=cycle(plant,predict,seed,variation,entry=entry);results.append(m)
             if variation:m['physics_sample']=variation.sample.copy()
             if seed==a.first_seed or not m['passed']:(a.output/f'trace-{seed}.json').write_text(json.dumps(trace))
     finally:plant.adapter.close()
@@ -103,7 +113,7 @@ def main():
         physical_model_sha256=physical_hash,onnx_sha256=hashlib.sha256(a.model.read_bytes()).hexdigest(),
         evaluator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),local_onnx_p99_ms=float(np.percentile(latencies,99)),
         control_hz=50,feedback_hz=100,physics_hz=200,head_contact_sampling_hz=200,runtime_profile='calibrated-20261025',
-        hardware_commands_sent=False,deployment_allowed=False)
+        entry_walk_sha256=entry_sha,hardware_commands_sent=False,deployment_allowed=False)
     (a.output/'result.json').write_text(json.dumps(report,indent=2));print(json.dumps({k:v for k,v in report.items() if k!='cases'}))
 
 if __name__=='__main__':main()

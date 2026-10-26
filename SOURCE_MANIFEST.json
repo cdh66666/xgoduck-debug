@@ -3504,7 +3504,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "sha256": "dfa6c38811fc9b93942c64e18a47bf986caef027169603ef56da6dc1b07e49a9",
+      "sha256": "3f8efbbc5583975f47c9f99278cf821c592577cb044db3703664f0884e847c9d",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/tests/test_runtime_profile.py": {
@@ -3552,7 +3552,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/render_sit_cycle.py": {
-      "sha256": "58e87c28656025108674b4f5f7ae5ffdc540255c21b85566fce6980df674f1ea",
+      "sha256": "95395bc28f8c12ace12b0b787d1edac84aee795e3b4f5588e1a5e0052eafa46a",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "reports/overnight-20261025/sit-rise-five-frames.png": {
@@ -3816,7 +3816,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/evaluate_official_sit.py": {
-      "sha256": "4bdda3651b6bdfaa9ef49111dad314d89f2034fb5b4594df5ae5d97e1f2cc7da",
+      "sha256": "f457b598a92049efecaea567ba3f1ec53b91edb9737dd366b08b87713cea8a98",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/sit_reference.py": {
@@ -3877,6 +3877,22 @@
     },
     "training/sit_entry.py": {
       "sha256": "ccda6bb832375e5147674c3bf1e99639a176c6e8153599bdacaca0e208205243",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-sit-entry-ppo-failed-native.mp4": {
+      "sha256": "5113e26ec840b4360dabee7e3cf92c68ffb7a637b5c8b433c84748d579e3d5e5",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-sit-entry-ppo-failed-five-frames.png": {
+      "sha256": "1cf842a8f1e6dc358792b88a8ccc29df891f5b98087f39a2b2a66c77469a79b1",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/sit-entry-review-0800.json": {
+      "sha256": "c1016a82c92d0e5b17c25654064977149d3ed5be714d07a60c757f4219b4f3cd",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/tests/test_sit_evaluation_entry.py": {
+      "sha256": "1a3f9fcc0857f122ccec5a8e135ee339d7a07a6b62858ebebcd7f5fb74f66f08",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     }
   },
