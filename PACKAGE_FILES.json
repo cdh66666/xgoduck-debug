@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 272598,
-      "sha256": "7dbb1bc0c5d23036ac75082788378c75ac704d2a5cba9c191e06e8d62d1f2fda"
+      "bytes": 272923,
+      "sha256": "dc1ebd9e8319be1554f7cede30a8fd397bf5c62c45846df11bd8e1731dec74c1"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 55690,
-      "sha256": "ba8430b199d7bc725558f17c957260a95ac7855f04ed3128c7b5870c1c5efdf0"
+      "bytes": 56503,
+      "sha256": "ba5f47ea884ad6faed9aff55852e5eec9c5fe5aa4ea609d0a8cafca1375ac062"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -3240,6 +3240,10 @@
     "reports/overnight-20261025/sit-entry-independent-0830.json": {
       "bytes": 169774,
       "sha256": "01de6fd3e0cba1a77ed1900adc846ccdda2fb3ca65b778dcff934011d3bf99a9"
+    },
+    "reports/overnight-20261025/sit-fullstate-ppo-review-0830.json": {
+      "bytes": 450614,
+      "sha256": "856e14ea19736fe4455ecd49b7ce97a81fae59cb8c823ba8286906ed0781be3e"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",
