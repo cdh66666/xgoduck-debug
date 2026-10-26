@@ -46,10 +46,17 @@ class NativeSitTests(unittest.TestCase):
         finally:env.close()
 
     def test_full_actor_import_export_and_trainability(self):
+        self.check_actor(False)
+
+    def test_full_state_actor_import_export_and_trainability(self):
+        self.check_actor(True)
+
+    def check_actor(self,full_state):
         obs=TensorDict({'actor':torch.randn(3,61)},batch_size=[3])
-        actor=SitActor(obs,{'actor':['actor']},'actor',14,hidden_dims=[128,128],activation='tanh',obs_normalization=False,
+        actor=SitActor(obs,{'actor':['actor']},'actor',14,hidden_dims=[128,128],activation='tanh',obs_normalization=False,full_state=full_state,
             distribution_cfg={'class_name':'GaussianDistribution','init_std':.005,'std_type':'scalar'})
-        source={'features':actor.obs_normalizer.features.clone(),'mean':torch.ones(5)*.1,'std':torch.ones(5)*.7}
+        dimension=61 if full_state else 5
+        source={'features':actor.obs_normalizer.features.clone(),'mean':torch.ones(dimension)*.1,'std':torch.ones(dimension)*.7}
         for key,value in actor.mlp.state_dict().items():source['net.'+key]=value.clone()
         cfg=dict(physics_sha256='a'*64,role='official-reference-sit-rise-candidate',phase_index=55,direction_index=56,
             sit_duration_s=SIT_DURATION,rise_duration_s=RISE_DURATION,home_deg=HOME.tolist())
@@ -60,12 +67,13 @@ class NativeSitTests(unittest.TestCase):
             from sit_refine import config,KIND
             import onnx
             model=Path(folder)/'actor.onnx'
-            exported=export_policy(actor,model,config(),architecture=KIND,physical_model={'sha256':'a'*64})
+            export_cfg=config();export_cfg['ppo']['actor']['full_state']=full_state
+            exported=export_policy(actor,model,export_cfg,architecture=KIND,physical_model={'sha256':'a'*64})
             meta={p.key:p.value for p in onnx.load(str(model)).metadata_props}
             self.assertEqual(meta['role'],'official-reference-sit-rise-candidate')
             self.assertEqual(meta['phase_index'],'55');self.assertEqual(meta['direction_index'],'56')
             self.assertEqual(meta['physical_model_sha256'],'a'*64);self.assertLess(exported['max_abs_error'],2e-5)
-        self.assertLess(report['initial_actor_parity_error'],2e-5);self.assertEqual(report['trainable_actor_parameters'],19086)
+        self.assertLess(report['initial_actor_parity_error'],2e-5);self.assertEqual(report['trainable_actor_parameters'],26254 if full_state else 19086)
         torch.testing.assert_close(actor(obs),actor.as_onnx(False)(obs['actor']))
         actor(obs).sum().backward()
         self.assertTrue(all(p.requires_grad and p.grad is not None for p in actor.mlp.parameters()))

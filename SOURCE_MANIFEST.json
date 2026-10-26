@@ -2880,7 +2880,7 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "training/README.md": {
-      "sha256": "ca2d2a6b8428e4337aeb2029cc339304b659b4c276bb63b17831a64e9e0bf8d3",
+      "sha256": "ad20d0c604211f682d336a940b485e11b7a10f039cca27e965b2b063fbfbcbb2",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/SOURCE_LINEAGE.json": {
@@ -3504,7 +3504,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "sha256": "47f7da8094f6310538c7c2bb73307cb784e872574bb27cd2be5648d624dd449d",
+      "sha256": "ba8430b199d7bc725558f17c957260a95ac7855f04ed3128c7b5870c1c5efdf0",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/tests/test_runtime_profile.py": {
@@ -3804,11 +3804,11 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/sit_refine_model.py": {
-      "sha256": "fba235afc9dd2fe41128f808beda82a8f0bb2b99bb34b0e33300c8d7d35f6777",
+      "sha256": "7cd24913797964157174bb1dee1d8434833537239b1c5971de6db6202903b9c2",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/tests/test_native_sit_env.py": {
-      "sha256": "c193b6d0b5a24a6ab7cc306207bec4db4c69685492ad076348e1977d38588238",
+      "sha256": "823cc9c074c98a7bcd496258059ee9d85cf4d7fba237e7783111804c697016e3",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "reports/overnight-20261025/joint-temporal1-full-v1-failed-five-frames.png": {
@@ -3909,6 +3909,26 @@
     },
     "training/official_sit_teacher.py": {
       "sha256": "754197be861b1c17ddf2020f60a3a3f9ea13c521e87365615716eab91b26c08a",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-entry-after-0830-five-frames.png": {
+      "sha256": "8b51e3c7af30bf0266d5c413dd7794ea4d7479bd5a8efef55f02febcc030c905",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-entry-before-0830-five-frames.png": {
+      "sha256": "f07499757551cdfa1b6f3f3785b790bfc9515702f1966a0b962aa63660862ce5",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-entry-before-0830-native.mp4": {
+      "sha256": "8ce76b2138461be5b05799ac3412523aaaab9d2bafaa9379ba4f653d87e4be53",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/official-entry-after-0830-native.mp4": {
+      "sha256": "ef9a35af86efad4f3b9a15f13d06fd0d060bcd51feca15a2d80ebc6fcef7b37a",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/sit-entry-independent-0830.json": {
+      "sha256": "01de6fd3e0cba1a77ed1900adc846ccdda2fb3ca65b778dcff934011d3bf99a9",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     }
   },
