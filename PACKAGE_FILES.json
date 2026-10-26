@@ -31,7 +31,7 @@
     },
     "SOURCE_MANIFEST.json": {
       "bytes": 269712,
-      "sha256": "85500465d3384fa6780da3f7a42db87a0fc1f4bb70c7a89d63e2ed5e6ddeaf11"
+      "sha256": "fb9a8658db1dd8d230a4b8b5d444215454f3de4748c54611d5ff1cbab1fd59d6"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 50549,
-      "sha256": "3f8efbbc5583975f47c9f99278cf821c592577cb044db3703664f0884e847c9d"
+      "bytes": 51849,
+      "sha256": "3150044064b6a75a9f96019fb0cd4b06c6e54b781bcb232a79c22b4e7428f1f2"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -3198,8 +3198,8 @@
       "sha256": "1cf842a8f1e6dc358792b88a8ccc29df891f5b98087f39a2b2a66c77469a79b1"
     },
     "reports/overnight-20261025/sit-entry-review-0800.json": {
-      "bytes": 142110,
-      "sha256": "c1016a82c92d0e5b17c25654064977149d3ed5be714d07a60c757f4219b4f3cd"
+      "bytes": 212920,
+      "sha256": "fbac46e9001a7c9ee943bf5dd723796e564df969201b7f15049ecbc055a8990f"
     },
     "training/tests/test_sit_evaluation_entry.py": {
       "bytes": 1894,
