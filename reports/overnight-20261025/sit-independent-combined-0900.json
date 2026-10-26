@@ -1,0 +1,43 @@
+{
+  "scope": "Two disjoint independent groups, 32+32 cases per condition, unchanged model hashes; excludes selection and training sets.",
+  "total_each": 64,
+  "passed": {
+    "original": {
+      "fresh": 64,
+      "warm": 29,
+      "fresh-stress": 59,
+      "warm-stress": 14
+    },
+    "bc": {
+      "fresh": 48,
+      "warm": 61,
+      "fresh-stress": 47,
+      "warm-stress": 56
+    }
+  },
+  "dangerous_pose_aborts": {
+    "original": {
+      "fresh": 0,
+      "warm": 0,
+      "fresh-stress": 0,
+      "warm-stress": 13
+    },
+    "bc": {
+      "fresh": 0,
+      "warm": 0,
+      "fresh-stress": 0,
+      "warm-stress": 4
+    }
+  },
+  "hardware_commands_sent": false,
+  "deployment_allowed": false,
+  "source_reports": [
+    "sit-entry-independent-0830.json",
+    "sit-final-independent-0900.json"
+  ],
+  "model_sha256": {
+    "original": "a90bca2f3cae35d2ef0e1e62ab7fb51448ea608a3bc24ec51a444d9ae5f3c4fa",
+    "bc": "c9a063f055e1f3e65018a6b6f318b0afad743fcf5fc575613865f33d3ecbb17b"
+  },
+  "decision": "BC improves actual walking-stop entry but regresses fresh starts; no universal replacement, no hardware acceptance."
+}

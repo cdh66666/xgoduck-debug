@@ -14,8 +14,8 @@
       "sha256": "f55d5f1b98d88312e3ac8867dc45d581e7b38258da8d0b67b3d72c0d8c587f35"
     },
     "README.md": {
-      "bytes": 10830,
-      "sha256": "b719d08a73c89876812dd0f297d327ed91c49e71e27e9eb410aecae2d434a4bd"
+      "bytes": 11248,
+      "sha256": "109cdf40f4c0de1096303eb4bcd7666aaf51507be60111753d3031268b5d296d"
     },
     "RELEASE_PROFILE.json": {
       "bytes": 960,
@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 272923,
-      "sha256": "dc1ebd9e8319be1554f7cede30a8fd397bf5c62c45846df11bd8e1731dec74c1"
+      "bytes": 274852,
+      "sha256": "c85f0e979e711d185a291a1166d70a6254bc07aceefd4297696ccf8483daa84e"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 56503,
-      "sha256": "ba5f47ea884ad6faed9aff55852e5eec9c5fe5aa4ea609d0a8cafca1375ac062"
+      "bytes": 58083,
+      "sha256": "1964f925e28c0f7e44c8c20b56f6da7473c811280ab1dbf118f41fad2e32ced7"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -3244,6 +3244,30 @@
     "reports/overnight-20261025/sit-fullstate-ppo-review-0830.json": {
       "bytes": 450614,
       "sha256": "856e14ea19736fe4455ecd49b7ce97a81fae59cb8c823ba8286906ed0781be3e"
+    },
+    "reports/overnight-20261025/sit-independent-combined-0900.json": {
+      "bytes": 1171,
+      "sha256": "4f939efc4e6e843c2d2ac787fbae7823a70856222a7406c5d16c8b45a3965731"
+    },
+    "reports/overnight-20261025/sit-final-independent-0900.json": {
+      "bytes": 1103756,
+      "sha256": "b1144e15801097a7c1aaa2d49c4102a09b3477c9bf9dd92602881c25c78ab79d"
+    },
+    "docs/OVERNIGHT_RESULT_20261026.md": {
+      "bytes": 10543,
+      "sha256": "08c962dfbc34c9bd68c7c02113e4ad58438adfd2430eb37bfd4a2b3a2aacc933"
+    },
+    "reports/overnight-20261025/sit-independent-combined-0900.png": {
+      "bytes": 168549,
+      "sha256": "133e0658680eaffd066201c3891b21fb42651d1caa6d4c355d5308c553e09519"
+    },
+    "reports/overnight-20261025/official-entry-ppo100-0900-five-frames.png": {
+      "bytes": 480235,
+      "sha256": "53cedc4a3a52c7726387f1dcd9b3f1c92fe127674ad20c88b5151c4d85e03685"
+    },
+    "reports/overnight-20261025/official-entry-ppo100-0900-native.mp4": {
+      "bytes": 7087986,
+      "sha256": "51a6b875384e0bd97c77e8399d49b3a53303251484fe46403055a016805324be"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",
