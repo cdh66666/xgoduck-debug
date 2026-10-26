@@ -30,8 +30,8 @@
       "sha256": "166eaee6c4fa80dd3b432eee6185f5caf96ad1172c8f629742e96abb7adbbd04"
     },
     "SOURCE_MANIFEST.json": {
-      "bytes": 269712,
-      "sha256": "fb9a8658db1dd8d230a4b8b5d444215454f3de4748c54611d5ff1cbab1fd59d6"
+      "bytes": 270956,
+      "sha256": "4d1a06a974919d9a702699e76c98b5b18d34b63219317f64c40b042516fc0452"
     },
     "Start-Duck.ps1": {
       "bytes": 1433,
@@ -2266,8 +2266,8 @@
       "sha256": "4f99b031ca5127bfc799ae71e30119cad11cbba71d7aa2693132dcfad3a80bda"
     },
     "training/README.md": {
-      "bytes": 21217,
-      "sha256": "90ab6623b1e7d261e2984008c485720e82d6281e83f2d850482fb1ee72563406"
+      "bytes": 22188,
+      "sha256": "ca2d2a6b8428e4337aeb2029cc339304b659b4c276bb63b17831a64e9e0bf8d3"
     },
     "training/SESSION_20261023.md": {
       "bytes": 3608,
@@ -2834,8 +2834,8 @@
       "sha256": "c06820acec226e3395b567dd388ca7eafd14f8aa063c1b9cf4f34615210eb12a"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "bytes": 51849,
-      "sha256": "3150044064b6a75a9f96019fb0cd4b06c6e54b781bcb232a79c22b4e7428f1f2"
+      "bytes": 54116,
+      "sha256": "47f7da8094f6310538c7c2bb73307cb784e872574bb27cd2be5648d624dd449d"
     },
     "training/runtime_profile.py": {
       "bytes": 2405,
@@ -3204,6 +3204,22 @@
     "training/tests/test_sit_evaluation_entry.py": {
       "bytes": 1894,
       "sha256": "1a3f9fcc0857f122ccec5a8e135ee339d7a07a6b62858ebebcd7f5fb74f66f08"
+    },
+    "reports/overnight-20261025/sit-entry-comparison-0830.png": {
+      "bytes": 149738,
+      "sha256": "6fcddfa5304f8c2b8a1add939fe35a9596218d32375e94a4886d56cc32ca177b"
+    },
+    "training/tests/test_official_sit_teacher.py": {
+      "bytes": 1578,
+      "sha256": "6a19141949f6e9b22504022e77c347df88633fe39195ab770a312eac59649aaf"
+    },
+    "reports/overnight-20261025/sit-entry-comparison-0830.json": {
+      "bytes": 2974,
+      "sha256": "af188262ea50ddab71cb35f5cb25cdd38e9b20b0f8728582986b70ce3dff109d"
+    },
+    "training/official_sit_teacher.py": {
+      "bytes": 2956,
+      "sha256": "754197be861b1c17ddf2020f60a3a3f9ea13c521e87365615716eab91b26c08a"
     }
   },
   "legacy_base_commit": "6d7fa9dadcfe9c501f3a04f44176d9592e81374b",

@@ -1,0 +1,143 @@
+{
+  "columns": [
+    {
+      "label": "原PPO1000",
+      "source": "sit-entry-dagger-full-v2",
+      "prefix": "before-",
+      "passed": [
+        32,
+        15,
+        28,
+        7
+      ],
+      "total_each": 32,
+      "physical_abort_indices": [
+        [],
+        [
+          27
+        ],
+        [],
+        [
+          0,
+          4,
+          13,
+          21,
+          29,
+          30
+        ]
+      ],
+      "onnx_sha256": "a90bca2f3cae35d2ef0e1e62ab7fb51448ea608a3bc24ec51a444d9ae5f3c4fa"
+    },
+    {
+      "label": "修正教师 / 5输入",
+      "source": "sit-entry-dagger-full-v2",
+      "prefix": "after-",
+      "passed": [
+        19,
+        23,
+        19,
+        25
+      ],
+      "total_each": 32,
+      "physical_abort_indices": [
+        [],
+        [
+          10,
+          17,
+          24,
+          28
+        ],
+        [
+          8,
+          19,
+          23
+        ],
+        [
+          4,
+          29,
+          30
+        ]
+      ],
+      "onnx_sha256": "5e50aeb81152f29eab1661c0bcb77d98d85be1970b0edf5130f2388ce7a689f0"
+    },
+    {
+      "label": "修正教师 / 61输入",
+      "source": "sit-full-state-dagger-v2",
+      "prefix": "validation-",
+      "passed": [
+        25,
+        29,
+        23,
+        30
+      ],
+      "total_each": 32,
+      "physical_abort_indices": [
+        [],
+        [],
+        [],
+        [
+          29
+        ]
+      ],
+      "onnx_sha256": "c9a063f055e1f3e65018a6b6f318b0afad743fcf5fc575613865f33d3ecbb17b"
+    },
+    {
+      "label": "加强初姿保持",
+      "source": "sit-full-state-retention4-v1",
+      "prefix": "validation-",
+      "passed": [
+        26,
+        30,
+        21,
+        28
+      ],
+      "total_each": 32,
+      "physical_abort_indices": [
+        [],
+        [],
+        [],
+        [
+          29
+        ]
+      ],
+      "onnx_sha256": "2edfc218fb3ef1fa1d152de5d6c9f7281daeece5c1238a1d7f8a505c0f05b610"
+    }
+  ],
+  "conditions": [
+    "fresh",
+    "warm",
+    "fresh-stress",
+    "warm-stress"
+  ],
+  "seeds": [
+    33000,
+    34000,
+    35000,
+    36000
+  ],
+  "reused_validation_seeds": true,
+  "scope": "Same-case diagnosis, not independent acceptance or hardware performance. Strict failures distinguish tilt-margin exceedance from physical abort.",
+  "physical_model_sha256": "c89d853c85d3b04ab2027cc2c413d48b95ad93aa002d064a3cc95b69954838af",
+  "public_teacher_parity": {
+    "cases": [
+      {
+        "seed": 31000,
+        "passed": true,
+        "frames": 457
+      },
+      {
+        "seed": 31001,
+        "passed": true,
+        "frames": 457
+      }
+    ],
+    "compared_actions": 914,
+    "maximum_action_error_rad": 0.0,
+    "hardware_commands_sent": false
+  },
+  "control_hz": 50,
+  "feedback_hz": 100,
+  "physics_hz": 200,
+  "hardware_commands_sent": false,
+  "deployment_allowed": false
+}

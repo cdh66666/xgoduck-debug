@@ -2880,7 +2880,7 @@
       "role": "portable helper, documentation, test, frozen source or static asset; not physical acceptance"
     },
     "training/README.md": {
-      "sha256": "90ab6623b1e7d261e2984008c485720e82d6281e83f2d850482fb1ee72563406",
+      "sha256": "ca2d2a6b8428e4337aeb2029cc339304b659b4c276bb63b17831a64e9e0bf8d3",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/SOURCE_LINEAGE.json": {
@@ -3504,7 +3504,7 @@
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "docs/OVERNIGHT_20261025.md": {
-      "sha256": "3150044064b6a75a9f96019fb0cd4b06c6e54b781bcb232a79c22b4e7428f1f2",
+      "sha256": "47f7da8094f6310538c7c2bb73307cb784e872574bb27cd2be5648d624dd449d",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     },
     "training/tests/test_runtime_profile.py": {
@@ -3893,6 +3893,22 @@
     },
     "training/tests/test_sit_evaluation_entry.py": {
       "sha256": "1a3f9fcc0857f122ccec5a8e135ee339d7a07a6b62858ebebcd7f5fb74f66f08",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/sit-entry-comparison-0830.png": {
+      "sha256": "6fcddfa5304f8c2b8a1add939fe35a9596218d32375e94a4886d56cc32ca177b",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "reports/overnight-20261025/sit-entry-comparison-0830.json": {
+      "sha256": "af188262ea50ddab71cb35f5cb25cdd38e9b20b0f8728582986b70ce3dff109d",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/tests/test_official_sit_teacher.py": {
+      "sha256": "6a19141949f6e9b22504022e77c347df88633fe39195ab770a312eac59649aaf",
+      "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
+    },
+    "training/official_sit_teacher.py": {
+      "sha256": "754197be861b1c17ddf2020f60a3a3f9ea13c521e87365615716eab91b26c08a",
       "role": "WorkBuddy handoff, motion guard, policy filter correction or experimental inertial/training candidate; not a hardware-validated stable release"
     }
   },
